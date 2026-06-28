@@ -193,17 +193,17 @@
 							{#each filteredIssues as issue (issue.ruleId)}
 								<Accordion.Item value={issue.ruleId}>
 									<Accordion.Trigger>
-										<span class="flex w-full items-center gap-2 pr-2 text-left">
-											<span class={cn("size-2 shrink-0 rounded-full", statusDot(issue.status))}></span>
-											<span class="flex min-w-0 flex-col">
-												<span class="flex items-center gap-2">
+										<span class="flex min-w-0 flex-1 items-start gap-2 pr-2 text-left">
+											<span class={cn("mt-[6px] size-2 shrink-0 rounded-full", statusDot(issue.status))}></span>
+											<span class="flex min-w-0 flex-1 flex-col gap-0.5">
+												<span class="flex flex-wrap items-center gap-2">
 													<span class="font-medium">{issue.title}</span>
 													<Badge variant={statusBadge(issue.status)}>{statusLabel(issue.status)}</Badge>
 													<Badge variant="outline">{issue.category}</Badge>
 												</span>
-												<span class="truncate text-sm font-normal text-muted-foreground">{issue.message}</span>
+												<span class="text-sm font-normal text-muted-foreground">{issue.message}</span>
 											</span>
-											<Badge variant="secondary" class="ml-auto shrink-0">
+											<Badge variant="secondary" class="ml-2 shrink-0 self-start">
 												{issue.pages.length} page{issue.pages.length === 1 ? "" : "s"}
 											</Badge>
 										</span>

@@ -39902,7 +39902,7 @@ var root_3 = from_html(`<!> <!>`, 1);
 var root_4 = from_html(`<!> <!> <!>`, 1);
 var root_5 = from_html(`<div class="flex items-center gap-3"><span class="w-36 shrink-0 truncate text-sm"> </span> <span class="h-2 flex-1 overflow-hidden rounded-full bg-muted"><span class="block h-full rounded-full bg-primary"></span></span> <span class="w-8 shrink-0 text-right text-sm font-medium"> </span></div>`);
 var root_6 = from_html(`<p class="py-4 text-center text-sm text-muted-foreground">No issues match these filters.</p>`);
-var root_7 = from_html(`<span class="flex w-full items-center gap-2 pr-2 text-left"><span></span> <span class="flex min-w-0 flex-col"><span class="flex items-center gap-2"><span class="font-medium"> </span> <!> <!></span> <span class="truncate text-sm font-normal text-muted-foreground"> </span></span> <!></span>`);
+var root_7 = from_html(`<span class="flex min-w-0 flex-1 items-start gap-2 pr-2 text-left"><span></span> <span class="flex min-w-0 flex-1 flex-col gap-0.5"><span class="flex flex-wrap items-center gap-2"><span class="font-medium"> </span> <!> <!></span> <span class="text-sm font-normal text-muted-foreground"> </span></span> <!></span>`);
 var root_8 = from_html(`<span class="truncate text-sm"> </span>`);
 var root_9 = from_html(`<div class="flex flex-col gap-1 pl-4"><span class="text-xs font-medium text-muted-foreground">Affected pages</span> <!></div>`);
 var root_10 = from_html(`<div class="flex flex-wrap items-center gap-2"><!> <!> <!></div> <!>`, 1);
@@ -40505,7 +40505,7 @@ function ReportView($$anchor, $$props) {
                                                   var node_45 = sibling(span_9, 2);
                                                   Badge(node_45, {
                                                     variant: "secondary",
-                                                    class: "ml-auto shrink-0",
+                                                    class: "ml-2 shrink-0 self-start",
                                                     children: ($$anchor18, $$slotProps8) => {
                                                       next();
                                                       var text_30 = text();
@@ -40522,7 +40522,7 @@ function ReportView($$anchor, $$props) {
                                                       set_text(text_29, get2(issue).message);
                                                     },
                                                     [
-                                                      () => clsx2(cn("size-2 shrink-0 rounded-full", statusDot(get2(issue).status)))
+                                                      () => clsx2(cn("mt-[6px] size-2 shrink-0 rounded-full", statusDot(get2(issue).status)))
                                                     ]
                                                   );
                                                   append($$anchor17, span_7);
