@@ -40376,6 +40376,7 @@ function ReportView($$anchor, $$props) {
                                 var node_33 = sibling(node_32, 2);
                                 component(node_33, () => Select_content2, ($$anchor12, Select_Content) => {
                                   Select_Content($$anchor12, {
+                                    portalProps: { to: ".safi-site-audit" },
                                     children: ($$anchor13, $$slotProps6) => {
                                       var fragment_22 = root_3();
                                       var node_34 = first_child(fragment_22);

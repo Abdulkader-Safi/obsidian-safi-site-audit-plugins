@@ -173,7 +173,10 @@
 							<Select.Trigger class="w-44">
 								{catFilter === "all" ? "All categories" : catFilter}
 							</Select.Trigger>
-							<Select.Content>
+							<!-- Portal into the plugin container so the scoped theme tokens, border
+							     reset and font reach the dropdown (default portal targets <body>,
+							     where bg-popover/border resolve to nothing → transparent menu). -->
+							<Select.Content portalProps={{ to: ".safi-site-audit" }}>
 								<Select.Item value="all">All categories</Select.Item>
 								{#each categoryNames as c (c)}
 									<Select.Item value={c}>{c}</Select.Item>
