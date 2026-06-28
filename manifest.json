@@ -1,0 +1,10 @@
+{
+	"id": "safi-site-audit",
+	"name": "Safi Site Audit",
+	"version": "0.1.0",
+	"minAppVersion": "1.5.0",
+	"description": "Run website audits (SEO, content, links, images, security, crawlability and more) and save each one as a Markdown note.",
+	"author": "Abdulkader Safi",
+	"authorUrl": "https://safi-studio.com",
+	"isDesktopOnly": true
+}
