@@ -50,7 +50,7 @@ __export(main_exports, {
   default: () => SafiSiteAuditPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian6 = require("obsidian");
+var import_obsidian7 = require("obsidian");
 
 // src/settings.ts
 var import_obsidian = require("obsidian");
@@ -130,7 +130,7 @@ var SafiSiteAuditSettingTab = class extends import_obsidian.PluginSettingTab {
 };
 
 // src/view.ts
-var import_obsidian5 = require("obsidian");
+var import_obsidian6 = require("obsidian");
 
 // node_modules/esm-env/true.js
 var true_default = true;
@@ -2003,11 +2003,11 @@ var Batch = class _Batch {
     var effects = collected_effects = [];
     var render_effects = [];
     var updates = legacy_updates = [];
-    for (const root49 of roots) {
+    for (const root52 of roots) {
       try {
-        this.#traverse(root49, effects, render_effects);
+        this.#traverse(root52, effects, render_effects);
       } catch (e) {
-        reset_all(root49);
+        reset_all(root52);
         if (!this.#is_deferred()) this.discard();
         throw e;
       }
@@ -2080,9 +2080,9 @@ var Batch = class _Batch {
    * @param {Effect[]} effects
    * @param {Effect[]} render_effects
    */
-  #traverse(root49, effects, render_effects) {
-    root49.f ^= CLEAN;
-    var effect2 = root49.first;
+  #traverse(root52, effects, render_effects) {
+    root52.f ^= CLEAN;
+    var effect2 = root52.first;
     while (effect2 !== null) {
       var flags2 = effect2.f;
       var is_branch = (flags2 & (BRANCH_EFFECT | ROOT_EFFECT)) !== 0;
@@ -2324,8 +2324,8 @@ var Batch = class _Batch {
         }
         if (batch.#roots.length > 0 && !batch.#decrement_queued) {
           batch.apply();
-          for (var root49 of batch.#roots) {
-            batch.#traverse(root49, [], []);
+          for (var root52 of batch.#roots) {
+            batch.#traverse(root52, [], []);
           }
           batch.#roots = [];
         }
@@ -3836,7 +3836,7 @@ function is_dirty(reaction) {
   }
   return false;
 }
-function schedule_possible_effect_self_invalidation(signal, effect2, root49 = true) {
+function schedule_possible_effect_self_invalidation(signal, effect2, root52 = true) {
   var reactions = signal.reactions;
   if (reactions === null) return;
   if (!async_mode_flag && current_sources !== null && current_sources.has(signal)) {
@@ -3852,7 +3852,7 @@ function schedule_possible_effect_self_invalidation(signal, effect2, root49 = tr
         false
       );
     } else if (effect2 === reaction) {
-      if (root49) {
+      if (root52) {
         set_signal_status(reaction, DIRTY);
       } else if ((reaction.f & CLEAN) !== 0) {
         set_signal_status(reaction, MAYBE_DIRTY);
@@ -4571,21 +4571,21 @@ function from_namespace(content, flags2, ns = "svg") {
         /** @type {DocumentFragment} */
         create_fragment_from_html(wrapped)
       );
-      var root49 = (
+      var root52 = (
         /** @type {Element} */
         get_first_child(fragment)
       );
       if (is_fragment) {
         node = document.createDocumentFragment();
-        while (get_first_child(root49)) {
+        while (get_first_child(root52)) {
           node.appendChild(
             /** @type {TemplateNode} */
-            get_first_child(root49)
+            get_first_child(root52)
           );
         }
       } else {
         node = /** @type {Element} */
-        get_first_child(root49);
+        get_first_child(root52);
       }
     }
     var clone2 = (
@@ -7038,7 +7038,7 @@ if (typeof window !== "undefined") {
 }
 
 // src/ui/Dashboard.svelte
-var import_obsidian4 = require("obsidian");
+var import_obsidian5 = require("obsidian");
 
 // src/audit-store.ts
 var import_obsidian2 = require("obsidian");
@@ -12629,21 +12629,21 @@ function filterParsed(selector, elements, options) {
 function filterBySelector(selector, elements, options) {
   var _a5;
   if (selector.some(isTraversal)) {
-    const root49 = (_a5 = options.root) !== null && _a5 !== void 0 ? _a5 : getDocumentRoot(elements[0]);
+    const root52 = (_a5 = options.root) !== null && _a5 !== void 0 ? _a5 : getDocumentRoot(elements[0]);
     const opts = { ...options, context: elements, relativeSelector: false };
     selector.push(SCOPE_PSEUDO);
-    return findFilterElements(root49, selector, opts, true, elements.length);
+    return findFilterElements(root52, selector, opts, true, elements.length);
   }
   return findFilterElements(elements, selector, options, false, elements.length);
 }
-function select(selector, root49, options = {}, limit = Infinity) {
+function select(selector, root52, options = {}, limit = Infinity) {
   if (typeof selector === "function") {
-    return find2(root49, selector);
+    return find2(root52, selector);
   }
   const [plain, filtered] = groupSelectors(parse(selector));
-  const results = filtered.map((sel) => findFilterElements(root49, sel, options, true, limit));
+  const results = filtered.map((sel) => findFilterElements(root52, sel, options, true, limit));
   if (plain.length) {
-    results.push(findElements(root49, plain, options, limit));
+    results.push(findElements(root52, plain, options, limit));
   }
   if (results.length === 0) {
     return [];
@@ -12653,7 +12653,7 @@ function select(selector, root49, options = {}, limit = Infinity) {
   }
   return uniqueSort(results.reduce((a2, b) => [...a2, ...b]));
 }
-function findFilterElements(root49, selector, options, queryForSelector, totalLimit) {
+function findFilterElements(root52, selector, options, queryForSelector, totalLimit) {
   const filterIndex = selector.findIndex(isFilter);
   const sub = selector.slice(0, filterIndex);
   const filter4 = selector[filterIndex];
@@ -12661,7 +12661,7 @@ function findFilterElements(root49, selector, options, queryForSelector, totalLi
   const limit = getLimit(filter4.name, filter4.data, partLimit);
   if (limit === 0)
     return [];
-  const elemsNoLimit = sub.length === 0 && !Array.isArray(root49) ? getChildren(root49).filter(isTag2) : sub.length === 0 ? (Array.isArray(root49) ? root49 : [root49]).filter(isTag2) : queryForSelector || sub.some(isTraversal) ? findElements(root49, [sub], options, limit) : filterElements(root49, [sub], options);
+  const elemsNoLimit = sub.length === 0 && !Array.isArray(root52) ? getChildren(root52).filter(isTag2) : sub.length === 0 ? (Array.isArray(root52) ? root52 : [root52]).filter(isTag2) : queryForSelector || sub.some(isTraversal) ? findElements(root52, [sub], options, limit) : filterElements(root52, [sub], options);
   const elems = elemsNoLimit.slice(0, limit);
   let result = filterByPosition(filter4.name, elems, filter4.data, options);
   if (result.length === 0 || selector.length === filterIndex + 1) {
@@ -12698,12 +12698,12 @@ function findFilterElements(root49, selector, options, queryForSelector, totalLi
     filterElements(result, [remainingSelector], options)
   );
 }
-function findElements(root49, sel, options, limit) {
-  const query = _compileToken(sel, options, root49);
-  return find2(root49, query, limit);
+function findElements(root52, sel, options, limit) {
+  const query = _compileToken(sel, options, root52);
+  return find2(root52, query, limit);
 }
-function find2(root49, query, limit = Infinity) {
-  const elems = prepareContext(root49, esm_exports2, query.shouldTestNextSiblings);
+function find2(root52, query, limit = Infinity) {
+  const elems = prepareContext(root52, esm_exports2, query.shouldTestNextSiblings);
   return find((node) => isTag2(node) && query(node), elems, true, limit);
 }
 function filterElements(elements, sel, options) {
@@ -12908,8 +12908,8 @@ function filter3(match) {
   var _a5;
   return this._make(filterArray(this.toArray(), match, this.options.xmlMode, (_a5 = this._root) === null || _a5 === void 0 ? void 0 : _a5[0]));
 }
-function filterArray(nodes, match, xmlMode, root49) {
-  return typeof match === "string" ? filter2(match, nodes, { xmlMode, root: root49 }) : nodes.filter(getFilterFn(match));
+function filterArray(nodes, match, xmlMode, root52) {
+  return typeof match === "string" ? filter2(match, nodes, { xmlMode, root: root52 }) : nodes.filter(getFilterFn(match));
 }
 function is4(selector) {
   const nodes = this.toArray();
@@ -13025,9 +13025,9 @@ function getParse(parser) {
     if (!Array.isArray(doc) && isDocument(doc)) {
       return doc;
     }
-    const root49 = new Document2([]);
-    update2(doc, root49);
-    return root49;
+    const root52 = new Document2([]);
+    update2(doc, root52);
+    return root52;
   };
 }
 function update2(newChilds, parent2) {
@@ -13367,9 +13367,9 @@ function text3(str) {
 }
 function clone() {
   const clone2 = Array.prototype.map.call(this.get(), (el) => cloneNode(el, true));
-  const root49 = new Document2(clone2);
+  const root52 = new Document2(clone2);
   for (const node of clone2) {
-    node.parent = root49;
+    node.parent = root52;
   }
   return this._make(clone2);
 }
@@ -13538,10 +13538,10 @@ var Cheerio = class {
    * @param root - Sets the root node.
    * @param options - Options for the instance.
    */
-  constructor(elements, root49, options) {
+  constructor(elements, root52, options) {
     this.length = 0;
     this.options = options;
-    this._root = root49;
+    this._root = root52;
     if (elements) {
       for (let idx = 0; idx < elements.length; idx++) {
         this[idx] = elements[idx];
@@ -13576,11 +13576,11 @@ function getLoad(parse6, render4) {
         return render4(dom, this.options);
       }
     }
-    function initialize(selector, context, root49 = initialRoot, opts) {
+    function initialize(selector, context, root52 = initialRoot, opts) {
       if (selector && isCheerio(selector))
         return selector;
       const options2 = flattenOptions(opts, internalOpts);
-      const r2 = typeof root49 === "string" ? [parse6(root49, options2, false, null)] : "length" in root49 ? root49 : [root49];
+      const r2 = typeof root52 === "string" ? [parse6(root52, options2, false, null)] : "length" in root52 ? root52 : [root52];
       const rootInstance = isCheerio(r2) ? r2 : new LoadedCheerio(r2, null, options2);
       rootInstance._root = rootInstance;
       if (!selector) {
@@ -24230,8 +24230,16 @@ async function shimFetch(input, init2 = {}) {
     throw: false
   };
   if (init2.body != null) param.body = init2.body;
-  const resp = await (0, import_obsidian3.requestUrl)(param);
-  return new ShimResponse(resp);
+  const request = (0, import_obsidian3.requestUrl)(param).then((resp) => new ShimResponse(resp));
+  const signal = init2.signal;
+  if (!signal) return request;
+  if (signal.aborted) throw signal.reason ?? new DOMException("Aborted", "AbortError");
+  const aborted2 = new Promise((_, reject) => {
+    signal.addEventListener("abort", () => reject(signal.reason ?? new DOMException("Aborted", "AbortError")), {
+      once: true
+    });
+  });
+  return Promise.race([request, aborted2]);
 }
 async function withObsidianFetch(fn) {
   const original = globalThis.fetch;
@@ -24258,6 +24266,9 @@ async function runAudit(opts, settings) {
   if (settings.psiKey.trim()) options.psiKey = settings.psiKey.trim();
   return withObsidianFetch(() => audit(opts.url, options));
 }
+
+// src/ui/ReportView.svelte
+var import_obsidian4 = require("obsidian");
 
 // src/ui/helpers.ts
 function hostOf(url) {
@@ -30366,9 +30377,9 @@ var TabsListState = class _TabsListState {
   root;
   attachment;
   #isDisabled = user_derived(() => this.root.opts.disabled.current);
-  constructor(opts, root49) {
+  constructor(opts, root52) {
     this.opts = opts;
-    this.root = root49;
+    this.root = root52;
     this.attachment = attachRef(opts.ref);
   }
   #props = user_derived(() => ({
@@ -30398,9 +30409,9 @@ var TabsTriggerState = class _TabsTriggerState {
   #isActive = user_derived(() => this.root.opts.value.current === this.opts.value.current);
   #isDisabled = user_derived(() => this.opts.disabled.current || this.root.opts.disabled.current);
   #ariaControls = user_derived(() => this.root.valueToContentId.get(this.opts.value.current));
-  constructor(opts, root49) {
+  constructor(opts, root52) {
     this.opts = opts;
-    this.root = root49;
+    this.root = root52;
     this.attachment = attachRef(opts.ref);
     watch([() => this.opts.id.current, () => this.opts.value.current], ([id, value]) => {
       return this.root.registerTrigger(id, value);
@@ -30472,9 +30483,9 @@ var TabsContentState = class _TabsContentState {
   attachment;
   #isActive = user_derived(() => this.root.opts.value.current === this.opts.value.current);
   #ariaLabelledBy = user_derived(() => this.root.valueToTriggerId.get(this.opts.value.current));
-  constructor(opts, root49) {
+  constructor(opts, root52) {
     this.opts = opts;
-    this.root = root49;
+    this.root = root52;
     this.attachment = attachRef(opts.ref);
     watch([() => this.opts.id.current, () => this.opts.value.current], ([id, value]) => {
       return this.root.registerContent(id, value);
@@ -31916,25 +31927,10 @@ function Progress2($$anchor, $$props) {
   pop();
 }
 
-// node_modules/@lucide/svelte/dist/icons/arrow-left.svelte
-var rest_excludes39 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
-function Arrow_left($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes39);
-  const iconNode = [
-    ["path", { "d": "m12 19-7-7 7-7" }],
-    ["path", { "d": "M19 12H5" }]
-  ];
-  Icon($$anchor, spread_props({ name: "arrow-left" }, () => props, {
-    get iconNode() {
-      return iconNode;
-    }
-  }));
-}
-
 // node_modules/@lucide/svelte/dist/icons/file-text.svelte
-var rest_excludes40 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+var rest_excludes39 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
 function File_text($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes40);
+  let props = rest_props($$props, rest_excludes39);
   const iconNode = [
     [
       "path",
@@ -31955,72 +31951,63 @@ function File_text($$anchor, $$props) {
 }
 
 // src/ui/ReportView.svelte
-var root33 = from_html(`<!> Back`, 1);
-var root_12 = from_html(`<!> Open note`, 1);
+var root33 = from_html(`<!> Open note`, 1);
+var root_12 = from_html(`<div class="flex items-center"><!></div>`);
 var root_2 = from_html(`<!> <!> <!>`, 1);
 var root_3 = from_html(`<!> <!>`, 1);
 var root_4 = from_html(`<!> <!> <!> <!> <!>`, 1);
 var root_5 = from_html(`<span class="flex w-full items-center gap-2 pr-2"><!> <span class="truncate"> </span> <span class="ml-auto text-muted-foreground"> </span></span>`);
 var root_6 = from_html(`<p class="text-muted-foreground">No issues found on this page.</p>`);
-var root_7 = from_html(`<div class="flex flex-col gap-4"><div class="flex items-center gap-2"><!> <!></div> <!> <!></div>`);
+var root_7 = from_html(`<div class="flex flex-col gap-4"><!> <!> <!></div>`);
 function ReportView($$anchor, $$props) {
   push($$props, true);
   function issues(findings) {
     return findings.filter((f) => f.status === "fail" || f.status === "warn");
   }
+  function openNote() {
+    if (!$$props.path) return;
+    const file = $$props.plugin.app.vault.getAbstractFileByPath($$props.path);
+    if (file instanceof import_obsidian4.TFile) openInObsidian($$props.plugin.app, file);
+  }
   var div = root_7();
-  var div_1 = child(div);
-  var node = child(div_1);
-  Button(node, {
-    variant: "ghost",
-    size: "sm",
-    get onclick() {
-      return $$props.onBack;
-    },
-    children: ($$anchor2, $$slotProps) => {
-      var fragment = root33();
-      var node_1 = first_child(fragment);
-      Arrow_left(node_1, { "data-icon": "inline-start" });
-      next();
-      append($$anchor2, fragment);
-    },
-    $$slots: { default: true }
-  });
-  var node_2 = sibling(node, 2);
+  var node = child(div);
   {
     var consequent = ($$anchor2) => {
-      Button($$anchor2, {
+      var div_1 = root_12();
+      var node_1 = child(div_1);
+      Button(node_1, {
         variant: "outline",
         size: "sm",
         class: "ml-auto",
-        onclick: () => $$props.file && openInObsidian($$props.plugin.app, $$props.file),
+        onclick: openNote,
         children: ($$anchor3, $$slotProps) => {
-          var fragment_2 = root_12();
-          var node_3 = first_child(fragment_2);
-          File_text(node_3, { "data-icon": "inline-start" });
+          var fragment = root33();
+          var node_2 = first_child(fragment);
+          File_text(node_2, { "data-icon": "inline-start" });
           next();
-          append($$anchor3, fragment_2);
+          append($$anchor3, fragment);
         },
         $$slots: { default: true }
       });
+      reset(div_1);
+      append($$anchor2, div_1);
     };
-    if_block(node_2, ($$render) => {
-      if ($$props.file) $$render(consequent);
+    if_block(node, ($$render) => {
+      if ($$props.path) $$render(consequent);
     });
   }
-  reset(div_1);
-  var node_4 = sibling(div_1, 2);
-  component(node_4, () => Card, ($$anchor2, Card_Root) => {
+  var node_3 = sibling(node, 2);
+  component(node_3, () => Card, ($$anchor2, Card_Root) => {
     Card_Root($$anchor2, {
       children: ($$anchor3, $$slotProps) => {
-        var fragment_3 = root_3();
-        var node_5 = first_child(fragment_3);
-        component(node_5, () => Card_header, ($$anchor4, Card_Header) => {
+        var fragment_1 = root_3();
+        var node_4 = first_child(fragment_1);
+        component(node_4, () => Card_header, ($$anchor4, Card_Header) => {
           Card_Header($$anchor4, {
             children: ($$anchor5, $$slotProps2) => {
-              var fragment_4 = root_2();
-              var node_6 = first_child(fragment_4);
-              component(node_6, () => Card_title, ($$anchor6, Card_Title) => {
+              var fragment_2 = root_2();
+              var node_5 = first_child(fragment_2);
+              component(node_5, () => Card_title, ($$anchor6, Card_Title) => {
                 Card_Title($$anchor6, {
                   children: ($$anchor7, $$slotProps3) => {
                     next();
@@ -32031,8 +32018,8 @@ function ReportView($$anchor, $$props) {
                   $$slots: { default: true }
                 });
               });
-              var node_7 = sibling(node_6, 2);
-              component(node_7, () => Card_description, ($$anchor6, Card_Description) => {
+              var node_6 = sibling(node_5, 2);
+              component(node_6, () => Card_description, ($$anchor6, Card_Description) => {
                 Card_Description($$anchor6, {
                   children: ($$anchor7, $$slotProps3) => {
                     next();
@@ -32043,8 +32030,8 @@ function ReportView($$anchor, $$props) {
                   $$slots: { default: true }
                 });
               });
-              var node_8 = sibling(node_7, 2);
-              component(node_8, () => Card_action, ($$anchor6, Card_Action) => {
+              var node_7 = sibling(node_6, 2);
+              component(node_7, () => Card_action, ($$anchor6, Card_Action) => {
                 Card_Action($$anchor6, {
                   children: ($$anchor7, $$slotProps3) => {
                     {
@@ -32067,13 +32054,13 @@ function ReportView($$anchor, $$props) {
                   $$slots: { default: true }
                 });
               });
-              append($$anchor5, fragment_4);
+              append($$anchor5, fragment_2);
             },
             $$slots: { default: true }
           });
         });
-        var node_9 = sibling(node_5, 2);
-        component(node_9, () => Card_content, ($$anchor4, Card_Content) => {
+        var node_8 = sibling(node_4, 2);
+        component(node_8, () => Card_content, ($$anchor4, Card_Content) => {
           Card_Content($$anchor4, {
             children: ($$anchor5, $$slotProps2) => {
               Progress2($$anchor5, {
@@ -32086,24 +32073,24 @@ function ReportView($$anchor, $$props) {
             $$slots: { default: true }
           });
         });
-        append($$anchor3, fragment_3);
+        append($$anchor3, fragment_1);
       },
       $$slots: { default: true }
     });
   });
-  var node_10 = sibling(node_4, 2);
-  component(node_10, () => Tabs2, ($$anchor2, Tabs_Root) => {
+  var node_9 = sibling(node_3, 2);
+  component(node_9, () => Tabs2, ($$anchor2, Tabs_Root) => {
     Tabs_Root($$anchor2, {
       value: "categories",
       children: ($$anchor3, $$slotProps) => {
-        var fragment_10 = root_2();
-        var node_11 = first_child(fragment_10);
-        component(node_11, () => Tabs_list2, ($$anchor4, Tabs_List) => {
+        var fragment_8 = root_2();
+        var node_10 = first_child(fragment_8);
+        component(node_10, () => Tabs_list2, ($$anchor4, Tabs_List) => {
           Tabs_List($$anchor4, {
             children: ($$anchor5, $$slotProps2) => {
-              var fragment_11 = root_3();
-              var node_12 = first_child(fragment_11);
-              component(node_12, () => Tabs_trigger2, ($$anchor6, Tabs_Trigger) => {
+              var fragment_9 = root_3();
+              var node_11 = first_child(fragment_9);
+              component(node_11, () => Tabs_trigger2, ($$anchor6, Tabs_Trigger) => {
                 Tabs_Trigger($$anchor6, {
                   value: "categories",
                   children: ($$anchor7, $$slotProps3) => {
@@ -32114,8 +32101,8 @@ function ReportView($$anchor, $$props) {
                   $$slots: { default: true }
                 });
               });
-              var node_13 = sibling(node_12, 2);
-              component(node_13, () => Tabs_trigger2, ($$anchor6, Tabs_Trigger_1) => {
+              var node_12 = sibling(node_11, 2);
+              component(node_12, () => Tabs_trigger2, ($$anchor6, Tabs_Trigger_1) => {
                 Tabs_Trigger_1($$anchor6, {
                   value: "pages",
                   children: ($$anchor7, $$slotProps3) => {
@@ -32126,44 +32113,44 @@ function ReportView($$anchor, $$props) {
                   $$slots: { default: true }
                 });
               });
-              append($$anchor5, fragment_11);
+              append($$anchor5, fragment_9);
             },
             $$slots: { default: true }
           });
         });
-        var node_14 = sibling(node_11, 2);
-        component(node_14, () => Tabs_content2, ($$anchor4, Tabs_Content) => {
+        var node_13 = sibling(node_10, 2);
+        component(node_13, () => Tabs_content2, ($$anchor4, Tabs_Content) => {
           Tabs_Content($$anchor4, {
             value: "categories",
             children: ($$anchor5, $$slotProps2) => {
-              var fragment_12 = comment();
-              var node_15 = first_child(fragment_12);
-              component(node_15, () => Card, ($$anchor6, Card_Root_1) => {
+              var fragment_10 = comment();
+              var node_14 = first_child(fragment_10);
+              component(node_14, () => Card, ($$anchor6, Card_Root_1) => {
                 Card_Root_1($$anchor6, {
                   children: ($$anchor7, $$slotProps3) => {
-                    var fragment_13 = comment();
-                    var node_16 = first_child(fragment_13);
-                    component(node_16, () => Card_content, ($$anchor8, Card_Content_1) => {
+                    var fragment_11 = comment();
+                    var node_15 = first_child(fragment_11);
+                    component(node_15, () => Card_content, ($$anchor8, Card_Content_1) => {
                       Card_Content_1($$anchor8, {
                         children: ($$anchor9, $$slotProps4) => {
-                          var fragment_14 = comment();
-                          var node_17 = first_child(fragment_14);
-                          component(node_17, () => Table, ($$anchor10, Table_Root) => {
+                          var fragment_12 = comment();
+                          var node_16 = first_child(fragment_12);
+                          component(node_16, () => Table, ($$anchor10, Table_Root) => {
                             Table_Root($$anchor10, {
                               children: ($$anchor11, $$slotProps5) => {
-                                var fragment_15 = root_3();
-                                var node_18 = first_child(fragment_15);
-                                component(node_18, () => Table_header, ($$anchor12, Table_Header) => {
+                                var fragment_13 = root_3();
+                                var node_17 = first_child(fragment_13);
+                                component(node_17, () => Table_header, ($$anchor12, Table_Header) => {
                                   Table_Header($$anchor12, {
                                     children: ($$anchor13, $$slotProps6) => {
-                                      var fragment_16 = comment();
-                                      var node_19 = first_child(fragment_16);
-                                      component(node_19, () => Table_row, ($$anchor14, Table_Row) => {
+                                      var fragment_14 = comment();
+                                      var node_18 = first_child(fragment_14);
+                                      component(node_18, () => Table_row, ($$anchor14, Table_Row) => {
                                         Table_Row($$anchor14, {
                                           children: ($$anchor15, $$slotProps7) => {
-                                            var fragment_17 = root_4();
-                                            var node_20 = first_child(fragment_17);
-                                            component(node_20, () => Table_head, ($$anchor16, Table_Head) => {
+                                            var fragment_15 = root_4();
+                                            var node_19 = first_child(fragment_15);
+                                            component(node_19, () => Table_head, ($$anchor16, Table_Head) => {
                                               Table_Head($$anchor16, {
                                                 children: ($$anchor17, $$slotProps8) => {
                                                   next();
@@ -32173,8 +32160,8 @@ function ReportView($$anchor, $$props) {
                                                 $$slots: { default: true }
                                               });
                                             });
-                                            var node_21 = sibling(node_20, 2);
-                                            component(node_21, () => Table_head, ($$anchor16, Table_Head_1) => {
+                                            var node_20 = sibling(node_19, 2);
+                                            component(node_20, () => Table_head, ($$anchor16, Table_Head_1) => {
                                               Table_Head_1($$anchor16, {
                                                 class: "text-right",
                                                 children: ($$anchor17, $$slotProps8) => {
@@ -32185,8 +32172,8 @@ function ReportView($$anchor, $$props) {
                                                 $$slots: { default: true }
                                               });
                                             });
-                                            var node_22 = sibling(node_21, 2);
-                                            component(node_22, () => Table_head, ($$anchor16, Table_Head_2) => {
+                                            var node_21 = sibling(node_20, 2);
+                                            component(node_21, () => Table_head, ($$anchor16, Table_Head_2) => {
                                               Table_Head_2($$anchor16, {
                                                 class: "text-right",
                                                 children: ($$anchor17, $$slotProps8) => {
@@ -32197,8 +32184,8 @@ function ReportView($$anchor, $$props) {
                                                 $$slots: { default: true }
                                               });
                                             });
-                                            var node_23 = sibling(node_22, 2);
-                                            component(node_23, () => Table_head, ($$anchor16, Table_Head_3) => {
+                                            var node_22 = sibling(node_21, 2);
+                                            component(node_22, () => Table_head, ($$anchor16, Table_Head_3) => {
                                               Table_Head_3($$anchor16, {
                                                 class: "text-right",
                                                 children: ($$anchor17, $$slotProps8) => {
@@ -32209,8 +32196,8 @@ function ReportView($$anchor, $$props) {
                                                 $$slots: { default: true }
                                               });
                                             });
-                                            var node_24 = sibling(node_23, 2);
-                                            component(node_24, () => Table_head, ($$anchor16, Table_Head_4) => {
+                                            var node_23 = sibling(node_22, 2);
+                                            component(node_23, () => Table_head, ($$anchor16, Table_Head_4) => {
                                               Table_Head_4($$anchor16, {
                                                 class: "text-right",
                                                 children: ($$anchor17, $$slotProps8) => {
@@ -32221,31 +32208,31 @@ function ReportView($$anchor, $$props) {
                                                 $$slots: { default: true }
                                               });
                                             });
-                                            append($$anchor15, fragment_17);
+                                            append($$anchor15, fragment_15);
                                           },
                                           $$slots: { default: true }
                                         });
                                       });
-                                      append($$anchor13, fragment_16);
+                                      append($$anchor13, fragment_14);
                                     },
                                     $$slots: { default: true }
                                   });
                                 });
-                                var node_25 = sibling(node_18, 2);
-                                component(node_25, () => Table_body, ($$anchor12, Table_Body) => {
+                                var node_24 = sibling(node_17, 2);
+                                component(node_24, () => Table_body, ($$anchor12, Table_Body) => {
                                   Table_Body($$anchor12, {
                                     children: ($$anchor13, $$slotProps6) => {
-                                      var fragment_18 = comment();
-                                      var node_26 = first_child(fragment_18);
-                                      each(node_26, 17, () => $$props.report.categories, (cat) => cat.category, ($$anchor14, cat) => {
-                                        var fragment_19 = comment();
-                                        var node_27 = first_child(fragment_19);
-                                        component(node_27, () => Table_row, ($$anchor15, Table_Row_1) => {
+                                      var fragment_16 = comment();
+                                      var node_25 = first_child(fragment_16);
+                                      each(node_25, 17, () => $$props.report.categories, (cat) => cat.category, ($$anchor14, cat) => {
+                                        var fragment_17 = comment();
+                                        var node_26 = first_child(fragment_17);
+                                        component(node_26, () => Table_row, ($$anchor15, Table_Row_1) => {
                                           Table_Row_1($$anchor15, {
                                             children: ($$anchor16, $$slotProps7) => {
-                                              var fragment_20 = root_4();
-                                              var node_28 = first_child(fragment_20);
-                                              component(node_28, () => Table_cell, ($$anchor17, Table_Cell) => {
+                                              var fragment_18 = root_4();
+                                              var node_27 = first_child(fragment_18);
+                                              component(node_27, () => Table_cell, ($$anchor17, Table_Cell) => {
                                                 Table_Cell($$anchor17, {
                                                   class: "font-medium",
                                                   children: ($$anchor18, $$slotProps8) => {
@@ -32257,8 +32244,8 @@ function ReportView($$anchor, $$props) {
                                                   $$slots: { default: true }
                                                 });
                                               });
-                                              var node_29 = sibling(node_28, 2);
-                                              component(node_29, () => Table_cell, ($$anchor17, Table_Cell_1) => {
+                                              var node_28 = sibling(node_27, 2);
+                                              component(node_28, () => Table_cell, ($$anchor17, Table_Cell_1) => {
                                                 Table_Cell_1($$anchor17, {
                                                   class: "text-right",
                                                   children: ($$anchor18, $$slotProps8) => {
@@ -32281,8 +32268,8 @@ function ReportView($$anchor, $$props) {
                                                   $$slots: { default: true }
                                                 });
                                               });
-                                              var node_30 = sibling(node_29, 2);
-                                              component(node_30, () => Table_cell, ($$anchor17, Table_Cell_2) => {
+                                              var node_29 = sibling(node_28, 2);
+                                              component(node_29, () => Table_cell, ($$anchor17, Table_Cell_2) => {
                                                 Table_Cell_2($$anchor17, {
                                                   class: "text-right",
                                                   children: ($$anchor18, $$slotProps8) => {
@@ -32294,8 +32281,8 @@ function ReportView($$anchor, $$props) {
                                                   $$slots: { default: true }
                                                 });
                                               });
-                                              var node_31 = sibling(node_30, 2);
-                                              component(node_31, () => Table_cell, ($$anchor17, Table_Cell_3) => {
+                                              var node_30 = sibling(node_29, 2);
+                                              component(node_30, () => Table_cell, ($$anchor17, Table_Cell_3) => {
                                                 Table_Cell_3($$anchor17, {
                                                   class: "text-right",
                                                   children: ($$anchor18, $$slotProps8) => {
@@ -32307,8 +32294,8 @@ function ReportView($$anchor, $$props) {
                                                   $$slots: { default: true }
                                                 });
                                               });
-                                              var node_32 = sibling(node_31, 2);
-                                              component(node_32, () => Table_cell, ($$anchor17, Table_Cell_4) => {
+                                              var node_31 = sibling(node_30, 2);
+                                              component(node_31, () => Table_cell, ($$anchor17, Table_Cell_4) => {
                                                 Table_Cell_4($$anchor17, {
                                                   class: "text-right",
                                                   children: ($$anchor18, $$slotProps8) => {
@@ -32320,74 +32307,74 @@ function ReportView($$anchor, $$props) {
                                                   $$slots: { default: true }
                                                 });
                                               });
-                                              append($$anchor16, fragment_20);
+                                              append($$anchor16, fragment_18);
                                             },
                                             $$slots: { default: true }
                                           });
                                         });
-                                        append($$anchor14, fragment_19);
+                                        append($$anchor14, fragment_17);
                                       });
-                                      append($$anchor13, fragment_18);
+                                      append($$anchor13, fragment_16);
                                     },
                                     $$slots: { default: true }
                                   });
                                 });
-                                append($$anchor11, fragment_15);
+                                append($$anchor11, fragment_13);
                               },
                               $$slots: { default: true }
                             });
                           });
-                          append($$anchor9, fragment_14);
+                          append($$anchor9, fragment_12);
                         },
                         $$slots: { default: true }
                       });
                     });
-                    append($$anchor7, fragment_13);
+                    append($$anchor7, fragment_11);
                   },
                   $$slots: { default: true }
                 });
               });
-              append($$anchor5, fragment_12);
+              append($$anchor5, fragment_10);
             },
             $$slots: { default: true }
           });
         });
-        var node_33 = sibling(node_14, 2);
-        component(node_33, () => Tabs_content2, ($$anchor4, Tabs_Content_1) => {
+        var node_32 = sibling(node_13, 2);
+        component(node_32, () => Tabs_content2, ($$anchor4, Tabs_Content_1) => {
           Tabs_Content_1($$anchor4, {
             value: "pages",
             children: ($$anchor5, $$slotProps2) => {
-              var fragment_27 = comment();
-              var node_34 = first_child(fragment_27);
-              component(node_34, () => Accordion2, ($$anchor6, Accordion_Root) => {
+              var fragment_25 = comment();
+              var node_33 = first_child(fragment_25);
+              component(node_33, () => Accordion2, ($$anchor6, Accordion_Root) => {
                 Accordion_Root($$anchor6, {
                   type: "single",
                   class: "w-full",
                   children: ($$anchor7, $$slotProps3) => {
-                    var fragment_28 = comment();
-                    var node_35 = first_child(fragment_28);
-                    each(node_35, 19, () => $$props.report.pages, (page) => page.url, ($$anchor8, page, i) => {
+                    var fragment_26 = comment();
+                    var node_34 = first_child(fragment_26);
+                    each(node_34, 19, () => $$props.report.pages, (page) => page.url, ($$anchor8, page, i) => {
                       const probs = user_derived(() => issues(get2(page).findings));
-                      var fragment_29 = comment();
-                      var node_36 = first_child(fragment_29);
+                      var fragment_27 = comment();
+                      var node_35 = first_child(fragment_27);
                       {
                         let $0 = user_derived(() => `page-${get2(i)}`);
-                        component(node_36, () => Accordion_item2, ($$anchor9, Accordion_Item) => {
+                        component(node_35, () => Accordion_item2, ($$anchor9, Accordion_Item) => {
                           Accordion_Item($$anchor9, {
                             get value() {
                               return get2($0);
                             },
                             children: ($$anchor10, $$slotProps4) => {
-                              var fragment_30 = root_3();
-                              var node_37 = first_child(fragment_30);
-                              component(node_37, () => Accordion_trigger2, ($$anchor11, Accordion_Trigger) => {
+                              var fragment_28 = root_3();
+                              var node_36 = first_child(fragment_28);
+                              component(node_36, () => Accordion_trigger2, ($$anchor11, Accordion_Trigger) => {
                                 Accordion_Trigger($$anchor11, {
                                   children: ($$anchor12, $$slotProps5) => {
                                     var span = root_5();
-                                    var node_38 = child(span);
+                                    var node_37 = child(span);
                                     {
                                       let $02 = user_derived(() => scoreVariant(get2(page).score));
-                                      Badge(node_38, {
+                                      Badge(node_37, {
                                         get variant() {
                                           return get2($02);
                                         },
@@ -32400,7 +32387,7 @@ function ReportView($$anchor, $$props) {
                                         $$slots: { default: true }
                                       });
                                     }
-                                    var span_1 = sibling(node_38, 2);
+                                    var span_1 = sibling(node_37, 2);
                                     var text_16 = child(span_1, true);
                                     reset(span_1);
                                     var span_2 = sibling(span_1, 2);
@@ -32416,36 +32403,36 @@ function ReportView($$anchor, $$props) {
                                   $$slots: { default: true }
                                 });
                               });
-                              var node_39 = sibling(node_37, 2);
-                              component(node_39, () => Accordion_content2, ($$anchor11, Accordion_Content) => {
+                              var node_38 = sibling(node_36, 2);
+                              component(node_38, () => Accordion_content2, ($$anchor11, Accordion_Content) => {
                                 Accordion_Content($$anchor11, {
                                   children: ($$anchor12, $$slotProps5) => {
-                                    var fragment_32 = comment();
-                                    var node_40 = first_child(fragment_32);
+                                    var fragment_30 = comment();
+                                    var node_39 = first_child(fragment_30);
                                     {
                                       var consequent_1 = ($$anchor13) => {
                                         var p2 = root_6();
                                         append($$anchor13, p2);
                                       };
                                       var alternate = ($$anchor13) => {
-                                        var fragment_33 = comment();
-                                        var node_41 = first_child(fragment_33);
-                                        component(node_41, () => Table, ($$anchor14, Table_Root_1) => {
+                                        var fragment_31 = comment();
+                                        var node_40 = first_child(fragment_31);
+                                        component(node_40, () => Table, ($$anchor14, Table_Root_1) => {
                                           Table_Root_1($$anchor14, {
                                             children: ($$anchor15, $$slotProps6) => {
-                                              var fragment_34 = root_3();
-                                              var node_42 = first_child(fragment_34);
-                                              component(node_42, () => Table_header, ($$anchor16, Table_Header_1) => {
+                                              var fragment_32 = root_3();
+                                              var node_41 = first_child(fragment_32);
+                                              component(node_41, () => Table_header, ($$anchor16, Table_Header_1) => {
                                                 Table_Header_1($$anchor16, {
                                                   children: ($$anchor17, $$slotProps7) => {
-                                                    var fragment_35 = comment();
-                                                    var node_43 = first_child(fragment_35);
-                                                    component(node_43, () => Table_row, ($$anchor18, Table_Row_2) => {
+                                                    var fragment_33 = comment();
+                                                    var node_42 = first_child(fragment_33);
+                                                    component(node_42, () => Table_row, ($$anchor18, Table_Row_2) => {
                                                       Table_Row_2($$anchor18, {
                                                         children: ($$anchor19, $$slotProps8) => {
-                                                          var fragment_36 = root_2();
-                                                          var node_44 = first_child(fragment_36);
-                                                          component(node_44, () => Table_head, ($$anchor20, Table_Head_5) => {
+                                                          var fragment_34 = root_2();
+                                                          var node_43 = first_child(fragment_34);
+                                                          component(node_43, () => Table_head, ($$anchor20, Table_Head_5) => {
                                                             Table_Head_5($$anchor20, {
                                                               children: ($$anchor21, $$slotProps9) => {
                                                                 next();
@@ -32455,8 +32442,8 @@ function ReportView($$anchor, $$props) {
                                                               $$slots: { default: true }
                                                             });
                                                           });
-                                                          var node_45 = sibling(node_44, 2);
-                                                          component(node_45, () => Table_head, ($$anchor20, Table_Head_6) => {
+                                                          var node_44 = sibling(node_43, 2);
+                                                          component(node_44, () => Table_head, ($$anchor20, Table_Head_6) => {
                                                             Table_Head_6($$anchor20, {
                                                               children: ($$anchor21, $$slotProps9) => {
                                                                 next();
@@ -32466,8 +32453,8 @@ function ReportView($$anchor, $$props) {
                                                               $$slots: { default: true }
                                                             });
                                                           });
-                                                          var node_46 = sibling(node_45, 2);
-                                                          component(node_46, () => Table_head, ($$anchor20, Table_Head_7) => {
+                                                          var node_45 = sibling(node_44, 2);
+                                                          component(node_45, () => Table_head, ($$anchor20, Table_Head_7) => {
                                                             Table_Head_7($$anchor20, {
                                                               children: ($$anchor21, $$slotProps9) => {
                                                                 next();
@@ -32477,31 +32464,31 @@ function ReportView($$anchor, $$props) {
                                                               $$slots: { default: true }
                                                             });
                                                           });
-                                                          append($$anchor19, fragment_36);
+                                                          append($$anchor19, fragment_34);
                                                         },
                                                         $$slots: { default: true }
                                                       });
                                                     });
-                                                    append($$anchor17, fragment_35);
+                                                    append($$anchor17, fragment_33);
                                                   },
                                                   $$slots: { default: true }
                                                 });
                                               });
-                                              var node_47 = sibling(node_42, 2);
-                                              component(node_47, () => Table_body, ($$anchor16, Table_Body_1) => {
+                                              var node_46 = sibling(node_41, 2);
+                                              component(node_46, () => Table_body, ($$anchor16, Table_Body_1) => {
                                                 Table_Body_1($$anchor16, {
                                                   children: ($$anchor17, $$slotProps7) => {
-                                                    var fragment_37 = comment();
-                                                    var node_48 = first_child(fragment_37);
-                                                    each(node_48, 17, () => get2(probs), (f) => f.ruleId, ($$anchor18, f) => {
-                                                      var fragment_38 = comment();
-                                                      var node_49 = first_child(fragment_38);
-                                                      component(node_49, () => Table_row, ($$anchor19, Table_Row_3) => {
+                                                    var fragment_35 = comment();
+                                                    var node_47 = first_child(fragment_35);
+                                                    each(node_47, 19, () => get2(probs), (f, fi) => `${f.ruleId}-${fi}`, ($$anchor18, f) => {
+                                                      var fragment_36 = comment();
+                                                      var node_48 = first_child(fragment_36);
+                                                      component(node_48, () => Table_row, ($$anchor19, Table_Row_3) => {
                                                         Table_Row_3($$anchor19, {
                                                           children: ($$anchor20, $$slotProps8) => {
-                                                            var fragment_39 = root_2();
-                                                            var node_50 = first_child(fragment_39);
-                                                            component(node_50, () => Table_cell, ($$anchor21, Table_Cell_5) => {
+                                                            var fragment_37 = root_2();
+                                                            var node_49 = first_child(fragment_37);
+                                                            component(node_49, () => Table_cell, ($$anchor21, Table_Cell_5) => {
                                                               Table_Cell_5($$anchor21, {
                                                                 children: ($$anchor22, $$slotProps9) => {
                                                                   {
@@ -32523,8 +32510,8 @@ function ReportView($$anchor, $$props) {
                                                                 $$slots: { default: true }
                                                               });
                                                             });
-                                                            var node_51 = sibling(node_50, 2);
-                                                            component(node_51, () => Table_cell, ($$anchor21, Table_Cell_6) => {
+                                                            var node_50 = sibling(node_49, 2);
+                                                            component(node_50, () => Table_cell, ($$anchor21, Table_Cell_6) => {
                                                               Table_Cell_6($$anchor21, {
                                                                 class: "font-medium",
                                                                 children: ($$anchor22, $$slotProps9) => {
@@ -32536,8 +32523,8 @@ function ReportView($$anchor, $$props) {
                                                                 $$slots: { default: true }
                                                               });
                                                             });
-                                                            var node_52 = sibling(node_51, 2);
-                                                            component(node_52, () => Table_cell, ($$anchor21, Table_Cell_7) => {
+                                                            var node_51 = sibling(node_50, 2);
+                                                            component(node_51, () => Table_cell, ($$anchor21, Table_Cell_7) => {
                                                               Table_Cell_7($$anchor21, {
                                                                 class: "text-muted-foreground",
                                                                 children: ($$anchor22, $$slotProps9) => {
@@ -32549,54 +32536,54 @@ function ReportView($$anchor, $$props) {
                                                                 $$slots: { default: true }
                                                               });
                                                             });
-                                                            append($$anchor20, fragment_39);
+                                                            append($$anchor20, fragment_37);
                                                           },
                                                           $$slots: { default: true }
                                                         });
                                                       });
-                                                      append($$anchor18, fragment_38);
+                                                      append($$anchor18, fragment_36);
                                                     });
-                                                    append($$anchor17, fragment_37);
+                                                    append($$anchor17, fragment_35);
                                                   },
                                                   $$slots: { default: true }
                                                 });
                                               });
-                                              append($$anchor15, fragment_34);
+                                              append($$anchor15, fragment_32);
                                             },
                                             $$slots: { default: true }
                                           });
                                         });
-                                        append($$anchor13, fragment_33);
+                                        append($$anchor13, fragment_31);
                                       };
-                                      if_block(node_40, ($$render) => {
+                                      if_block(node_39, ($$render) => {
                                         if (get2(probs).length === 0) $$render(consequent_1);
                                         else $$render(alternate, -1);
                                       });
                                     }
-                                    append($$anchor12, fragment_32);
+                                    append($$anchor12, fragment_30);
                                   },
                                   $$slots: { default: true }
                                 });
                               });
-                              append($$anchor10, fragment_30);
+                              append($$anchor10, fragment_28);
                             },
                             $$slots: { default: true }
                           });
                         });
                       }
-                      append($$anchor8, fragment_29);
+                      append($$anchor8, fragment_27);
                     });
-                    append($$anchor7, fragment_28);
+                    append($$anchor7, fragment_26);
                   },
                   $$slots: { default: true }
                 });
               });
-              append($$anchor5, fragment_27);
+              append($$anchor5, fragment_25);
             },
             $$slots: { default: true }
           });
         });
-        append($$anchor3, fragment_10);
+        append($$anchor3, fragment_8);
       },
       $$slots: { default: true }
     });
@@ -32618,7 +32605,7 @@ var fieldVariants = tv({
   },
   defaultVariants: { orientation: "vertical" }
 });
-var rest_excludes41 = /* @__PURE__ */ new Set([
+var rest_excludes40 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -32630,7 +32617,7 @@ var rest_excludes41 = /* @__PURE__ */ new Set([
 var root34 = from_html(`<div><!></div>`);
 function Field($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), orientation = prop($$props, "orientation", 3, "vertical"), restProps = rest_props($$props, rest_excludes41);
+  let ref = prop($$props, "ref", 15, null), orientation = prop($$props, "orientation", 3, "vertical"), restProps = rest_props($$props, rest_excludes40);
   var div = root34();
   attribute_effect(
     div,
@@ -32660,7 +32647,7 @@ var root35 = from_html(`<fieldset><!></fieldset>`);
 var root36 = from_html(`<legend><!></legend>`);
 
 // src/lib/components/ui/field/field-group.svelte
-var rest_excludes42 = /* @__PURE__ */ new Set([
+var rest_excludes41 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -32671,7 +32658,7 @@ var rest_excludes42 = /* @__PURE__ */ new Set([
 var root37 = from_html(`<div><!></div>`);
 function Field_group($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes42);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes41);
   var div = root37();
   attribute_effect(div, ($0) => ({ "data-slot": "field-group", class: $0, ...restProps }), [
     () => cn("gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group @container/field-group flex w-full flex-col", $$props.class)
@@ -32688,10 +32675,10 @@ function Field_group($$anchor, $$props) {
 var root38 = from_html(`<div><!></div>`);
 
 // src/lib/components/ui/label/label.svelte
-var rest_excludes43 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
+var rest_excludes42 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
 function Label2($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes43);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes42);
   var fragment = comment();
   var node = first_child(fragment);
   {
@@ -32721,7 +32708,7 @@ function Label2($$anchor, $$props) {
 }
 
 // src/lib/components/ui/field/field-label.svelte
-var rest_excludes44 = /* @__PURE__ */ new Set([
+var rest_excludes43 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -32731,7 +32718,7 @@ var rest_excludes44 = /* @__PURE__ */ new Set([
 ]);
 function Field_label($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes44);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes43);
   {
     let $0 = user_derived(() => cn("has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit leading-snug", "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col", $$props.class));
     Label2($$anchor, spread_props(
@@ -32766,7 +32753,7 @@ function Field_label($$anchor, $$props) {
 var root39 = from_html(`<div><!></div>`);
 
 // src/lib/components/ui/field/field-description.svelte
-var rest_excludes45 = /* @__PURE__ */ new Set([
+var rest_excludes44 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -32777,7 +32764,7 @@ var rest_excludes45 = /* @__PURE__ */ new Set([
 var root40 = from_html(`<p><!></p>`);
 function Field_description($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes45);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes44);
   var p2 = root40();
   attribute_effect(p2, ($0) => ({ "data-slot": "field-description", class: $0, ...restProps }), [
     () => cn("text-muted-foreground text-left text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal font-normal group-has-[[data-orientation=horizontal]]/field:text-balance", "last:mt-0 nth-last-2:-mt-1", "[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4", $$props.class)
@@ -32800,7 +32787,7 @@ var root_14 = from_html(`<ul class="ml-4 flex list-disc flex-col gap-1"></ul>`);
 var root_22 = from_html(`<div><!></div>`);
 
 // src/lib/components/ui/input/input.svelte
-var rest_excludes46 = /* @__PURE__ */ new Set([
+var rest_excludes45 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -32814,7 +32801,7 @@ var rest_excludes46 = /* @__PURE__ */ new Set([
 var root43 = from_html(`<input/>`);
 function Input($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15), files = prop($$props, "files", 15), dataSlot = prop($$props, "data-slot", 3, "input"), restProps = rest_props($$props, rest_excludes46);
+  let ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15), files = prop($$props, "files", 15), dataSlot = prop($$props, "data-slot", 3, "input"), restProps = rest_props($$props, rest_excludes45);
   var fragment = comment();
   var node = first_child(fragment);
   {
@@ -32873,9 +32860,9 @@ function Input($$anchor, $$props) {
 }
 
 // node_modules/@lucide/svelte/dist/icons/loader-circle.svelte
-var rest_excludes47 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+var rest_excludes46 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
 function Loader_circle($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes47);
+  let props = rest_props($$props, rest_excludes46);
   const iconNode = [["path", { "d": "M21 12a9 9 0 1 1-6.219-8.56" }]];
   Icon($$anchor, spread_props({ name: "loader-circle" }, () => props, {
     get iconNode() {
@@ -32885,7 +32872,7 @@ function Loader_circle($$anchor, $$props) {
 }
 
 // src/lib/components/ui/spinner/spinner.svelte
-var rest_excludes48 = /* @__PURE__ */ new Set([
+var rest_excludes47 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -32898,7 +32885,7 @@ var rest_excludes48 = /* @__PURE__ */ new Set([
 ]);
 function Spinner($$anchor, $$props) {
   push($$props, true);
-  let role = prop($$props, "role", 3, "status"), ariaLabel = prop($$props, "aria-label", 3, "Loading"), restProps = rest_props($$props, rest_excludes48);
+  let role = prop($$props, "role", 3, "status"), ariaLabel = prop($$props, "aria-label", 3, "Loading"), restProps = rest_props($$props, rest_excludes47);
   {
     let $0 = user_derived(() => $$props.name === null ? void 0 : $$props.name);
     let $1 = user_derived(() => $$props.color === null ? void 0 : $$props.color);
@@ -32931,99 +32918,10 @@ function Spinner($$anchor, $$props) {
   pop();
 }
 
-// src/lib/components/ui/alert/alert.svelte
-var alertVariants = tv({
-  base: "grid gap-0.5 rounded-lg border px-2.5 py-2 text-left text-sm has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pr-18 has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-2 *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4 group/alert relative w-full",
-  variants: {
-    variant: {
-      default: "bg-card text-card-foreground",
-      destructive: "text-destructive bg-card *:data-[slot=alert-description]:text-destructive/90 *:[svg]:text-current"
-    }
-  },
-  defaultVariants: { variant: "default" }
-});
-var rest_excludes49 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "variant",
-  "children"
-]);
-var root44 = from_html(`<div><!></div>`);
-function Alert($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), variant = prop($$props, "variant", 3, "default"), restProps = rest_props($$props, rest_excludes49);
-  var div = root44();
-  attribute_effect(div, ($0) => ({ "data-slot": "alert", role: "alert", class: $0, ...restProps }), [
-    () => cn(alertVariants({ variant: variant() }), $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/alert/alert-description.svelte
-var rest_excludes50 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root45 = from_html(`<div><!></div>`);
-function Alert_description($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes50);
-  var div = root45();
-  attribute_effect(div, ($0) => ({ "data-slot": "alert-description", class: $0, ...restProps }), [
-    () => cn("text-muted-foreground text-sm text-balance md:text-pretty [&_p:not(:last-child)]:mb-4 [&_a]:hover:text-foreground [&_a]:underline [&_a]:underline-offset-3", $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/alert/alert-title.svelte
-var rest_excludes51 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root46 = from_html(`<div><!></div>`);
-function Alert_title($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes51);
-  var div = root46();
-  attribute_effect(div, ($0) => ({ "data-slot": "alert-title", class: $0, ...restProps }), [
-    () => cn("font-medium group-has-[>svg]/alert:col-start-2 [&_a]:hover:text-foreground [&_a]:underline [&_a]:underline-offset-3", $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/alert/alert-action.svelte
-var root47 = from_html(`<div><!></div>`);
-
 // node_modules/@lucide/svelte/dist/icons/play.svelte
-var rest_excludes52 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+var rest_excludes48 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
 function Play($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes52);
+  let props = rest_props($$props, rest_excludes48);
   const iconNode = [
     [
       "path",
@@ -33039,38 +32937,410 @@ function Play($$anchor, $$props) {
   }));
 }
 
-// node_modules/@lucide/svelte/dist/icons/info.svelte
-var rest_excludes53 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
-function Info($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes53);
-  const iconNode = [
-    ["circle", { "cx": "12", "cy": "12", "r": "10" }],
-    ["path", { "d": "M12 16v-4" }],
-    ["path", { "d": "M12 8h.01" }]
-  ];
-  Icon($$anchor, spread_props({ name: "info" }, () => props, {
+// src/ui/RunAuditForm.svelte
+var root44 = from_html(`<!> <!>`, 1);
+var root_15 = from_html(`<!> <!> <!>`, 1);
+var root_23 = from_html(`<!> Auditing\u2026`, 1);
+var root_32 = from_html(`<!> Run audit`, 1);
+function RunAuditForm($$anchor, $$props) {
+  push($$props, true);
+  let url = state("");
+  let pages = state("");
+  function submit() {
+    $$props.onSubmit(get2(url).trim(), get2(pages) ? Number(get2(pages)) : void 0);
+  }
+  var fragment = comment();
+  var node = first_child(fragment);
+  component(node, () => Card, ($$anchor2, Card_Root) => {
+    Card_Root($$anchor2, {
+      class: "mx-auto max-w-xl",
+      children: ($$anchor3, $$slotProps) => {
+        var fragment_1 = root_15();
+        var node_1 = first_child(fragment_1);
+        component(node_1, () => Card_header, ($$anchor4, Card_Header) => {
+          Card_Header($$anchor4, {
+            children: ($$anchor5, $$slotProps2) => {
+              var fragment_2 = root44();
+              var node_2 = first_child(fragment_2);
+              component(node_2, () => Card_title, ($$anchor6, Card_Title) => {
+                Card_Title($$anchor6, {
+                  children: ($$anchor7, $$slotProps3) => {
+                    next();
+                    var text4 = text("Run a new audit");
+                    append($$anchor7, text4);
+                  },
+                  $$slots: { default: true }
+                });
+              });
+              var node_3 = sibling(node_2, 2);
+              component(node_3, () => Card_description, ($$anchor6, Card_Description) => {
+                Card_Description($$anchor6, {
+                  children: ($$anchor7, $$slotProps3) => {
+                    next();
+                    var text_1 = text();
+                    template_effect(() => set_text(text_1, `Crawls the site and saves the report to \u201C${$$props.folder ?? ""}\u201D.`));
+                    append($$anchor7, text_1);
+                  },
+                  $$slots: { default: true }
+                });
+              });
+              append($$anchor5, fragment_2);
+            },
+            $$slots: { default: true }
+          });
+        });
+        var node_4 = sibling(node_1, 2);
+        component(node_4, () => Card_content, ($$anchor4, Card_Content) => {
+          Card_Content($$anchor4, {
+            children: ($$anchor5, $$slotProps2) => {
+              var fragment_4 = comment();
+              var node_5 = first_child(fragment_4);
+              component(node_5, () => Field_group, ($$anchor6, Field_FieldGroup) => {
+                Field_FieldGroup($$anchor6, {
+                  children: ($$anchor7, $$slotProps3) => {
+                    var fragment_5 = root44();
+                    var node_6 = first_child(fragment_5);
+                    component(node_6, () => Field, ($$anchor8, Field_Field) => {
+                      Field_Field($$anchor8, {
+                        children: ($$anchor9, $$slotProps4) => {
+                          var fragment_6 = root44();
+                          var node_7 = first_child(fragment_6);
+                          component(node_7, () => Field_label, ($$anchor10, Field_FieldLabel) => {
+                            Field_FieldLabel($$anchor10, {
+                              for: "ssa-url",
+                              children: ($$anchor11, $$slotProps5) => {
+                                next();
+                                var text_2 = text("Website URL");
+                                append($$anchor11, text_2);
+                              },
+                              $$slots: { default: true }
+                            });
+                          });
+                          var node_8 = sibling(node_7, 2);
+                          Input(node_8, {
+                            id: "ssa-url",
+                            placeholder: "https://example.com",
+                            get disabled() {
+                              return $$props.running;
+                            },
+                            onkeydown: (e) => e.key === "Enter" && submit(),
+                            get value() {
+                              return get2(url);
+                            },
+                            set value($$value) {
+                              set(url, $$value, true);
+                            }
+                          });
+                          append($$anchor9, fragment_6);
+                        },
+                        $$slots: { default: true }
+                      });
+                    });
+                    var node_9 = sibling(node_6, 2);
+                    component(node_9, () => Field, ($$anchor8, Field_Field_1) => {
+                      Field_Field_1($$anchor8, {
+                        children: ($$anchor9, $$slotProps4) => {
+                          var fragment_7 = root_15();
+                          var node_10 = first_child(fragment_7);
+                          component(node_10, () => Field_label, ($$anchor10, Field_FieldLabel_1) => {
+                            Field_FieldLabel_1($$anchor10, {
+                              for: "ssa-pages",
+                              children: ($$anchor11, $$slotProps5) => {
+                                next();
+                                var text_3 = text("Pages");
+                                append($$anchor11, text_3);
+                              },
+                              $$slots: { default: true }
+                            });
+                          });
+                          var node_11 = sibling(node_10, 2);
+                          {
+                            let $0 = user_derived(() => String($$props.defaultPages));
+                            Input(node_11, {
+                              id: "ssa-pages",
+                              type: "number",
+                              min: "1",
+                              get placeholder() {
+                                return get2($0);
+                              },
+                              get disabled() {
+                                return $$props.running;
+                              },
+                              get value() {
+                                return get2(pages);
+                              },
+                              set value($$value) {
+                                set(pages, $$value, true);
+                              }
+                            });
+                          }
+                          var node_12 = sibling(node_11, 2);
+                          component(node_12, () => Field_description, ($$anchor10, Field_FieldDescription) => {
+                            Field_FieldDescription($$anchor10, {
+                              children: ($$anchor11, $$slotProps5) => {
+                                next();
+                                var text_4 = text();
+                                template_effect(() => set_text(text_4, `Leave empty to crawl up to ${$$props.defaultPages ?? ""} pages. Multi-page crawls can take a minute.`));
+                                append($$anchor11, text_4);
+                              },
+                              $$slots: { default: true }
+                            });
+                          });
+                          append($$anchor9, fragment_7);
+                        },
+                        $$slots: { default: true }
+                      });
+                    });
+                    append($$anchor7, fragment_5);
+                  },
+                  $$slots: { default: true }
+                });
+              });
+              append($$anchor5, fragment_4);
+            },
+            $$slots: { default: true }
+          });
+        });
+        var node_13 = sibling(node_4, 2);
+        component(node_13, () => Card_footer, ($$anchor4, Card_Footer) => {
+          Card_Footer($$anchor4, {
+            children: ($$anchor5, $$slotProps2) => {
+              Button($$anchor5, {
+                onclick: submit,
+                get disabled() {
+                  return $$props.running;
+                },
+                children: ($$anchor6, $$slotProps3) => {
+                  var fragment_10 = comment();
+                  var node_14 = first_child(fragment_10);
+                  {
+                    var consequent = ($$anchor7) => {
+                      var fragment_11 = root_23();
+                      var node_15 = first_child(fragment_11);
+                      Spinner(node_15, { "data-icon": "inline-start" });
+                      next();
+                      append($$anchor7, fragment_11);
+                    };
+                    var alternate = ($$anchor7) => {
+                      var fragment_12 = root_32();
+                      var node_16 = first_child(fragment_12);
+                      Play(node_16, { "data-icon": "inline-start" });
+                      next();
+                      append($$anchor7, fragment_12);
+                    };
+                    if_block(node_14, ($$render) => {
+                      if ($$props.running) $$render(consequent);
+                      else $$render(alternate, -1);
+                    });
+                  }
+                  append($$anchor6, fragment_10);
+                },
+                $$slots: { default: true }
+              });
+            },
+            $$slots: { default: true }
+          });
+        });
+        append($$anchor3, fragment_1);
+      },
+      $$slots: { default: true }
+    });
+  });
+  append($$anchor, fragment);
+  pop();
+}
+
+// src/lib/components/ui/empty/empty.svelte
+var rest_excludes49 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "ref",
+  "class",
+  "children"
+]);
+var root45 = from_html(`<div><!></div>`);
+function Empty($$anchor, $$props) {
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes49);
+  var div = root45();
+  attribute_effect(div, ($0) => ({ "data-slot": "empty", class: $0, ...restProps }), [
+    () => cn("gap-4 rounded-xl border-dashed p-6 flex w-full min-w-0 flex-1 flex-col items-center justify-center text-center text-balance", $$props.class)
+  ]);
+  var node = child(div);
+  snippet(node, () => $$props.children ?? noop);
+  reset(div);
+  bind_this(div, ($$value) => ref($$value), () => ref());
+  append($$anchor, div);
+  pop();
+}
+
+// src/lib/components/ui/empty/empty-header.svelte
+var rest_excludes50 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "ref",
+  "class",
+  "children"
+]);
+var root46 = from_html(`<div><!></div>`);
+function Empty_header($$anchor, $$props) {
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes50);
+  var div = root46();
+  attribute_effect(div, ($0) => ({ "data-slot": "empty-header", class: $0, ...restProps }), [
+    () => cn("gap-2 flex max-w-sm flex-col items-center", $$props.class)
+  ]);
+  var node = child(div);
+  snippet(node, () => $$props.children ?? noop);
+  reset(div);
+  bind_this(div, ($$value) => ref($$value), () => ref());
+  append($$anchor, div);
+  pop();
+}
+
+// src/lib/components/ui/empty/empty-media.svelte
+var emptyMediaVariants = tv({
+  base: "mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  variants: {
+    variant: {
+      default: "bg-transparent",
+      icon: "bg-muted text-foreground flex size-8 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*='size-'])]:size-4"
+    }
+  },
+  defaultVariants: { variant: "default" }
+});
+var rest_excludes51 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "ref",
+  "class",
+  "children",
+  "variant"
+]);
+var root47 = from_html(`<div><!></div>`);
+function Empty_media($$anchor, $$props) {
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), variant = prop($$props, "variant", 3, "default"), restProps = rest_props($$props, rest_excludes51);
+  var div = root47();
+  attribute_effect(
+    div,
+    ($0) => ({
+      "data-slot": "empty-icon",
+      "data-variant": variant(),
+      class: $0,
+      ...restProps
+    }),
+    [
+      () => cn(emptyMediaVariants({ variant: variant() }), $$props.class)
+    ]
+  );
+  var node = child(div);
+  snippet(node, () => $$props.children ?? noop);
+  reset(div);
+  bind_this(div, ($$value) => ref($$value), () => ref());
+  append($$anchor, div);
+  pop();
+}
+
+// src/lib/components/ui/empty/empty-title.svelte
+var rest_excludes52 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "ref",
+  "class",
+  "children"
+]);
+var root48 = from_html(`<div><!></div>`);
+function Empty_title($$anchor, $$props) {
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes52);
+  var div = root48();
+  attribute_effect(div, ($0) => ({ "data-slot": "empty-title", class: $0, ...restProps }), [
+    () => cn("text-sm font-medium tracking-tight", $$props.class)
+  ]);
+  var node = child(div);
+  snippet(node, () => $$props.children ?? noop);
+  reset(div);
+  bind_this(div, ($$value) => ref($$value), () => ref());
+  append($$anchor, div);
+  pop();
+}
+
+// src/lib/components/ui/empty/empty-description.svelte
+var rest_excludes53 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "ref",
+  "class",
+  "children"
+]);
+var root49 = from_html(`<div><!></div>`);
+function Empty_description($$anchor, $$props) {
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes53);
+  var div = root49();
+  attribute_effect(div, ($0) => ({ "data-slot": "empty-description", class: $0, ...restProps }), [
+    () => cn("text-sm/relaxed text-muted-foreground [&>a:hover]:text-primary text-sm/relaxed [&>a]:underline [&>a]:underline-offset-4", $$props.class)
+  ]);
+  var node = child(div);
+  snippet(node, () => $$props.children ?? noop);
+  reset(div);
+  bind_this(div, ($$value) => ref($$value), () => ref());
+  append($$anchor, div);
+  pop();
+}
+
+// src/lib/components/ui/empty/empty-content.svelte
+var rest_excludes54 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "ref",
+  "class",
+  "children"
+]);
+var root50 = from_html(`<div><!></div>`);
+function Empty_content($$anchor, $$props) {
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes54);
+  var div = root50();
+  attribute_effect(div, ($0) => ({ "data-slot": "empty-content", class: $0, ...restProps }), [
+    () => cn("gap-2.5 text-sm flex w-full max-w-sm min-w-0 flex-col items-center text-balance", $$props.class)
+  ]);
+  var node = child(div);
+  snippet(node, () => $$props.children ?? noop);
+  reset(div);
+  bind_this(div, ($$value) => ref($$value), () => ref());
+  append($$anchor, div);
+  pop();
+}
+
+// node_modules/@lucide/svelte/dist/icons/plus.svelte
+var rest_excludes55 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+function Plus($$anchor, $$props) {
+  let props = rest_props($$props, rest_excludes55);
+  const iconNode = [["path", { "d": "M5 12h14" }], ["path", { "d": "M12 5v14" }]];
+  Icon($$anchor, spread_props({ name: "plus" }, () => props, {
     get iconNode() {
       return iconNode;
     }
   }));
 }
 
-// node_modules/@lucide/svelte/dist/icons/file-search.svelte
-var rest_excludes54 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
-function File_search($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes54);
+// node_modules/@lucide/svelte/dist/icons/gauge.svelte
+var rest_excludes56 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+function Gauge($$anchor, $$props) {
+  let props = rest_props($$props, rest_excludes56);
   const iconNode = [
-    [
-      "path",
-      {
-        "d": "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
-      }
-    ],
-    ["path", { "d": "M14 2v5a1 1 0 0 0 1 1h5" }],
-    ["circle", { "cx": "11.5", "cy": "14.5", "r": "2.5" }],
-    ["path", { "d": "M13.3 16.3 15 18" }]
+    ["path", { "d": "m12 14 4-4" }],
+    ["path", { "d": "M3.34 19a10 10 0 1 1 17.32 0" }]
   ];
-  Icon($$anchor, spread_props({ name: "file-search" }, () => props, {
+  Icon($$anchor, spread_props({ name: "gauge" }, () => props, {
     get iconNode() {
       return iconNode;
     }
@@ -33078,269 +33348,262 @@ function File_search($$anchor, $$props) {
 }
 
 // src/ui/Dashboard.svelte
-var root48 = from_html(`<!> <!>`, 1);
-var root_15 = from_html(`<!> <!> <!>`, 1);
-var root_23 = from_html(`<!> Auditing\u2026`, 1);
-var root_32 = from_html(`<!> Run audit`, 1);
-var root_42 = from_html(`<!> `, 1);
-var root_52 = from_html(`<div class="flex flex-col gap-2"></div>`);
-var root_62 = from_html(`<div class="mx-auto flex max-w-3xl flex-col gap-4 p-4"><!></div>`);
+var root51 = from_html(`<!> New`, 1);
+var root_16 = from_html(`<p class="p-2 text-sm text-muted-foreground">No audits yet.</p>`);
+var root_24 = from_html(`<span class="flex w-full justify-between items-center gap-2"><span class="truncate text-sm font-medium"> </span> <!></span> <span class="text-xs w-full flex justify-start items-center text-muted-foreground"> </span>`, 1);
+var root_33 = from_html(`<!> <!> <!>`, 1);
+var root_42 = from_html(`<!> New audit`, 1);
+var root_52 = from_html(`<!> <!>`, 1);
+var root_62 = from_html(`<div class="flex h-full min-h-0"><aside class="flex w-64 shrink-0 flex-col border-r bg-muted/30"><div class="flex items-center gap-2 border-b p-3"><!> <span class="font-semibold">Safi Site Audit</span> <!></div> <div class="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-2"><!></div></aside> <main class="min-w-0 flex-1 overflow-y-auto p-4"><!></main></div>`);
 function Dashboard($$anchor, $$props) {
   push($$props, true);
   let items = state(proxy([]));
+  let mode = state("empty");
   let selected = state(null);
-  let selectedFile = state(null);
+  let selectedPath = state(null);
   let running = state(false);
-  let url = state("");
-  let pages = state("");
   function refresh() {
     set(items, listAudits($$props.plugin.app, $$props.plugin.settings), true);
   }
-  onMount(refresh);
+  onMount(() => {
+    refresh();
+    const ref = $$props.plugin.app.metadataCache.on("resolved", refresh);
+    return () => $$props.plugin.app.metadataCache.offref(ref);
+  });
+  function startNew() {
+    set(mode, "new");
+    set(selected, null);
+    set(selectedPath, null);
+  }
   async function open(item) {
     const report = await readAudit($$props.plugin.app, item.file);
     if (!report) {
-      new import_obsidian4.Notice("Could not read this audit's report data.");
+      new import_obsidian5.Notice("Could not read this audit's report data.");
       return;
     }
     set(selected, report, true);
-    set(selectedFile, item.file, true);
+    set(selectedPath, item.file.path, true);
+    set(mode, "detail");
   }
-  function back() {
-    set(selected, null);
-    set(selectedFile, null);
-    refresh();
-  }
-  async function run3() {
-    const target = get2(url).trim();
-    if (!target) {
-      new import_obsidian4.Notice("Enter a URL to audit.");
+  async function run3(url, pages) {
+    if (!url) {
+      new import_obsidian5.Notice("Enter a URL to audit.");
       return;
     }
     set(running, true);
     try {
-      const report = await runAudit(
-        {
-          url: target,
-          maxPages: get2(pages) ? Number(get2(pages)) : void 0
-        },
-        $$props.plugin.settings
-      );
+      const report = await runAudit({ url, maxPages: pages }, $$props.plugin.settings);
       const file = await saveAudit($$props.plugin.app, $$props.plugin.settings, report);
-      set(url, "");
-      set(pages, "");
-      refresh();
       set(selected, report, true);
-      set(selectedFile, file, true);
-      new import_obsidian4.Notice(`Audit saved: ${file.name}`);
+      set(selectedPath, file.path, true);
+      set(mode, "detail");
+      set(
+        items,
+        [
+          {
+            file,
+            url: report.startUrl,
+            date: report.generatedAt,
+            score: report.score,
+            pages: report.pagesScanned
+          },
+          ...get2(items).filter((i) => i.file.path !== file.path)
+        ],
+        true
+      );
+      new import_obsidian5.Notice(`Audit saved: ${file.name}`);
     } catch (e) {
-      new import_obsidian4.Notice(`Audit failed: ${e.message}`);
+      new import_obsidian5.Notice(`Audit failed: ${e.message}`);
     } finally {
       set(running, false);
     }
   }
   var div = root_62();
-  var node = child(div);
+  var aside = child(div);
+  var div_1 = child(aside);
+  var node = child(div_1);
+  Gauge(node, { class: "size-4" });
+  var node_1 = sibling(node, 4);
+  Button(node_1, {
+    size: "sm",
+    class: "ml-auto",
+    onclick: startNew,
+    get disabled() {
+      return get2(running);
+    },
+    children: ($$anchor2, $$slotProps) => {
+      var fragment = root51();
+      var node_2 = first_child(fragment);
+      Plus(node_2, { "data-icon": "inline-start" });
+      next();
+      append($$anchor2, fragment);
+    },
+    $$slots: { default: true }
+  });
+  reset(div_1);
+  var div_2 = sibling(div_1, 2);
+  var node_3 = child(div_2);
   {
     var consequent = ($$anchor2) => {
+      var p2 = root_16();
+      append($$anchor2, p2);
+    };
+    var alternate = ($$anchor2) => {
+      var fragment_1 = comment();
+      var node_4 = first_child(fragment_1);
+      each(node_4, 17, () => get2(items), (item) => item.file.path, ($$anchor3, item) => {
+        {
+          let $0 = user_derived(() => get2(selectedPath) === get2(item).file.path ? "default" : "ghost");
+          Button($$anchor3, {
+            get variant() {
+              return get2($0);
+            },
+            onclick: () => open(get2(item)),
+            class: "flex flex-col justify-start items-start h-fit! py-2! px-4!",
+            children: ($$anchor4, $$slotProps) => {
+              var fragment_3 = root_24();
+              var span = first_child(fragment_3);
+              var span_1 = child(span);
+              var text4 = child(span_1, true);
+              reset(span_1);
+              var node_5 = sibling(span_1, 2);
+              {
+                let $02 = user_derived(() => scoreVariant(get2(item).score));
+                Badge(node_5, {
+                  get variant() {
+                    return get2($02);
+                  },
+                  class: "ml-auto shrink-0",
+                  children: ($$anchor5, $$slotProps2) => {
+                    next();
+                    var text_1 = text();
+                    template_effect(() => set_text(text_1, get2(item).score));
+                    append($$anchor5, text_1);
+                  },
+                  $$slots: { default: true }
+                });
+              }
+              reset(span);
+              var span_2 = sibling(span, 2);
+              var text_2 = child(span_2, true);
+              reset(span_2);
+              template_effect(
+                ($02, $1) => {
+                  set_text(text4, $02);
+                  set_text(text_2, $1);
+                },
+                [
+                  () => hostOf(get2(item).url),
+                  () => formatDate(get2(item).date)
+                ]
+              );
+              append($$anchor4, fragment_3);
+            },
+            $$slots: { default: true }
+          });
+        }
+      });
+      append($$anchor2, fragment_1);
+    };
+    if_block(node_3, ($$render) => {
+      if (get2(items).length === 0) $$render(consequent);
+      else $$render(alternate, -1);
+    });
+  }
+  reset(div_2);
+  reset(aside);
+  var main = sibling(aside, 2);
+  var node_6 = child(main);
+  {
+    var consequent_1 = ($$anchor2) => {
       ReportView($$anchor2, {
         get report() {
           return get2(selected);
         },
-        get file() {
-          return get2(selectedFile);
+        get path() {
+          return get2(selectedPath);
         },
         get plugin() {
           return $$props.plugin;
-        },
-        onBack: back
+        }
       });
     };
-    var alternate_2 = ($$anchor2) => {
-      var fragment_1 = root48();
-      var node_1 = first_child(fragment_1);
-      component(node_1, () => Card, ($$anchor3, Card_Root) => {
-        Card_Root($$anchor3, {
+    var consequent_2 = ($$anchor2) => {
+      RunAuditForm($$anchor2, {
+        get defaultPages() {
+          return $$props.plugin.settings.defaultMaxPages;
+        },
+        get folder() {
+          return $$props.plugin.settings.auditFolder;
+        },
+        get running() {
+          return get2(running);
+        },
+        onSubmit: run3
+      });
+    };
+    var alternate_1 = ($$anchor2) => {
+      var fragment_7 = comment();
+      var node_7 = first_child(fragment_7);
+      component(node_7, () => Empty, ($$anchor3, Empty_Root) => {
+        Empty_Root($$anchor3, {
+          class: "h-full",
           children: ($$anchor4, $$slotProps) => {
-            var fragment_2 = root_15();
-            var node_2 = first_child(fragment_2);
-            component(node_2, () => Card_header, ($$anchor5, Card_Header) => {
-              Card_Header($$anchor5, {
+            var fragment_8 = root_52();
+            var node_8 = first_child(fragment_8);
+            component(node_8, () => Empty_header, ($$anchor5, Empty_Header) => {
+              Empty_Header($$anchor5, {
                 children: ($$anchor6, $$slotProps2) => {
-                  var fragment_3 = root48();
-                  var node_3 = first_child(fragment_3);
-                  component(node_3, () => Card_title, ($$anchor7, Card_Title) => {
-                    Card_Title($$anchor7, {
+                  var fragment_9 = root_33();
+                  var node_9 = first_child(fragment_9);
+                  component(node_9, () => Empty_media, ($$anchor7, Empty_Media) => {
+                    Empty_Media($$anchor7, {
+                      variant: "icon",
                       children: ($$anchor8, $$slotProps3) => {
-                        next();
-                        var text4 = text("Run a new audit");
-                        append($$anchor8, text4);
+                        Gauge($$anchor8, {});
                       },
                       $$slots: { default: true }
                     });
                   });
-                  var node_4 = sibling(node_3, 2);
-                  component(node_4, () => Card_description, ($$anchor7, Card_Description) => {
-                    Card_Description($$anchor7, {
+                  var node_10 = sibling(node_9, 2);
+                  component(node_10, () => Empty_title, ($$anchor7, Empty_Title) => {
+                    Empty_Title($$anchor7, {
                       children: ($$anchor8, $$slotProps3) => {
                         next();
-                        var text_1 = text();
-                        template_effect(() => set_text(text_1, `Crawls the site and saves the report to \u201C${$$props.plugin.settings.auditFolder ?? ""}\u201D.`));
-                        append($$anchor8, text_1);
+                        var text_3 = text("No audit selected");
+                        append($$anchor8, text_3);
                       },
                       $$slots: { default: true }
                     });
                   });
-                  append($$anchor6, fragment_3);
+                  var node_11 = sibling(node_10, 2);
+                  component(node_11, () => Empty_description, ($$anchor7, Empty_Description) => {
+                    Empty_Description($$anchor7, {
+                      children: ($$anchor8, $$slotProps3) => {
+                        next();
+                        var text_4 = text("Pick an audit from the sidebar, or run a new one.");
+                        append($$anchor8, text_4);
+                      },
+                      $$slots: { default: true }
+                    });
+                  });
+                  append($$anchor6, fragment_9);
                 },
                 $$slots: { default: true }
               });
             });
-            var node_5 = sibling(node_2, 2);
-            component(node_5, () => Card_content, ($$anchor5, Card_Content) => {
-              Card_Content($$anchor5, {
-                children: ($$anchor6, $$slotProps2) => {
-                  var fragment_5 = comment();
-                  var node_6 = first_child(fragment_5);
-                  component(node_6, () => Field_group, ($$anchor7, Field_FieldGroup) => {
-                    Field_FieldGroup($$anchor7, {
-                      children: ($$anchor8, $$slotProps3) => {
-                        var fragment_6 = root48();
-                        var node_7 = first_child(fragment_6);
-                        component(node_7, () => Field, ($$anchor9, Field_Field) => {
-                          Field_Field($$anchor9, {
-                            children: ($$anchor10, $$slotProps4) => {
-                              var fragment_7 = root48();
-                              var node_8 = first_child(fragment_7);
-                              component(node_8, () => Field_label, ($$anchor11, Field_FieldLabel) => {
-                                Field_FieldLabel($$anchor11, {
-                                  for: "ssa-url",
-                                  children: ($$anchor12, $$slotProps5) => {
-                                    next();
-                                    var text_2 = text("Website URL");
-                                    append($$anchor12, text_2);
-                                  },
-                                  $$slots: { default: true }
-                                });
-                              });
-                              var node_9 = sibling(node_8, 2);
-                              Input(node_9, {
-                                id: "ssa-url",
-                                placeholder: "https://example.com",
-                                get disabled() {
-                                  return get2(running);
-                                },
-                                onkeydown: (e) => e.key === "Enter" && run3(),
-                                get value() {
-                                  return get2(url);
-                                },
-                                set value($$value) {
-                                  set(url, $$value, true);
-                                }
-                              });
-                              append($$anchor10, fragment_7);
-                            },
-                            $$slots: { default: true }
-                          });
-                        });
-                        var node_10 = sibling(node_7, 2);
-                        component(node_10, () => Field, ($$anchor9, Field_Field_1) => {
-                          Field_Field_1($$anchor9, {
-                            children: ($$anchor10, $$slotProps4) => {
-                              var fragment_8 = root_15();
-                              var node_11 = first_child(fragment_8);
-                              component(node_11, () => Field_label, ($$anchor11, Field_FieldLabel_1) => {
-                                Field_FieldLabel_1($$anchor11, {
-                                  for: "ssa-pages",
-                                  children: ($$anchor12, $$slotProps5) => {
-                                    next();
-                                    var text_3 = text("Pages");
-                                    append($$anchor12, text_3);
-                                  },
-                                  $$slots: { default: true }
-                                });
-                              });
-                              var node_12 = sibling(node_11, 2);
-                              {
-                                let $0 = user_derived(() => String($$props.plugin.settings.defaultMaxPages));
-                                Input(node_12, {
-                                  id: "ssa-pages",
-                                  type: "number",
-                                  min: "1",
-                                  get placeholder() {
-                                    return get2($0);
-                                  },
-                                  get disabled() {
-                                    return get2(running);
-                                  },
-                                  get value() {
-                                    return get2(pages);
-                                  },
-                                  set value($$value) {
-                                    set(pages, $$value, true);
-                                  }
-                                });
-                              }
-                              var node_13 = sibling(node_12, 2);
-                              component(node_13, () => Field_description, ($$anchor11, Field_FieldDescription) => {
-                                Field_FieldDescription($$anchor11, {
-                                  children: ($$anchor12, $$slotProps5) => {
-                                    next();
-                                    var text_4 = text();
-                                    template_effect(() => set_text(text_4, `Leave empty to crawl up to ${$$props.plugin.settings.defaultMaxPages ?? ""} pages.`));
-                                    append($$anchor12, text_4);
-                                  },
-                                  $$slots: { default: true }
-                                });
-                              });
-                              append($$anchor10, fragment_8);
-                            },
-                            $$slots: { default: true }
-                          });
-                        });
-                        append($$anchor8, fragment_6);
-                      },
-                      $$slots: { default: true }
-                    });
-                  });
-                  append($$anchor6, fragment_5);
-                },
-                $$slots: { default: true }
-              });
-            });
-            var node_14 = sibling(node_5, 2);
-            component(node_14, () => Card_footer, ($$anchor5, Card_Footer) => {
-              Card_Footer($$anchor5, {
+            var node_12 = sibling(node_8, 2);
+            component(node_12, () => Empty_content, ($$anchor5, Empty_Content) => {
+              Empty_Content($$anchor5, {
                 children: ($$anchor6, $$slotProps2) => {
                   Button($$anchor6, {
-                    onclick: run3,
-                    get disabled() {
-                      return get2(running);
-                    },
+                    onclick: startNew,
                     children: ($$anchor7, $$slotProps3) => {
-                      var fragment_11 = comment();
-                      var node_15 = first_child(fragment_11);
-                      {
-                        var consequent_1 = ($$anchor8) => {
-                          var fragment_12 = root_23();
-                          var node_16 = first_child(fragment_12);
-                          Spinner(node_16, { "data-icon": "inline-start" });
-                          next();
-                          append($$anchor8, fragment_12);
-                        };
-                        var alternate = ($$anchor8) => {
-                          var fragment_13 = root_32();
-                          var node_17 = first_child(fragment_13);
-                          Play(node_17, { "data-icon": "inline-start" });
-                          next();
-                          append($$anchor8, fragment_13);
-                        };
-                        if_block(node_15, ($$render) => {
-                          if (get2(running)) $$render(consequent_1);
-                          else $$render(alternate, -1);
-                        });
-                      }
-                      append($$anchor7, fragment_11);
+                      var fragment_12 = root_42();
+                      var node_13 = first_child(fragment_12);
+                      Plus(node_13, { "data-icon": "inline-start" });
+                      next();
+                      append($$anchor7, fragment_12);
                     },
                     $$slots: { default: true }
                   });
@@ -33348,147 +33611,20 @@ function Dashboard($$anchor, $$props) {
                 $$slots: { default: true }
               });
             });
-            append($$anchor4, fragment_2);
+            append($$anchor4, fragment_8);
           },
           $$slots: { default: true }
         });
       });
-      var node_18 = sibling(node_1, 2);
-      {
-        var consequent_2 = ($$anchor3) => {
-          var fragment_14 = comment();
-          var node_19 = first_child(fragment_14);
-          component(node_19, () => Alert, ($$anchor4, Alert_Root) => {
-            Alert_Root($$anchor4, {
-              children: ($$anchor5, $$slotProps) => {
-                var fragment_15 = root_15();
-                var node_20 = first_child(fragment_15);
-                Info(node_20, {});
-                var node_21 = sibling(node_20, 2);
-                component(node_21, () => Alert_title, ($$anchor6, Alert_Title) => {
-                  Alert_Title($$anchor6, {
-                    children: ($$anchor7, $$slotProps2) => {
-                      next();
-                      var text_5 = text("No audits yet");
-                      append($$anchor7, text_5);
-                    },
-                    $$slots: { default: true }
-                  });
-                });
-                var node_22 = sibling(node_21, 2);
-                component(node_22, () => Alert_description, ($$anchor6, Alert_Description) => {
-                  Alert_Description($$anchor6, {
-                    children: ($$anchor7, $$slotProps2) => {
-                      next();
-                      var text_6 = text("Run your first audit above. Saved audits appear here.");
-                      append($$anchor7, text_6);
-                    },
-                    $$slots: { default: true }
-                  });
-                });
-                append($$anchor5, fragment_15);
-              },
-              $$slots: { default: true }
-            });
-          });
-          append($$anchor3, fragment_14);
-        };
-        var alternate_1 = ($$anchor3) => {
-          var div_1 = root_52();
-          each(div_1, 21, () => get2(items), (item) => item.file.path, ($$anchor4, item) => {
-            var fragment_16 = comment();
-            var node_23 = first_child(fragment_16);
-            component(node_23, () => Card, ($$anchor5, Card_Root_1) => {
-              Card_Root_1($$anchor5, {
-                role: "button",
-                tabindex: 0,
-                class: "cursor-pointer transition-colors hover:bg-accent",
-                onclick: () => open(get2(item)),
-                onkeydown: (e) => (e.key === "Enter" || e.key === " ") && open(get2(item)),
-                children: ($$anchor6, $$slotProps) => {
-                  var fragment_17 = comment();
-                  var node_24 = first_child(fragment_17);
-                  component(node_24, () => Card_header, ($$anchor7, Card_Header_1) => {
-                    Card_Header_1($$anchor7, {
-                      children: ($$anchor8, $$slotProps2) => {
-                        var fragment_18 = root_15();
-                        var node_25 = first_child(fragment_18);
-                        component(node_25, () => Card_title, ($$anchor9, Card_Title_1) => {
-                          Card_Title_1($$anchor9, {
-                            class: "flex items-center gap-2 text-base",
-                            children: ($$anchor10, $$slotProps3) => {
-                              var fragment_19 = root_42();
-                              var node_26 = first_child(fragment_19);
-                              File_search(node_26, { class: "size-4" });
-                              var text_7 = sibling(node_26);
-                              template_effect(($0) => set_text(text_7, ` ${$0 ?? ""}`), [() => hostOf(get2(item).url)]);
-                              append($$anchor10, fragment_19);
-                            },
-                            $$slots: { default: true }
-                          });
-                        });
-                        var node_27 = sibling(node_25, 2);
-                        component(node_27, () => Card_description, ($$anchor9, Card_Description_1) => {
-                          Card_Description_1($$anchor9, {
-                            children: ($$anchor10, $$slotProps3) => {
-                              next();
-                              var text_8 = text();
-                              template_effect(($0) => set_text(text_8, `${$0 ?? ""} \xB7 ${get2(item).pages ?? ""} page${get2(item).pages === 1 ? "" : "s"}`), [() => formatDate(get2(item).date)]);
-                              append($$anchor10, text_8);
-                            },
-                            $$slots: { default: true }
-                          });
-                        });
-                        var node_28 = sibling(node_27, 2);
-                        component(node_28, () => Card_action, ($$anchor9, Card_Action) => {
-                          Card_Action($$anchor9, {
-                            children: ($$anchor10, $$slotProps3) => {
-                              {
-                                let $0 = user_derived(() => scoreVariant(get2(item).score));
-                                Badge($$anchor10, {
-                                  get variant() {
-                                    return get2($0);
-                                  },
-                                  children: ($$anchor11, $$slotProps4) => {
-                                    next();
-                                    var text_9 = text();
-                                    template_effect(() => set_text(text_9, get2(item).score));
-                                    append($$anchor11, text_9);
-                                  },
-                                  $$slots: { default: true }
-                                });
-                              }
-                            },
-                            $$slots: { default: true }
-                          });
-                        });
-                        append($$anchor8, fragment_18);
-                      },
-                      $$slots: { default: true }
-                    });
-                  });
-                  append($$anchor6, fragment_17);
-                },
-                $$slots: { default: true }
-              });
-            });
-            append($$anchor4, fragment_16);
-          });
-          reset(div_1);
-          append($$anchor3, div_1);
-        };
-        if_block(node_18, ($$render) => {
-          if (get2(items).length === 0) $$render(consequent_2);
-          else $$render(alternate_1, -1);
-        });
-      }
-      append($$anchor2, fragment_1);
+      append($$anchor2, fragment_7);
     };
-    if_block(node, ($$render) => {
-      if (get2(selected)) $$render(consequent);
-      else $$render(alternate_2, -1);
+    if_block(node_6, ($$render) => {
+      if (get2(mode) === "detail" && get2(selected)) $$render(consequent_1);
+      else if (get2(mode) === "new") $$render(consequent_2, 1);
+      else $$render(alternate_1, -1);
     });
   }
+  reset(main);
   reset(div);
   append($$anchor, div);
   pop();
@@ -33496,7 +33632,7 @@ function Dashboard($$anchor, $$props) {
 
 // src/view.ts
 var VIEW_TYPE_SITE_AUDIT = "safi-site-audit-view";
-var AuditDashboardView = class extends import_obsidian5.ItemView {
+var AuditDashboardView = class extends import_obsidian6.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.plugin = plugin;
@@ -33514,6 +33650,8 @@ var AuditDashboardView = class extends import_obsidian5.ItemView {
   async onOpen() {
     this.contentEl.empty();
     this.contentEl.addClass("safi-site-audit");
+    this.contentEl.style.height = "100%";
+    this.contentEl.style.padding = "0";
     this.component = mount(Dashboard, {
       target: this.contentEl,
       props: { plugin: this.plugin }
@@ -33528,7 +33666,7 @@ var AuditDashboardView = class extends import_obsidian5.ItemView {
 };
 
 // src/main.ts
-var SafiSiteAuditPlugin = class extends import_obsidian6.Plugin {
+var SafiSiteAuditPlugin = class extends import_obsidian7.Plugin {
   settings = DEFAULT_SETTINGS;
   async onload() {
     await this.loadSettings();
@@ -33602,15 +33740,6 @@ var SafiSiteAuditPlugin = class extends import_obsidian6.Plugin {
    * See the LICENSE file in the root directory of this source tree.
    *)
 
-@lucide/svelte/dist/icons/arrow-left.js:
-  (**
-   * @file
-   * @license @lucide/svelte v1.21.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   *)
-
 @lucide/svelte/dist/icons/file-text.js:
   (**
    * @file
@@ -33638,7 +33767,7 @@ var SafiSiteAuditPlugin = class extends import_obsidian6.Plugin {
    * See the LICENSE file in the root directory of this source tree.
    *)
 
-@lucide/svelte/dist/icons/info.js:
+@lucide/svelte/dist/icons/plus.js:
   (**
    * @file
    * @license @lucide/svelte v1.21.0 - ISC
@@ -33647,7 +33776,7 @@ var SafiSiteAuditPlugin = class extends import_obsidian6.Plugin {
    * See the LICENSE file in the root directory of this source tree.
    *)
 
-@lucide/svelte/dist/icons/file-search.js:
+@lucide/svelte/dist/icons/gauge.js:
   (**
    * @file
    * @license @lucide/svelte v1.21.0 - ISC

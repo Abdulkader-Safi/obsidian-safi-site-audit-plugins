@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TFile } from "obsidian";
+	import { TFile } from "obsidian";
 	import type { AuditReport, Finding } from "safi-studio-scanner";
 	import type SafiSiteAuditPlugin from "../main";
 	import { openInObsidian } from "../audit-store";
@@ -12,44 +12,38 @@
 	import { Badge } from "$lib/components/ui/badge";
 	import { Button } from "$lib/components/ui/button";
 	import { Progress } from "$lib/components/ui/progress";
-	import ArrowLeftIcon from "@lucide/svelte/icons/arrow-left";
 	import FileTextIcon from "@lucide/svelte/icons/file-text";
 
 	let {
 		report,
-		file,
+		path,
 		plugin,
-		onBack,
 	}: {
 		report: AuditReport;
-		file: TFile | null;
+		path: string | null;
 		plugin: SafiSiteAuditPlugin;
-		onBack: () => void;
 	} = $props();
 
 	function issues(findings: Finding[]): Finding[] {
 		return findings.filter((f) => f.status === "fail" || f.status === "warn");
 	}
+
+	function openNote() {
+		if (!path) return;
+		const file = plugin.app.vault.getAbstractFileByPath(path);
+		if (file instanceof TFile) openInObsidian(plugin.app, file);
+	}
 </script>
 
 <div class="flex flex-col gap-4">
-	<div class="flex items-center gap-2">
-		<Button variant="ghost" size="sm" onclick={onBack}>
-			<ArrowLeftIcon data-icon="inline-start" />
-			Back
-		</Button>
-		{#if file}
-			<Button
-				variant="outline"
-				size="sm"
-				class="ml-auto"
-				onclick={() => file && openInObsidian(plugin.app, file)}
-			>
+	{#if path}
+		<div class="flex items-center">
+			<Button variant="outline" size="sm" class="ml-auto" onclick={openNote}>
 				<FileTextIcon data-icon="inline-start" />
 				Open note
 			</Button>
-		{/if}
-	</div>
+		</div>
+	{/if}
 
 	<Card.Root>
 		<Card.Header>
@@ -126,7 +120,7 @@
 										</Table.Row>
 									</Table.Header>
 									<Table.Body>
-										{#each probs as f (f.ruleId)}
+										{#each probs as f, fi (`${f.ruleId}-${fi}`)}
 											<Table.Row>
 												<Table.Cell>
 													<Badge variant={severityVariant(f.severity)}>{f.severity}</Badge>

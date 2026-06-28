@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import { Notice, type TFile } from "obsidian";
+	import { Notice, type TFile, type EventRef } from "obsidian";
 	import type { AuditReport } from "safi-studio-scanner";
 	import type SafiSiteAuditPlugin from "../main";
 	import {
@@ -11,32 +11,43 @@
 	} from "../audit-store";
 	import { runAudit } from "../audit-runner";
 	import ReportView from "./ReportView.svelte";
+	import RunAuditForm from "./RunAuditForm.svelte";
 	import { formatDate, hostOf, scoreVariant } from "./helpers";
 
-	import * as Card from "$lib/components/ui/card";
-	import * as Field from "$lib/components/ui/field";
 	import { Button } from "$lib/components/ui/button";
-	import { Input } from "$lib/components/ui/input";
 	import { Badge } from "$lib/components/ui/badge";
-	import { Spinner } from "$lib/components/ui/spinner";
-	import * as Alert from "$lib/components/ui/alert";
-	import PlayIcon from "@lucide/svelte/icons/play";
-	import InfoIcon from "@lucide/svelte/icons/info";
-	import FileSearchIcon from "@lucide/svelte/icons/file-search";
+	import * as Empty from "$lib/components/ui/empty";
+	import { cn } from "$lib/utils";
+	import PlusIcon from "@lucide/svelte/icons/plus";
+	import GaugeIcon from "@lucide/svelte/icons/gauge";
 
 	let { plugin }: { plugin: SafiSiteAuditPlugin } = $props();
 
+	type Mode = "empty" | "new" | "detail";
+
 	let items = $state<AuditListItem[]>([]);
+	let mode = $state<Mode>("empty");
 	let selected = $state<AuditReport | null>(null);
-	let selectedFile = $state<TFile | null>(null);
+	let selectedPath = $state<string | null>(null);
 	let running = $state(false);
-	let url = $state("");
-	let pages = $state("");
 
 	function refresh() {
 		items = listAudits(plugin.app, plugin.settings);
 	}
-	onMount(refresh);
+
+	onMount(() => {
+		refresh();
+		// New files aren't in the metadata cache immediately; refresh the list once Obsidian
+		// finishes indexing so freshly-run audits appear without a manual reload.
+		const ref: EventRef = plugin.app.metadataCache.on("resolved", refresh);
+		return () => plugin.app.metadataCache.offref(ref);
+	});
+
+	function startNew() {
+		mode = "new";
+		selected = null;
+		selectedPath = null;
+	}
 
 	async function open(item: AuditListItem) {
 		const report = await readAudit(plugin.app, item.file);
@@ -45,33 +56,27 @@
 			return;
 		}
 		selected = report;
-		selectedFile = item.file;
+		selectedPath = item.file.path;
+		mode = "detail";
 	}
 
-	function back() {
-		selected = null;
-		selectedFile = null;
-		refresh();
-	}
-
-	async function run() {
-		const target = url.trim();
-		if (!target) {
+	async function run(url: string, pages: number | undefined) {
+		if (!url) {
 			new Notice("Enter a URL to audit.");
 			return;
 		}
 		running = true;
 		try {
-			const report = await runAudit(
-				{ url: target, maxPages: pages ? Number(pages) : undefined },
-				plugin.settings,
-			);
-			const file = await saveAudit(plugin.app, plugin.settings, report);
-			url = "";
-			pages = "";
-			refresh();
+			const report = await runAudit({ url, maxPages: pages }, plugin.settings);
+			const file: TFile = await saveAudit(plugin.app, plugin.settings, report);
+			// Show it immediately from the in-memory report (cache may lag), then reconcile.
 			selected = report;
-			selectedFile = file;
+			selectedPath = file.path;
+			mode = "detail";
+			items = [
+				{ file, url: report.startUrl, date: report.generatedAt, score: report.score, pages: report.pagesScanned },
+				...items.filter((i) => i.file.path !== file.path),
+			];
 			new Notice(`Audit saved: ${file.name}`);
 		} catch (e) {
 			new Notice(`Audit failed: ${(e as Error).message}`);
@@ -81,91 +86,67 @@
 	}
 </script>
 
-<div class="mx-auto flex max-w-3xl flex-col gap-4 p-4">
-	{#if selected}
-		<ReportView report={selected} file={selectedFile} {plugin} onBack={back} />
-	{:else}
-		<Card.Root>
-			<Card.Header>
-				<Card.Title>Run a new audit</Card.Title>
-				<Card.Description>
-					Crawls the site and saves the report to “{plugin.settings.auditFolder}”.
-				</Card.Description>
-			</Card.Header>
-			<Card.Content>
-				<Field.FieldGroup>
-					<Field.Field>
-						<Field.FieldLabel for="ssa-url">Website URL</Field.FieldLabel>
-						<Input
-							id="ssa-url"
-							placeholder="https://example.com"
-							bind:value={url}
-							disabled={running}
-							onkeydown={(e) => e.key === "Enter" && run()}
-						/>
-					</Field.Field>
-					<Field.Field>
-						<Field.FieldLabel for="ssa-pages">Pages</Field.FieldLabel>
-						<Input
-							id="ssa-pages"
-							type="number"
-							min="1"
-							placeholder={String(plugin.settings.defaultMaxPages)}
-							bind:value={pages}
-							disabled={running}
-						/>
-						<Field.FieldDescription>
-							Leave empty to crawl up to {plugin.settings.defaultMaxPages} pages.
-						</Field.FieldDescription>
-					</Field.Field>
-				</Field.FieldGroup>
-			</Card.Content>
-			<Card.Footer>
-				<Button onclick={run} disabled={running}>
-					{#if running}
-						<Spinner data-icon="inline-start" />
-						Auditing…
-					{:else}
-						<PlayIcon data-icon="inline-start" />
-						Run audit
-					{/if}
-				</Button>
-			</Card.Footer>
-		</Card.Root>
-
-		{#if items.length === 0}
-			<Alert.Root>
-				<InfoIcon />
-				<Alert.Title>No audits yet</Alert.Title>
-				<Alert.Description>
-					Run your first audit above. Saved audits appear here.
-				</Alert.Description>
-			</Alert.Root>
-		{:else}
-			<div class="flex flex-col gap-2">
+<div class="flex h-full min-h-0">
+	<aside class="flex w-64 shrink-0 flex-col border-r bg-muted/30">
+		<div class="flex items-center gap-2 border-b p-3">
+			<GaugeIcon class="size-4" />
+			<span class="font-semibold">Safi Site Audit</span>
+			<Button size="sm" class="ml-auto" onclick={startNew} disabled={running}>
+				<PlusIcon data-icon="inline-start" />
+				New
+			</Button>
+		</div>
+		<div class="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-2">
+			{#if items.length === 0}
+				<p class="p-2 text-sm text-muted-foreground">No audits yet.</p>
+			{:else}
+				<!-- ponytail: native row, not <Button> — the button primitive forces a fixed
+				     height and whitespace-nowrap, which squeezes this two-line item. -->
 				{#each items as item (item.file.path)}
-					<Card.Root
-						role="button"
-						tabindex={0}
-						class="cursor-pointer transition-colors hover:bg-accent"
+					<Button
+						variant={selectedPath === item.file.path ? "default" : "ghost"}
 						onclick={() => open(item)}
-						onkeydown={(e) => (e.key === "Enter" || e.key === " ") && open(item)}
+						class="flex flex-col justify-start items-start h-fit! py-2! px-4!"
 					>
-						<Card.Header>
-							<Card.Title class="flex items-center gap-2 text-base">
-								<FileSearchIcon class="size-4" />
-								{hostOf(item.url)}
-							</Card.Title>
-							<Card.Description>
-								{formatDate(item.date)} · {item.pages} page{item.pages === 1 ? "" : "s"}
-							</Card.Description>
-							<Card.Action>
-								<Badge variant={scoreVariant(item.score)}>{item.score}</Badge>
-							</Card.Action>
-						</Card.Header>
-					</Card.Root>
+						<span class="flex w-full justify-between items-center gap-2">
+							<span class="truncate text-sm font-medium">{hostOf(item.url)}</span>
+							<Badge variant={scoreVariant(item.score)} class="ml-auto shrink-0">{item.score}</Badge>
+						</span>
+						<span class="text-xs w-full flex justify-start items-center text-muted-foreground">{formatDate(item.date)}</span>
+					</Button>
 				{/each}
-			</div>
+			{/if}
+		</div>
+	</aside>
+
+	<main class="min-w-0 flex-1 overflow-y-auto p-4">
+		{#if mode === "detail" && selected}
+			<ReportView report={selected} path={selectedPath} {plugin} />
+		{:else if mode === "new"}
+			<RunAuditForm
+				defaultPages={plugin.settings.defaultMaxPages}
+				folder={plugin.settings.auditFolder}
+				{running}
+				onSubmit={run}
+			/>
+		{:else}
+			<Empty.Root class="h-full">
+				<Empty.Header>
+					<Empty.Media variant="icon">
+						<GaugeIcon />
+					</Empty.Media>
+					<Empty.Title>No audit selected</Empty.Title>
+					<Empty.Description>
+						Pick an audit from the sidebar, or run a new one.
+					</Empty.Description>
+				</Empty.Header>
+				<Empty.Content>
+					<Button onclick={startNew}>
+						<PlusIcon data-icon="inline-start" />
+						New audit
+					</Button>
+				</Empty.Content>
+			</Empty.Root>
 		{/if}
-	{/if}
+	</main>
 </div>

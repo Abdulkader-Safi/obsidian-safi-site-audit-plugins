@@ -48,6 +48,7 @@ type FetchInit = {
 	method?: string;
 	headers?: Record<string, string> | Headers;
 	body?: string;
+	signal?: AbortSignal;
 };
 
 export async function shimFetch(input: string | URL, init: FetchInit = {}): Promise<ShimResponse> {
@@ -65,8 +66,21 @@ export async function shimFetch(input: string | URL, init: FetchInit = {}): Prom
 		throw: false,
 	};
 	if (init.body != null) param.body = init.body;
-	const resp = await requestUrl(param);
-	return new ShimResponse(resp);
+
+	const request = requestUrl(param).then((resp) => new ShimResponse(resp));
+
+	// requestUrl can't be aborted, but the SDK passes AbortSignal.timeout(opts.timeout).
+	// Honour it by racing, otherwise a single stalled request stalls the whole crawl pool
+	// and audit() never resolves. The losing requestUrl settles later and is ignored.
+	const signal = init.signal;
+	if (!signal) return request;
+	if (signal.aborted) throw signal.reason ?? new DOMException("Aborted", "AbortError");
+	const aborted = new Promise<never>((_, reject) => {
+		signal.addEventListener("abort", () => reject(signal.reason ?? new DOMException("Aborted", "AbortError")), {
+			once: true,
+		});
+	});
+	return Promise.race([request, aborted]);
 }
 
 export async function withObsidianFetch<T>(fn: () => Promise<T>): Promise<T> {

@@ -25,6 +25,9 @@ export class AuditDashboardView extends ItemView {
 	async onOpen() {
 		this.contentEl.empty();
 		this.contentEl.addClass("safi-site-audit");
+		// The sidebar layout fills the pane; the content el must give it a height.
+		this.contentEl.style.height = "100%";
+		this.contentEl.style.padding = "0";
 		this.component = mount(Dashboard, {
 			target: this.contentEl,
 			props: { plugin: this.plugin },
