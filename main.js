@@ -651,12 +651,12 @@ function skip_nodes(remove2 = true) {
         depth += 1;
       }
     }
-    var next3 = (
+    var next4 = (
       /** @type {TemplateNode} */
       get_next_sibling(node)
     );
     if (remove2) node.remove();
-    node = next3;
+    node = next4;
   }
 }
 function read_hydration_instruction(node) {
@@ -795,6 +795,13 @@ function setContext(key2, context) {
 function hasContext(key2) {
   const context_map = get_or_init_context_map("hasContext");
   return context_map.has(key2);
+}
+function getAllContexts() {
+  const context_map = get_or_init_context_map("getAllContexts");
+  return (
+    /** @type {T} */
+    context_map
+  );
 }
 function push(props, runes = false, fn) {
   component_context = {
@@ -1695,17 +1702,17 @@ function async_derived(fn, label2, location) {
     signal.f |= ASYNC;
   }
   return new Promise((fulfil) => {
-    function next3(p2) {
+    function next4(p2) {
       function go() {
         if (p2 === promise) {
           fulfil(signal);
         } else {
-          next3(promise);
+          next4(promise);
         }
       }
       p2.then(go, go);
     }
-    next3(promise);
+    next4(promise);
   });
 }
 // @__NO_SIDE_EFFECTS__
@@ -2003,11 +2010,11 @@ var Batch = class _Batch {
     var effects = collected_effects = [];
     var render_effects = [];
     var updates = legacy_updates = [];
-    for (const root52 of roots) {
+    for (const root71 of roots) {
       try {
-        this.#traverse(root52, effects, render_effects);
+        this.#traverse(root71, effects, render_effects);
       } catch (e) {
-        reset_all(root52);
+        reset_all(root71);
         if (!this.#is_deferred()) this.discard();
         throw e;
       }
@@ -2080,9 +2087,9 @@ var Batch = class _Batch {
    * @param {Effect[]} effects
    * @param {Effect[]} render_effects
    */
-  #traverse(root52, effects, render_effects) {
-    root52.f ^= CLEAN;
-    var effect2 = root52.first;
+  #traverse(root71, effects, render_effects) {
+    root71.f ^= CLEAN;
+    var effect2 = root71.first;
     while (effect2 !== null) {
       var flags2 = effect2.f;
       var is_branch = (flags2 & (BRANCH_EFFECT | ROOT_EFFECT)) !== 0;
@@ -2106,9 +2113,9 @@ var Batch = class _Batch {
         }
       }
       while (effect2 !== null) {
-        var next3 = effect2.next;
-        if (next3 !== null) {
-          effect2 = next3;
+        var next4 = effect2.next;
+        if (next4 !== null) {
+          effect2 = next4;
           break;
         }
         effect2 = effect2.parent;
@@ -2324,8 +2331,8 @@ var Batch = class _Batch {
         }
         if (batch.#roots.length > 0 && !batch.#decrement_queued) {
           batch.apply();
-          for (var root52 of batch.#roots) {
-            batch.#traverse(root52, [], []);
+          for (var root71 of batch.#roots) {
+            batch.#traverse(root71, [], []);
           }
           batch.#roots = [];
         }
@@ -2466,17 +2473,17 @@ var Batch = class _Batch {
   }
   #unlink() {
     if (!this.linked) return;
-    var prev2 = this.#prev;
-    var next3 = this.#next;
-    if (prev2 === null) {
-      first_batch = next3;
+    var prev3 = this.#prev;
+    var next4 = this.#next;
+    if (prev3 === null) {
+      first_batch = next4;
     } else {
-      prev2.#next = next3;
+      prev3.#next = next4;
     }
-    if (next3 === null) {
-      last_batch = prev2;
+    if (next4 === null) {
+      last_batch = prev3;
     } else {
-      next3.#prev = prev2;
+      next4.#prev = prev3;
     }
     this.linked = false;
   }
@@ -3324,12 +3331,12 @@ function merge_text_nodes(text4) {
   ) {
     return;
   }
-  let next3 = text4.nextSibling;
-  while (next3 !== null && next3.nodeType === TEXT_NODE) {
-    next3.remove();
+  let next4 = text4.nextSibling;
+  while (next4 !== null && next4.nodeType === TEXT_NODE) {
+    next4.remove();
     text4.nodeValue += /** @type {string} */
-    next3.nodeValue;
-    next3 = text4.nextSibling;
+    next4.nodeValue;
+    next4 = text4.nextSibling;
   }
 }
 
@@ -3385,13 +3392,13 @@ function without_reactive_context(fn) {
 }
 function listen_to_event_and_reset_event(element2, event2, handler, on_reset = handler) {
   element2.addEventListener(event2, () => without_reactive_context(handler));
-  const prev2 = (
+  const prev3 = (
     /** @type {any} */
     element2[FORM_RESET_HANDLER]
   );
-  if (prev2) {
+  if (prev3) {
     element2[FORM_RESET_HANDLER] = () => {
-      prev2();
+      prev3();
       on_reset(true);
     };
   } else {
@@ -3614,23 +3621,23 @@ function destroy_effect_children(signal, remove_dom = false) {
         controller.abort(STALE_REACTION);
       });
     }
-    var next3 = effect2.next;
+    var next4 = effect2.next;
     if ((effect2.f & ROOT_EFFECT) !== 0) {
       effect2.parent = null;
     } else {
       destroy_effect(effect2, remove_dom);
     }
-    effect2 = next3;
+    effect2 = next4;
   }
 }
 function destroy_block_effect_children(signal) {
   var effect2 = signal.first;
   while (effect2 !== null) {
-    var next3 = effect2.next;
+    var next4 = effect2.next;
     if ((effect2.f & BRANCH_EFFECT) === 0) {
       destroy_effect(effect2);
     }
-    effect2 = next3;
+    effect2 = next4;
   }
 }
 function destroy_effect(effect2, remove_dom = true) {
@@ -3666,20 +3673,20 @@ function destroy_effect(effect2, remove_dom = true) {
 }
 function remove_effect_dom(node, end2) {
   while (node !== null) {
-    var next3 = node === end2 ? null : get_next_sibling(node);
+    var next4 = node === end2 ? null : get_next_sibling(node);
     node.remove();
-    node = next3;
+    node = next4;
   }
 }
 function unlink_effect(effect2) {
   var parent2 = effect2.parent;
-  var prev2 = effect2.prev;
-  var next3 = effect2.next;
-  if (prev2 !== null) prev2.next = next3;
-  if (next3 !== null) next3.prev = prev2;
+  var prev3 = effect2.prev;
+  var next4 = effect2.next;
+  if (prev3 !== null) prev3.next = next4;
+  if (next4 !== null) next4.prev = prev3;
   if (parent2 !== null) {
-    if (parent2.first === effect2) parent2.first = next3;
-    if (parent2.last === effect2) parent2.last = prev2;
+    if (parent2.first === effect2) parent2.first = next4;
+    if (parent2.last === effect2) parent2.last = prev3;
   }
 }
 function pause_effect(effect2, callback, destroy = true) {
@@ -3754,9 +3761,9 @@ function move_effect(effect2, fragment) {
   var node = effect2.nodes.start;
   var end2 = effect2.nodes.end;
   while (node !== null) {
-    var next3 = node === end2 ? null : get_next_sibling(node);
+    var next4 = node === end2 ? null : get_next_sibling(node);
     fragment.append(node);
-    node = next3;
+    node = next4;
   }
 }
 
@@ -3836,7 +3843,7 @@ function is_dirty(reaction) {
   }
   return false;
 }
-function schedule_possible_effect_self_invalidation(signal, effect2, root52 = true) {
+function schedule_possible_effect_self_invalidation(signal, effect2, root71 = true) {
   var reactions = signal.reactions;
   if (reactions === null) return;
   if (!async_mode_flag && current_sources !== null && current_sources.has(signal)) {
@@ -3852,7 +3859,7 @@ function schedule_possible_effect_self_invalidation(signal, effect2, root52 = tr
         false
       );
     } else if (effect2 === reaction) {
-      if (root52) {
+      if (root71) {
         set_signal_status(reaction, DIRTY);
       } else if ((reaction.f & CLEAN) !== 0) {
         set_signal_status(reaction, MAYBE_DIRTY);
@@ -4359,6 +4366,17 @@ function is_raw_text_element(name) {
   );
 }
 
+// node_modules/svelte/src/internal/client/dev/css.js
+var all_styles = /* @__PURE__ */ new Map();
+function register_style(hash2, style) {
+  var styles = all_styles.get(hash2);
+  if (!styles) {
+    styles = /* @__PURE__ */ new Set();
+    all_styles.set(hash2, styles);
+  }
+  styles.add(style);
+}
+
 // node_modules/svelte/src/internal/client/dom/elements/events.js
 var event_symbol = Symbol("events");
 var all_registered_events = /* @__PURE__ */ new Set();
@@ -4571,21 +4589,21 @@ function from_namespace(content, flags2, ns = "svg") {
         /** @type {DocumentFragment} */
         create_fragment_from_html(wrapped)
       );
-      var root52 = (
+      var root71 = (
         /** @type {Element} */
         get_first_child(fragment)
       );
       if (is_fragment) {
         node = document.createDocumentFragment();
-        while (get_first_child(root52)) {
+        while (get_first_child(root71)) {
           node.appendChild(
             /** @type {TemplateNode} */
-            get_first_child(root52)
+            get_first_child(root71)
           );
         }
       } else {
         node = /** @type {Element} */
-        get_first_child(root52);
+        get_first_child(root71);
       }
     }
     var clone2 = (
@@ -5066,6 +5084,25 @@ function if_block(node, fn, elseif = false) {
 
 // node_modules/svelte/src/internal/client/dom/blocks/key.js
 var NAN = Symbol("NaN");
+function key(node, get_key, render_fn) {
+  if (hydrating) {
+    hydrate_next();
+  }
+  var branches = new BranchManager(node);
+  var legacy = !is_runes();
+  block(() => {
+    var key2 = get_key();
+    if (key2 !== key2) {
+      key2 = /** @type {any} */
+      NAN;
+    }
+    if (legacy && key2 !== null && typeof key2 === "object") {
+      key2 = /** @type {V} */
+      {};
+    }
+    branches.ensure(key2, render_fn);
+  });
+}
 
 // node_modules/svelte/src/internal/client/dom/blocks/each.js
 function index(_, i) {
@@ -5320,7 +5357,7 @@ function reconcile(state3, array, anchor, flags2, get_key) {
   var items = state3.items;
   var current = skip_to_branch(state3.effect.first);
   var seen;
-  var prev2 = null;
+  var prev3 = null;
   var to_animate;
   var matched = [];
   var stashed = [];
@@ -5363,19 +5400,19 @@ function reconcile(state3, array, anchor, flags2, get_key) {
       if (effect2 === current) {
         move(effect2, null, anchor);
       } else {
-        var next3 = prev2 ? prev2.next : current;
+        var next4 = prev3 ? prev3.next : current;
         if (effect2 === state3.effect.last) {
           state3.effect.last = effect2.prev;
         }
         if (effect2.prev) effect2.prev.next = effect2.next;
         if (effect2.next) effect2.next.prev = effect2.prev;
-        link(state3, prev2, effect2);
-        link(state3, effect2, next3);
-        move(effect2, next3, anchor);
-        prev2 = effect2;
+        link(state3, prev3, effect2);
+        link(state3, effect2, next4);
+        move(effect2, next4, anchor);
+        prev3 = effect2;
         matched = [];
         stashed = [];
-        current = skip_to_branch(prev2.next);
+        current = skip_to_branch(prev3.next);
         continue;
       }
     }
@@ -5384,7 +5421,7 @@ function reconcile(state3, array, anchor, flags2, get_key) {
         if (matched.length < stashed.length) {
           var start = stashed[0];
           var j2;
-          prev2 = start.prev;
+          prev3 = start.prev;
           var a2 = matched[0];
           var b = matched[matched.length - 1];
           for (j2 = 0; j2 < matched.length; j2 += 1) {
@@ -5394,10 +5431,10 @@ function reconcile(state3, array, anchor, flags2, get_key) {
             seen.delete(stashed[j2]);
           }
           link(state3, a2.prev, b.next);
-          link(state3, prev2, a2);
+          link(state3, prev3, a2);
           link(state3, b, start);
           current = start;
-          prev2 = b;
+          prev3 = b;
           i -= 1;
           matched = [];
           stashed = [];
@@ -5405,9 +5442,9 @@ function reconcile(state3, array, anchor, flags2, get_key) {
           seen.delete(effect2);
           move(effect2, current, anchor);
           link(state3, effect2.prev, effect2.next);
-          link(state3, effect2, prev2 === null ? state3.effect.first : prev2.next);
-          link(state3, prev2, effect2);
-          prev2 = effect2;
+          link(state3, effect2, prev3 === null ? state3.effect.first : prev3.next);
+          link(state3, prev3, effect2);
+          prev3 = effect2;
         }
         continue;
       }
@@ -5425,7 +5462,7 @@ function reconcile(state3, array, anchor, flags2, get_key) {
     if ((effect2.f & EFFECT_OFFSCREEN) === 0) {
       matched.push(effect2);
     }
-    prev2 = effect2;
+    prev3 = effect2;
     current = skip_to_branch(effect2.next);
   }
   if (state3.outrogroups !== null) {
@@ -5496,13 +5533,13 @@ function create_item(items, anchor, value, key2, index4, render_fn, flags2, get_
     })
   };
 }
-function move(effect2, next3, anchor) {
+function move(effect2, next4, anchor) {
   if (!effect2.nodes) return;
   var node = effect2.nodes.start;
   var end2 = effect2.nodes.end;
-  var dest = next3 && (next3.f & EFFECT_OFFSCREEN) === 0 ? (
+  var dest = next4 && (next4.f & EFFECT_OFFSCREEN) === 0 ? (
     /** @type {EffectNodes} */
-    next3.nodes.start
+    next4.nodes.start
   ) : anchor;
   while (node !== null) {
     var next_node = (
@@ -5516,16 +5553,16 @@ function move(effect2, next3, anchor) {
     node = next_node;
   }
 }
-function link(state3, prev2, next3) {
-  if (prev2 === null) {
-    state3.effect.first = next3;
+function link(state3, prev3, next4) {
+  if (prev3 === null) {
+    state3.effect.first = next4;
   } else {
-    prev2.next = next3;
+    prev3.next = next4;
   }
-  if (next3 === null) {
-    state3.effect.last = prev2;
+  if (next4 === null) {
+    state3.effect.last = prev3;
   } else {
-    next3.prev = prev2;
+    next4.prev = prev3;
   }
 }
 function validate_each_keys(array, key_fn) {
@@ -5681,6 +5718,33 @@ function element(node, get_tag, is_svg, render_fn, get_namespace, location) {
   }
 }
 
+// node_modules/svelte/src/internal/client/dom/css.js
+function append_styles(anchor, css2) {
+  effect(() => {
+    var root71 = anchor.getRootNode();
+    var target = (
+      /** @type {ShadowRoot} */
+      root71.host ? (
+        /** @type {ShadowRoot} */
+        root71
+      ) : (
+        /** @type {Document} */
+        root71.head ?? /** @type {Document} */
+        root71.ownerDocument.head
+      )
+    );
+    if (!target.querySelector("#" + css2.hash)) {
+      const style = create_element("style");
+      style.id = css2.hash;
+      style.textContent = css2.code;
+      target.appendChild(style);
+      if (dev_fallback_default) {
+        register_style(css2.hash, style);
+      }
+    }
+  });
+}
+
 // node_modules/svelte/src/internal/client/dom/elements/attachments.js
 function attach(node, get_fn) {
   var fn = void 0;
@@ -5752,7 +5816,7 @@ function to_class(value, hash2, directives) {
   }
   return classname === "" ? null : classname;
 }
-function append_styles(styles, important = false) {
+function append_styles2(styles, important = false) {
   var separator = important ? " !important;" : ";";
   var css2 = "";
   for (var key2 of Object.keys(styles)) {
@@ -5835,10 +5899,10 @@ function to_style(value, styles) {
       }
     }
     if (normal_styles) {
-      new_style += append_styles(normal_styles);
+      new_style += append_styles2(normal_styles);
     }
     if (important_styles) {
-      new_style += append_styles(important_styles, true);
+      new_style += append_styles2(important_styles, true);
     }
     new_style = new_style.trim();
     return new_style === "" ? null : new_style;
@@ -5848,11 +5912,11 @@ function to_style(value, styles) {
 
 // node_modules/svelte/src/internal/client/dom/elements/class.js
 function set_class(dom, is_html, value, hash2, prev_classes, next_classes) {
-  var prev2 = (
+  var prev3 = (
     /** @type {any} */
     dom[CLASS_CACHE]
   );
-  if (hydrating || prev2 !== value || prev2 === void 0) {
+  if (hydrating || prev3 !== value || prev3 === void 0) {
     var next_class_name = to_class(value, hash2, next_classes);
     if (!hydrating || next_class_name !== dom.getAttribute("class")) {
       if (next_class_name == null) {
@@ -5876,11 +5940,11 @@ function set_class(dom, is_html, value, hash2, prev_classes, next_classes) {
 }
 
 // node_modules/svelte/src/internal/client/dom/elements/style.js
-function update_styles(dom, prev2 = {}, next3, priority) {
-  for (var key2 in next3) {
-    var value = next3[key2];
-    if (prev2[key2] !== value) {
-      if (next3[key2] == null) {
+function update_styles(dom, prev3 = {}, next4, priority) {
+  for (var key2 in next4) {
+    var value = next4[key2];
+    if (prev3[key2] !== value) {
+      if (next4[key2] == null) {
         dom.style.removeProperty(key2);
       } else {
         dom.style.setProperty(key2, value, priority);
@@ -5889,11 +5953,11 @@ function update_styles(dom, prev2 = {}, next3, priority) {
   }
 }
 function set_style(dom, value, prev_styles, next_styles) {
-  var prev2 = (
+  var prev3 = (
     /** @type {any} */
     dom[STYLE_CACHE]
   );
-  if (hydrating || prev2 !== value) {
+  if (hydrating || prev3 !== value) {
     var next_style_attr = to_style(value, next_styles);
     if (!hydrating || next_style_attr !== dom.getAttribute("style")) {
       if (next_style_attr == null) {
@@ -6028,14 +6092,14 @@ function set_attribute2(element2, attribute, value, skip_warning) {
     element2.setAttribute(attribute, value);
   }
 }
-function set_attributes(element2, prev2, next3, css_hash, should_remove_defaults = false, skip_warning = false) {
+function set_attributes(element2, prev3, next4, css_hash, should_remove_defaults = false, skip_warning = false) {
   if (hydrating && should_remove_defaults && element2.nodeName === INPUT_TAG) {
     var input = (
       /** @type {HTMLInputElement} */
       element2
     );
     var attribute = input.type === "checkbox" ? "defaultChecked" : "defaultValue";
-    if (!(attribute in next3)) {
+    if (!(attribute in next4)) {
       remove_input_defaults(input);
     }
   }
@@ -6046,31 +6110,31 @@ function set_attributes(element2, prev2, next3, css_hash, should_remove_defaults
   if (is_hydrating_custom_element) {
     set_hydrating(false);
   }
-  var current = prev2 || {};
+  var current = prev3 || {};
   var is_option_element = element2.nodeName === OPTION_TAG;
-  for (var key2 in prev2) {
-    if (!(key2 in next3)) {
-      next3[key2] = null;
+  for (var key2 in prev3) {
+    if (!(key2 in next4)) {
+      next4[key2] = null;
     }
   }
-  if (next3.class) {
-    next3.class = clsx2(next3.class);
-  } else if (css_hash || next3[CLASS]) {
-    next3.class = null;
+  if (next4.class) {
+    next4.class = clsx2(next4.class);
+  } else if (css_hash || next4[CLASS]) {
+    next4.class = null;
   }
-  if (next3[STYLE]) {
-    next3.style ??= null;
+  if (next4[STYLE]) {
+    next4.style ??= null;
   }
   var setters = get_setters(element2);
-  if (element2.nodeName === INPUT_TAG && "type" in next3 && ("value" in next3 || "__value" in next3)) {
-    var type = next3.type;
+  if (element2.nodeName === INPUT_TAG && "type" in next4 && ("value" in next4 || "__value" in next4)) {
+    var type = next4.type;
     if (type !== current.type || type === void 0 && element2.hasAttribute("type")) {
       current.type = type;
       set_attribute2(element2, "type", type, skip_warning);
     }
   }
-  for (const key3 in next3) {
-    let value = next3[key3];
+  for (const key3 in next4) {
+    let value = next4[key3];
     if (is_option_element && key3 === "value" && value == null) {
       element2.value = element2.__value = "";
       current[key3] = value;
@@ -6078,15 +6142,15 @@ function set_attributes(element2, prev2, next3, css_hash, should_remove_defaults
     }
     if (key3 === "class") {
       var is_html = element2.namespaceURI === "http://www.w3.org/1999/xhtml";
-      set_class(element2, is_html, value, css_hash, prev2?.[CLASS], next3[CLASS]);
+      set_class(element2, is_html, value, css_hash, prev3?.[CLASS], next4[CLASS]);
       current[key3] = value;
-      current[CLASS] = next3[CLASS];
+      current[CLASS] = next4[CLASS];
       continue;
     }
     if (key3 === "style") {
-      set_style(element2, value, prev2?.[STYLE], next3[STYLE]);
+      set_style(element2, value, prev3?.[STYLE], next4[STYLE]);
       current[key3] = value;
-      current[STYLE] = next3[STYLE];
+      current[STYLE] = next4[STYLE];
       continue;
     }
     var prev_value = current[key3];
@@ -6148,7 +6212,7 @@ function set_attributes(element2, prev2, next3, css_hash, should_remove_defaults
             /** @type {HTMLInputElement} */
             element2
           );
-          const use_default = prev2 === void 0;
+          const use_default = prev3 === void 0;
           if (name === "value") {
             let previous = input2.defaultValue;
             input2.removeAttribute(name);
@@ -6178,39 +6242,39 @@ function set_attributes(element2, prev2, next3, css_hash, should_remove_defaults
 }
 function attribute_effect(element2, fn, sync = [], async2 = [], blockers = [], css_hash, should_remove_defaults = false, skip_warning = false) {
   flatten(blockers, sync, async2, (values) => {
-    var prev2 = void 0;
+    var prev3 = void 0;
     var effects = {};
     var is_select = element2.nodeName === SELECT_TAG;
     var inited = false;
     managed(() => {
-      var next3 = fn(...values.map(get2));
+      var next4 = fn(...values.map(get2));
       var current = set_attributes(
         element2,
-        prev2,
-        next3,
+        prev3,
+        next4,
         css_hash,
         should_remove_defaults,
         skip_warning
       );
-      if (inited && is_select && "value" in next3) {
+      if (inited && is_select && "value" in next4) {
         select_option(
           /** @type {HTMLSelectElement} */
           element2,
-          next3.value
+          next4.value
         );
       }
       for (let symbol of Object.getOwnPropertySymbols(effects)) {
-        if (!next3[symbol]) destroy_effect(effects[symbol]);
+        if (!next4[symbol]) destroy_effect(effects[symbol]);
       }
-      for (let symbol of Object.getOwnPropertySymbols(next3)) {
-        var n2 = next3[symbol];
-        if (symbol.description === ATTACHMENT_KEY && (!prev2 || n2 !== prev2[symbol])) {
+      for (let symbol of Object.getOwnPropertySymbols(next4)) {
+        var n2 = next4[symbol];
+        if (symbol.description === ATTACHMENT_KEY && (!prev3 || n2 !== prev3[symbol])) {
           if (effects[symbol]) destroy_effect(effects[symbol]);
           effects[symbol] = branch(() => attach(element2, () => n2));
         }
         current[symbol] = n2;
       }
-      prev2 = current;
+      prev3 = current;
     });
     if (is_select) {
       var select2 = (
@@ -6221,7 +6285,7 @@ function attribute_effect(element2, fn, sync = [], async2 = [], blockers = [], c
         select_option(
           select2,
           /** @type {Record<string | symbol, any>} */
-          prev2.value,
+          prev3.value,
           true
         );
         init_select(select2);
@@ -6292,7 +6356,7 @@ function srcset_url_equal(element2, srcset) {
 }
 
 // node_modules/svelte/src/internal/client/dom/elements/bindings/input.js
-function bind_value(input, get5, set2 = get5) {
+function bind_value(input, get6, set2 = get6) {
   var batches = /* @__PURE__ */ new WeakSet();
   listen_to_event_and_reset_event(input, "input", async (is_reset) => {
     if (dev_fallback_default && input.type === "checkbox") {
@@ -6305,7 +6369,7 @@ function bind_value(input, get5, set2 = get5) {
       batches.add(current_batch);
     }
     await tick();
-    if (value !== (value = get5())) {
+    if (value !== (value = get6())) {
       var start = input.selectionStart;
       var end2 = input.selectionEnd;
       var length = input.value.length;
@@ -6327,7 +6391,7 @@ function bind_value(input, get5, set2 = get5) {
     // then use the updated value from the input instead.
     hydrating && input.defaultValue !== input.value || // If defaultValue is set, then value == defaultValue
     // TODO Svelte 6: remove input.value check and set to empty string?
-    untrack(get5) == null && input.value
+    untrack(get6) == null && input.value
   ) {
     set2(is_numberlike_input(input) ? to_number(input.value) : input.value);
     if (current_batch !== null) {
@@ -6338,7 +6402,7 @@ function bind_value(input, get5, set2 = get5) {
     if (dev_fallback_default && input.type === "checkbox") {
       bind_invalid_checkbox_value();
     }
-    var value = get5();
+    var value = get6();
     if (input === document.activeElement) {
       var batch = (
         /** @type {Batch} */
@@ -6366,7 +6430,7 @@ function is_numberlike_input(input) {
 function to_number(value) {
   return value === "" ? null : +value;
 }
-function bind_files(input, get5, set2 = get5) {
+function bind_files(input, get6, set2 = get6) {
   listen_to_event_and_reset_event(input, "change", () => {
     set2(input.files);
   });
@@ -6378,7 +6442,7 @@ function bind_files(input, get5, set2 = get5) {
     set2(input.files);
   }
   render_effect(() => {
-    input.files = get5();
+    input.files = get6();
   });
 }
 
@@ -6725,8 +6789,8 @@ var Svelte4Component = class {
       });
     }
     this.#instance.$set = /** @param {Record<string, any>} next */
-    (next3) => {
-      Object.assign(props, next3);
+    (next4) => {
+      Object.assign(props, next4);
     };
     this.#instance.$destroy = () => {
       unmount(this.#instance);
@@ -7318,8 +7382,8 @@ var Node2 = class {
   get previousSibling() {
     return this.prev;
   }
-  set previousSibling(prev2) {
-    this.prev = prev2;
+  set previousSibling(prev3) {
+    this.prev = prev3;
   }
   /**
    * Same as {@link next}.
@@ -7328,8 +7392,8 @@ var Node2 = class {
   get nextSibling() {
     return this.next;
   }
-  set nextSibling(next3) {
-    this.next = next3;
+  set nextSibling(next4) {
+    this.next = next4;
   }
   /**
    * Clone this node, and optionally its children.
@@ -7835,28 +7899,28 @@ var EntityDecoder = class {
    * @param offset The offset at which the entity begins. Should be 0 if this is not the first call.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  write(str, offset) {
+  write(str, offset3) {
     switch (this.state) {
       case EntityDecoderState.EntityStart: {
-        if (str.charCodeAt(offset) === CharCodes.NUM) {
+        if (str.charCodeAt(offset3) === CharCodes.NUM) {
           this.state = EntityDecoderState.NumericStart;
           this.consumed += 1;
-          return this.stateNumericStart(str, offset + 1);
+          return this.stateNumericStart(str, offset3 + 1);
         }
         this.state = EntityDecoderState.NamedEntity;
-        return this.stateNamedEntity(str, offset);
+        return this.stateNamedEntity(str, offset3);
       }
       case EntityDecoderState.NumericStart: {
-        return this.stateNumericStart(str, offset);
+        return this.stateNumericStart(str, offset3);
       }
       case EntityDecoderState.NumericDecimal: {
-        return this.stateNumericDecimal(str, offset);
+        return this.stateNumericDecimal(str, offset3);
       }
       case EntityDecoderState.NumericHex: {
-        return this.stateNumericHex(str, offset);
+        return this.stateNumericHex(str, offset3);
       }
       case EntityDecoderState.NamedEntity: {
-        return this.stateNamedEntity(str, offset);
+        return this.stateNamedEntity(str, offset3);
       }
     }
   }
@@ -7869,17 +7933,17 @@ var EntityDecoder = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericStart(str, offset) {
-    if (offset >= str.length) {
+  stateNumericStart(str, offset3) {
+    if (offset3 >= str.length) {
       return -1;
     }
-    if ((str.charCodeAt(offset) | TO_LOWER_BIT) === CharCodes.LOWER_X) {
+    if ((str.charCodeAt(offset3) | TO_LOWER_BIT) === CharCodes.LOWER_X) {
       this.state = EntityDecoderState.NumericHex;
       this.consumed += 1;
-      return this.stateNumericHex(str, offset + 1);
+      return this.stateNumericHex(str, offset3 + 1);
     }
     this.state = EntityDecoderState.NumericDecimal;
-    return this.stateNumericDecimal(str, offset);
+    return this.stateNumericDecimal(str, offset3);
   }
   addToNumericResult(str, start, end2, base) {
     if (start !== end2) {
@@ -7897,18 +7961,18 @@ var EntityDecoder = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericHex(str, offset) {
-    const startIdx = offset;
-    while (offset < str.length) {
-      const char = str.charCodeAt(offset);
+  stateNumericHex(str, offset3) {
+    const startIdx = offset3;
+    while (offset3 < str.length) {
+      const char = str.charCodeAt(offset3);
       if (isNumber(char) || isHexadecimalCharacter(char)) {
-        offset += 1;
+        offset3 += 1;
       } else {
-        this.addToNumericResult(str, startIdx, offset, 16);
+        this.addToNumericResult(str, startIdx, offset3, 16);
         return this.emitNumericEntity(char, 3);
       }
     }
-    this.addToNumericResult(str, startIdx, offset, 16);
+    this.addToNumericResult(str, startIdx, offset3, 16);
     return -1;
   }
   /**
@@ -7920,18 +7984,18 @@ var EntityDecoder = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericDecimal(str, offset) {
-    const startIdx = offset;
-    while (offset < str.length) {
-      const char = str.charCodeAt(offset);
+  stateNumericDecimal(str, offset3) {
+    const startIdx = offset3;
+    while (offset3 < str.length) {
+      const char = str.charCodeAt(offset3);
       if (isNumber(char)) {
-        offset += 1;
+        offset3 += 1;
       } else {
-        this.addToNumericResult(str, startIdx, offset, 10);
+        this.addToNumericResult(str, startIdx, offset3, 10);
         return this.emitNumericEntity(char, 2);
       }
     }
-    this.addToNumericResult(str, startIdx, offset, 10);
+    this.addToNumericResult(str, startIdx, offset3, 10);
     return -1;
   }
   /**
@@ -7976,12 +8040,12 @@ var EntityDecoder = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNamedEntity(str, offset) {
+  stateNamedEntity(str, offset3) {
     const { decodeTree } = this;
     let current = decodeTree[this.treeIndex];
     let valueLength = (current & BinTrieFlags.VALUE_LENGTH) >> 14;
-    for (; offset < str.length; offset++, this.excess++) {
-      const char = str.charCodeAt(offset);
+    for (; offset3 < str.length; offset3++, this.excess++) {
+      const char = str.charCodeAt(offset3);
       this.treeIndex = determineBranch(decodeTree, current, this.treeIndex + Math.max(1, valueLength), char);
       if (this.treeIndex < 0) {
         return this.result === 0 || // If we are parsing an attribute
@@ -8069,21 +8133,21 @@ function getDecoder(decodeTree) {
   const decoder = new EntityDecoder(decodeTree, (str) => ret += fromCodePoint(str));
   return function decodeWithTrie(str, decodeMode) {
     let lastIndex = 0;
-    let offset = 0;
-    while ((offset = str.indexOf("&", offset)) >= 0) {
-      ret += str.slice(lastIndex, offset);
+    let offset3 = 0;
+    while ((offset3 = str.indexOf("&", offset3)) >= 0) {
+      ret += str.slice(lastIndex, offset3);
       decoder.startEntity(decodeMode);
       const len = decoder.write(
         str,
         // Skip the "&"
-        offset + 1
+        offset3 + 1
       );
       if (len < 0) {
-        lastIndex = offset + decoder.end();
+        lastIndex = offset3 + decoder.end();
         break;
       }
-      lastIndex = offset + len;
-      offset = len === 0 ? lastIndex + 1 : lastIndex;
+      lastIndex = offset3 + len;
+      offset3 = len === 0 ? lastIndex + 1 : lastIndex;
     }
     const result = ret + str.slice(lastIndex);
     ret = "";
@@ -8150,9 +8214,9 @@ function encodeXML(str) {
   while ((match = xmlReplacer.exec(str)) !== null) {
     const i = match.index;
     const char = str.charCodeAt(i);
-    const next3 = xmlCodeMap.get(char);
-    if (next3 !== void 0) {
-      ret += str.substring(lastIdx, i) + next3;
+    const next4 = xmlCodeMap.get(char);
+    if (next4 !== void 0) {
+      ret += str.substring(lastIdx, i) + next4;
       lastIdx = i + 1;
     } else {
       ret += `${str.substring(lastIdx, i)}&#x${getCodePoint(str, i).toString(16)};`;
@@ -8505,14 +8569,14 @@ function getSiblings(elem) {
   if (parent2 != null)
     return getChildren(parent2);
   const siblings2 = [elem];
-  let { prev: prev2, next: next3 } = elem;
-  while (prev2 != null) {
-    siblings2.unshift(prev2);
-    ({ prev: prev2 } = prev2);
+  let { prev: prev3, next: next4 } = elem;
+  while (prev3 != null) {
+    siblings2.unshift(prev3);
+    ({ prev: prev3 } = prev3);
   }
-  while (next3 != null) {
-    siblings2.push(next3);
-    ({ next: next3 } = next3);
+  while (next4 != null) {
+    siblings2.push(next4);
+    ({ next: next4 } = next4);
   }
   return siblings2;
 }
@@ -8527,16 +8591,16 @@ function getName(elem) {
   return elem.name;
 }
 function nextElementSibling(elem) {
-  let { next: next3 } = elem;
-  while (next3 !== null && !isTag2(next3))
-    ({ next: next3 } = next3);
-  return next3;
+  let { next: next4 } = elem;
+  while (next4 !== null && !isTag2(next4))
+    ({ next: next4 } = next4);
+  return next4;
 }
 function prevElementSibling(elem) {
-  let { prev: prev2 } = elem;
-  while (prev2 !== null && !isTag2(prev2))
-    ({ prev: prev2 } = prev2);
-  return prev2;
+  let { prev: prev3 } = elem;
+  while (prev3 !== null && !isTag2(prev3))
+    ({ prev: prev3 } = prev3);
+  return prev3;
 }
 
 // node_modules/domutils/lib/esm/manipulation.js
@@ -8557,13 +8621,13 @@ function removeElement(elem) {
   elem.parent = null;
 }
 function replaceElement(elem, replacement) {
-  const prev2 = replacement.prev = elem.prev;
-  if (prev2) {
-    prev2.next = replacement;
+  const prev3 = replacement.prev = elem.prev;
+  if (prev3) {
+    prev3.next = replacement;
   }
-  const next3 = replacement.next = elem.next;
-  if (next3) {
-    next3.prev = replacement;
+  const next4 = replacement.next = elem.next;
+  if (next4) {
+    next4.prev = replacement;
   }
   const parent2 = replacement.parent = elem.parent;
   if (parent2) {
@@ -8584,22 +8648,22 @@ function appendChild(parent2, child2) {
     child2.prev = null;
   }
 }
-function append2(elem, next3) {
-  removeElement(next3);
+function append2(elem, next4) {
+  removeElement(next4);
   const { parent: parent2 } = elem;
   const currNext = elem.next;
-  next3.next = currNext;
-  next3.prev = elem;
-  elem.next = next3;
-  next3.parent = parent2;
+  next4.next = currNext;
+  next4.prev = elem;
+  elem.next = next4;
+  next4.parent = parent2;
   if (currNext) {
-    currNext.prev = next3;
+    currNext.prev = next4;
     if (parent2) {
       const childs = parent2.children;
-      childs.splice(childs.lastIndexOf(currNext), 0, next3);
+      childs.splice(childs.lastIndexOf(currNext), 0, next4);
     }
   } else if (parent2) {
-    parent2.children.push(next3);
+    parent2.children.push(next4);
   }
 }
 function prependChild(parent2, child2) {
@@ -8614,20 +8678,20 @@ function prependChild(parent2, child2) {
     child2.next = null;
   }
 }
-function prepend(elem, prev2) {
-  removeElement(prev2);
+function prepend(elem, prev3) {
+  removeElement(prev3);
   const { parent: parent2 } = elem;
   if (parent2) {
     const childs = parent2.children;
-    childs.splice(childs.indexOf(elem), 0, prev2);
+    childs.splice(childs.indexOf(elem), 0, prev3);
   }
   if (elem.prev) {
-    elem.prev.next = prev2;
+    elem.prev.next = prev3;
   }
-  prev2.parent = parent2;
-  prev2.prev = elem.prev;
-  prev2.next = elem;
-  elem.prev = prev2;
+  prev3.parent = parent2;
+  prev3.prev = elem.prev;
+  prev3.next = elem;
+  elem.prev = prev3;
 }
 
 // node_modules/domutils/lib/esm/querying.js
@@ -9041,10 +9105,10 @@ function contains(container, contained) {
   if (contained === container) {
     return false;
   }
-  let next3 = contained;
-  while (next3 && next3 !== next3.parent) {
-    next3 = next3.parent;
-    if (next3 === container) {
+  let next4 = contained;
+  while (next4 && next4 !== next4.parent) {
+    next4 = next4.parent;
+    if (next4 === container) {
       return true;
     }
   }
@@ -9305,28 +9369,28 @@ var EntityDecoder2 = class {
    * @param offset The offset at which the entity begins. Should be 0 if this is not the first call.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  write(input, offset) {
+  write(input, offset3) {
     switch (this.state) {
       case EntityDecoderState2.EntityStart: {
-        if (input.charCodeAt(offset) === CharCodes2.NUM) {
+        if (input.charCodeAt(offset3) === CharCodes2.NUM) {
           this.state = EntityDecoderState2.NumericStart;
           this.consumed += 1;
-          return this.stateNumericStart(input, offset + 1);
+          return this.stateNumericStart(input, offset3 + 1);
         }
         this.state = EntityDecoderState2.NamedEntity;
-        return this.stateNamedEntity(input, offset);
+        return this.stateNamedEntity(input, offset3);
       }
       case EntityDecoderState2.NumericStart: {
-        return this.stateNumericStart(input, offset);
+        return this.stateNumericStart(input, offset3);
       }
       case EntityDecoderState2.NumericDecimal: {
-        return this.stateNumericDecimal(input, offset);
+        return this.stateNumericDecimal(input, offset3);
       }
       case EntityDecoderState2.NumericHex: {
-        return this.stateNumericHex(input, offset);
+        return this.stateNumericHex(input, offset3);
       }
       case EntityDecoderState2.NamedEntity: {
-        return this.stateNamedEntity(input, offset);
+        return this.stateNamedEntity(input, offset3);
       }
     }
   }
@@ -9339,17 +9403,17 @@ var EntityDecoder2 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericStart(input, offset) {
-    if (offset >= input.length) {
+  stateNumericStart(input, offset3) {
+    if (offset3 >= input.length) {
       return -1;
     }
-    if ((input.charCodeAt(offset) | TO_LOWER_BIT2) === CharCodes2.LOWER_X) {
+    if ((input.charCodeAt(offset3) | TO_LOWER_BIT2) === CharCodes2.LOWER_X) {
       this.state = EntityDecoderState2.NumericHex;
       this.consumed += 1;
-      return this.stateNumericHex(input, offset + 1);
+      return this.stateNumericHex(input, offset3 + 1);
     }
     this.state = EntityDecoderState2.NumericDecimal;
-    return this.stateNumericDecimal(input, offset);
+    return this.stateNumericDecimal(input, offset3);
   }
   /**
    * Parses a hexadecimal numeric entity.
@@ -9360,14 +9424,14 @@ var EntityDecoder2 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericHex(input, offset) {
-    while (offset < input.length) {
-      const char = input.charCodeAt(offset);
+  stateNumericHex(input, offset3) {
+    while (offset3 < input.length) {
+      const char = input.charCodeAt(offset3);
       if (isNumber2(char) || isHexadecimalCharacter2(char)) {
         const digit = char <= CharCodes2.NINE ? char - CharCodes2.ZERO : (char | TO_LOWER_BIT2) - CharCodes2.LOWER_A + 10;
         this.result = this.result * 16 + digit;
         this.consumed++;
-        offset++;
+        offset3++;
       } else {
         return this.emitNumericEntity(char, 3);
       }
@@ -9383,13 +9447,13 @@ var EntityDecoder2 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericDecimal(input, offset) {
-    while (offset < input.length) {
-      const char = input.charCodeAt(offset);
+  stateNumericDecimal(input, offset3) {
+    while (offset3 < input.length) {
+      const char = input.charCodeAt(offset3);
       if (isNumber2(char)) {
         this.result = this.result * 10 + (char - CharCodes2.ZERO);
         this.consumed++;
-        offset++;
+        offset3++;
       } else {
         return this.emitNumericEntity(char, 2);
       }
@@ -9438,34 +9502,34 @@ var EntityDecoder2 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNamedEntity(input, offset) {
+  stateNamedEntity(input, offset3) {
     const { decodeTree } = this;
     let current = decodeTree[this.treeIndex];
     let valueLength = (current & BinTrieFlags2.VALUE_LENGTH) >> 14;
-    while (offset < input.length) {
+    while (offset3 < input.length) {
       if (valueLength === 0 && (current & BinTrieFlags2.FLAG13) !== 0) {
         const runLength = (current & BinTrieFlags2.BRANCH_LENGTH) >> 7;
         if (this.runConsumed === 0) {
           const firstChar = current & BinTrieFlags2.JUMP_TABLE;
-          if (input.charCodeAt(offset) !== firstChar) {
+          if (input.charCodeAt(offset3) !== firstChar) {
             return this.result === 0 ? 0 : this.emitNotTerminatedNamedEntity();
           }
-          offset++;
+          offset3++;
           this.excess++;
           this.runConsumed++;
         }
         while (this.runConsumed < runLength) {
-          if (offset >= input.length) {
+          if (offset3 >= input.length) {
             return -1;
           }
           const charIndexInPacked = this.runConsumed - 1;
           const packedWord = decodeTree[this.treeIndex + 1 + (charIndexInPacked >> 1)];
           const expectedChar = charIndexInPacked % 2 === 0 ? packedWord & 255 : packedWord >> 8 & 255;
-          if (input.charCodeAt(offset) !== expectedChar) {
+          if (input.charCodeAt(offset3) !== expectedChar) {
             this.runConsumed = 0;
             return this.result === 0 ? 0 : this.emitNotTerminatedNamedEntity();
           }
-          offset++;
+          offset3++;
           this.excess++;
           this.runConsumed++;
         }
@@ -9474,9 +9538,9 @@ var EntityDecoder2 = class {
         current = decodeTree[this.treeIndex];
         valueLength = (current & BinTrieFlags2.VALUE_LENGTH) >> 14;
       }
-      if (offset >= input.length)
+      if (offset3 >= input.length)
         break;
-      const char = input.charCodeAt(offset);
+      const char = input.charCodeAt(offset3);
       if (char === CharCodes2.SEMI && valueLength !== 0 && (current & BinTrieFlags2.FLAG13) !== 0) {
         return this.emitNamedEntityData(this.treeIndex, valueLength, this.consumed + this.excess);
       }
@@ -9499,7 +9563,7 @@ var EntityDecoder2 = class {
           this.excess = 0;
         }
       }
-      offset++;
+      offset3++;
       this.excess++;
     }
     return -1;
@@ -9872,10 +9936,10 @@ var Tokenizer = class {
   isTagStartChar(c) {
     return this.xmlMode ? !isEndOfTagSection(c) : isASCIIAlpha(c);
   }
-  startSpecial(sequence, offset) {
+  startSpecial(sequence, offset3) {
     this.isSpecial = true;
     this.currentSequence = sequence;
-    this.sequenceIndex = offset;
+    this.sequenceIndex = offset3;
     this.state = State.SpecialStartSequence;
   }
   stateBeforeTagName(c) {
@@ -10596,18 +10660,18 @@ var Parser = class {
     this.startIndex = endIndex + 1;
   }
   /** @internal */
-  oncomment(start, endIndex, offset) {
+  oncomment(start, endIndex, offset3) {
     var _a5, _b, _c, _d;
     this.endIndex = endIndex;
-    (_b = (_a5 = this.cbs).oncomment) === null || _b === void 0 ? void 0 : _b.call(_a5, this.getSlice(start, endIndex - offset));
+    (_b = (_a5 = this.cbs).oncomment) === null || _b === void 0 ? void 0 : _b.call(_a5, this.getSlice(start, endIndex - offset3));
     (_d = (_c = this.cbs).oncommentend) === null || _d === void 0 ? void 0 : _d.call(_c);
     this.startIndex = endIndex + 1;
   }
   /** @internal */
-  oncdata(start, endIndex, offset) {
+  oncdata(start, endIndex, offset3) {
     var _a5, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     this.endIndex = endIndex;
-    const value = this.getSlice(start, endIndex - offset);
+    const value = this.getSlice(start, endIndex - offset3);
     if (!this.htmlMode || this.options.recognizeCDATA) {
       (_b = (_a5 = this.cbs).oncdatastart) === null || _b === void 0 ? void 0 : _b.call(_a5);
       (_d = (_c = this.cbs).ontext) === null || _d === void 0 ? void 0 : _d.call(_c, value);
@@ -11271,17 +11335,17 @@ function parse(selector) {
 }
 function parseSelector(subselects2, selector, selectorIndex) {
   let tokens = [];
-  function getName2(offset) {
-    const match = selector.slice(selectorIndex + offset).match(reName);
+  function getName2(offset3) {
+    const match = selector.slice(selectorIndex + offset3).match(reName);
     if (!match) {
       throw new Error(`Expected name, found ${selector.slice(selectorIndex)}`);
     }
     const [name] = match;
-    selectorIndex += offset + name.length;
+    selectorIndex += offset3 + name.length;
     return unescapeCSS(name);
   }
-  function stripWhitespace(offset) {
-    selectorIndex += offset;
+  function stripWhitespace(offset3) {
+    selectorIndex += offset3;
     while (selectorIndex < selector.length && isWhitespace2(selector.charCodeAt(selectorIndex))) {
       selectorIndex++;
     }
@@ -11678,7 +11742,7 @@ function shouldIgnoreCase(selector, options) {
   return typeof selector.ignoreCase === "boolean" ? selector.ignoreCase : selector.ignoreCase === "quirks" ? !!options.quirksMode : !options.xmlMode && caseInsensitiveAttributes.has(selector.name);
 }
 var attributeRules = {
-  equals(next3, data2, options) {
+  equals(next4, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
     let { value } = data2;
@@ -11686,12 +11750,12 @@ var attributeRules = {
       value = value.toLowerCase();
       return (elem) => {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return attr3 != null && attr3.length === value.length && attr3.toLowerCase() === value && next3(elem);
+        return attr3 != null && attr3.length === value.length && attr3.toLowerCase() === value && next4(elem);
       };
     }
-    return (elem) => adapter2.getAttributeValue(elem, name) === value && next3(elem);
+    return (elem) => adapter2.getAttributeValue(elem, name) === value && next4(elem);
   },
-  hyphen(next3, data2, options) {
+  hyphen(next4, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
     let { value } = data2;
@@ -11700,15 +11764,15 @@ var attributeRules = {
       value = value.toLowerCase();
       return function hyphenIC(elem) {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return attr3 != null && (attr3.length === len || attr3.charAt(len) === "-") && attr3.substr(0, len).toLowerCase() === value && next3(elem);
+        return attr3 != null && (attr3.length === len || attr3.charAt(len) === "-") && attr3.substr(0, len).toLowerCase() === value && next4(elem);
       };
     }
     return function hyphen(elem) {
       const attr3 = adapter2.getAttributeValue(elem, name);
-      return attr3 != null && (attr3.length === len || attr3.charAt(len) === "-") && attr3.substr(0, len) === value && next3(elem);
+      return attr3 != null && (attr3.length === len || attr3.charAt(len) === "-") && attr3.substr(0, len) === value && next4(elem);
     };
   },
-  element(next3, data2, options) {
+  element(next4, data2, options) {
     const { adapter: adapter2 } = options;
     const { name, value } = data2;
     if (/\s/.test(value)) {
@@ -11717,13 +11781,13 @@ var attributeRules = {
     const regex = new RegExp(`(?:^|\\s)${escapeRegex(value)}(?:$|\\s)`, shouldIgnoreCase(data2, options) ? "i" : "");
     return function element2(elem) {
       const attr3 = adapter2.getAttributeValue(elem, name);
-      return attr3 != null && attr3.length >= value.length && regex.test(attr3) && next3(elem);
+      return attr3 != null && attr3.length >= value.length && regex.test(attr3) && next4(elem);
     };
   },
-  exists(next3, { name }, { adapter: adapter2 }) {
-    return (elem) => adapter2.hasAttrib(elem, name) && next3(elem);
+  exists(next4, { name }, { adapter: adapter2 }) {
+    return (elem) => adapter2.hasAttrib(elem, name) && next4(elem);
   },
-  start(next3, data2, options) {
+  start(next4, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
     let { value } = data2;
@@ -11735,15 +11799,15 @@ var attributeRules = {
       value = value.toLowerCase();
       return (elem) => {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return attr3 != null && attr3.length >= len && attr3.substr(0, len).toLowerCase() === value && next3(elem);
+        return attr3 != null && attr3.length >= len && attr3.substr(0, len).toLowerCase() === value && next4(elem);
       };
     }
     return (elem) => {
       var _a5;
-      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.startsWith(value)) && next3(elem);
+      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.startsWith(value)) && next4(elem);
     };
   },
-  end(next3, data2, options) {
+  end(next4, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
     let { value } = data2;
@@ -11755,15 +11819,15 @@ var attributeRules = {
       value = value.toLowerCase();
       return (elem) => {
         var _a5;
-        return ((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.substr(len).toLowerCase()) === value && next3(elem);
+        return ((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.substr(len).toLowerCase()) === value && next4(elem);
       };
     }
     return (elem) => {
       var _a5;
-      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.endsWith(value)) && next3(elem);
+      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.endsWith(value)) && next4(elem);
     };
   },
-  any(next3, data2, options) {
+  any(next4, data2, options) {
     const { adapter: adapter2 } = options;
     const { name, value } = data2;
     if (value === "") {
@@ -11773,28 +11837,28 @@ var attributeRules = {
       const regex = new RegExp(escapeRegex(value), "i");
       return function anyIC(elem) {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return attr3 != null && attr3.length >= value.length && regex.test(attr3) && next3(elem);
+        return attr3 != null && attr3.length >= value.length && regex.test(attr3) && next4(elem);
       };
     }
     return (elem) => {
       var _a5;
-      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.includes(value)) && next3(elem);
+      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.includes(value)) && next4(elem);
     };
   },
-  not(next3, data2, options) {
+  not(next4, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
     let { value } = data2;
     if (value === "") {
-      return (elem) => !!adapter2.getAttributeValue(elem, name) && next3(elem);
+      return (elem) => !!adapter2.getAttributeValue(elem, name) && next4(elem);
     } else if (shouldIgnoreCase(data2, options)) {
       value = value.toLowerCase();
       return (elem) => {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return (attr3 == null || attr3.length !== value.length || attr3.toLowerCase() !== value) && next3(elem);
+        return (attr3 == null || attr3.length !== value.length || attr3.toLowerCase() !== value) && next4(elem);
       };
     }
-    return (elem) => adapter2.getAttributeValue(elem, name) !== value && next3(elem);
+    return (elem) => adapter2.getAttributeValue(elem, name) !== value && next4(elem);
   }
 };
 
@@ -11880,31 +11944,31 @@ function nthCheck(formula) {
 
 // node_modules/css-select/lib/esm/pseudo-selectors/filters.js
 var import_boolbase3 = __toESM(require_boolbase(), 1);
-function getChildFunc(next3, adapter2) {
+function getChildFunc(next4, adapter2) {
   return (elem) => {
     const parent2 = adapter2.getParent(elem);
-    return parent2 != null && adapter2.isTag(parent2) && next3(elem);
+    return parent2 != null && adapter2.isTag(parent2) && next4(elem);
   };
 }
 var filters = {
-  contains(next3, text4, { adapter: adapter2 }) {
-    return function contains2(elem) {
-      return next3(elem) && adapter2.getText(elem).includes(text4);
+  contains(next4, text4, { adapter: adapter2 }) {
+    return function contains3(elem) {
+      return next4(elem) && adapter2.getText(elem).includes(text4);
     };
   },
-  icontains(next3, text4, { adapter: adapter2 }) {
+  icontains(next4, text4, { adapter: adapter2 }) {
     const itext = text4.toLowerCase();
     return function icontains(elem) {
-      return next3(elem) && adapter2.getText(elem).toLowerCase().includes(itext);
+      return next4(elem) && adapter2.getText(elem).toLowerCase().includes(itext);
     };
   },
   // Location specific methods
-  "nth-child"(next3, rule, { adapter: adapter2, equals: equals3 }) {
+  "nth-child"(next4, rule, { adapter: adapter2, equals: equals3 }) {
     const func = nthCheck(rule);
     if (func === import_boolbase3.default.falseFunc)
       return import_boolbase3.default.falseFunc;
     if (func === import_boolbase3.default.trueFunc)
-      return getChildFunc(next3, adapter2);
+      return getChildFunc(next4, adapter2);
     return function nthChild(elem) {
       const siblings2 = adapter2.getSiblings(elem);
       let pos = 0;
@@ -11915,15 +11979,15 @@ var filters = {
           pos++;
         }
       }
-      return func(pos) && next3(elem);
+      return func(pos) && next4(elem);
     };
   },
-  "nth-last-child"(next3, rule, { adapter: adapter2, equals: equals3 }) {
+  "nth-last-child"(next4, rule, { adapter: adapter2, equals: equals3 }) {
     const func = nthCheck(rule);
     if (func === import_boolbase3.default.falseFunc)
       return import_boolbase3.default.falseFunc;
     if (func === import_boolbase3.default.trueFunc)
-      return getChildFunc(next3, adapter2);
+      return getChildFunc(next4, adapter2);
     return function nthLastChild(elem) {
       const siblings2 = adapter2.getSiblings(elem);
       let pos = 0;
@@ -11934,15 +11998,15 @@ var filters = {
           pos++;
         }
       }
-      return func(pos) && next3(elem);
+      return func(pos) && next4(elem);
     };
   },
-  "nth-of-type"(next3, rule, { adapter: adapter2, equals: equals3 }) {
+  "nth-of-type"(next4, rule, { adapter: adapter2, equals: equals3 }) {
     const func = nthCheck(rule);
     if (func === import_boolbase3.default.falseFunc)
       return import_boolbase3.default.falseFunc;
     if (func === import_boolbase3.default.trueFunc)
-      return getChildFunc(next3, adapter2);
+      return getChildFunc(next4, adapter2);
     return function nthOfType(elem) {
       const siblings2 = adapter2.getSiblings(elem);
       let pos = 0;
@@ -11954,15 +12018,15 @@ var filters = {
           pos++;
         }
       }
-      return func(pos) && next3(elem);
+      return func(pos) && next4(elem);
     };
   },
-  "nth-last-of-type"(next3, rule, { adapter: adapter2, equals: equals3 }) {
+  "nth-last-of-type"(next4, rule, { adapter: adapter2, equals: equals3 }) {
     const func = nthCheck(rule);
     if (func === import_boolbase3.default.falseFunc)
       return import_boolbase3.default.falseFunc;
     if (func === import_boolbase3.default.trueFunc)
-      return getChildFunc(next3, adapter2);
+      return getChildFunc(next4, adapter2);
     return function nthLastOfType(elem) {
       const siblings2 = adapter2.getSiblings(elem);
       let pos = 0;
@@ -11974,38 +12038,38 @@ var filters = {
           pos++;
         }
       }
-      return func(pos) && next3(elem);
+      return func(pos) && next4(elem);
     };
   },
   // TODO determine the actual root element
-  root(next3, _rule, { adapter: adapter2 }) {
+  root(next4, _rule, { adapter: adapter2 }) {
     return (elem) => {
       const parent2 = adapter2.getParent(elem);
-      return (parent2 == null || !adapter2.isTag(parent2)) && next3(elem);
+      return (parent2 == null || !adapter2.isTag(parent2)) && next4(elem);
     };
   },
-  scope(next3, rule, options, context) {
+  scope(next4, rule, options, context) {
     const { equals: equals3 } = options;
     if (!context || context.length === 0) {
-      return filters["root"](next3, rule, options);
+      return filters["root"](next4, rule, options);
     }
     if (context.length === 1) {
-      return (elem) => equals3(context[0], elem) && next3(elem);
+      return (elem) => equals3(context[0], elem) && next4(elem);
     }
-    return (elem) => context.includes(elem) && next3(elem);
+    return (elem) => context.includes(elem) && next4(elem);
   },
   hover: dynamicStatePseudo("isHovered"),
   visited: dynamicStatePseudo("isVisited"),
   active: dynamicStatePseudo("isActive")
 };
 function dynamicStatePseudo(name) {
-  return function dynamicPseudo(next3, _rule, { adapter: adapter2 }) {
+  return function dynamicPseudo(next4, _rule, { adapter: adapter2 }) {
     const func = adapter2[name];
     if (typeof func !== "function") {
       return import_boolbase3.default.falseFunc;
     }
     return function active(elem) {
-      return func(elem) && next3(elem);
+      return func(elem) && next4(elem);
     };
   };
 }
@@ -12115,10 +12179,10 @@ var aliases = {
 // node_modules/css-select/lib/esm/pseudo-selectors/subselects.js
 var import_boolbase4 = __toESM(require_boolbase(), 1);
 var PLACEHOLDER_ELEMENT = {};
-function ensureIsTag(next3, adapter2) {
-  if (next3 === import_boolbase4.default.falseFunc)
+function ensureIsTag(next4, adapter2) {
+  if (next4 === import_boolbase4.default.falseFunc)
     return import_boolbase4.default.falseFunc;
-  return (elem) => adapter2.isTag(elem) && next3(elem);
+  return (elem) => adapter2.isTag(elem) && next4(elem);
 }
 function getNextSiblings(elem, adapter2) {
   const siblings2 = adapter2.getSiblings(elem);
@@ -12141,9 +12205,9 @@ function copyOptions(options) {
     equals: options.equals
   };
 }
-var is2 = (next3, token, options, context, compileToken2) => {
+var is2 = (next4, token, options, context, compileToken2) => {
   const func = compileToken2(token, copyOptions(options), context);
-  return func === import_boolbase4.default.trueFunc ? next3 : func === import_boolbase4.default.falseFunc ? import_boolbase4.default.falseFunc : (elem) => func(elem) && next3(elem);
+  return func === import_boolbase4.default.trueFunc ? next4 : func === import_boolbase4.default.falseFunc ? import_boolbase4.default.falseFunc : (elem) => func(elem) && next4(elem);
 };
 var subselects = {
   is: is2,
@@ -12152,11 +12216,11 @@ var subselects = {
    */
   matches: is2,
   where: is2,
-  not(next3, token, options, context, compileToken2) {
+  not(next4, token, options, context, compileToken2) {
     const func = compileToken2(token, copyOptions(options), context);
-    return func === import_boolbase4.default.falseFunc ? next3 : func === import_boolbase4.default.trueFunc ? import_boolbase4.default.falseFunc : (elem) => !func(elem) && next3(elem);
+    return func === import_boolbase4.default.falseFunc ? next4 : func === import_boolbase4.default.trueFunc ? import_boolbase4.default.falseFunc : (elem) => !func(elem) && next4(elem);
   },
-  has(next3, subselect, options, _context, compileToken2) {
+  has(next4, subselect, options, _context, compileToken2) {
     const { adapter: adapter2 } = options;
     const opts = copyOptions(options);
     opts.relativeSelector = true;
@@ -12171,7 +12235,7 @@ var subselects = {
     if (context && compiled !== import_boolbase4.default.trueFunc) {
       const { shouldTestNextSiblings = false } = compiled;
       return (elem) => {
-        if (!next3(elem))
+        if (!next4(elem))
           return false;
         context[0] = elem;
         const childs = adapter2.getChildren(elem);
@@ -12179,19 +12243,19 @@ var subselects = {
         return adapter2.existsOne(hasElement, nextElements);
       };
     }
-    return (elem) => next3(elem) && adapter2.existsOne(hasElement, adapter2.getChildren(elem));
+    return (elem) => next4(elem) && adapter2.existsOne(hasElement, adapter2.getChildren(elem));
   }
 };
 
 // node_modules/css-select/lib/esm/pseudo-selectors/index.js
-function compilePseudoSelector(next3, selector, options, context, compileToken2) {
+function compilePseudoSelector(next4, selector, options, context, compileToken2) {
   var _a5;
   const { name, data: data2 } = selector;
   if (Array.isArray(data2)) {
     if (!(name in subselects)) {
       throw new Error(`Unknown pseudo-class :${name}(${data2})`);
     }
-    return subselects[name](next3, data2, options, context, compileToken2);
+    return subselects[name](next4, data2, options, context, compileToken2);
   }
   const userPseudo = (_a5 = options.pseudos) === null || _a5 === void 0 ? void 0 : _a5[name];
   const stringPseudo = typeof userPseudo === "string" ? userPseudo : aliases[name];
@@ -12200,19 +12264,19 @@ function compilePseudoSelector(next3, selector, options, context, compileToken2)
       throw new Error(`Pseudo ${name} doesn't have any arguments`);
     }
     const alias = parse(stringPseudo);
-    return subselects["is"](next3, alias, options, context, compileToken2);
+    return subselects["is"](next4, alias, options, context, compileToken2);
   }
   if (typeof userPseudo === "function") {
     verifyPseudoArgs(userPseudo, name, data2, 1);
-    return (elem) => userPseudo(elem, data2) && next3(elem);
+    return (elem) => userPseudo(elem, data2) && next4(elem);
   }
   if (name in filters) {
-    return filters[name](next3, data2, options, context);
+    return filters[name](next4, data2, options, context);
   }
   if (name in pseudos) {
     const pseudo = pseudos[name];
     verifyPseudoArgs(pseudo, name, data2, 2);
-    return (elem) => pseudo(elem, options, data2) && next3(elem);
+    return (elem) => pseudo(elem, options, data2) && next4(elem);
   }
   throw new Error(`Unknown pseudo-class :${name}`);
 }
@@ -12225,7 +12289,7 @@ function getElementParent(node, adapter2) {
   }
   return null;
 }
-function compileGeneralSelector(next3, selector, options, context, compileToken2) {
+function compileGeneralSelector(next4, selector, options, context, compileToken2) {
   const { adapter: adapter2, equals: equals3 } = options;
   switch (selector.type) {
     case SelectorType.PseudoElement: {
@@ -12241,10 +12305,10 @@ function compileGeneralSelector(next3, selector, options, context, compileToken2
       if (!options.xmlMode || options.lowerCaseAttributeNames) {
         selector.name = selector.name.toLowerCase();
       }
-      return attributeRules[selector.action](next3, selector, options);
+      return attributeRules[selector.action](next4, selector, options);
     }
     case SelectorType.Pseudo: {
-      return compilePseudoSelector(next3, selector, options, context, compileToken2);
+      return compilePseudoSelector(next4, selector, options, context, compileToken2);
     }
     // Tags
     case SelectorType.Tag: {
@@ -12256,7 +12320,7 @@ function compileGeneralSelector(next3, selector, options, context, compileToken2
         name = name.toLowerCase();
       }
       return function tag2(elem) {
-        return adapter2.getName(elem) === name && next3(elem);
+        return adapter2.getName(elem) === name && next4(elem);
       };
     }
     // Traversal
@@ -12265,7 +12329,7 @@ function compileGeneralSelector(next3, selector, options, context, compileToken2
         return function descendant(elem) {
           let current = elem;
           while (current = getElementParent(current, adapter2)) {
-            if (next3(current)) {
+            if (next4(current)) {
               return true;
             }
           }
@@ -12277,7 +12341,7 @@ function compileGeneralSelector(next3, selector, options, context, compileToken2
         let current = elem;
         while (current = getElementParent(current, adapter2)) {
           if (!isFalseCache.has(current)) {
-            if (adapter2.isTag(current) && next3(current)) {
+            if (adapter2.isTag(current) && next4(current)) {
               return true;
             }
             isFalseCache.add(current);
@@ -12290,7 +12354,7 @@ function compileGeneralSelector(next3, selector, options, context, compileToken2
       return function flexibleDescendant(elem) {
         let current = elem;
         do {
-          if (next3(current))
+          if (next4(current))
             return true;
         } while (current = getElementParent(current, adapter2));
         return false;
@@ -12298,13 +12362,13 @@ function compileGeneralSelector(next3, selector, options, context, compileToken2
     }
     case SelectorType.Parent: {
       return function parent2(elem) {
-        return adapter2.getChildren(elem).some((elem2) => adapter2.isTag(elem2) && next3(elem2));
+        return adapter2.getChildren(elem).some((elem2) => adapter2.isTag(elem2) && next4(elem2));
       };
     }
     case SelectorType.Child: {
       return function child2(elem) {
         const parent2 = adapter2.getParent(elem);
-        return parent2 != null && adapter2.isTag(parent2) && next3(parent2);
+        return parent2 != null && adapter2.isTag(parent2) && next4(parent2);
       };
     }
     case SelectorType.Sibling: {
@@ -12314,7 +12378,7 @@ function compileGeneralSelector(next3, selector, options, context, compileToken2
           const currentSibling = siblings2[i];
           if (equals3(elem, currentSibling))
             break;
-          if (adapter2.isTag(currentSibling) && next3(currentSibling)) {
+          if (adapter2.isTag(currentSibling) && next4(currentSibling)) {
             return true;
           }
         }
@@ -12325,7 +12389,7 @@ function compileGeneralSelector(next3, selector, options, context, compileToken2
       if (adapter2.prevElementSibling) {
         return function adjacent(elem) {
           const previous = adapter2.prevElementSibling(elem);
-          return previous != null && next3(previous);
+          return previous != null && next4(previous);
         };
       }
       return function adjacent(elem) {
@@ -12339,22 +12403,22 @@ function compileGeneralSelector(next3, selector, options, context, compileToken2
             lastElement = currentSibling;
           }
         }
-        return !!lastElement && next3(lastElement);
+        return !!lastElement && next4(lastElement);
       };
     }
     case SelectorType.Universal: {
       if (selector.namespace != null && selector.namespace !== "*") {
         throw new Error("Namespaced universal selectors are not yet supported by css-select");
       }
-      return next3;
+      return next4;
     }
   }
 }
 
 // node_modules/css-select/lib/esm/compile.js
 function compile2(selector, options, context) {
-  const next3 = compileUnsafe(selector, options, context);
-  return ensureIsTag(next3, options.adapter);
+  const next4 = compileUnsafe(selector, options, context);
+  return ensureIsTag(next4, options.adapter);
 }
 function compileUnsafe(selector, options, context) {
   const token = typeof selector === "string" ? parse(selector) : selector;
@@ -12629,21 +12693,21 @@ function filterParsed(selector, elements, options) {
 function filterBySelector(selector, elements, options) {
   var _a5;
   if (selector.some(isTraversal)) {
-    const root52 = (_a5 = options.root) !== null && _a5 !== void 0 ? _a5 : getDocumentRoot(elements[0]);
+    const root71 = (_a5 = options.root) !== null && _a5 !== void 0 ? _a5 : getDocumentRoot(elements[0]);
     const opts = { ...options, context: elements, relativeSelector: false };
     selector.push(SCOPE_PSEUDO);
-    return findFilterElements(root52, selector, opts, true, elements.length);
+    return findFilterElements(root71, selector, opts, true, elements.length);
   }
   return findFilterElements(elements, selector, options, false, elements.length);
 }
-function select(selector, root52, options = {}, limit = Infinity) {
+function select(selector, root71, options = {}, limit = Infinity) {
   if (typeof selector === "function") {
-    return find2(root52, selector);
+    return find2(root71, selector);
   }
   const [plain, filtered] = groupSelectors(parse(selector));
-  const results = filtered.map((sel) => findFilterElements(root52, sel, options, true, limit));
+  const results = filtered.map((sel) => findFilterElements(root71, sel, options, true, limit));
   if (plain.length) {
-    results.push(findElements(root52, plain, options, limit));
+    results.push(findElements(root71, plain, options, limit));
   }
   if (results.length === 0) {
     return [];
@@ -12653,7 +12717,7 @@ function select(selector, root52, options = {}, limit = Infinity) {
   }
   return uniqueSort(results.reduce((a2, b) => [...a2, ...b]));
 }
-function findFilterElements(root52, selector, options, queryForSelector, totalLimit) {
+function findFilterElements(root71, selector, options, queryForSelector, totalLimit) {
   const filterIndex = selector.findIndex(isFilter);
   const sub = selector.slice(0, filterIndex);
   const filter4 = selector[filterIndex];
@@ -12661,7 +12725,7 @@ function findFilterElements(root52, selector, options, queryForSelector, totalLi
   const limit = getLimit(filter4.name, filter4.data, partLimit);
   if (limit === 0)
     return [];
-  const elemsNoLimit = sub.length === 0 && !Array.isArray(root52) ? getChildren(root52).filter(isTag2) : sub.length === 0 ? (Array.isArray(root52) ? root52 : [root52]).filter(isTag2) : queryForSelector || sub.some(isTraversal) ? findElements(root52, [sub], options, limit) : filterElements(root52, [sub], options);
+  const elemsNoLimit = sub.length === 0 && !Array.isArray(root71) ? getChildren(root71).filter(isTag2) : sub.length === 0 ? (Array.isArray(root71) ? root71 : [root71]).filter(isTag2) : queryForSelector || sub.some(isTraversal) ? findElements(root71, [sub], options, limit) : filterElements(root71, [sub], options);
   const elems = elemsNoLimit.slice(0, limit);
   let result = filterByPosition(filter4.name, elems, filter4.data, options);
   if (result.length === 0 || selector.length === filterIndex + 1) {
@@ -12698,12 +12762,12 @@ function findFilterElements(root52, selector, options, queryForSelector, totalLi
     filterElements(result, [remainingSelector], options)
   );
 }
-function findElements(root52, sel, options, limit) {
-  const query = _compileToken(sel, options, root52);
-  return find2(root52, query, limit);
+function findElements(root71, sel, options, limit) {
+  const query = _compileToken(sel, options, root71);
+  return find2(root71, query, limit);
 }
-function find2(root52, query, limit = Infinity) {
-  const elems = prepareContext(root52, esm_exports2, query.shouldTestNextSiblings);
+function find2(root71, query, limit = Infinity) {
+  const elems = prepareContext(root71, esm_exports2, query.shouldTestNextSiblings);
   return find((node) => isTag2(node) && query(node), elems, true, limit);
 }
 function filterElements(elements, sel, options) {
@@ -12778,22 +12842,22 @@ var _singleMatcher = _getMatcher((fn, elems) => {
   return ret;
 });
 function _matchUntil(nextElem, ...postFns) {
-  let matches = null;
+  let matches2 = null;
   const innerMatcher = _getMatcher((nextElem2, elems) => {
     const matched = [];
     domEach(elems, (elem) => {
-      for (let next3; next3 = nextElem2(elem); elem = next3) {
-        if (matches === null || matches === void 0 ? void 0 : matches(next3, matched.length))
+      for (let next4; next4 = nextElem2(elem); elem = next4) {
+        if (matches2 === null || matches2 === void 0 ? void 0 : matches2(next4, matched.length))
           break;
-        matched.push(next3);
+        matched.push(next4);
       }
     });
     return matched;
   })(nextElem, ...postFns);
   return function(selector, filterSelector) {
-    matches = typeof selector === "string" ? (elem) => is3(elem, selector, this.options) : selector ? getFilterFn(selector) : null;
+    matches2 = typeof selector === "string" ? (elem) => is3(elem, selector, this.options) : selector ? getFilterFn(selector) : null;
     const ret = innerMatcher.call(this, filterSelector);
-    matches = null;
+    matches2 = null;
     return ret;
   };
 }
@@ -12908,8 +12972,8 @@ function filter3(match) {
   var _a5;
   return this._make(filterArray(this.toArray(), match, this.options.xmlMode, (_a5 = this._root) === null || _a5 === void 0 ? void 0 : _a5[0]));
 }
-function filterArray(nodes, match, xmlMode, root52) {
-  return typeof match === "string" ? filter2(match, nodes, { xmlMode, root: root52 }) : nodes.filter(getFilterFn(match));
+function filterArray(nodes, match, xmlMode, root71) {
+  return typeof match === "string" ? filter2(match, nodes, { xmlMode, root: root71 }) : nodes.filter(getFilterFn(match));
 }
 function is4(selector) {
   const nodes = this.toArray();
@@ -12918,8 +12982,8 @@ function is4(selector) {
 function not(match) {
   let nodes = this.toArray();
   if (typeof match === "string") {
-    const matches = new Set(filter2(match, nodes, this.options));
-    nodes = nodes.filter((el) => !matches.has(el));
+    const matches2 = new Set(filter2(match, nodes, this.options));
+    nodes = nodes.filter((el) => !matches2.has(el));
   } else {
     const filterFn = getFilterFn(match);
     nodes = nodes.filter((el, i) => !filterFn(el, i));
@@ -13014,20 +13078,20 @@ __export(manipulation_exports, {
 
 // node_modules/cheerio/dist/browser/parse.js
 function getParse(parser) {
-  return function parse6(content, options, isDocument2, context) {
+  return function parse6(content, options, isDocument3, context) {
     if (typeof Buffer !== "undefined" && Buffer.isBuffer(content)) {
       content = content.toString();
     }
     if (typeof content === "string") {
-      return parser(content, options, isDocument2, context);
+      return parser(content, options, isDocument3, context);
     }
     const doc = content;
     if (!Array.isArray(doc) && isDocument(doc)) {
       return doc;
     }
-    const root52 = new Document2([]);
-    update2(doc, root52);
-    return root52;
+    const root71 = new Document2([]);
+    update2(doc, root71);
+    return root71;
   };
 }
 function update2(newChilds, parent2) {
@@ -13102,8 +13166,8 @@ function uniqueSplice(array, spliceIdx, spliceCount, newElems, parent2) {
     spliceCount,
     ...newElems
   ];
-  const prev2 = spliceIdx === 0 ? null : array[spliceIdx - 1];
-  const next3 = spliceIdx + spliceCount >= array.length ? null : array[spliceIdx + spliceCount];
+  const prev3 = spliceIdx === 0 ? null : array[spliceIdx - 1];
+  const next4 = spliceIdx + spliceCount >= array.length ? null : array[spliceIdx + spliceCount];
   for (let idx = 0; idx < newElems.length; ++idx) {
     const node = newElems[idx];
     const oldParent = node.parent;
@@ -13124,14 +13188,14 @@ function uniqueSplice(array, spliceIdx, spliceCount, newElems, parent2) {
     if (node.next) {
       node.next.prev = (_b = node.prev) !== null && _b !== void 0 ? _b : null;
     }
-    node.prev = idx === 0 ? prev2 : newElems[idx - 1];
-    node.next = idx === newElems.length - 1 ? next3 : newElems[idx + 1];
+    node.prev = idx === 0 ? prev3 : newElems[idx - 1];
+    node.next = idx === newElems.length - 1 ? next4 : newElems[idx + 1];
   }
-  if (prev2) {
-    prev2.next = newElems[0];
+  if (prev3) {
+    prev3.next = newElems[0];
   }
-  if (next3) {
-    next3.prev = newElems[newElems.length - 1];
+  if (next4) {
+    next4.prev = newElems[newElems.length - 1];
   }
   return array.splice(...spliceArgs);
 }
@@ -13367,9 +13431,9 @@ function text3(str) {
 }
 function clone() {
   const clone2 = Array.prototype.map.call(this.get(), (el) => cloneNode(el, true));
-  const root52 = new Document2(clone2);
+  const root71 = new Document2(clone2);
   for (const node of clone2) {
-    node.parent = root52;
+    node.parent = root71;
   }
   return this._make(clone2);
 }
@@ -13538,10 +13602,10 @@ var Cheerio = class {
    * @param root - Sets the root node.
    * @param options - Options for the instance.
    */
-  constructor(elements, root52, options) {
+  constructor(elements, root71, options) {
     this.length = 0;
     this.options = options;
-    this._root = root52;
+    this._root = root71;
     if (elements) {
       for (let idx = 0; idx < elements.length; idx++) {
         this[idx] = elements[idx];
@@ -13557,30 +13621,30 @@ Object.assign(Cheerio.prototype, attributes_exports, traversing_exports, manipul
 
 // node_modules/cheerio/dist/browser/load.js
 function getLoad(parse6, render4) {
-  return function load2(content, options, isDocument2 = true) {
+  return function load2(content, options, isDocument3 = true) {
     if (content == null) {
       throw new Error("cheerio.load() expects a string");
     }
     const internalOpts = flattenOptions(options);
-    const initialRoot = parse6(content, internalOpts, isDocument2, null);
+    const initialRoot = parse6(content, internalOpts, isDocument3, null);
     class LoadedCheerio extends Cheerio {
       _make(selector, context) {
         const cheerio = initialize(selector, context);
         cheerio.prevObject = this;
         return cheerio;
       }
-      _parse(content2, options2, isDocument3, context) {
-        return parse6(content2, options2, isDocument3, context);
+      _parse(content2, options2, isDocument4, context) {
+        return parse6(content2, options2, isDocument4, context);
       }
       _render(dom) {
         return render4(dom, this.options);
       }
     }
-    function initialize(selector, context, root52 = initialRoot, opts) {
+    function initialize(selector, context, root71 = initialRoot, opts) {
       if (selector && isCheerio(selector))
         return selector;
       const options2 = flattenOptions(opts, internalOpts);
-      const r2 = typeof root52 === "string" ? [parse6(root52, options2, false, null)] : "length" in root52 ? root52 : [root52];
+      const r2 = typeof root71 === "string" ? [parse6(root71, options2, false, null)] : "length" in root71 ? root71 : [root71];
       const rootInstance = isCheerio(r2) ? r2 : new LoadedCheerio(r2, null, options2);
       rootInstance._root = rootInstance;
       if (!selector) {
@@ -13830,9 +13894,9 @@ var Preprocessor = class {
     return this.droppedBufferSize + this.pos;
   }
   getError(code, cpOffset) {
-    const { line, col, offset } = this;
+    const { line, col, offset: offset3 } = this;
     const startCol = col + cpOffset;
-    const startOffset = offset + cpOffset;
+    const startOffset = offset3 + cpOffset;
     return {
       code,
       startLine: line,
@@ -13910,8 +13974,8 @@ var Preprocessor = class {
     }
     return true;
   }
-  peek(offset) {
-    const pos = this.pos + offset;
+  peek(offset3) {
+    const pos = this.pos + offset3;
     if (pos >= this.html.length) {
       this.endOfChunkHit = !this.lastChunkWritten;
       return CODE_POINTS.EOF;
@@ -14135,28 +14199,28 @@ var EntityDecoder3 = class {
    * @param offset The offset at which the entity begins. Should be 0 if this is not the first call.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  write(input, offset) {
+  write(input, offset3) {
     switch (this.state) {
       case EntityDecoderState3.EntityStart: {
-        if (input.charCodeAt(offset) === CharCodes4.NUM) {
+        if (input.charCodeAt(offset3) === CharCodes4.NUM) {
           this.state = EntityDecoderState3.NumericStart;
           this.consumed += 1;
-          return this.stateNumericStart(input, offset + 1);
+          return this.stateNumericStart(input, offset3 + 1);
         }
         this.state = EntityDecoderState3.NamedEntity;
-        return this.stateNamedEntity(input, offset);
+        return this.stateNamedEntity(input, offset3);
       }
       case EntityDecoderState3.NumericStart: {
-        return this.stateNumericStart(input, offset);
+        return this.stateNumericStart(input, offset3);
       }
       case EntityDecoderState3.NumericDecimal: {
-        return this.stateNumericDecimal(input, offset);
+        return this.stateNumericDecimal(input, offset3);
       }
       case EntityDecoderState3.NumericHex: {
-        return this.stateNumericHex(input, offset);
+        return this.stateNumericHex(input, offset3);
       }
       case EntityDecoderState3.NamedEntity: {
-        return this.stateNamedEntity(input, offset);
+        return this.stateNamedEntity(input, offset3);
       }
     }
   }
@@ -14169,17 +14233,17 @@ var EntityDecoder3 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericStart(input, offset) {
-    if (offset >= input.length) {
+  stateNumericStart(input, offset3) {
+    if (offset3 >= input.length) {
       return -1;
     }
-    if ((input.charCodeAt(offset) | TO_LOWER_BIT3) === CharCodes4.LOWER_X) {
+    if ((input.charCodeAt(offset3) | TO_LOWER_BIT3) === CharCodes4.LOWER_X) {
       this.state = EntityDecoderState3.NumericHex;
       this.consumed += 1;
-      return this.stateNumericHex(input, offset + 1);
+      return this.stateNumericHex(input, offset3 + 1);
     }
     this.state = EntityDecoderState3.NumericDecimal;
-    return this.stateNumericDecimal(input, offset);
+    return this.stateNumericDecimal(input, offset3);
   }
   addToNumericResult(input, start, end2, base) {
     if (start !== end2) {
@@ -14197,18 +14261,18 @@ var EntityDecoder3 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericHex(input, offset) {
-    const startIndex = offset;
-    while (offset < input.length) {
-      const char = input.charCodeAt(offset);
+  stateNumericHex(input, offset3) {
+    const startIndex = offset3;
+    while (offset3 < input.length) {
+      const char = input.charCodeAt(offset3);
       if (isNumber3(char) || isHexadecimalCharacter3(char)) {
-        offset += 1;
+        offset3 += 1;
       } else {
-        this.addToNumericResult(input, startIndex, offset, 16);
+        this.addToNumericResult(input, startIndex, offset3, 16);
         return this.emitNumericEntity(char, 3);
       }
     }
-    this.addToNumericResult(input, startIndex, offset, 16);
+    this.addToNumericResult(input, startIndex, offset3, 16);
     return -1;
   }
   /**
@@ -14220,18 +14284,18 @@ var EntityDecoder3 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericDecimal(input, offset) {
-    const startIndex = offset;
-    while (offset < input.length) {
-      const char = input.charCodeAt(offset);
+  stateNumericDecimal(input, offset3) {
+    const startIndex = offset3;
+    while (offset3 < input.length) {
+      const char = input.charCodeAt(offset3);
       if (isNumber3(char)) {
-        offset += 1;
+        offset3 += 1;
       } else {
-        this.addToNumericResult(input, startIndex, offset, 10);
+        this.addToNumericResult(input, startIndex, offset3, 10);
         return this.emitNumericEntity(char, 2);
       }
     }
-    this.addToNumericResult(input, startIndex, offset, 10);
+    this.addToNumericResult(input, startIndex, offset3, 10);
     return -1;
   }
   /**
@@ -14276,12 +14340,12 @@ var EntityDecoder3 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNamedEntity(input, offset) {
+  stateNamedEntity(input, offset3) {
     const { decodeTree } = this;
     let current = decodeTree[this.treeIndex];
     let valueLength = (current & BinTrieFlags3.VALUE_LENGTH) >> 14;
-    for (; offset < input.length; offset++, this.excess++) {
-      const char = input.charCodeAt(offset);
+    for (; offset3 < input.length; offset3++, this.excess++) {
+      const char = input.charCodeAt(offset3);
       this.treeIndex = determineBranch3(decodeTree, current, this.treeIndex + Math.max(1, valueLength), char);
       if (this.treeIndex < 0) {
         return this.result === 0 || // If we are parsing an attribute
@@ -15080,14 +15144,14 @@ var Tokenizer2 = class {
     (_b = (_a5 = this.handler).onParseError) === null || _b === void 0 ? void 0 : _b.call(_a5, this.preprocessor.getError(code, cpOffset));
   }
   // NOTE: `offset` may never run across line boundaries.
-  getCurrentLocation(offset) {
+  getCurrentLocation(offset3) {
     if (!this.options.sourceCodeLocationInfo) {
       return null;
     }
     return {
       startLine: this.preprocessor.line,
-      startCol: this.preprocessor.col - offset,
-      startOffset: this.preprocessor.offset - offset,
+      startCol: this.preprocessor.col - offset3,
+      startOffset: this.preprocessor.offset - offset3,
       endLine: -1,
       endCol: -1,
       endOffset: -1
@@ -15186,11 +15250,11 @@ var Tokenizer2 = class {
       location: this.getCurrentLocation(2)
     };
   }
-  _createCommentToken(offset) {
+  _createCommentToken(offset3) {
     this.currentToken = {
       type: TokenType.COMMENT,
       data: "",
-      location: this.getCurrentLocation(offset)
+      location: this.getCurrentLocation(offset3)
     };
   }
   _createDoctypeToken(initialName) {
@@ -21693,20 +21757,20 @@ var adapter = {
   },
   //Tree mutation
   appendChild(parentNode, newNode) {
-    const prev2 = parentNode.children[parentNode.children.length - 1];
-    if (prev2) {
-      prev2.next = newNode;
-      newNode.prev = prev2;
+    const prev3 = parentNode.children[parentNode.children.length - 1];
+    if (prev3) {
+      prev3.next = newNode;
+      newNode.prev = prev3;
     }
     parentNode.children.push(newNode);
     newNode.parent = parentNode;
   },
   insertBefore(parentNode, newNode, referenceNode) {
     const insertionIdx = parentNode.children.indexOf(referenceNode);
-    const { prev: prev2 } = referenceNode;
-    if (prev2) {
-      prev2.next = newNode;
-      newNode.prev = prev2;
+    const { prev: prev3 } = referenceNode;
+    if (prev3) {
+      prev3.next = newNode;
+      newNode.prev = prev3;
     }
     referenceNode.prev = newNode;
     newNode.next = referenceNode;
@@ -21741,14 +21805,14 @@ var adapter = {
   detachNode(node) {
     if (node.parent) {
       const idx = node.parent.children.indexOf(node);
-      const { prev: prev2, next: next3 } = node;
+      const { prev: prev3, next: next4 } = node;
       node.prev = null;
       node.next = null;
-      if (prev2) {
-        prev2.next = next3;
+      if (prev3) {
+        prev3.next = next4;
       }
-      if (next3) {
-        next3.prev = prev2;
+      if (next4) {
+        next4.prev = prev3;
       }
       node.parent.children.splice(idx, 1);
       node.parent = null;
@@ -21844,13 +21908,13 @@ var adapter = {
 };
 
 // node_modules/cheerio/dist/browser/parsers/parse5-adapter.js
-function parseWithParse5(content, options, isDocument2, context) {
+function parseWithParse5(content, options, isDocument3, context) {
   var _a5;
   (_a5 = options.treeAdapter) !== null && _a5 !== void 0 ? _a5 : options.treeAdapter = adapter;
   if (options.scriptingEnabled !== false) {
     options.scriptingEnabled = true;
   }
-  return isDocument2 ? parse4(content, options) : parseFragment(context, content, options);
+  return isDocument3 ? parse4(content, options) : parseFragment(context, content, options);
 }
 var renderOpts = { treeAdapter: adapter };
 function renderWithParse5(dom) {
@@ -21870,7 +21934,7 @@ function renderWithParse5(dom) {
 }
 
 // node_modules/cheerio/dist/browser/load-parse.js
-var parse5 = getParse((content, options, isDocument2, context) => options._useHtmlParser2 ? parseDocument(content, options) : parseWithParse5(content, options, isDocument2, context));
+var parse5 = getParse((content, options, isDocument3, context) => options._useHtmlParser2 ? parseDocument(content, options) : parseWithParse5(content, options, isDocument3, context));
 var load = getLoad(parse5, (dom, options) => options._useHtmlParser2 ? esm_default(dom, options) : renderWithParse5(dom));
 
 // node_modules/safi-studio-scanner/dist/context.js
@@ -22395,11 +22459,11 @@ var contentRules = [
       page.$("h1,h2,h3,h4,h5,h6").each((_, el) => {
         levels.push(Number(el.tagName[1]));
       });
-      let prev2 = 0;
+      let prev3 = 0;
       for (const l2 of levels) {
-        if (prev2 && l2 > prev2 + 1)
-          return [{ status: "warn", message: `Heading jumps from H${prev2} to H${l2}` }];
-        prev2 = l2;
+        if (prev3 && l2 > prev3 + 1)
+          return [{ status: "warn", message: `Heading jumps from H${prev3} to H${l2}` }];
+        prev3 = l2;
       }
       return [{ status: "pass", message: "No skipped heading levels" }];
     }
@@ -24288,10 +24352,66 @@ function scoreVariant(score) {
   if (score >= 50) return "secondary";
   return "destructive";
 }
-function severityVariant(sev) {
-  if (sev === "error") return "destructive";
-  if (sev === "warning") return "secondary";
-  return "outline";
+function grade(score) {
+  if (score >= 90) return "A";
+  if (score >= 80) return "B";
+  if (score >= 70) return "C";
+  if (score >= 60) return "D";
+  return "F";
+}
+function gradeVariant(score) {
+  if (score >= 80) return "default";
+  if (score >= 60) return "secondary";
+  return "destructive";
+}
+function statusDot(status) {
+  if (status === "fail") return "bg-red-500";
+  if (status === "warn") return "bg-amber-500";
+  if (status === "info") return "bg-sky-500";
+  return "bg-emerald-500";
+}
+function statusTotals(report) {
+  const t = { pass: 0, warn: 0, fail: 0, info: 0, total: 0 };
+  for (const page of report.pages) {
+    for (const f of page.findings) {
+      t[f.status]++;
+      t.total++;
+    }
+  }
+  return t;
+}
+var RANK = { fail: 3, warn: 2, info: 1, pass: 0 };
+function buildIssues(report) {
+  const map2 = /* @__PURE__ */ new Map();
+  for (const page of report.pages) {
+    for (const f of page.findings) {
+      if (f.status === "pass") continue;
+      let issue = map2.get(f.ruleId);
+      if (!issue) {
+        issue = {
+          ruleId: f.ruleId,
+          title: f.title,
+          category: f.category,
+          severity: f.severity,
+          status: f.status,
+          message: f.message,
+          pages: []
+        };
+        map2.set(f.ruleId, issue);
+      }
+      if (RANK[f.status] > RANK[issue.status]) {
+        issue.status = f.status;
+        issue.message = f.message;
+      }
+      if (!issue.pages.includes(page.url)) issue.pages.push(page.url);
+    }
+  }
+  return [...map2.values()].sort(
+    (a2, b) => RANK[b.status] - RANK[a2.status] || b.pages.length - a2.pages.length
+  );
+}
+function pct(part, whole) {
+  return whole === 0 ? 0 : Math.round(part / whole * 100);
 }
 
 // node_modules/tailwind-merge/dist/bundle-mjs.mjs
@@ -24442,12 +24562,12 @@ var getPart = (classPartObject, path) => {
   const len = parts2.length;
   for (let i = 0; i < len; i++) {
     const part = parts2[i];
-    let next3 = current.nextPart.get(part);
-    if (!next3) {
-      next3 = createClassPartObject();
-      current.nextPart.set(part, next3);
+    let next4 = current.nextPart.get(part);
+    if (!next4) {
+      next4 = createClassPartObject();
+      current.nextPart.set(part, next4);
     }
-    current = next3;
+    current = next4;
   }
   return current;
 };
@@ -27616,13 +27736,13 @@ var rest_excludes = /* @__PURE__ */ new Set([
 var root2 = from_html(`<div><!></div>`);
 function Card($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), size = prop($$props, "size", 3, "default"), restProps = rest_props($$props, rest_excludes);
+  let ref = prop($$props, "ref", 15, null), size3 = prop($$props, "size", 3, "default"), restProps = rest_props($$props, rest_excludes);
   var div = root2();
   attribute_effect(
     div,
     ($0) => ({
       "data-slot": "card",
-      "data-size": size(),
+      "data-size": size3(),
       class: $0,
       ...restProps
     }),
@@ -28403,6 +28523,21 @@ function mergeProps(...args) {
   return result;
 }
 
+// node_modules/svelte-toolbelt/dist/utils/sr-only-styles.js
+var srOnlyStyles = {
+  position: "absolute",
+  width: "1px",
+  height: "1px",
+  padding: "0",
+  margin: "-1px",
+  overflow: "hidden",
+  clip: "rect(0, 0, 0, 0)",
+  whiteSpace: "nowrap",
+  borderWidth: "0",
+  transform: "translateX(-100%)"
+};
+var srOnlyStylesString = styleToString(srOnlyStyles);
+
 // node_modules/svelte/src/reactivity/map.js
 var SvelteMap = class extends Map {
   /** @type {Map<K, Source<number>>} */
@@ -28731,10 +28866,142 @@ function onDestroyEffect(fn) {
   });
 }
 
+// node_modules/svelte-toolbelt/dist/utils/on-mount-effect.svelte.js
+function onMountEffect(fn) {
+  user_effect(() => {
+    const cleanup = untrack(() => fn());
+    return cleanup;
+  });
+}
+
+// node_modules/svelte-toolbelt/dist/utils/after-sleep.js
+function afterSleep(ms, cb) {
+  return setTimeout(cb, ms);
+}
+
 // node_modules/svelte-toolbelt/dist/utils/after-tick.js
 function afterTick(fn) {
   tick().then(fn);
 }
+
+// node_modules/svelte-toolbelt/dist/utils/dom.js
+var ELEMENT_NODE2 = 1;
+var DOCUMENT_NODE = 9;
+var DOCUMENT_FRAGMENT_NODE2 = 11;
+function isHTMLElement(node) {
+  return isObject(node) && node.nodeType === ELEMENT_NODE2 && typeof node.nodeName === "string";
+}
+function isDocument2(node) {
+  return isObject(node) && node.nodeType === DOCUMENT_NODE;
+}
+function isWindow(node) {
+  return isObject(node) && node.constructor?.name === "VisualViewport";
+}
+function isNode2(node) {
+  return isObject(node) && node.nodeType !== void 0;
+}
+function isShadowRoot(node) {
+  return isNode2(node) && node.nodeType === DOCUMENT_FRAGMENT_NODE2 && "host" in node;
+}
+function contains2(parent2, child2) {
+  if (!parent2 || !child2)
+    return false;
+  if (!isHTMLElement(parent2) || !isHTMLElement(child2))
+    return false;
+  const rootNode = child2.getRootNode?.();
+  if (parent2 === child2)
+    return true;
+  if (parent2.contains(child2))
+    return true;
+  if (rootNode && isShadowRoot(rootNode)) {
+    let next4 = child2;
+    while (next4) {
+      if (parent2 === next4)
+        return true;
+      next4 = next4.parentNode || next4.host;
+    }
+  }
+  return false;
+}
+function getDocument(node) {
+  if (isDocument2(node))
+    return node;
+  if (isWindow(node))
+    return node.document;
+  return node?.ownerDocument ?? document;
+}
+function getWindow(node) {
+  if (isShadowRoot(node))
+    return getWindow(node.host);
+  if (isDocument2(node))
+    return node.defaultView ?? window;
+  if (isHTMLElement(node))
+    return node.ownerDocument?.defaultView ?? window;
+  return window;
+}
+function getActiveElement(rootNode) {
+  let activeElement2 = rootNode.activeElement;
+  while (activeElement2?.shadowRoot) {
+    const el = activeElement2.shadowRoot.activeElement;
+    if (el === activeElement2)
+      break;
+    else
+      activeElement2 = el;
+  }
+  return activeElement2;
+}
+
+// node_modules/svelte-toolbelt/dist/utils/dom-context.svelte.js
+var DOMContext = class {
+  element;
+  #root = user_derived(() => {
+    if (!this.element.current) return document;
+    const rootNode = this.element.current.getRootNode() ?? document;
+    return rootNode;
+  });
+  get root() {
+    return get2(this.#root);
+  }
+  set root(value) {
+    set(this.#root, value);
+  }
+  constructor(element2) {
+    if (typeof element2 === "function") {
+      this.element = boxWith(element2);
+    } else {
+      this.element = element2;
+    }
+  }
+  getDocument = () => {
+    return getDocument(this.root);
+  };
+  getWindow = () => {
+    return this.getDocument().defaultView ?? window;
+  };
+  getActiveElement = () => {
+    return getActiveElement(this.root);
+  };
+  isActiveElement = (node) => {
+    return node === this.getActiveElement();
+  };
+  getElementById(id) {
+    return this.root.getElementById(id);
+  }
+  querySelector = (selector) => {
+    if (!this.root) return null;
+    return this.root.querySelector(selector);
+  };
+  querySelectorAll = (selector) => {
+    if (!this.root) return [];
+    return this.root.querySelectorAll(selector);
+  };
+  setTimeout = (callback, delay) => {
+    return this.getWindow().setTimeout(callback, delay);
+  };
+  clearTimeout = (timeoutId) => {
+    return this.getWindow().clearTimeout(timeoutId);
+  };
+};
 
 // node_modules/svelte-toolbelt/dist/utils/attach-ref.js
 function attachRef(ref, onChange) {
@@ -28769,7 +29036,7 @@ var defaultNavigator = true_default && typeof window !== "undefined" ? window.na
 var defaultLocation = true_default && typeof window !== "undefined" ? window.location : void 0;
 
 // node_modules/bits-ui/node_modules/runed/dist/internal/utils/dom.js
-function getActiveElement(document2) {
+function getActiveElement2(document2) {
   let activeElement2 = document2.activeElement;
   while (activeElement2?.shadowRoot) {
     const node = activeElement2.shadowRoot.activeElement;
@@ -28801,10 +29068,15 @@ var ActiveElement = class {
   get current() {
     this.#subscribe?.();
     if (!this.#document) return null;
-    return getActiveElement(this.#document);
+    return getActiveElement2(this.#document);
   }
 };
 var activeElement = new ActiveElement();
+
+// node_modules/bits-ui/node_modules/runed/dist/internal/utils/is.js
+function isFunction2(value) {
+  return typeof value === "function";
+}
 
 // node_modules/bits-ui/node_modules/runed/dist/utilities/context/context.js
 var Context = class {
@@ -28937,6 +29209,117 @@ function watchOncePre(source2, effect2) {
   runWatcherOnce(source2, "pre", effect2);
 }
 watchOnce.pre = watchOncePre;
+
+// node_modules/bits-ui/node_modules/runed/dist/internal/utils/get.js
+function get4(value) {
+  if (isFunction2(value)) {
+    return value();
+  }
+  return value;
+}
+
+// node_modules/bits-ui/node_modules/runed/dist/utilities/element-size/element-size.svelte.js
+var ElementSize = class {
+  // no need to use `$state` here since we are using createSubscriber
+  #size = { width: 0, height: 0 };
+  #observed = false;
+  #options;
+  #node;
+  #window;
+  // we use a derived here to extract the width so that if the width doesn't change we don't get a state update
+  // which we would get if we would just use a getter since the version of the subscriber will be changing
+  #width = user_derived(() => {
+    get2(this.#subscribe)?.();
+    return this.getSize().width;
+  });
+  // we use a derived here to extract the height so that if the height doesn't change we don't get a state update
+  // which we would get if we would just use a getter since the version of the subscriber will be changing
+  #height = user_derived(() => {
+    get2(this.#subscribe)?.();
+    return this.getSize().height;
+  });
+  // we need to use a derived here because the class will be created before the node is bound to the ref
+  #subscribe = user_derived(() => {
+    const node$ = get4(this.#node);
+    if (!node$) return;
+    return createSubscriber((update3) => {
+      if (!this.#window) return;
+      const observer = new this.#window.ResizeObserver((entries) => {
+        this.#observed = true;
+        for (const entry of entries) {
+          const boxSize = this.#options.box === "content-box" ? entry.contentBoxSize : entry.borderBoxSize;
+          const boxSizeArr = Array.isArray(boxSize) ? boxSize : [boxSize];
+          this.#size.width = boxSizeArr.reduce((acc, size3) => Math.max(acc, size3.inlineSize), 0);
+          this.#size.height = boxSizeArr.reduce((acc, size3) => Math.max(acc, size3.blockSize), 0);
+        }
+        update3();
+      });
+      observer.observe(node$);
+      return () => {
+        this.#observed = false;
+        observer.disconnect();
+      };
+    });
+  });
+  constructor(node, options = { box: "border-box" }) {
+    this.#window = options.window ?? defaultWindow;
+    this.#options = options;
+    this.#node = node;
+    this.#size = { width: 0, height: 0 };
+  }
+  calculateSize() {
+    const element2 = get4(this.#node);
+    if (!element2 || !this.#window) {
+      return;
+    }
+    const offsetWidth = element2.offsetWidth;
+    const offsetHeight = element2.offsetHeight;
+    if (this.#options.box === "border-box") {
+      return { width: offsetWidth, height: offsetHeight };
+    }
+    const style = this.#window.getComputedStyle(element2);
+    const paddingWidth = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+    const paddingHeight = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+    const borderWidth = parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
+    const borderHeight = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+    const contentWidth = offsetWidth - paddingWidth - borderWidth;
+    const contentHeight = offsetHeight - paddingHeight - borderHeight;
+    return { width: contentWidth, height: contentHeight };
+  }
+  getSize() {
+    return this.#observed ? this.#size : this.calculateSize() ?? this.#size;
+  }
+  get current() {
+    get2(this.#subscribe)?.();
+    return this.getSize();
+  }
+  get width() {
+    return get2(this.#width);
+  }
+  get height() {
+    return get2(this.#height);
+  }
+};
+
+// node_modules/bits-ui/node_modules/runed/dist/utilities/previous/previous.svelte.js
+var Previous = class {
+  #previousCallback = () => void 0;
+  #previous = user_derived(() => this.#previousCallback());
+  constructor(getter, initialValue) {
+    let actualPrevious = void 0;
+    if (initialValue !== void 0) actualPrevious = initialValue;
+    this.#previousCallback = () => {
+      try {
+        return actualPrevious;
+      } finally {
+        actualPrevious = getter();
+      }
+    };
+  }
+  get current() {
+    return get2(this.#previous);
+  }
+};
 
 // node_modules/bits-ui/node_modules/runed/dist/utilities/resource/resource.svelte.js
 function debounce(fn, delay) {
@@ -29082,6 +29465,9 @@ resource.pre = resourcePre;
 function boolToStr(condition) {
   return condition ? "true" : "false";
 }
+function boolToStrTrueOrUndef(condition) {
+  return condition ? "true" : void 0;
+}
 function boolToEmptyStrOrUndef(condition) {
   return condition ? "" : void 0;
 }
@@ -29097,6 +29483,11 @@ function getDataTransitionAttrs(state3) {
   if (state3 === "ending")
     return { "data-ending-style": "" };
   return {};
+}
+function getAriaChecked(checked, indeterminate) {
+  if (indeterminate)
+    return "mixed";
+  return checked ? "true" : "false";
 }
 var BitsAttrs = class {
   #variant;
@@ -29258,8 +29649,14 @@ function getIsIOS() {
   return isBrowser && window?.navigator?.userAgent && (/iP(ad|hone|od)/.test(window.navigator.userAgent) || // The new iPad Pro Gen3 does not identify itself as iPad, but as Macintosh.
   window?.navigator?.maxTouchPoints > 2 && /iPad|Macintosh/.test(window?.navigator.userAgent));
 }
-function isHTMLElement(element2) {
+function isHTMLElement2(element2) {
   return element2 instanceof HTMLElement;
+}
+function isElementOrSVGElement(element2) {
+  return element2 instanceof Element || element2 instanceof SVGElement;
+}
+function isNotNull(value) {
+  return value !== null;
 }
 
 // node_modules/bits-ui/dist/internal/roving-focus-group.js
@@ -29346,7 +29743,7 @@ var RovingFocusGroup = class {
     if (!currentTabStopId)
       return;
     const currentTabStop = this.#opts.rootNode.current?.querySelector(`#${currentTabStopId}`);
-    if (!currentTabStop || !isHTMLElement(currentTabStop))
+    if (!currentTabStop || !isHTMLElement2(currentTabStop))
       return;
     currentTabStop.focus();
   }
@@ -30119,6 +30516,6493 @@ function Accordion_content($$anchor, $$props) {
   pop();
 }
 
+// node_modules/bits-ui/dist/bits/utilities/portal/portal-consumer.svelte
+function Portal_consumer($$anchor, $$props) {
+  var fragment = comment();
+  var node = first_child(fragment);
+  key(node, () => $$props.children, ($$anchor2) => {
+    var fragment_1 = comment();
+    var node_1 = first_child(fragment_1);
+    snippet(node_1, () => $$props.children ?? noop);
+    append($$anchor2, fragment_1);
+  });
+  append($$anchor, fragment);
+}
+
+// node_modules/bits-ui/dist/bits/utilities/config/bits-config.js
+var BitsConfigContext = new Context("BitsConfig");
+function getBitsConfig() {
+  const fallback2 = new BitsConfigState(null, {});
+  return BitsConfigContext.getOr(fallback2).opts;
+}
+var BitsConfigState = class {
+  opts;
+  constructor(parent2, opts) {
+    const resolveConfigOption = createConfigResolver(parent2, opts);
+    this.opts = {
+      defaultPortalTo: resolveConfigOption((config) => config.defaultPortalTo),
+      defaultLocale: resolveConfigOption((config) => config.defaultLocale)
+    };
+  }
+};
+function createConfigResolver(parent2, currentOpts) {
+  return (getter) => {
+    const configOption = boxWith(() => {
+      const value = getter(currentOpts)?.current;
+      if (value !== void 0)
+        return value;
+      if (parent2 === null)
+        return void 0;
+      return getter(parent2.opts)?.current;
+    });
+    return configOption;
+  };
+}
+
+// node_modules/bits-ui/dist/bits/utilities/config/prop-resolvers.js
+function createPropResolver(configOption, fallback2) {
+  return (getProp2) => {
+    const config = getBitsConfig();
+    return boxWith(() => {
+      const propValue = getProp2();
+      if (propValue !== void 0)
+        return propValue;
+      const option = configOption(config).current;
+      if (option !== void 0)
+        return option;
+      return fallback2;
+    });
+  };
+}
+var resolveLocaleProp = createPropResolver((config) => config.defaultLocale, "en");
+var resolvePortalToProp = createPropResolver((config) => config.defaultPortalTo, "body");
+
+// node_modules/bits-ui/dist/bits/utilities/portal/portal.svelte
+function Portal($$anchor, $$props) {
+  push($$props, true);
+  const to = resolvePortalToProp(() => $$props.to);
+  const context = getAllContexts();
+  let target = user_derived(getTarget);
+  function getTarget() {
+    if (!isBrowser || $$props.disabled) return null;
+    let localTarget = null;
+    if (typeof to.current === "string") {
+      const target2 = document.querySelector(to.current);
+      if (dev_fallback_default && target2 === null) {
+        throw new Error(`Target element "${to.current}" not found.`);
+      }
+      localTarget = target2;
+    } else {
+      localTarget = to.current;
+    }
+    if (dev_fallback_default && !(localTarget instanceof Element)) {
+      const type = localTarget === null ? "null" : typeof localTarget;
+      throw new TypeError(`Unknown portal target type: ${type}. Allowed types: string (query selector) or Element.`);
+    }
+    return localTarget;
+  }
+  let instance;
+  function unmountInstance() {
+    if (instance) {
+      unmount(instance);
+      instance = null;
+    }
+  }
+  watch([() => get2(target), () => $$props.disabled], ([target2, disabled]) => {
+    if (!target2 || disabled) {
+      unmountInstance();
+      return;
+    }
+    instance = mount(Portal_consumer, { target: target2, props: { children: $$props.children }, context });
+    return () => {
+      unmountInstance();
+    };
+  });
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent = ($$anchor2) => {
+      var fragment_1 = comment();
+      var node_1 = first_child(fragment_1);
+      snippet(node_1, () => $$props.children ?? noop);
+      append($$anchor2, fragment_1);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.disabled) $$render(consequent);
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/internal/events.js
+var CustomEventDispatcher = class {
+  eventName;
+  options;
+  constructor(eventName, options = { bubbles: true, cancelable: true }) {
+    this.eventName = eventName;
+    this.options = options;
+  }
+  createEvent(detail) {
+    return new CustomEvent(this.eventName, {
+      ...this.options,
+      detail
+    });
+  }
+  dispatch(element2, detail) {
+    const event2 = this.createEvent(detail);
+    element2.dispatchEvent(event2);
+    return event2;
+  }
+  listen(element2, callback, options) {
+    const handler = (event2) => {
+      callback(event2);
+    };
+    return on(element2, this.eventName, handler, options);
+  }
+};
+
+// node_modules/bits-ui/dist/internal/debounce.js
+function debounce2(fn, wait2 = 500) {
+  let timeout = null;
+  const debounced = (...args) => {
+    if (timeout !== null) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(() => {
+      fn(...args);
+    }, wait2);
+  };
+  debounced.destroy = () => {
+    if (timeout !== null) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+  return debounced;
+}
+
+// node_modules/bits-ui/dist/internal/elements.js
+function isOrContainsTarget2(node, target) {
+  return node === target || node.contains(target);
+}
+function getOwnerDocument2(el) {
+  return el?.ownerDocument ?? document;
+}
+
+// node_modules/bits-ui/dist/internal/dom.js
+function isClickTrulyOutside(event2, contentNode) {
+  const { clientX, clientY } = event2;
+  const rect = contentNode.getBoundingClientRect();
+  return clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom;
+}
+
+// node_modules/tabbable/dist/index.esm.js
+var candidateSelectors = ["input:not([inert]):not([inert] *)", "select:not([inert]):not([inert] *)", "textarea:not([inert]):not([inert] *)", "a[href]:not([inert]):not([inert] *)", "area[href]:not([inert]):not([inert] *)", "button:not([inert]):not([inert] *)", "[tabindex]:not(slot):not([inert]):not([inert] *)", "audio[controls]:not([inert]):not([inert] *)", "video[controls]:not([inert]):not([inert] *)", '[contenteditable]:not([contenteditable="false"]):not([inert]):not([inert] *)', "details>summary:first-of-type:not([inert]):not([inert] *)", "details:not([inert]):not([inert] *)"];
+var candidateSelector = /* @__PURE__ */ candidateSelectors.join(",");
+var NoElement = typeof Element === "undefined";
+var matches = NoElement ? function() {
+} : Element.prototype.matches || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+var getRootNode = !NoElement && Element.prototype.getRootNode ? function(element2) {
+  var _element$getRootNode;
+  return element2 === null || element2 === void 0 ? void 0 : (_element$getRootNode = element2.getRootNode) === null || _element$getRootNode === void 0 ? void 0 : _element$getRootNode.call(element2);
+} : function(element2) {
+  return element2 === null || element2 === void 0 ? void 0 : element2.ownerDocument;
+};
+var _isInert = function isInert(node, lookUp) {
+  var _node$getAttribute;
+  if (lookUp === void 0) {
+    lookUp = true;
+  }
+  var inertAtt = node === null || node === void 0 ? void 0 : (_node$getAttribute = node.getAttribute) === null || _node$getAttribute === void 0 ? void 0 : _node$getAttribute.call(node, "inert");
+  var inert = inertAtt === "" || inertAtt === "true";
+  var result = inert || lookUp && node && // closest does not exist on shadow roots, so we fall back to a manual
+  // lookup upward, in case it is not defined.
+  (typeof node.closest === "function" ? node.closest("[inert]") : _isInert(node.parentNode));
+  return result;
+};
+var isContentEditable = function isContentEditable2(node) {
+  var _node$getAttribute2;
+  var attValue = node === null || node === void 0 ? void 0 : (_node$getAttribute2 = node.getAttribute) === null || _node$getAttribute2 === void 0 ? void 0 : _node$getAttribute2.call(node, "contenteditable");
+  return attValue === "" || attValue === "true";
+};
+var getCandidates = function getCandidates2(el, includeContainer, filter4) {
+  if (_isInert(el)) {
+    return [];
+  }
+  var candidates = Array.prototype.slice.apply(el.querySelectorAll(candidateSelector));
+  if (includeContainer && matches.call(el, candidateSelector)) {
+    candidates.unshift(el);
+  }
+  candidates = candidates.filter(filter4);
+  return candidates;
+};
+var _getCandidatesIteratively = function getCandidatesIteratively(elements, includeContainer, options) {
+  var candidates = [];
+  var elementsToCheck = Array.from(elements);
+  while (elementsToCheck.length) {
+    var element2 = elementsToCheck.shift();
+    if (_isInert(element2, false)) {
+      continue;
+    }
+    if (element2.tagName === "SLOT") {
+      var assigned = element2.assignedElements();
+      var content = assigned.length ? assigned : element2.children;
+      var nestedCandidates = _getCandidatesIteratively(content, true, options);
+      if (options.flatten) {
+        candidates.push.apply(candidates, nestedCandidates);
+      } else {
+        candidates.push({
+          scopeParent: element2,
+          candidates: nestedCandidates
+        });
+      }
+    } else {
+      var validCandidate = matches.call(element2, candidateSelector);
+      if (validCandidate && options.filter(element2) && (includeContainer || !elements.includes(element2))) {
+        candidates.push(element2);
+      }
+      var shadowRoot = element2.shadowRoot || // check for an undisclosed shadow
+      typeof options.getShadowRoot === "function" && options.getShadowRoot(element2);
+      var validShadowRoot = !_isInert(shadowRoot, false) && (!options.shadowRootFilter || options.shadowRootFilter(element2));
+      if (shadowRoot && validShadowRoot) {
+        var _nestedCandidates = _getCandidatesIteratively(shadowRoot === true ? element2.children : shadowRoot.children, true, options);
+        if (options.flatten) {
+          candidates.push.apply(candidates, _nestedCandidates);
+        } else {
+          candidates.push({
+            scopeParent: element2,
+            candidates: _nestedCandidates
+          });
+        }
+      } else {
+        elementsToCheck.unshift.apply(elementsToCheck, element2.children);
+      }
+    }
+  }
+  return candidates;
+};
+var hasTabIndex = function hasTabIndex2(node) {
+  return !isNaN(parseInt(node.getAttribute("tabindex"), 10));
+};
+var getTabIndex = function getTabIndex2(node) {
+  if (!node) {
+    throw new Error("No node provided");
+  }
+  if (node.tabIndex < 0) {
+    if ((/^(AUDIO|VIDEO|DETAILS)$/.test(node.tagName) || isContentEditable(node)) && !hasTabIndex(node)) {
+      return 0;
+    }
+  }
+  return node.tabIndex;
+};
+var getSortOrderTabIndex = function getSortOrderTabIndex2(node, isScope) {
+  var tabIndex = getTabIndex(node);
+  if (tabIndex < 0 && isScope && !hasTabIndex(node)) {
+    return 0;
+  }
+  return tabIndex;
+};
+var sortOrderedTabbables = function sortOrderedTabbables2(a2, b) {
+  return a2.tabIndex === b.tabIndex ? a2.documentOrder - b.documentOrder : a2.tabIndex - b.tabIndex;
+};
+var isInput = function isInput2(node) {
+  return node.tagName === "INPUT";
+};
+var isHiddenInput2 = function isHiddenInput3(node) {
+  return isInput(node) && node.type === "hidden";
+};
+var isDetailsWithSummary = function isDetailsWithSummary2(node) {
+  var r2 = node.tagName === "DETAILS" && Array.prototype.slice.apply(node.children).some(function(child2) {
+    return child2.tagName === "SUMMARY";
+  });
+  return r2;
+};
+var getCheckedRadio = function getCheckedRadio2(nodes, form) {
+  for (var i = 0; i < nodes.length; i++) {
+    if (nodes[i].checked && nodes[i].form === form) {
+      return nodes[i];
+    }
+  }
+};
+var isTabbableRadio = function isTabbableRadio2(node) {
+  if (!node.name) {
+    return true;
+  }
+  var radioScope = node.form || getRootNode(node);
+  var queryRadios = function queryRadios2(name) {
+    return radioScope.querySelectorAll('input[type="radio"][name="' + name + '"]');
+  };
+  var radioSet;
+  if (typeof window !== "undefined" && typeof window.CSS !== "undefined" && typeof window.CSS.escape === "function") {
+    radioSet = queryRadios(window.CSS.escape(node.name));
+  } else {
+    try {
+      radioSet = queryRadios(node.name);
+    } catch (err) {
+      console.error("Looks like you have a radio button with a name attribute containing invalid CSS selector characters and need the CSS.escape polyfill: %s", err.message);
+      return false;
+    }
+  }
+  var checked = getCheckedRadio(radioSet, node.form);
+  return !checked || checked === node;
+};
+var isRadio = function isRadio2(node) {
+  return isInput(node) && node.type === "radio";
+};
+var isNonTabbableRadio = function isNonTabbableRadio2(node) {
+  return isRadio(node) && !isTabbableRadio(node);
+};
+var isNodeAttached = function isNodeAttached2(node) {
+  var _nodeRoot;
+  var nodeRoot = node && getRootNode(node);
+  var nodeRootHost = (_nodeRoot = nodeRoot) === null || _nodeRoot === void 0 ? void 0 : _nodeRoot.host;
+  var attached = false;
+  if (nodeRoot && nodeRoot !== node) {
+    var _nodeRootHost, _nodeRootHost$ownerDo, _node$ownerDocument;
+    attached = !!((_nodeRootHost = nodeRootHost) !== null && _nodeRootHost !== void 0 && (_nodeRootHost$ownerDo = _nodeRootHost.ownerDocument) !== null && _nodeRootHost$ownerDo !== void 0 && _nodeRootHost$ownerDo.contains(nodeRootHost) || node !== null && node !== void 0 && (_node$ownerDocument = node.ownerDocument) !== null && _node$ownerDocument !== void 0 && _node$ownerDocument.contains(node));
+    while (!attached && nodeRootHost) {
+      var _nodeRoot2, _nodeRootHost2, _nodeRootHost2$ownerD;
+      nodeRoot = getRootNode(nodeRootHost);
+      nodeRootHost = (_nodeRoot2 = nodeRoot) === null || _nodeRoot2 === void 0 ? void 0 : _nodeRoot2.host;
+      attached = !!((_nodeRootHost2 = nodeRootHost) !== null && _nodeRootHost2 !== void 0 && (_nodeRootHost2$ownerD = _nodeRootHost2.ownerDocument) !== null && _nodeRootHost2$ownerD !== void 0 && _nodeRootHost2$ownerD.contains(nodeRootHost));
+    }
+  }
+  return attached;
+};
+var isZeroArea = function isZeroArea2(node) {
+  var _node$getBoundingClie = node.getBoundingClientRect(), width = _node$getBoundingClie.width, height = _node$getBoundingClie.height;
+  return width === 0 && height === 0;
+};
+var isHidden = function isHidden2(node, _ref) {
+  var displayCheck = _ref.displayCheck, getShadowRoot = _ref.getShadowRoot;
+  if (displayCheck === "full-native") {
+    if ("checkVisibility" in node) {
+      var visible = node.checkVisibility({
+        // Checking opacity might be desirable for some use cases, but natively,
+        // opacity zero elements _are_ focusable and tabbable.
+        checkOpacity: false,
+        opacityProperty: false,
+        contentVisibilityAuto: true,
+        visibilityProperty: true,
+        // This is an alias for `visibilityProperty`. Contemporary browsers
+        // support both. However, this alias has wider browser support (Chrome
+        // >= 105 and Firefox >= 106, vs. Chrome >= 121 and Firefox >= 122), so
+        // we include it anyway.
+        checkVisibilityCSS: true
+      });
+      return !visible;
+    }
+  }
+  var _getComputedStyle = getComputedStyle(node), visibility = _getComputedStyle.visibility;
+  if (visibility === "hidden" || visibility === "collapse") {
+    return true;
+  }
+  var isDirectSummary = matches.call(node, "details>summary:first-of-type");
+  var nodeUnderDetails = isDirectSummary ? node.parentElement : node;
+  if (matches.call(nodeUnderDetails, "details:not([open]) *")) {
+    return true;
+  }
+  if (!displayCheck || displayCheck === "full" || // full-native can run this branch when it falls through in case
+  // Element#checkVisibility is unsupported
+  displayCheck === "full-native" || displayCheck === "legacy-full") {
+    if (typeof getShadowRoot === "function") {
+      var originalNode = node;
+      while (node) {
+        var parentElement = node.parentElement;
+        var rootNode = getRootNode(node);
+        if (parentElement && !parentElement.shadowRoot && getShadowRoot(parentElement) === true) {
+          return isZeroArea(node);
+        } else if (node.assignedSlot) {
+          node = node.assignedSlot;
+        } else if (!parentElement && rootNode !== node.ownerDocument) {
+          node = rootNode.host;
+        } else {
+          node = parentElement;
+        }
+      }
+      node = originalNode;
+    }
+    if (isNodeAttached(node)) {
+      return !node.getClientRects().length;
+    }
+    if (displayCheck !== "legacy-full") {
+      return true;
+    }
+  } else if (displayCheck === "non-zero-area") {
+    return isZeroArea(node);
+  }
+  return false;
+};
+var isDisabledFromFieldset = function isDisabledFromFieldset2(node) {
+  if (/^(INPUT|BUTTON|SELECT|TEXTAREA)$/.test(node.tagName)) {
+    var parentNode = node.parentElement;
+    while (parentNode) {
+      if (parentNode.tagName === "FIELDSET" && parentNode.disabled) {
+        for (var i = 0; i < parentNode.children.length; i++) {
+          var child2 = parentNode.children.item(i);
+          if (child2.tagName === "LEGEND") {
+            return matches.call(parentNode, "fieldset[disabled] *") ? true : !child2.contains(node);
+          }
+        }
+        return true;
+      }
+      parentNode = parentNode.parentElement;
+    }
+  }
+  return false;
+};
+var isNodeMatchingSelectorFocusable = function isNodeMatchingSelectorFocusable2(options, node) {
+  if (node.disabled || isHiddenInput2(node) || isHidden(node, options) || // For a details element with a summary, the summary element gets the focus
+  isDetailsWithSummary(node) || isDisabledFromFieldset(node)) {
+    return false;
+  }
+  return true;
+};
+var isNodeMatchingSelectorTabbable = function isNodeMatchingSelectorTabbable2(options, node) {
+  if (isNonTabbableRadio(node) || getTabIndex(node) < 0 || !isNodeMatchingSelectorFocusable(options, node)) {
+    return false;
+  }
+  return true;
+};
+var isShadowRootTabbable = function isShadowRootTabbable2(shadowHostNode) {
+  var tabIndex = parseInt(shadowHostNode.getAttribute("tabindex"), 10);
+  if (isNaN(tabIndex) || tabIndex >= 0) {
+    return true;
+  }
+  return false;
+};
+var _sortByOrder = function sortByOrder(candidates) {
+  var regularTabbables = [];
+  var orderedTabbables = [];
+  candidates.forEach(function(item, i) {
+    var isScope = !!item.scopeParent;
+    var element2 = isScope ? item.scopeParent : item;
+    var candidateTabindex = getSortOrderTabIndex(element2, isScope);
+    var elements = isScope ? _sortByOrder(item.candidates) : element2;
+    if (candidateTabindex === 0) {
+      isScope ? regularTabbables.push.apply(regularTabbables, elements) : regularTabbables.push(element2);
+    } else {
+      orderedTabbables.push({
+        documentOrder: i,
+        tabIndex: candidateTabindex,
+        item,
+        isScope,
+        content: elements
+      });
+    }
+  });
+  return orderedTabbables.sort(sortOrderedTabbables).reduce(function(acc, sortable) {
+    sortable.isScope ? acc.push.apply(acc, sortable.content) : acc.push(sortable.content);
+    return acc;
+  }, []).concat(regularTabbables);
+};
+var tabbable = function tabbable2(container, options) {
+  options = options || {};
+  var candidates;
+  if (options.getShadowRoot) {
+    candidates = _getCandidatesIteratively([container], options.includeContainer, {
+      filter: isNodeMatchingSelectorTabbable.bind(null, options),
+      flatten: false,
+      getShadowRoot: options.getShadowRoot,
+      shadowRootFilter: isShadowRootTabbable
+    });
+  } else {
+    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorTabbable.bind(null, options));
+  }
+  return _sortByOrder(candidates);
+};
+var focusable = function focusable2(container, options) {
+  options = options || {};
+  var candidates;
+  if (options.getShadowRoot) {
+    candidates = _getCandidatesIteratively([container], options.includeContainer, {
+      filter: isNodeMatchingSelectorFocusable.bind(null, options),
+      flatten: true,
+      getShadowRoot: options.getShadowRoot
+    });
+  } else {
+    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorFocusable.bind(null, options));
+  }
+  return candidates;
+};
+var focusableCandidateSelector = /* @__PURE__ */ candidateSelectors.concat("iframe:not([inert]):not([inert] *)").join(",");
+var isFocusable = function isFocusable2(node, options) {
+  options = options || {};
+  if (!node) {
+    throw new Error("No node provided");
+  }
+  if (matches.call(node, focusableCandidateSelector) === false) {
+    return false;
+  }
+  return isNodeMatchingSelectorFocusable(options, node);
+};
+
+// node_modules/bits-ui/dist/internal/arrays.js
+function next3(array, index4, loop2 = true) {
+  if (array.length === 0 || index4 < 0 || index4 >= array.length)
+    return;
+  if (array.length === 1 && index4 === 0)
+    return array[0];
+  if (index4 === array.length - 1)
+    return loop2 ? array[0] : void 0;
+  return array[index4 + 1];
+}
+function prev2(array, index4, loop2 = true) {
+  if (array.length === 0 || index4 < 0 || index4 >= array.length)
+    return;
+  if (array.length === 1 && index4 === 0)
+    return array[0];
+  if (index4 === 0)
+    return loop2 ? array[array.length - 1] : void 0;
+  return array[index4 - 1];
+}
+function forward(array, index4, increment2, loop2 = true) {
+  if (array.length === 0 || index4 < 0 || index4 >= array.length)
+    return;
+  let targetIndex = index4 + increment2;
+  if (loop2) {
+    targetIndex = (targetIndex % array.length + array.length) % array.length;
+  } else {
+    targetIndex = Math.max(0, Math.min(targetIndex, array.length - 1));
+  }
+  return array[targetIndex];
+}
+function backward(array, index4, decrement, loop2 = true) {
+  if (array.length === 0 || index4 < 0 || index4 >= array.length)
+    return;
+  let targetIndex = index4 - decrement;
+  if (loop2) {
+    targetIndex = (targetIndex % array.length + array.length) % array.length;
+  } else {
+    targetIndex = Math.max(0, Math.min(targetIndex, array.length - 1));
+  }
+  return array[targetIndex];
+}
+function getNextMatch(values, search, currentMatch) {
+  const lowerSearch = search.toLowerCase();
+  if (lowerSearch.endsWith(" ")) {
+    const searchWithoutSpace = lowerSearch.slice(0, -1);
+    const matchesWithoutSpace = values.filter((value) => value.toLowerCase().startsWith(searchWithoutSpace));
+    if (matchesWithoutSpace.length <= 1) {
+      return getNextMatch(values, searchWithoutSpace, currentMatch);
+    }
+    const currentMatchLowercase = currentMatch?.toLowerCase();
+    if (currentMatchLowercase && currentMatchLowercase.startsWith(searchWithoutSpace) && currentMatchLowercase.charAt(searchWithoutSpace.length) === " " && search.trim() === searchWithoutSpace) {
+      return currentMatch;
+    }
+    const spacedMatches = values.filter((value) => value.toLowerCase().startsWith(lowerSearch));
+    if (spacedMatches.length > 0) {
+      const currentMatchIndex2 = currentMatch ? values.indexOf(currentMatch) : -1;
+      let wrappedMatches = wrapArray(spacedMatches, Math.max(currentMatchIndex2, 0));
+      const nextMatch2 = wrappedMatches.find((match) => match !== currentMatch);
+      return nextMatch2 || currentMatch;
+    }
+  }
+  const isRepeated = search.length > 1 && Array.from(search).every((char) => char === search[0]);
+  const normalizedSearch = isRepeated ? search[0] : search;
+  const normalizedLowerSearch = normalizedSearch.toLowerCase();
+  const currentMatchIndex = currentMatch ? values.indexOf(currentMatch) : -1;
+  let wrappedValues = wrapArray(values, Math.max(currentMatchIndex, 0));
+  const excludeCurrentMatch = normalizedSearch.length === 1;
+  if (excludeCurrentMatch)
+    wrappedValues = wrappedValues.filter((v) => v !== currentMatch);
+  const nextMatch = wrappedValues.find((value) => value?.toLowerCase().startsWith(normalizedLowerSearch));
+  return nextMatch !== currentMatch ? nextMatch : void 0;
+}
+function wrapArray(array, startIndex) {
+  return array.map((_, index4) => array[(startIndex + index4) % array.length]);
+}
+
+// node_modules/bits-ui/dist/internal/box-auto-reset.svelte.js
+var defaultOptions2 = { afterMs: 1e4, onChange: noop3 };
+function boxAutoReset(defaultValue, options) {
+  const { afterMs, onChange, getWindow: getWindow3 } = { ...defaultOptions2, ...options };
+  let timeout = null;
+  let value = state(proxy(defaultValue));
+  function resetAfter() {
+    return getWindow3().setTimeout(
+      () => {
+        set(value, defaultValue, true);
+        onChange?.(defaultValue);
+      },
+      afterMs
+    );
+  }
+  user_effect(() => {
+    return () => {
+      if (timeout) getWindow3().clearTimeout(timeout);
+    };
+  });
+  return boxWith(() => get2(value), (v) => {
+    set(value, v, true);
+    onChange?.(v);
+    if (timeout) getWindow3().clearTimeout(timeout);
+    timeout = resetAfter();
+  });
+}
+
+// node_modules/bits-ui/dist/internal/dom-typeahead.svelte.js
+var DOMTypeahead = class {
+  #opts;
+  #search;
+  #onMatch = user_derived(() => {
+    if (this.#opts.onMatch) return this.#opts.onMatch;
+    return (node) => node.focus();
+  });
+  #getCurrentItem = user_derived(() => {
+    if (this.#opts.getCurrentItem) return this.#opts.getCurrentItem;
+    return this.#opts.getActiveElement;
+  });
+  constructor(opts) {
+    this.#opts = opts;
+    this.#search = boxAutoReset("", { afterMs: 1e3, getWindow: opts.getWindow });
+    this.handleTypeaheadSearch = this.handleTypeaheadSearch.bind(this);
+    this.resetTypeahead = this.resetTypeahead.bind(this);
+  }
+  handleTypeaheadSearch(key2, candidates) {
+    if (!candidates.length) return;
+    this.#search.current = this.#search.current + key2;
+    const currentItem = get2(this.#getCurrentItem)();
+    const currentMatch = candidates.find((item) => item === currentItem)?.textContent?.trim() ?? "";
+    const values = candidates.map((item) => item.textContent?.trim() ?? "");
+    const nextMatch = getNextMatch(values, this.#search.current, currentMatch);
+    const newItem = candidates.find((item) => item.textContent?.trim() === nextMatch);
+    if (newItem) get2(this.#onMatch)(newItem);
+    return newItem;
+  }
+  resetTypeahead() {
+    this.#search.current = "";
+  }
+  get search() {
+    return this.#search.current;
+  }
+};
+
+// node_modules/bits-ui/dist/bits/menu/menu.svelte.js
+var CONTEXT_MENU_TRIGGER_ATTR = "data-context-menu-trigger";
+var CONTEXT_MENU_CONTENT_ATTR = "data-context-menu-content";
+var MenuRootContext = new Context("Menu.Root");
+var MenuMenuContext = new Context("Menu.Root | Menu.Sub");
+var MenuContentContext = new Context("Menu.Content");
+var MenuGroupContext = new Context("Menu.Group | Menu.RadioGroup");
+var MenuRadioGroupContext = new Context("Menu.RadioGroup");
+var MenuCheckboxGroupContext = new Context("Menu.CheckboxGroup");
+var MenuOpenEvent = new CustomEventDispatcher("bitsmenuopen", { bubbles: false, cancelable: true });
+var menuAttrs = createBitsAttrs({
+  component: "menu",
+  parts: [
+    "trigger",
+    "content",
+    "sub-trigger",
+    "item",
+    "group",
+    "group-heading",
+    "checkbox-group",
+    "checkbox-item",
+    "radio-group",
+    "radio-item",
+    "separator",
+    "sub-content",
+    "arrow"
+  ]
+});
+
+// node_modules/bits-ui/dist/bits/utilities/dismissible-layer/use-dismissable-layer.svelte.js
+globalThis.bitsDismissableLayers ??= /* @__PURE__ */ new Map();
+var DismissibleLayerState = class _DismissibleLayerState {
+  static create(opts) {
+    return new _DismissibleLayerState(opts);
+  }
+  opts;
+  #interactOutsideProp;
+  #behaviorType;
+  #interceptedEvents = { pointerdown: false };
+  #isResponsibleLayer = false;
+  #isFocusInsideDOMTree = false;
+  #documentObj = void 0;
+  #onFocusOutside;
+  #unsubClickListener = noop3;
+  constructor(opts) {
+    this.opts = opts;
+    this.#behaviorType = opts.interactOutsideBehavior;
+    this.#interactOutsideProp = opts.onInteractOutside;
+    this.#onFocusOutside = opts.onFocusOutside;
+    user_effect(() => {
+      this.#documentObj = getOwnerDocument2(this.opts.ref.current);
+    });
+    let unsubEvents = noop3;
+    const cleanup = () => {
+      this.#resetState();
+      globalThis.bitsDismissableLayers.delete(this);
+      this.#handleInteractOutside.destroy();
+      unsubEvents();
+    };
+    watch([() => this.opts.enabled.current, () => this.opts.ref.current], () => {
+      if (!this.opts.enabled.current || !this.opts.ref.current) return;
+      afterSleep(1, () => {
+        if (!this.opts.ref.current) return;
+        globalThis.bitsDismissableLayers.set(this, this.#behaviorType);
+        unsubEvents();
+        unsubEvents = this.#addEventListeners();
+      });
+      return cleanup;
+    });
+    onDestroyEffect(() => {
+      this.#resetState.destroy();
+      globalThis.bitsDismissableLayers.delete(this);
+      this.#handleInteractOutside.destroy();
+      this.#unsubClickListener();
+      unsubEvents();
+    });
+  }
+  #handleFocus = (event2) => {
+    if (event2.defaultPrevented) return;
+    if (!this.opts.ref.current) return;
+    afterTick(() => {
+      if (!this.opts.ref.current || this.#isTargetWithinLayer(event2.target)) return;
+      if (event2.target && !this.#isFocusInsideDOMTree) {
+        this.#onFocusOutside.current?.(event2);
+      }
+    });
+  };
+  #addEventListeners() {
+    return executeCallbacks(
+      /**
+       * CAPTURE INTERACTION START
+       * mark interaction-start event as intercepted.
+       * mark responsible layer during interaction start
+       * to avoid checking if is responsible layer during interaction end
+       * when a new floating element may have been opened.
+       */
+      on(this.#documentObj, "pointerdown", executeCallbacks(this.#markInterceptedEvent, this.#markResponsibleLayer), { capture: true }),
+      /**
+       * BUBBLE INTERACTION START
+       * Mark interaction-start event as non-intercepted. Debounce `onInteractOutsideStart`
+       * to avoid prematurely checking if other events were intercepted.
+       */
+      on(this.#documentObj, "pointerdown", executeCallbacks(this.#markNonInterceptedEvent, this.#handleInteractOutside)),
+      /**
+       * HANDLE FOCUS OUTSIDE
+       */
+      on(this.#documentObj, "focusin", this.#handleFocus)
+    );
+  }
+  #handleDismiss = (e) => {
+    let event2 = e;
+    if (event2.defaultPrevented) {
+      event2 = createWrappedEvent(e);
+    }
+    this.#interactOutsideProp.current(e);
+  };
+  #handleInteractOutside = debounce2(
+    (e) => {
+      if (!this.opts.ref.current) {
+        this.#unsubClickListener();
+        return;
+      }
+      const isEventValid = this.opts.isValidEvent.current(e, this.opts.ref.current) || isValidEvent(e, this.opts.ref.current);
+      if (!this.#isResponsibleLayer || this.#isAnyEventIntercepted() || !isEventValid) {
+        this.#unsubClickListener();
+        return;
+      }
+      let event2 = e;
+      if (event2.defaultPrevented) {
+        event2 = createWrappedEvent(event2);
+      }
+      if (this.#behaviorType.current !== "close" && this.#behaviorType.current !== "defer-otherwise-close") {
+        this.#unsubClickListener();
+        return;
+      }
+      if (e.pointerType === "touch") {
+        this.#unsubClickListener();
+        this.#unsubClickListener = on(this.#documentObj, "click", this.#handleDismiss, { once: true });
+      } else {
+        this.#interactOutsideProp.current(event2);
+      }
+    },
+    10
+  );
+  #markInterceptedEvent = (e) => {
+    this.#interceptedEvents[e.type] = true;
+  };
+  #markNonInterceptedEvent = (e) => {
+    this.#interceptedEvents[e.type] = false;
+  };
+  #markResponsibleLayer = () => {
+    if (!this.opts.ref.current) return;
+    this.#isResponsibleLayer = isResponsibleLayer(this.opts.ref.current);
+  };
+  #isTargetWithinLayer = (target) => {
+    if (!this.opts.ref.current) return false;
+    return isOrContainsTarget2(this.opts.ref.current, target);
+  };
+  #resetState = debounce2(
+    () => {
+      for (const eventType in this.#interceptedEvents) {
+        this.#interceptedEvents[eventType] = false;
+      }
+      this.#isResponsibleLayer = false;
+    },
+    20
+  );
+  #isAnyEventIntercepted() {
+    const i = Object.values(this.#interceptedEvents).some(Boolean);
+    return i;
+  }
+  #onfocuscapture = () => {
+    this.#isFocusInsideDOMTree = true;
+  };
+  #onblurcapture = () => {
+    this.#isFocusInsideDOMTree = false;
+  };
+  props = {
+    onfocuscapture: this.#onfocuscapture,
+    onblurcapture: this.#onblurcapture
+  };
+};
+function getTopMostDismissableLayer(layersArr = [...globalThis.bitsDismissableLayers]) {
+  return layersArr.findLast(([_, { current: behaviorType }]) => behaviorType === "close" || behaviorType === "ignore");
+}
+function isResponsibleLayer(node) {
+  const layersArr = [...globalThis.bitsDismissableLayers];
+  const topMostLayer = getTopMostDismissableLayer(layersArr);
+  if (topMostLayer) return topMostLayer[0].opts.ref.current === node;
+  const [firstLayerNode] = layersArr[0];
+  return firstLayerNode.opts.ref.current === node;
+}
+function isValidEvent(e, node) {
+  const target = e.target;
+  if (!isElementOrSVGElement(target)) return false;
+  const targetIsContextMenuTrigger = Boolean(target.closest(`[${CONTEXT_MENU_TRIGGER_ATTR}]`));
+  const nodeIsContextMenu = Boolean(node.closest(`[${CONTEXT_MENU_CONTENT_ATTR}]`));
+  if ("button" in e && e.button > 0 && !targetIsContextMenuTrigger) return false;
+  if ("button" in e && e.button === 0 && targetIsContextMenuTrigger && nodeIsContextMenu) {
+    return true;
+  }
+  if (targetIsContextMenuTrigger && nodeIsContextMenu) return false;
+  const ownerDocument = getOwnerDocument2(target);
+  const isValid = ownerDocument.documentElement.contains(target) && !isOrContainsTarget2(node, target) && isClickTrulyOutside(e, node);
+  return isValid;
+}
+function createWrappedEvent(e) {
+  const capturedCurrentTarget = e.currentTarget;
+  const capturedTarget = e.target;
+  let newEvent;
+  if (e instanceof PointerEvent) {
+    newEvent = new PointerEvent(e.type, e);
+  } else {
+    newEvent = new PointerEvent("pointerdown", e);
+  }
+  let isPrevented = false;
+  const wrappedEvent = new Proxy(newEvent, {
+    get: (target, prop3) => {
+      if (prop3 === "currentTarget") {
+        return capturedCurrentTarget;
+      }
+      if (prop3 === "target") {
+        return capturedTarget;
+      }
+      if (prop3 === "preventDefault") {
+        return () => {
+          isPrevented = true;
+          if (typeof target.preventDefault === "function") {
+            target.preventDefault();
+          }
+        };
+      }
+      if (prop3 === "defaultPrevented") {
+        return isPrevented;
+      }
+      if (prop3 in target) {
+        return target[prop3];
+      }
+      return e[prop3];
+    }
+  });
+  return wrappedEvent;
+}
+
+// node_modules/bits-ui/dist/bits/utilities/dismissible-layer/dismissible-layer.svelte
+function Dismissible_layer($$anchor, $$props) {
+  push($$props, true);
+  let interactOutsideBehavior = prop($$props, "interactOutsideBehavior", 3, "close"), onInteractOutside = prop($$props, "onInteractOutside", 3, noop3), onFocusOutside = prop($$props, "onFocusOutside", 3, noop3), isValidEvent2 = prop($$props, "isValidEvent", 3, () => false);
+  const dismissibleLayerState = DismissibleLayerState.create({
+    id: boxWith(() => $$props.id),
+    interactOutsideBehavior: boxWith(() => interactOutsideBehavior()),
+    onInteractOutside: boxWith(() => onInteractOutside()),
+    enabled: boxWith(() => $$props.enabled),
+    onFocusOutside: boxWith(() => onFocusOutside()),
+    isValidEvent: boxWith(() => isValidEvent2()),
+    ref: $$props.ref
+  });
+  var fragment = comment();
+  var node = first_child(fragment);
+  snippet(node, () => $$props.children ?? noop, () => ({ props: dismissibleLayerState.props }));
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/utilities/escape-layer/use-escape-layer.svelte.js
+globalThis.bitsEscapeLayers ??= /* @__PURE__ */ new Map();
+var EscapeLayerState = class _EscapeLayerState {
+  static create(opts) {
+    return new _EscapeLayerState(opts);
+  }
+  opts;
+  domContext;
+  constructor(opts) {
+    this.opts = opts;
+    this.domContext = new DOMContext(this.opts.ref);
+    let unsubEvents = noop3;
+    watch(() => opts.enabled.current, (enabled) => {
+      if (enabled) {
+        globalThis.bitsEscapeLayers.set(this, opts.escapeKeydownBehavior);
+        unsubEvents = this.#addEventListener();
+      }
+      return () => {
+        unsubEvents();
+        globalThis.bitsEscapeLayers.delete(this);
+      };
+    });
+  }
+  #addEventListener = () => {
+    return on(this.domContext.getDocument(), "keydown", this.#onkeydown, { passive: false });
+  };
+  #onkeydown = (e) => {
+    if (e.key !== kbd_constants_exports.ESCAPE || !isResponsibleEscapeLayer(this)) return;
+    const clonedEvent = new KeyboardEvent(e.type, e);
+    e.preventDefault();
+    const behaviorType = this.opts.escapeKeydownBehavior.current;
+    if (behaviorType !== "close" && behaviorType !== "defer-otherwise-close") return;
+    this.opts.onEscapeKeydown.current(clonedEvent);
+  };
+};
+function isResponsibleEscapeLayer(instance) {
+  const layersArr = [...globalThis.bitsEscapeLayers];
+  const topMostLayer = layersArr.findLast(([_, { current: behaviorType }]) => behaviorType === "close" || behaviorType === "ignore");
+  if (topMostLayer) return topMostLayer[0] === instance;
+  const [firstLayerNode] = layersArr[0];
+  return firstLayerNode === instance;
+}
+
+// node_modules/bits-ui/dist/bits/utilities/escape-layer/escape-layer.svelte
+function Escape_layer($$anchor, $$props) {
+  push($$props, true);
+  let escapeKeydownBehavior = prop($$props, "escapeKeydownBehavior", 3, "close"), onEscapeKeydown = prop($$props, "onEscapeKeydown", 3, noop3);
+  EscapeLayerState.create({
+    escapeKeydownBehavior: boxWith(() => escapeKeydownBehavior()),
+    onEscapeKeydown: boxWith(() => onEscapeKeydown()),
+    enabled: boxWith(() => $$props.enabled),
+    ref: $$props.ref
+  });
+  var fragment = comment();
+  var node = first_child(fragment);
+  snippet(node, () => $$props.children ?? noop);
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/utilities/focus-scope/focus-scope-manager.js
+var FocusScopeManager = class _FocusScopeManager {
+  static instance;
+  #scopeStack = simpleBox([]);
+  #focusHistory = /* @__PURE__ */ new WeakMap();
+  #preFocusHistory = /* @__PURE__ */ new WeakMap();
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new _FocusScopeManager();
+    }
+    return this.instance;
+  }
+  register(scope) {
+    const current = this.getActive();
+    if (current && current !== scope) {
+      current.pause();
+    }
+    const activeElement2 = document.activeElement;
+    if (activeElement2 && activeElement2 !== document.body) {
+      this.#preFocusHistory.set(scope, activeElement2);
+    }
+    this.#scopeStack.current = this.#scopeStack.current.filter((s) => s !== scope);
+    this.#scopeStack.current.unshift(scope);
+  }
+  unregister(scope) {
+    this.#scopeStack.current = this.#scopeStack.current.filter((s) => s !== scope);
+    const next4 = this.getActive();
+    if (next4) {
+      next4.resume();
+    }
+  }
+  getActive() {
+    return this.#scopeStack.current[0];
+  }
+  setFocusMemory(scope, element2) {
+    this.#focusHistory.set(scope, element2);
+  }
+  getFocusMemory(scope) {
+    return this.#focusHistory.get(scope);
+  }
+  isActiveScope(scope) {
+    return this.getActive() === scope;
+  }
+  setPreFocusMemory(scope, element2) {
+    this.#preFocusHistory.set(scope, element2);
+  }
+  getPreFocusMemory(scope) {
+    return this.#preFocusHistory.get(scope);
+  }
+  clearPreFocusMemory(scope) {
+    this.#preFocusHistory.delete(scope);
+  }
+};
+
+// node_modules/bits-ui/dist/bits/utilities/focus-scope/focus-scope.svelte.js
+var FocusScope = class _FocusScope {
+  #paused = false;
+  #container = null;
+  #manager = FocusScopeManager.getInstance();
+  #cleanupFns = [];
+  #opts;
+  constructor(opts) {
+    this.#opts = opts;
+  }
+  get paused() {
+    return this.#paused;
+  }
+  pause() {
+    this.#paused = true;
+  }
+  resume() {
+    this.#paused = false;
+  }
+  #cleanup() {
+    for (const fn of this.#cleanupFns) {
+      fn();
+    }
+    this.#cleanupFns = [];
+  }
+  mount(container) {
+    if (this.#container) {
+      this.unmount();
+    }
+    this.#container = container;
+    this.#manager.register(this);
+    this.#setupEventListeners();
+    this.#handleOpenAutoFocus();
+  }
+  unmount() {
+    if (!this.#container) return;
+    this.#cleanup();
+    this.#handleCloseAutoFocus();
+    this.#manager.unregister(this);
+    this.#manager.clearPreFocusMemory(this);
+    this.#container = null;
+  }
+  #handleOpenAutoFocus() {
+    if (!this.#container) return;
+    const event2 = new CustomEvent("focusScope.onOpenAutoFocus", { bubbles: false, cancelable: true });
+    this.#opts.onOpenAutoFocus.current(event2);
+    if (!event2.defaultPrevented) {
+      requestAnimationFrame(() => {
+        if (!this.#container) return;
+        const firstTabbable = this.#getFirstTabbable();
+        if (firstTabbable) {
+          firstTabbable.focus();
+          this.#manager.setFocusMemory(this, firstTabbable);
+        } else {
+          this.#container.focus();
+        }
+      });
+    }
+  }
+  #handleCloseAutoFocus() {
+    const event2 = new CustomEvent("focusScope.onCloseAutoFocus", { bubbles: false, cancelable: true });
+    this.#opts.onCloseAutoFocus.current?.(event2);
+    if (!event2.defaultPrevented) {
+      const preFocusedElement = this.#manager.getPreFocusMemory(this);
+      if (preFocusedElement && document.contains(preFocusedElement)) {
+        try {
+          preFocusedElement.focus();
+        } catch {
+          document.body.focus();
+        }
+      }
+    }
+  }
+  #setupEventListeners() {
+    if (!this.#container || !this.#opts.trap.current) return;
+    const container = this.#container;
+    const doc = container.ownerDocument;
+    const handleFocus = (e) => {
+      if (this.#paused || !this.#manager.isActiveScope(this)) return;
+      const target = e.target;
+      if (!target) return;
+      const isInside = container.contains(target);
+      if (isInside) {
+        this.#manager.setFocusMemory(this, target);
+      } else {
+        const lastFocused = this.#manager.getFocusMemory(this);
+        if (lastFocused && container.contains(lastFocused) && isFocusable(lastFocused)) {
+          e.preventDefault();
+          lastFocused.focus();
+        } else {
+          const firstTabbable = this.#getFirstTabbable();
+          const firstFocusable = this.#getAllFocusables()[0];
+          (firstTabbable || firstFocusable || container).focus();
+        }
+      }
+    };
+    const handleKeydown = (e) => {
+      if (!this.#opts.loop || this.#paused || e.key !== "Tab") return;
+      if (!this.#manager.isActiveScope(this)) return;
+      const tabbables = this.#getTabbables();
+      if (tabbables.length === 0) return;
+      const first2 = tabbables[0];
+      const last2 = tabbables[tabbables.length - 1];
+      if (!e.shiftKey && doc.activeElement === last2) {
+        e.preventDefault();
+        first2.focus();
+      } else if (e.shiftKey && doc.activeElement === first2) {
+        e.preventDefault();
+        last2.focus();
+      }
+    };
+    this.#cleanupFns.push(on(doc, "focusin", handleFocus, { capture: true }), on(container, "keydown", handleKeydown));
+    const observer = new MutationObserver(() => {
+      const lastFocused = this.#manager.getFocusMemory(this);
+      if (lastFocused && !container.contains(lastFocused)) {
+        const firstTabbable = this.#getFirstTabbable();
+        const firstFocusable = this.#getAllFocusables()[0];
+        const elementToFocus = firstTabbable || firstFocusable;
+        if (elementToFocus) {
+          elementToFocus.focus();
+          this.#manager.setFocusMemory(this, elementToFocus);
+        } else {
+          container.focus();
+        }
+      }
+    });
+    observer.observe(container, { childList: true, subtree: true });
+    this.#cleanupFns.push(() => observer.disconnect());
+  }
+  #getTabbables() {
+    if (!this.#container) return [];
+    return tabbable(this.#container, { includeContainer: false, getShadowRoot: true });
+  }
+  #getFirstTabbable() {
+    const tabbables = this.#getTabbables();
+    return tabbables[0] || null;
+  }
+  #getAllFocusables() {
+    if (!this.#container) return [];
+    return focusable(this.#container, { includeContainer: false, getShadowRoot: true });
+  }
+  static use(opts) {
+    let scope = null;
+    watch([() => opts.ref.current, () => opts.enabled.current], ([ref, enabled]) => {
+      if (ref && enabled) {
+        if (!scope) {
+          scope = new _FocusScope(opts);
+        }
+        scope.mount(ref);
+      } else if (scope) {
+        scope.unmount();
+        scope = null;
+      }
+    });
+    onDestroyEffect(() => {
+      scope?.unmount();
+    });
+    return {
+      get props() {
+        return { tabindex: -1 };
+      }
+    };
+  }
+};
+
+// node_modules/bits-ui/dist/bits/utilities/focus-scope/focus-scope.svelte
+function Focus_scope($$anchor, $$props) {
+  push($$props, true);
+  let enabled = prop($$props, "enabled", 3, false), trapFocus = prop($$props, "trapFocus", 3, false), loop2 = prop($$props, "loop", 3, false), onCloseAutoFocus = prop($$props, "onCloseAutoFocus", 3, noop3), onOpenAutoFocus = prop($$props, "onOpenAutoFocus", 3, noop3);
+  const focusScopeState = FocusScope.use({
+    enabled: boxWith(() => enabled()),
+    trap: boxWith(() => trapFocus()),
+    loop: loop2(),
+    onCloseAutoFocus: boxWith(() => onCloseAutoFocus()),
+    onOpenAutoFocus: boxWith(() => onOpenAutoFocus()),
+    ref: $$props.ref
+  });
+  var fragment = comment();
+  var node = first_child(fragment);
+  snippet(node, () => $$props.focusScope ?? noop, () => ({ props: focusScopeState.props }));
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/utilities/text-selection-layer/use-text-selection-layer.svelte.js
+var noopPointer = () => {
+};
+globalThis.bitsTextSelectionLayers ??= /* @__PURE__ */ new Map();
+var TextSelectionLayerState = class _TextSelectionLayerState {
+  static create(opts) {
+    return new _TextSelectionLayerState(opts);
+  }
+  opts;
+  domContext;
+  #unsubSelectionLock = noop3;
+  #enabledSnapshot = false;
+  #onPointerDownSnapshot = noopPointer;
+  #onPointerUpSnapshot = noopPointer;
+  constructor(opts) {
+    this.opts = opts;
+    this.domContext = new DOMContext(opts.ref);
+    let unsubEvents = noop3;
+    watch(
+      () => [
+        this.opts.enabled.current,
+        this.opts.onPointerDown.current,
+        this.opts.onPointerUp.current
+      ],
+      ([enabled, onPointerDown, onPointerUp]) => {
+        this.#enabledSnapshot = enabled;
+        this.#onPointerDownSnapshot = onPointerDown;
+        this.#onPointerUpSnapshot = onPointerUp;
+        if (enabled) {
+          globalThis.bitsTextSelectionLayers.set(this, this.opts.enabled);
+          unsubEvents();
+          unsubEvents = this.#addEventListeners();
+        }
+        return () => {
+          this.#enabledSnapshot = false;
+          unsubEvents();
+          this.#resetSelectionLock();
+          globalThis.bitsTextSelectionLayers.delete(this);
+        };
+      }
+    );
+  }
+  #addEventListeners() {
+    return executeCallbacks(on(this.domContext.getDocument(), "pointerdown", this.#pointerdown), on(this.domContext.getDocument(), "pointerup", composeHandlers(this.#resetSelectionLock, this.#pointerupUserHandler)));
+  }
+  #pointerupUserHandler = (e) => {
+    this.#onPointerUpSnapshot(e);
+  };
+  #pointerdown = (e) => {
+    const node = this.opts.ref.current;
+    const target = e.target;
+    if (!isHTMLElement2(node) || !isHTMLElement2(target) || !this.#enabledSnapshot) return;
+    if (!isHighestLayer(this) || !contains2(node, target)) return;
+    this.#onPointerDownSnapshot(e);
+    if (e.defaultPrevented) return;
+    this.#unsubSelectionLock = preventTextSelectionOverflow(node, this.domContext.getDocument().body);
+  };
+  #resetSelectionLock = () => {
+    this.#unsubSelectionLock();
+    this.#unsubSelectionLock = noop3;
+  };
+};
+var getUserSelect = (node) => node.style.userSelect || node.style.webkitUserSelect;
+function preventTextSelectionOverflow(node, body) {
+  const originalBodyUserSelect = getUserSelect(body);
+  const originalNodeUserSelect = getUserSelect(node);
+  setUserSelect(body, "none");
+  setUserSelect(node, "text");
+  return () => {
+    setUserSelect(body, originalBodyUserSelect);
+    setUserSelect(node, originalNodeUserSelect);
+  };
+}
+function setUserSelect(node, value) {
+  node.style.userSelect = value;
+  node.style.webkitUserSelect = value;
+}
+function isHighestLayer(instance) {
+  const layersArr = [...globalThis.bitsTextSelectionLayers];
+  if (!layersArr.length) return false;
+  const highestLayer = layersArr.at(-1);
+  if (!highestLayer) return false;
+  return highestLayer[0] === instance;
+}
+
+// node_modules/bits-ui/dist/bits/utilities/text-selection-layer/text-selection-layer.svelte
+function Text_selection_layer($$anchor, $$props) {
+  push($$props, true);
+  let preventOverflowTextSelection = prop($$props, "preventOverflowTextSelection", 3, true), onPointerDown = prop($$props, "onPointerDown", 3, noop3), onPointerUp = prop($$props, "onPointerUp", 3, noop3);
+  TextSelectionLayerState.create({
+    id: boxWith(() => $$props.id),
+    onPointerDown: boxWith(() => onPointerDown()),
+    onPointerUp: boxWith(() => onPointerUp()),
+    enabled: boxWith(() => $$props.enabled && preventOverflowTextSelection()),
+    ref: $$props.ref
+  });
+  var fragment = comment();
+  var node = first_child(fragment);
+  snippet(node, () => $$props.children ?? noop);
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/internal/use-id.js
+globalThis.bitsIdCounter ??= { current: 0 };
+function useId(prefix = "bits") {
+  globalThis.bitsIdCounter.current++;
+  return `${prefix}-${globalThis.bitsIdCounter.current}`;
+}
+
+// node_modules/bits-ui/dist/internal/shared-state.svelte.js
+var SharedState = class {
+  #factory;
+  #subscribers = 0;
+  #state = state();
+  #scope;
+  constructor(factory) {
+    this.#factory = factory;
+  }
+  #dispose() {
+    this.#subscribers -= 1;
+    if (this.#scope && this.#subscribers <= 0) {
+      this.#scope();
+      set(this.#state, void 0);
+      this.#scope = void 0;
+    }
+  }
+  get(...args) {
+    this.#subscribers += 1;
+    if (get2(this.#state) === void 0) {
+      this.#scope = effect_root(() => {
+        set(this.#state, this.#factory(...args), true);
+      });
+    }
+    user_effect(() => {
+      return () => {
+        this.#dispose();
+      };
+    });
+    return get2(this.#state);
+  }
+};
+
+// node_modules/bits-ui/dist/internal/body-scroll-lock.svelte.js
+var lockMap = new SvelteMap();
+var initialBodyStyle = state(null);
+var stopTouchMoveListener = null;
+var cleanupTimeoutId = null;
+var isInCleanupTransition = false;
+var anyLocked = boxWith(() => {
+  for (const value of lockMap.values()) {
+    if (value) return true;
+  }
+  return false;
+});
+var cleanupScheduledAt = null;
+var bodyLockStackCount = new SharedState(() => {
+  function resetBodyStyle() {
+    if (!true_default) return;
+    document.body.setAttribute("style", get2(initialBodyStyle) ?? "");
+    document.body.style.removeProperty("--scrollbar-width");
+    isIOS && stopTouchMoveListener?.();
+    set(initialBodyStyle, null);
+  }
+  function cancelPendingCleanup() {
+    if (cleanupTimeoutId === null) return;
+    window.clearTimeout(cleanupTimeoutId);
+    cleanupTimeoutId = null;
+  }
+  function scheduleCleanupIfNoNewLocks(delay, callback) {
+    cancelPendingCleanup();
+    isInCleanupTransition = true;
+    cleanupScheduledAt = Date.now();
+    const currentCleanupId = cleanupScheduledAt;
+    const cleanupFn = () => {
+      cleanupTimeoutId = null;
+      if (cleanupScheduledAt !== currentCleanupId) return;
+      if (!isAnyLocked(lockMap)) {
+        isInCleanupTransition = false;
+        callback();
+      } else {
+        isInCleanupTransition = false;
+      }
+    };
+    const actualDelay = delay === null ? 24 : delay;
+    cleanupTimeoutId = window.setTimeout(cleanupFn, actualDelay);
+  }
+  function ensureInitialStyleCaptured() {
+    if (get2(initialBodyStyle) === null && lockMap.size === 0 && !isInCleanupTransition) {
+      set(initialBodyStyle, document.body.getAttribute("style"), true);
+    }
+  }
+  watch(() => anyLocked.current, () => {
+    if (!anyLocked.current) return;
+    ensureInitialStyleCaptured();
+    isInCleanupTransition = false;
+    const htmlStyle = getComputedStyle(document.documentElement);
+    const bodyStyle = getComputedStyle(document.body);
+    const hasStableGutter = htmlStyle.scrollbarGutter?.includes("stable") || bodyStyle.scrollbarGutter?.includes("stable");
+    const verticalScrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const paddingRight = Number.parseInt(bodyStyle.paddingRight ?? "0", 10);
+    const config = {
+      padding: paddingRight + verticalScrollbarWidth,
+      margin: Number.parseInt(bodyStyle.marginRight ?? "0", 10)
+    };
+    if (verticalScrollbarWidth > 0 && !hasStableGutter) {
+      document.body.style.paddingRight = `${config.padding}px`;
+      document.body.style.marginRight = `${config.margin}px`;
+      document.body.style.setProperty("--scrollbar-width", `${verticalScrollbarWidth}px`);
+    }
+    document.body.style.overflow = "hidden";
+    if (isIOS) {
+      stopTouchMoveListener = on(
+        document,
+        "touchmove",
+        (e) => {
+          if (e.target !== document.documentElement) return;
+          if (e.touches.length > 1) return;
+          e.preventDefault();
+        },
+        { passive: false }
+      );
+    }
+    afterTick(() => {
+      document.body.style.pointerEvents = "none";
+      document.body.style.overflow = "hidden";
+    });
+  });
+  onDestroyEffect(() => {
+    return () => {
+      stopTouchMoveListener?.();
+    };
+  });
+  return {
+    get lockMap() {
+      return lockMap;
+    },
+    resetBodyStyle,
+    scheduleCleanupIfNoNewLocks,
+    cancelPendingCleanup,
+    ensureInitialStyleCaptured
+  };
+});
+var BodyScrollLock = class {
+  #id = useId();
+  #initialState;
+  #restoreScrollDelay = () => null;
+  #countState;
+  locked;
+  constructor(initialState, restoreScrollDelay = () => null) {
+    this.#initialState = initialState;
+    this.#restoreScrollDelay = restoreScrollDelay;
+    this.#countState = bodyLockStackCount.get();
+    if (!this.#countState) return;
+    this.#countState.cancelPendingCleanup();
+    this.#countState.ensureInitialStyleCaptured();
+    this.#countState.lockMap.set(this.#id, this.#initialState ?? false);
+    this.locked = boxWith(() => this.#countState.lockMap.get(this.#id) ?? false, (v) => this.#countState.lockMap.set(this.#id, v));
+    onDestroyEffect(() => {
+      this.#countState.lockMap.delete(this.#id);
+      if (isAnyLocked(this.#countState.lockMap)) return;
+      const restoreScrollDelay2 = this.#restoreScrollDelay();
+      this.#countState.scheduleCleanupIfNoNewLocks(restoreScrollDelay2, () => {
+        this.#countState.resetBodyStyle();
+      });
+    });
+  }
+};
+function isAnyLocked(map2) {
+  for (const [_, value] of map2) {
+    if (value) return true;
+  }
+  return false;
+}
+
+// node_modules/bits-ui/dist/bits/utilities/scroll-lock/scroll-lock.svelte
+function Scroll_lock($$anchor, $$props) {
+  push($$props, true);
+  let preventScroll = prop($$props, "preventScroll", 3, true), restoreScrollDelay = prop($$props, "restoreScrollDelay", 3, null);
+  if (preventScroll()) {
+    new BodyScrollLock(preventScroll(), () => restoreScrollDelay());
+  }
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/utilities/hidden-input.svelte
+var rest_excludes13 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "value"]);
+var root14 = from_html(`<input/>`);
+function Hidden_input($$anchor, $$props) {
+  push($$props, true);
+  let value = prop($$props, "value", 15), restProps = rest_props($$props, rest_excludes13);
+  const mergedProps = user_derived(() => mergeProps(restProps, {
+    "aria-hidden": "true",
+    tabindex: -1,
+    style: { ...srOnlyStyles, position: "absolute", top: "0", left: "0" }
+  }));
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent = ($$anchor2) => {
+      var input = root14();
+      attribute_effect(input, () => ({ ...get2(mergedProps), value: value() }), void 0, void 0, void 0, void 0, true);
+      append($$anchor2, input);
+    };
+    var alternate = ($$anchor2) => {
+      var input_1 = root14();
+      attribute_effect(input_1, () => ({ ...get2(mergedProps) }), void 0, void 0, void 0, void 0, true);
+      bind_value(input_1, value);
+      append($$anchor2, input_1);
+    };
+    if_block(node, ($$render) => {
+      if (get2(mergedProps).type === "checkbox") $$render(consequent);
+      else $$render(alternate, -1);
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs
+var sides = ["top", "right", "bottom", "left"];
+var min = Math.min;
+var max = Math.max;
+var round = Math.round;
+var floor = Math.floor;
+var createCoords = (v) => ({
+  x: v,
+  y: v
+});
+var oppositeSideMap = {
+  left: "right",
+  right: "left",
+  bottom: "top",
+  top: "bottom"
+};
+function clamp(start, value, end2) {
+  return max(start, min(value, end2));
+}
+function evaluate(value, param) {
+  return typeof value === "function" ? value(param) : value;
+}
+function getSide(placement) {
+  return placement.split("-")[0];
+}
+function getAlignment(placement) {
+  return placement.split("-")[1];
+}
+function getOppositeAxis(axis) {
+  return axis === "x" ? "y" : "x";
+}
+function getAxisLength(axis) {
+  return axis === "y" ? "height" : "width";
+}
+function getSideAxis(placement) {
+  const firstChar = placement[0];
+  return firstChar === "t" || firstChar === "b" ? "y" : "x";
+}
+function getAlignmentAxis(placement) {
+  return getOppositeAxis(getSideAxis(placement));
+}
+function getAlignmentSides(placement, rects, rtl) {
+  if (rtl === void 0) {
+    rtl = false;
+  }
+  const alignment = getAlignment(placement);
+  const alignmentAxis = getAlignmentAxis(placement);
+  const length = getAxisLength(alignmentAxis);
+  let mainAlignmentSide = alignmentAxis === "x" ? alignment === (rtl ? "end" : "start") ? "right" : "left" : alignment === "start" ? "bottom" : "top";
+  if (rects.reference[length] > rects.floating[length]) {
+    mainAlignmentSide = getOppositePlacement(mainAlignmentSide);
+  }
+  return [mainAlignmentSide, getOppositePlacement(mainAlignmentSide)];
+}
+function getExpandedPlacements(placement) {
+  const oppositePlacement = getOppositePlacement(placement);
+  return [getOppositeAlignmentPlacement(placement), oppositePlacement, getOppositeAlignmentPlacement(oppositePlacement)];
+}
+function getOppositeAlignmentPlacement(placement) {
+  return placement.includes("start") ? placement.replace("start", "end") : placement.replace("end", "start");
+}
+var lrPlacement = ["left", "right"];
+var rlPlacement = ["right", "left"];
+var tbPlacement = ["top", "bottom"];
+var btPlacement = ["bottom", "top"];
+function getSideList(side, isStart, rtl) {
+  switch (side) {
+    case "top":
+    case "bottom":
+      if (rtl) return isStart ? rlPlacement : lrPlacement;
+      return isStart ? lrPlacement : rlPlacement;
+    case "left":
+    case "right":
+      return isStart ? tbPlacement : btPlacement;
+    default:
+      return [];
+  }
+}
+function getOppositeAxisPlacements(placement, flipAlignment, direction, rtl) {
+  const alignment = getAlignment(placement);
+  let list = getSideList(getSide(placement), direction === "start", rtl);
+  if (alignment) {
+    list = list.map((side) => side + "-" + alignment);
+    if (flipAlignment) {
+      list = list.concat(list.map(getOppositeAlignmentPlacement));
+    }
+  }
+  return list;
+}
+function getOppositePlacement(placement) {
+  const side = getSide(placement);
+  return oppositeSideMap[side] + placement.slice(side.length);
+}
+function expandPaddingObject(padding) {
+  return {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    ...padding
+  };
+}
+function getPaddingObject(padding) {
+  return typeof padding !== "number" ? expandPaddingObject(padding) : {
+    top: padding,
+    right: padding,
+    bottom: padding,
+    left: padding
+  };
+}
+function rectToClientRect(rect) {
+  const {
+    x,
+    y,
+    width,
+    height
+  } = rect;
+  return {
+    width,
+    height,
+    top: y,
+    left: x,
+    right: x + width,
+    bottom: y + height,
+    x,
+    y
+  };
+}
+
+// node_modules/@floating-ui/core/dist/floating-ui.core.mjs
+function computeCoordsFromPlacement(_ref, placement, rtl) {
+  let {
+    reference,
+    floating
+  } = _ref;
+  const sideAxis = getSideAxis(placement);
+  const alignmentAxis = getAlignmentAxis(placement);
+  const alignLength = getAxisLength(alignmentAxis);
+  const side = getSide(placement);
+  const isVertical = sideAxis === "y";
+  const commonX = reference.x + reference.width / 2 - floating.width / 2;
+  const commonY = reference.y + reference.height / 2 - floating.height / 2;
+  const commonAlign = reference[alignLength] / 2 - floating[alignLength] / 2;
+  let coords;
+  switch (side) {
+    case "top":
+      coords = {
+        x: commonX,
+        y: reference.y - floating.height
+      };
+      break;
+    case "bottom":
+      coords = {
+        x: commonX,
+        y: reference.y + reference.height
+      };
+      break;
+    case "right":
+      coords = {
+        x: reference.x + reference.width,
+        y: commonY
+      };
+      break;
+    case "left":
+      coords = {
+        x: reference.x - floating.width,
+        y: commonY
+      };
+      break;
+    default:
+      coords = {
+        x: reference.x,
+        y: reference.y
+      };
+  }
+  switch (getAlignment(placement)) {
+    case "start":
+      coords[alignmentAxis] -= commonAlign * (rtl && isVertical ? -1 : 1);
+      break;
+    case "end":
+      coords[alignmentAxis] += commonAlign * (rtl && isVertical ? -1 : 1);
+      break;
+  }
+  return coords;
+}
+async function detectOverflow(state3, options) {
+  var _await$platform$isEle;
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    x,
+    y,
+    platform: platform2,
+    rects,
+    elements,
+    strategy
+  } = state3;
+  const {
+    boundary: boundary2 = "clippingAncestors",
+    rootBoundary = "viewport",
+    elementContext = "floating",
+    altBoundary = false,
+    padding = 0
+  } = evaluate(options, state3);
+  const paddingObject = getPaddingObject(padding);
+  const altContext = elementContext === "floating" ? "reference" : "floating";
+  const element2 = elements[altBoundary ? altContext : elementContext];
+  const clippingClientRect = rectToClientRect(await platform2.getClippingRect({
+    element: ((_await$platform$isEle = await (platform2.isElement == null ? void 0 : platform2.isElement(element2))) != null ? _await$platform$isEle : true) ? element2 : element2.contextElement || await (platform2.getDocumentElement == null ? void 0 : platform2.getDocumentElement(elements.floating)),
+    boundary: boundary2,
+    rootBoundary,
+    strategy
+  }));
+  const rect = elementContext === "floating" ? {
+    x,
+    y,
+    width: rects.floating.width,
+    height: rects.floating.height
+  } : rects.reference;
+  const offsetParent = await (platform2.getOffsetParent == null ? void 0 : platform2.getOffsetParent(elements.floating));
+  const offsetScale = await (platform2.isElement == null ? void 0 : platform2.isElement(offsetParent)) ? await (platform2.getScale == null ? void 0 : platform2.getScale(offsetParent)) || {
+    x: 1,
+    y: 1
+  } : {
+    x: 1,
+    y: 1
+  };
+  const elementClientRect = rectToClientRect(platform2.convertOffsetParentRelativeRectToViewportRelativeRect ? await platform2.convertOffsetParentRelativeRectToViewportRelativeRect({
+    elements,
+    rect,
+    offsetParent,
+    strategy
+  }) : rect);
+  return {
+    top: (clippingClientRect.top - elementClientRect.top + paddingObject.top) / offsetScale.y,
+    bottom: (elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom) / offsetScale.y,
+    left: (clippingClientRect.left - elementClientRect.left + paddingObject.left) / offsetScale.x,
+    right: (elementClientRect.right - clippingClientRect.right + paddingObject.right) / offsetScale.x
+  };
+}
+var MAX_RESET_COUNT = 50;
+var computePosition = async (reference, floating, config) => {
+  const {
+    placement = "bottom",
+    strategy = "absolute",
+    middleware = [],
+    platform: platform2
+  } = config;
+  const platformWithDetectOverflow = platform2.detectOverflow ? platform2 : {
+    ...platform2,
+    detectOverflow
+  };
+  const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(floating));
+  let rects = await platform2.getElementRects({
+    reference,
+    floating,
+    strategy
+  });
+  let {
+    x,
+    y
+  } = computeCoordsFromPlacement(rects, placement, rtl);
+  let statefulPlacement = placement;
+  let resetCount = 0;
+  const middlewareData = {};
+  for (let i = 0; i < middleware.length; i++) {
+    const currentMiddleware = middleware[i];
+    if (!currentMiddleware) {
+      continue;
+    }
+    const {
+      name,
+      fn
+    } = currentMiddleware;
+    const {
+      x: nextX,
+      y: nextY,
+      data: data2,
+      reset: reset2
+    } = await fn({
+      x,
+      y,
+      initialPlacement: placement,
+      placement: statefulPlacement,
+      strategy,
+      middlewareData,
+      rects,
+      platform: platformWithDetectOverflow,
+      elements: {
+        reference,
+        floating
+      }
+    });
+    x = nextX != null ? nextX : x;
+    y = nextY != null ? nextY : y;
+    middlewareData[name] = {
+      ...middlewareData[name],
+      ...data2
+    };
+    if (reset2 && resetCount < MAX_RESET_COUNT) {
+      resetCount++;
+      if (typeof reset2 === "object") {
+        if (reset2.placement) {
+          statefulPlacement = reset2.placement;
+        }
+        if (reset2.rects) {
+          rects = reset2.rects === true ? await platform2.getElementRects({
+            reference,
+            floating,
+            strategy
+          }) : reset2.rects;
+        }
+        ({
+          x,
+          y
+        } = computeCoordsFromPlacement(rects, statefulPlacement, rtl));
+      }
+      i = -1;
+    }
+  }
+  return {
+    x,
+    y,
+    placement: statefulPlacement,
+    strategy,
+    middlewareData
+  };
+};
+var arrow = (options) => ({
+  name: "arrow",
+  options,
+  async fn(state3) {
+    const {
+      x,
+      y,
+      placement,
+      rects,
+      platform: platform2,
+      elements,
+      middlewareData
+    } = state3;
+    const {
+      element: element2,
+      padding = 0
+    } = evaluate(options, state3) || {};
+    if (element2 == null) {
+      return {};
+    }
+    const paddingObject = getPaddingObject(padding);
+    const coords = {
+      x,
+      y
+    };
+    const axis = getAlignmentAxis(placement);
+    const length = getAxisLength(axis);
+    const arrowDimensions = await platform2.getDimensions(element2);
+    const isYAxis = axis === "y";
+    const minProp = isYAxis ? "top" : "left";
+    const maxProp = isYAxis ? "bottom" : "right";
+    const clientProp = isYAxis ? "clientHeight" : "clientWidth";
+    const endDiff = rects.reference[length] + rects.reference[axis] - coords[axis] - rects.floating[length];
+    const startDiff = coords[axis] - rects.reference[axis];
+    const arrowOffsetParent = await (platform2.getOffsetParent == null ? void 0 : platform2.getOffsetParent(element2));
+    let clientSize = arrowOffsetParent ? arrowOffsetParent[clientProp] : 0;
+    if (!clientSize || !await (platform2.isElement == null ? void 0 : platform2.isElement(arrowOffsetParent))) {
+      clientSize = elements.floating[clientProp] || rects.floating[length];
+    }
+    const centerToReference = endDiff / 2 - startDiff / 2;
+    const largestPossiblePadding = clientSize / 2 - arrowDimensions[length] / 2 - 1;
+    const minPadding = min(paddingObject[minProp], largestPossiblePadding);
+    const maxPadding = min(paddingObject[maxProp], largestPossiblePadding);
+    const min$1 = minPadding;
+    const max2 = clientSize - arrowDimensions[length] - maxPadding;
+    const center = clientSize / 2 - arrowDimensions[length] / 2 + centerToReference;
+    const offset3 = clamp(min$1, center, max2);
+    const shouldAddOffset = !middlewareData.arrow && getAlignment(placement) != null && center !== offset3 && rects.reference[length] / 2 - (center < min$1 ? minPadding : maxPadding) - arrowDimensions[length] / 2 < 0;
+    const alignmentOffset = shouldAddOffset ? center < min$1 ? center - min$1 : center - max2 : 0;
+    return {
+      [axis]: coords[axis] + alignmentOffset,
+      data: {
+        [axis]: offset3,
+        centerOffset: center - offset3 - alignmentOffset,
+        ...shouldAddOffset && {
+          alignmentOffset
+        }
+      },
+      reset: shouldAddOffset
+    };
+  }
+});
+var flip = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "flip",
+    options,
+    async fn(state3) {
+      var _middlewareData$arrow, _middlewareData$flip;
+      const {
+        placement,
+        middlewareData,
+        rects,
+        initialPlacement,
+        platform: platform2,
+        elements
+      } = state3;
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = true,
+        fallbackPlacements: specifiedFallbackPlacements,
+        fallbackStrategy = "bestFit",
+        fallbackAxisSideDirection = "none",
+        flipAlignment = true,
+        ...detectOverflowOptions
+      } = evaluate(options, state3);
+      if ((_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
+        return {};
+      }
+      const side = getSide(placement);
+      const initialSideAxis = getSideAxis(initialPlacement);
+      const isBasePlacement = getSide(initialPlacement) === initialPlacement;
+      const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating));
+      const fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipAlignment ? [getOppositePlacement(initialPlacement)] : getExpandedPlacements(initialPlacement));
+      const hasFallbackAxisSideDirection = fallbackAxisSideDirection !== "none";
+      if (!specifiedFallbackPlacements && hasFallbackAxisSideDirection) {
+        fallbackPlacements.push(...getOppositeAxisPlacements(initialPlacement, flipAlignment, fallbackAxisSideDirection, rtl));
+      }
+      const placements2 = [initialPlacement, ...fallbackPlacements];
+      const overflow = await platform2.detectOverflow(state3, detectOverflowOptions);
+      const overflows = [];
+      let overflowsData = ((_middlewareData$flip = middlewareData.flip) == null ? void 0 : _middlewareData$flip.overflows) || [];
+      if (checkMainAxis) {
+        overflows.push(overflow[side]);
+      }
+      if (checkCrossAxis) {
+        const sides2 = getAlignmentSides(placement, rects, rtl);
+        overflows.push(overflow[sides2[0]], overflow[sides2[1]]);
+      }
+      overflowsData = [...overflowsData, {
+        placement,
+        overflows
+      }];
+      if (!overflows.every((side2) => side2 <= 0)) {
+        var _middlewareData$flip2, _overflowsData$filter;
+        const nextIndex = (((_middlewareData$flip2 = middlewareData.flip) == null ? void 0 : _middlewareData$flip2.index) || 0) + 1;
+        const nextPlacement = placements2[nextIndex];
+        if (nextPlacement) {
+          const ignoreCrossAxisOverflow = checkCrossAxis === "alignment" ? initialSideAxis !== getSideAxis(nextPlacement) : false;
+          if (!ignoreCrossAxisOverflow || // We leave the current main axis only if every placement on that axis
+          // overflows the main axis.
+          overflowsData.every((d) => getSideAxis(d.placement) === initialSideAxis ? d.overflows[0] > 0 : true)) {
+            return {
+              data: {
+                index: nextIndex,
+                overflows: overflowsData
+              },
+              reset: {
+                placement: nextPlacement
+              }
+            };
+          }
+        }
+        let resetPlacement = (_overflowsData$filter = overflowsData.filter((d) => d.overflows[0] <= 0).sort((a2, b) => a2.overflows[1] - b.overflows[1])[0]) == null ? void 0 : _overflowsData$filter.placement;
+        if (!resetPlacement) {
+          switch (fallbackStrategy) {
+            case "bestFit": {
+              var _overflowsData$filter2;
+              const placement2 = (_overflowsData$filter2 = overflowsData.filter((d) => {
+                if (hasFallbackAxisSideDirection) {
+                  const currentSideAxis = getSideAxis(d.placement);
+                  return currentSideAxis === initialSideAxis || // Create a bias to the `y` side axis due to horizontal
+                  // reading directions favoring greater width.
+                  currentSideAxis === "y";
+                }
+                return true;
+              }).map((d) => [d.placement, d.overflows.filter((overflow2) => overflow2 > 0).reduce((acc, overflow2) => acc + overflow2, 0)]).sort((a2, b) => a2[1] - b[1])[0]) == null ? void 0 : _overflowsData$filter2[0];
+              if (placement2) {
+                resetPlacement = placement2;
+              }
+              break;
+            }
+            case "initialPlacement":
+              resetPlacement = initialPlacement;
+              break;
+          }
+        }
+        if (placement !== resetPlacement) {
+          return {
+            reset: {
+              placement: resetPlacement
+            }
+          };
+        }
+      }
+      return {};
+    }
+  };
+};
+function getSideOffsets(overflow, rect) {
+  return {
+    top: overflow.top - rect.height,
+    right: overflow.right - rect.width,
+    bottom: overflow.bottom - rect.height,
+    left: overflow.left - rect.width
+  };
+}
+function isAnySideFullyClipped(overflow) {
+  return sides.some((side) => overflow[side] >= 0);
+}
+var hide = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "hide",
+    options,
+    async fn(state3) {
+      const {
+        rects,
+        platform: platform2
+      } = state3;
+      const {
+        strategy = "referenceHidden",
+        ...detectOverflowOptions
+      } = evaluate(options, state3);
+      switch (strategy) {
+        case "referenceHidden": {
+          const overflow = await platform2.detectOverflow(state3, {
+            ...detectOverflowOptions,
+            elementContext: "reference"
+          });
+          const offsets = getSideOffsets(overflow, rects.reference);
+          return {
+            data: {
+              referenceHiddenOffsets: offsets,
+              referenceHidden: isAnySideFullyClipped(offsets)
+            }
+          };
+        }
+        case "escaped": {
+          const overflow = await platform2.detectOverflow(state3, {
+            ...detectOverflowOptions,
+            altBoundary: true
+          });
+          const offsets = getSideOffsets(overflow, rects.floating);
+          return {
+            data: {
+              escapedOffsets: offsets,
+              escaped: isAnySideFullyClipped(offsets)
+            }
+          };
+        }
+        default: {
+          return {};
+        }
+      }
+    }
+  };
+};
+var originSides = /* @__PURE__ */ new Set(["left", "top"]);
+async function convertValueToCoords(state3, options) {
+  const {
+    placement,
+    platform: platform2,
+    elements
+  } = state3;
+  const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating));
+  const side = getSide(placement);
+  const alignment = getAlignment(placement);
+  const isVertical = getSideAxis(placement) === "y";
+  const mainAxisMulti = originSides.has(side) ? -1 : 1;
+  const crossAxisMulti = rtl && isVertical ? -1 : 1;
+  const rawValue = evaluate(options, state3);
+  let {
+    mainAxis,
+    crossAxis,
+    alignmentAxis
+  } = typeof rawValue === "number" ? {
+    mainAxis: rawValue,
+    crossAxis: 0,
+    alignmentAxis: null
+  } : {
+    mainAxis: rawValue.mainAxis || 0,
+    crossAxis: rawValue.crossAxis || 0,
+    alignmentAxis: rawValue.alignmentAxis
+  };
+  if (alignment && typeof alignmentAxis === "number") {
+    crossAxis = alignment === "end" ? alignmentAxis * -1 : alignmentAxis;
+  }
+  return isVertical ? {
+    x: crossAxis * crossAxisMulti,
+    y: mainAxis * mainAxisMulti
+  } : {
+    x: mainAxis * mainAxisMulti,
+    y: crossAxis * crossAxisMulti
+  };
+}
+var offset = function(options) {
+  if (options === void 0) {
+    options = 0;
+  }
+  return {
+    name: "offset",
+    options,
+    async fn(state3) {
+      var _middlewareData$offse, _middlewareData$arrow;
+      const {
+        x,
+        y,
+        placement,
+        middlewareData
+      } = state3;
+      const diffCoords = await convertValueToCoords(state3, options);
+      if (placement === ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse.placement) && (_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
+        return {};
+      }
+      return {
+        x: x + diffCoords.x,
+        y: y + diffCoords.y,
+        data: {
+          ...diffCoords,
+          placement
+        }
+      };
+    }
+  };
+};
+var shift = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "shift",
+    options,
+    async fn(state3) {
+      const {
+        x,
+        y,
+        placement,
+        platform: platform2
+      } = state3;
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = false,
+        limiter = {
+          fn: (_ref) => {
+            let {
+              x: x2,
+              y: y2
+            } = _ref;
+            return {
+              x: x2,
+              y: y2
+            };
+          }
+        },
+        ...detectOverflowOptions
+      } = evaluate(options, state3);
+      const coords = {
+        x,
+        y
+      };
+      const overflow = await platform2.detectOverflow(state3, detectOverflowOptions);
+      const crossAxis = getSideAxis(getSide(placement));
+      const mainAxis = getOppositeAxis(crossAxis);
+      let mainAxisCoord = coords[mainAxis];
+      let crossAxisCoord = coords[crossAxis];
+      if (checkMainAxis) {
+        const minSide = mainAxis === "y" ? "top" : "left";
+        const maxSide = mainAxis === "y" ? "bottom" : "right";
+        const min2 = mainAxisCoord + overflow[minSide];
+        const max2 = mainAxisCoord - overflow[maxSide];
+        mainAxisCoord = clamp(min2, mainAxisCoord, max2);
+      }
+      if (checkCrossAxis) {
+        const minSide = crossAxis === "y" ? "top" : "left";
+        const maxSide = crossAxis === "y" ? "bottom" : "right";
+        const min2 = crossAxisCoord + overflow[minSide];
+        const max2 = crossAxisCoord - overflow[maxSide];
+        crossAxisCoord = clamp(min2, crossAxisCoord, max2);
+      }
+      const limitedCoords = limiter.fn({
+        ...state3,
+        [mainAxis]: mainAxisCoord,
+        [crossAxis]: crossAxisCoord
+      });
+      return {
+        ...limitedCoords,
+        data: {
+          x: limitedCoords.x - x,
+          y: limitedCoords.y - y,
+          enabled: {
+            [mainAxis]: checkMainAxis,
+            [crossAxis]: checkCrossAxis
+          }
+        }
+      };
+    }
+  };
+};
+var limitShift = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    options,
+    fn(state3) {
+      const {
+        x,
+        y,
+        placement,
+        rects,
+        middlewareData
+      } = state3;
+      const {
+        offset: offset3 = 0,
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = true
+      } = evaluate(options, state3);
+      const coords = {
+        x,
+        y
+      };
+      const crossAxis = getSideAxis(placement);
+      const mainAxis = getOppositeAxis(crossAxis);
+      let mainAxisCoord = coords[mainAxis];
+      let crossAxisCoord = coords[crossAxis];
+      const rawOffset = evaluate(offset3, state3);
+      const computedOffset = typeof rawOffset === "number" ? {
+        mainAxis: rawOffset,
+        crossAxis: 0
+      } : {
+        mainAxis: 0,
+        crossAxis: 0,
+        ...rawOffset
+      };
+      if (checkMainAxis) {
+        const len = mainAxis === "y" ? "height" : "width";
+        const limitMin = rects.reference[mainAxis] - rects.floating[len] + computedOffset.mainAxis;
+        const limitMax = rects.reference[mainAxis] + rects.reference[len] - computedOffset.mainAxis;
+        if (mainAxisCoord < limitMin) {
+          mainAxisCoord = limitMin;
+        } else if (mainAxisCoord > limitMax) {
+          mainAxisCoord = limitMax;
+        }
+      }
+      if (checkCrossAxis) {
+        var _middlewareData$offse, _middlewareData$offse2;
+        const len = mainAxis === "y" ? "width" : "height";
+        const isOriginSide = originSides.has(getSide(placement));
+        const limitMin = rects.reference[crossAxis] - rects.floating[len] + (isOriginSide ? ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse[crossAxis]) || 0 : 0) + (isOriginSide ? 0 : computedOffset.crossAxis);
+        const limitMax = rects.reference[crossAxis] + rects.reference[len] + (isOriginSide ? 0 : ((_middlewareData$offse2 = middlewareData.offset) == null ? void 0 : _middlewareData$offse2[crossAxis]) || 0) - (isOriginSide ? computedOffset.crossAxis : 0);
+        if (crossAxisCoord < limitMin) {
+          crossAxisCoord = limitMin;
+        } else if (crossAxisCoord > limitMax) {
+          crossAxisCoord = limitMax;
+        }
+      }
+      return {
+        [mainAxis]: mainAxisCoord,
+        [crossAxis]: crossAxisCoord
+      };
+    }
+  };
+};
+var size = function(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: "size",
+    options,
+    async fn(state3) {
+      var _state$middlewareData, _state$middlewareData2;
+      const {
+        placement,
+        rects,
+        platform: platform2,
+        elements
+      } = state3;
+      const {
+        apply: apply2 = () => {
+        },
+        ...detectOverflowOptions
+      } = evaluate(options, state3);
+      const overflow = await platform2.detectOverflow(state3, detectOverflowOptions);
+      const side = getSide(placement);
+      const alignment = getAlignment(placement);
+      const isYAxis = getSideAxis(placement) === "y";
+      const {
+        width,
+        height
+      } = rects.floating;
+      let heightSide;
+      let widthSide;
+      if (side === "top" || side === "bottom") {
+        heightSide = side;
+        widthSide = alignment === (await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating)) ? "start" : "end") ? "left" : "right";
+      } else {
+        widthSide = side;
+        heightSide = alignment === "end" ? "top" : "bottom";
+      }
+      const maximumClippingHeight = height - overflow.top - overflow.bottom;
+      const maximumClippingWidth = width - overflow.left - overflow.right;
+      const overflowAvailableHeight = min(height - overflow[heightSide], maximumClippingHeight);
+      const overflowAvailableWidth = min(width - overflow[widthSide], maximumClippingWidth);
+      const noShift = !state3.middlewareData.shift;
+      let availableHeight = overflowAvailableHeight;
+      let availableWidth = overflowAvailableWidth;
+      if ((_state$middlewareData = state3.middlewareData.shift) != null && _state$middlewareData.enabled.x) {
+        availableWidth = maximumClippingWidth;
+      }
+      if ((_state$middlewareData2 = state3.middlewareData.shift) != null && _state$middlewareData2.enabled.y) {
+        availableHeight = maximumClippingHeight;
+      }
+      if (noShift && !alignment) {
+        const xMin = max(overflow.left, 0);
+        const xMax = max(overflow.right, 0);
+        const yMin = max(overflow.top, 0);
+        const yMax = max(overflow.bottom, 0);
+        if (isYAxis) {
+          availableWidth = width - 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : max(overflow.left, overflow.right));
+        } else {
+          availableHeight = height - 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : max(overflow.top, overflow.bottom));
+        }
+      }
+      await apply2({
+        ...state3,
+        availableWidth,
+        availableHeight
+      });
+      const nextDimensions = await platform2.getDimensions(elements.floating);
+      if (width !== nextDimensions.width || height !== nextDimensions.height) {
+        return {
+          reset: {
+            rects: true
+          }
+        };
+      }
+      return {};
+    }
+  };
+};
+
+// node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs
+function hasWindow() {
+  return typeof window !== "undefined";
+}
+function getNodeName2(node) {
+  if (isNode3(node)) {
+    return (node.nodeName || "").toLowerCase();
+  }
+  return "#document";
+}
+function getWindow2(node) {
+  var _node$ownerDocument;
+  return (node == null || (_node$ownerDocument = node.ownerDocument) == null ? void 0 : _node$ownerDocument.defaultView) || window;
+}
+function getDocumentElement2(node) {
+  var _ref;
+  return (_ref = (isNode3(node) ? node.ownerDocument : node.document) || window.document) == null ? void 0 : _ref.documentElement;
+}
+function isNode3(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof Node || value instanceof getWindow2(value).Node;
+}
+function isElement2(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof Element || value instanceof getWindow2(value).Element;
+}
+function isHTMLElement3(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof HTMLElement || value instanceof getWindow2(value).HTMLElement;
+}
+function isShadowRoot2(value) {
+  if (!hasWindow() || typeof ShadowRoot === "undefined") {
+    return false;
+  }
+  return value instanceof ShadowRoot || value instanceof getWindow2(value).ShadowRoot;
+}
+function isOverflowElement(element2) {
+  const {
+    overflow,
+    overflowX,
+    overflowY,
+    display
+  } = getComputedStyle2(element2);
+  return /auto|scroll|overlay|hidden|clip/.test(overflow + overflowY + overflowX) && display !== "inline" && display !== "contents";
+}
+function isTableElement(element2) {
+  return /^(table|td|th)$/.test(getNodeName2(element2));
+}
+function isTopLayer(element2) {
+  try {
+    if (element2.matches(":popover-open")) {
+      return true;
+    }
+  } catch (_e) {
+  }
+  try {
+    return element2.matches(":modal");
+  } catch (_e) {
+    return false;
+  }
+}
+var willChangeRe = /transform|translate|scale|rotate|perspective|filter/;
+var containRe = /paint|layout|strict|content/;
+var isNotNone = (value) => !!value && value !== "none";
+var isWebKitValue;
+function isContainingBlock(elementOrCss) {
+  const css2 = isElement2(elementOrCss) ? getComputedStyle2(elementOrCss) : elementOrCss;
+  return isNotNone(css2.transform) || isNotNone(css2.translate) || isNotNone(css2.scale) || isNotNone(css2.rotate) || isNotNone(css2.perspective) || !isWebKit() && (isNotNone(css2.backdropFilter) || isNotNone(css2.filter)) || willChangeRe.test(css2.willChange || "") || containRe.test(css2.contain || "");
+}
+function getContainingBlock(element2) {
+  let currentNode = getParentNode2(element2);
+  while (isHTMLElement3(currentNode) && !isLastTraversableNode(currentNode)) {
+    if (isContainingBlock(currentNode)) {
+      return currentNode;
+    } else if (isTopLayer(currentNode)) {
+      return null;
+    }
+    currentNode = getParentNode2(currentNode);
+  }
+  return null;
+}
+function isWebKit() {
+  if (isWebKitValue == null) {
+    isWebKitValue = typeof CSS !== "undefined" && CSS.supports && CSS.supports("-webkit-backdrop-filter", "none");
+  }
+  return isWebKitValue;
+}
+function isLastTraversableNode(node) {
+  return /^(html|body|#document)$/.test(getNodeName2(node));
+}
+function getComputedStyle2(element2) {
+  return getWindow2(element2).getComputedStyle(element2);
+}
+function getNodeScroll(element2) {
+  if (isElement2(element2)) {
+    return {
+      scrollLeft: element2.scrollLeft,
+      scrollTop: element2.scrollTop
+    };
+  }
+  return {
+    scrollLeft: element2.scrollX,
+    scrollTop: element2.scrollY
+  };
+}
+function getParentNode2(node) {
+  if (getNodeName2(node) === "html") {
+    return node;
+  }
+  const result = (
+    // Step into the shadow DOM of the parent of a slotted node.
+    node.assignedSlot || // DOM Element detected.
+    node.parentNode || // ShadowRoot detected.
+    isShadowRoot2(node) && node.host || // Fallback.
+    getDocumentElement2(node)
+  );
+  return isShadowRoot2(result) ? result.host : result;
+}
+function getNearestOverflowAncestor(node) {
+  const parentNode = getParentNode2(node);
+  if (isLastTraversableNode(parentNode)) {
+    return node.ownerDocument ? node.ownerDocument.body : node.body;
+  }
+  if (isHTMLElement3(parentNode) && isOverflowElement(parentNode)) {
+    return parentNode;
+  }
+  return getNearestOverflowAncestor(parentNode);
+}
+function getOverflowAncestors(node, list, traverseIframes) {
+  var _node$ownerDocument2;
+  if (list === void 0) {
+    list = [];
+  }
+  if (traverseIframes === void 0) {
+    traverseIframes = true;
+  }
+  const scrollableAncestor = getNearestOverflowAncestor(node);
+  const isBody = scrollableAncestor === ((_node$ownerDocument2 = node.ownerDocument) == null ? void 0 : _node$ownerDocument2.body);
+  const win = getWindow2(scrollableAncestor);
+  if (isBody) {
+    const frameElement = getFrameElement(win);
+    return list.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], frameElement && traverseIframes ? getOverflowAncestors(frameElement) : []);
+  } else {
+    return list.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
+  }
+}
+function getFrameElement(win) {
+  return win.parent && Object.getPrototypeOf(win.parent) ? win.frameElement : null;
+}
+
+// node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs
+function getCssDimensions(element2) {
+  const css2 = getComputedStyle2(element2);
+  let width = parseFloat(css2.width) || 0;
+  let height = parseFloat(css2.height) || 0;
+  const hasOffset = isHTMLElement3(element2);
+  const offsetWidth = hasOffset ? element2.offsetWidth : width;
+  const offsetHeight = hasOffset ? element2.offsetHeight : height;
+  const shouldFallback = round(width) !== offsetWidth || round(height) !== offsetHeight;
+  if (shouldFallback) {
+    width = offsetWidth;
+    height = offsetHeight;
+  }
+  return {
+    width,
+    height,
+    $: shouldFallback
+  };
+}
+function unwrapElement(element2) {
+  return !isElement2(element2) ? element2.contextElement : element2;
+}
+function getScale(element2) {
+  const domElement = unwrapElement(element2);
+  if (!isHTMLElement3(domElement)) {
+    return createCoords(1);
+  }
+  const rect = domElement.getBoundingClientRect();
+  const {
+    width,
+    height,
+    $: $2
+  } = getCssDimensions(domElement);
+  let x = ($2 ? round(rect.width) : rect.width) / width;
+  let y = ($2 ? round(rect.height) : rect.height) / height;
+  if (!x || !Number.isFinite(x)) {
+    x = 1;
+  }
+  if (!y || !Number.isFinite(y)) {
+    y = 1;
+  }
+  return {
+    x,
+    y
+  };
+}
+var noOffsets = /* @__PURE__ */ createCoords(0);
+function getVisualOffsets(element2) {
+  const win = getWindow2(element2);
+  if (!isWebKit() || !win.visualViewport) {
+    return noOffsets;
+  }
+  return {
+    x: win.visualViewport.offsetLeft,
+    y: win.visualViewport.offsetTop
+  };
+}
+function shouldAddVisualOffsets(element2, isFixed, floatingOffsetParent) {
+  if (isFixed === void 0) {
+    isFixed = false;
+  }
+  if (!floatingOffsetParent || isFixed && floatingOffsetParent !== getWindow2(element2)) {
+    return false;
+  }
+  return isFixed;
+}
+function getBoundingClientRect(element2, includeScale, isFixedStrategy, offsetParent) {
+  if (includeScale === void 0) {
+    includeScale = false;
+  }
+  if (isFixedStrategy === void 0) {
+    isFixedStrategy = false;
+  }
+  const clientRect = element2.getBoundingClientRect();
+  const domElement = unwrapElement(element2);
+  let scale = createCoords(1);
+  if (includeScale) {
+    if (offsetParent) {
+      if (isElement2(offsetParent)) {
+        scale = getScale(offsetParent);
+      }
+    } else {
+      scale = getScale(element2);
+    }
+  }
+  const visualOffsets = shouldAddVisualOffsets(domElement, isFixedStrategy, offsetParent) ? getVisualOffsets(domElement) : createCoords(0);
+  let x = (clientRect.left + visualOffsets.x) / scale.x;
+  let y = (clientRect.top + visualOffsets.y) / scale.y;
+  let width = clientRect.width / scale.x;
+  let height = clientRect.height / scale.y;
+  if (domElement) {
+    const win = getWindow2(domElement);
+    const offsetWin = offsetParent && isElement2(offsetParent) ? getWindow2(offsetParent) : offsetParent;
+    let currentWin = win;
+    let currentIFrame = getFrameElement(currentWin);
+    while (currentIFrame && offsetParent && offsetWin !== currentWin) {
+      const iframeScale = getScale(currentIFrame);
+      const iframeRect = currentIFrame.getBoundingClientRect();
+      const css2 = getComputedStyle2(currentIFrame);
+      const left = iframeRect.left + (currentIFrame.clientLeft + parseFloat(css2.paddingLeft)) * iframeScale.x;
+      const top = iframeRect.top + (currentIFrame.clientTop + parseFloat(css2.paddingTop)) * iframeScale.y;
+      x *= iframeScale.x;
+      y *= iframeScale.y;
+      width *= iframeScale.x;
+      height *= iframeScale.y;
+      x += left;
+      y += top;
+      currentWin = getWindow2(currentIFrame);
+      currentIFrame = getFrameElement(currentWin);
+    }
+  }
+  return rectToClientRect({
+    width,
+    height,
+    x,
+    y
+  });
+}
+function getWindowScrollBarX(element2, rect) {
+  const leftScroll = getNodeScroll(element2).scrollLeft;
+  if (!rect) {
+    return getBoundingClientRect(getDocumentElement2(element2)).left + leftScroll;
+  }
+  return rect.left + leftScroll;
+}
+function getHTMLOffset(documentElement, scroll) {
+  const htmlRect = documentElement.getBoundingClientRect();
+  const x = htmlRect.left + scroll.scrollLeft - getWindowScrollBarX(documentElement, htmlRect);
+  const y = htmlRect.top + scroll.scrollTop;
+  return {
+    x,
+    y
+  };
+}
+function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
+  let {
+    elements,
+    rect,
+    offsetParent,
+    strategy
+  } = _ref;
+  const isFixed = strategy === "fixed";
+  const documentElement = getDocumentElement2(offsetParent);
+  const topLayer = elements ? isTopLayer(elements.floating) : false;
+  if (offsetParent === documentElement || topLayer && isFixed) {
+    return rect;
+  }
+  let scroll = {
+    scrollLeft: 0,
+    scrollTop: 0
+  };
+  let scale = createCoords(1);
+  const offsets = createCoords(0);
+  const isOffsetParentAnElement = isHTMLElement3(offsetParent);
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
+    if (getNodeName2(offsetParent) !== "body" || isOverflowElement(documentElement)) {
+      scroll = getNodeScroll(offsetParent);
+    }
+    if (isOffsetParentAnElement) {
+      const offsetRect = getBoundingClientRect(offsetParent);
+      scale = getScale(offsetParent);
+      offsets.x = offsetRect.x + offsetParent.clientLeft;
+      offsets.y = offsetRect.y + offsetParent.clientTop;
+    }
+  }
+  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
+  return {
+    width: rect.width * scale.x,
+    height: rect.height * scale.y,
+    x: rect.x * scale.x - scroll.scrollLeft * scale.x + offsets.x + htmlOffset.x,
+    y: rect.y * scale.y - scroll.scrollTop * scale.y + offsets.y + htmlOffset.y
+  };
+}
+function getClientRects(element2) {
+  return Array.from(element2.getClientRects());
+}
+function getDocumentRect(element2) {
+  const html4 = getDocumentElement2(element2);
+  const scroll = getNodeScroll(element2);
+  const body = element2.ownerDocument.body;
+  const width = max(html4.scrollWidth, html4.clientWidth, body.scrollWidth, body.clientWidth);
+  const height = max(html4.scrollHeight, html4.clientHeight, body.scrollHeight, body.clientHeight);
+  let x = -scroll.scrollLeft + getWindowScrollBarX(element2);
+  const y = -scroll.scrollTop;
+  if (getComputedStyle2(body).direction === "rtl") {
+    x += max(html4.clientWidth, body.clientWidth) - width;
+  }
+  return {
+    width,
+    height,
+    x,
+    y
+  };
+}
+var SCROLLBAR_MAX = 25;
+function getViewportRect(element2, strategy) {
+  const win = getWindow2(element2);
+  const html4 = getDocumentElement2(element2);
+  const visualViewport = win.visualViewport;
+  let width = html4.clientWidth;
+  let height = html4.clientHeight;
+  let x = 0;
+  let y = 0;
+  if (visualViewport) {
+    width = visualViewport.width;
+    height = visualViewport.height;
+    const visualViewportBased = isWebKit();
+    if (!visualViewportBased || visualViewportBased && strategy === "fixed") {
+      x = visualViewport.offsetLeft;
+      y = visualViewport.offsetTop;
+    }
+  }
+  const windowScrollbarX = getWindowScrollBarX(html4);
+  if (windowScrollbarX <= 0) {
+    const doc = html4.ownerDocument;
+    const body = doc.body;
+    const bodyStyles = getComputedStyle(body);
+    const bodyMarginInline = doc.compatMode === "CSS1Compat" ? parseFloat(bodyStyles.marginLeft) + parseFloat(bodyStyles.marginRight) || 0 : 0;
+    const clippingStableScrollbarWidth = Math.abs(html4.clientWidth - body.clientWidth - bodyMarginInline);
+    if (clippingStableScrollbarWidth <= SCROLLBAR_MAX) {
+      width -= clippingStableScrollbarWidth;
+    }
+  } else if (windowScrollbarX <= SCROLLBAR_MAX) {
+    width += windowScrollbarX;
+  }
+  return {
+    width,
+    height,
+    x,
+    y
+  };
+}
+function getInnerBoundingClientRect(element2, strategy) {
+  const clientRect = getBoundingClientRect(element2, true, strategy === "fixed");
+  const top = clientRect.top + element2.clientTop;
+  const left = clientRect.left + element2.clientLeft;
+  const scale = isHTMLElement3(element2) ? getScale(element2) : createCoords(1);
+  const width = element2.clientWidth * scale.x;
+  const height = element2.clientHeight * scale.y;
+  const x = left * scale.x;
+  const y = top * scale.y;
+  return {
+    width,
+    height,
+    x,
+    y
+  };
+}
+function getClientRectFromClippingAncestor(element2, clippingAncestor, strategy) {
+  let rect;
+  if (clippingAncestor === "viewport") {
+    rect = getViewportRect(element2, strategy);
+  } else if (clippingAncestor === "document") {
+    rect = getDocumentRect(getDocumentElement2(element2));
+  } else if (isElement2(clippingAncestor)) {
+    rect = getInnerBoundingClientRect(clippingAncestor, strategy);
+  } else {
+    const visualOffsets = getVisualOffsets(element2);
+    rect = {
+      x: clippingAncestor.x - visualOffsets.x,
+      y: clippingAncestor.y - visualOffsets.y,
+      width: clippingAncestor.width,
+      height: clippingAncestor.height
+    };
+  }
+  return rectToClientRect(rect);
+}
+function hasFixedPositionAncestor(element2, stopNode) {
+  const parentNode = getParentNode2(element2);
+  if (parentNode === stopNode || !isElement2(parentNode) || isLastTraversableNode(parentNode)) {
+    return false;
+  }
+  return getComputedStyle2(parentNode).position === "fixed" || hasFixedPositionAncestor(parentNode, stopNode);
+}
+function getClippingElementAncestors(element2, cache) {
+  const cachedResult = cache.get(element2);
+  if (cachedResult) {
+    return cachedResult;
+  }
+  let result = getOverflowAncestors(element2, [], false).filter((el) => isElement2(el) && getNodeName2(el) !== "body");
+  let currentContainingBlockComputedStyle = null;
+  const elementIsFixed = getComputedStyle2(element2).position === "fixed";
+  let currentNode = elementIsFixed ? getParentNode2(element2) : element2;
+  while (isElement2(currentNode) && !isLastTraversableNode(currentNode)) {
+    const computedStyle = getComputedStyle2(currentNode);
+    const currentNodeIsContaining = isContainingBlock(currentNode);
+    if (!currentNodeIsContaining && computedStyle.position === "fixed") {
+      currentContainingBlockComputedStyle = null;
+    }
+    const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === "static" && !!currentContainingBlockComputedStyle && (currentContainingBlockComputedStyle.position === "absolute" || currentContainingBlockComputedStyle.position === "fixed") || isOverflowElement(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element2, currentNode);
+    if (shouldDropCurrentNode) {
+      result = result.filter((ancestor) => ancestor !== currentNode);
+    } else {
+      currentContainingBlockComputedStyle = computedStyle;
+    }
+    currentNode = getParentNode2(currentNode);
+  }
+  cache.set(element2, result);
+  return result;
+}
+function getClippingRect(_ref) {
+  let {
+    element: element2,
+    boundary: boundary2,
+    rootBoundary,
+    strategy
+  } = _ref;
+  const elementClippingAncestors = boundary2 === "clippingAncestors" ? isTopLayer(element2) ? [] : getClippingElementAncestors(element2, this._c) : [].concat(boundary2);
+  const clippingAncestors = [...elementClippingAncestors, rootBoundary];
+  const firstRect = getClientRectFromClippingAncestor(element2, clippingAncestors[0], strategy);
+  let top = firstRect.top;
+  let right = firstRect.right;
+  let bottom = firstRect.bottom;
+  let left = firstRect.left;
+  for (let i = 1; i < clippingAncestors.length; i++) {
+    const rect = getClientRectFromClippingAncestor(element2, clippingAncestors[i], strategy);
+    top = max(rect.top, top);
+    right = min(rect.right, right);
+    bottom = min(rect.bottom, bottom);
+    left = max(rect.left, left);
+  }
+  return {
+    width: right - left,
+    height: bottom - top,
+    x: left,
+    y: top
+  };
+}
+function getDimensions(element2) {
+  const {
+    width,
+    height
+  } = getCssDimensions(element2);
+  return {
+    width,
+    height
+  };
+}
+function getRectRelativeToOffsetParent(element2, offsetParent, strategy) {
+  const isOffsetParentAnElement = isHTMLElement3(offsetParent);
+  const documentElement = getDocumentElement2(offsetParent);
+  const isFixed = strategy === "fixed";
+  const rect = getBoundingClientRect(element2, true, isFixed, offsetParent);
+  let scroll = {
+    scrollLeft: 0,
+    scrollTop: 0
+  };
+  const offsets = createCoords(0);
+  function setLeftRTLScrollbarOffset() {
+    offsets.x = getWindowScrollBarX(documentElement);
+  }
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
+    if (getNodeName2(offsetParent) !== "body" || isOverflowElement(documentElement)) {
+      scroll = getNodeScroll(offsetParent);
+    }
+    if (isOffsetParentAnElement) {
+      const offsetRect = getBoundingClientRect(offsetParent, true, isFixed, offsetParent);
+      offsets.x = offsetRect.x + offsetParent.clientLeft;
+      offsets.y = offsetRect.y + offsetParent.clientTop;
+    } else if (documentElement) {
+      setLeftRTLScrollbarOffset();
+    }
+  }
+  if (isFixed && !isOffsetParentAnElement && documentElement) {
+    setLeftRTLScrollbarOffset();
+  }
+  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
+  const x = rect.left + scroll.scrollLeft - offsets.x - htmlOffset.x;
+  const y = rect.top + scroll.scrollTop - offsets.y - htmlOffset.y;
+  return {
+    x,
+    y,
+    width: rect.width,
+    height: rect.height
+  };
+}
+function isStaticPositioned(element2) {
+  return getComputedStyle2(element2).position === "static";
+}
+function getTrueOffsetParent(element2, polyfill) {
+  if (!isHTMLElement3(element2) || getComputedStyle2(element2).position === "fixed") {
+    return null;
+  }
+  if (polyfill) {
+    return polyfill(element2);
+  }
+  let rawOffsetParent = element2.offsetParent;
+  if (getDocumentElement2(element2) === rawOffsetParent) {
+    rawOffsetParent = rawOffsetParent.ownerDocument.body;
+  }
+  return rawOffsetParent;
+}
+function getOffsetParent(element2, polyfill) {
+  const win = getWindow2(element2);
+  if (isTopLayer(element2)) {
+    return win;
+  }
+  if (!isHTMLElement3(element2)) {
+    let svgOffsetParent = getParentNode2(element2);
+    while (svgOffsetParent && !isLastTraversableNode(svgOffsetParent)) {
+      if (isElement2(svgOffsetParent) && !isStaticPositioned(svgOffsetParent)) {
+        return svgOffsetParent;
+      }
+      svgOffsetParent = getParentNode2(svgOffsetParent);
+    }
+    return win;
+  }
+  let offsetParent = getTrueOffsetParent(element2, polyfill);
+  while (offsetParent && isTableElement(offsetParent) && isStaticPositioned(offsetParent)) {
+    offsetParent = getTrueOffsetParent(offsetParent, polyfill);
+  }
+  if (offsetParent && isLastTraversableNode(offsetParent) && isStaticPositioned(offsetParent) && !isContainingBlock(offsetParent)) {
+    return win;
+  }
+  return offsetParent || getContainingBlock(element2) || win;
+}
+var getElementRects = async function(data2) {
+  const getOffsetParentFn = this.getOffsetParent || getOffsetParent;
+  const getDimensionsFn = this.getDimensions;
+  const floatingDimensions = await getDimensionsFn(data2.floating);
+  return {
+    reference: getRectRelativeToOffsetParent(data2.reference, await getOffsetParentFn(data2.floating), data2.strategy),
+    floating: {
+      x: 0,
+      y: 0,
+      width: floatingDimensions.width,
+      height: floatingDimensions.height
+    }
+  };
+};
+function isRTL(element2) {
+  return getComputedStyle2(element2).direction === "rtl";
+}
+var platform = {
+  convertOffsetParentRelativeRectToViewportRelativeRect,
+  getDocumentElement: getDocumentElement2,
+  getClippingRect,
+  getOffsetParent,
+  getElementRects,
+  getClientRects,
+  getDimensions,
+  getScale,
+  isElement: isElement2,
+  isRTL
+};
+function rectsAreEqual(a2, b) {
+  return a2.x === b.x && a2.y === b.y && a2.width === b.width && a2.height === b.height;
+}
+function observeMove(element2, onMove) {
+  let io = null;
+  let timeoutId;
+  const root71 = getDocumentElement2(element2);
+  function cleanup() {
+    var _io;
+    clearTimeout(timeoutId);
+    (_io = io) == null || _io.disconnect();
+    io = null;
+  }
+  function refresh(skip, threshold) {
+    if (skip === void 0) {
+      skip = false;
+    }
+    if (threshold === void 0) {
+      threshold = 1;
+    }
+    cleanup();
+    const elementRectForRootMargin = element2.getBoundingClientRect();
+    const {
+      left,
+      top,
+      width,
+      height
+    } = elementRectForRootMargin;
+    if (!skip) {
+      onMove();
+    }
+    if (!width || !height) {
+      return;
+    }
+    const insetTop = floor(top);
+    const insetRight = floor(root71.clientWidth - (left + width));
+    const insetBottom = floor(root71.clientHeight - (top + height));
+    const insetLeft = floor(left);
+    const rootMargin = -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px";
+    const options = {
+      rootMargin,
+      threshold: max(0, min(1, threshold)) || 1
+    };
+    let isFirstUpdate = true;
+    function handleObserve(entries) {
+      const ratio = entries[0].intersectionRatio;
+      if (ratio !== threshold) {
+        if (!isFirstUpdate) {
+          return refresh();
+        }
+        if (!ratio) {
+          timeoutId = setTimeout(() => {
+            refresh(false, 1e-7);
+          }, 1e3);
+        } else {
+          refresh(false, ratio);
+        }
+      }
+      if (ratio === 1 && !rectsAreEqual(elementRectForRootMargin, element2.getBoundingClientRect())) {
+        refresh();
+      }
+      isFirstUpdate = false;
+    }
+    try {
+      io = new IntersectionObserver(handleObserve, {
+        ...options,
+        // Handle <iframe>s
+        root: root71.ownerDocument
+      });
+    } catch (_e) {
+      io = new IntersectionObserver(handleObserve, options);
+    }
+    io.observe(element2);
+  }
+  refresh(true);
+  return cleanup;
+}
+function autoUpdate(reference, floating, update3, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    ancestorScroll = true,
+    ancestorResize = true,
+    elementResize = typeof ResizeObserver === "function",
+    layoutShift = typeof IntersectionObserver === "function",
+    animationFrame = false
+  } = options;
+  const referenceEl = unwrapElement(reference);
+  const ancestors = ancestorScroll || ancestorResize ? [...referenceEl ? getOverflowAncestors(referenceEl) : [], ...floating ? getOverflowAncestors(floating) : []] : [];
+  ancestors.forEach((ancestor) => {
+    ancestorScroll && ancestor.addEventListener("scroll", update3, {
+      passive: true
+    });
+    ancestorResize && ancestor.addEventListener("resize", update3);
+  });
+  const cleanupIo = referenceEl && layoutShift ? observeMove(referenceEl, update3) : null;
+  let reobserveFrame = -1;
+  let resizeObserver = null;
+  if (elementResize) {
+    resizeObserver = new ResizeObserver((_ref) => {
+      let [firstEntry] = _ref;
+      if (firstEntry && firstEntry.target === referenceEl && resizeObserver && floating) {
+        resizeObserver.unobserve(floating);
+        cancelAnimationFrame(reobserveFrame);
+        reobserveFrame = requestAnimationFrame(() => {
+          var _resizeObserver;
+          (_resizeObserver = resizeObserver) == null || _resizeObserver.observe(floating);
+        });
+      }
+      update3();
+    });
+    if (referenceEl && !animationFrame) {
+      resizeObserver.observe(referenceEl);
+    }
+    if (floating) {
+      resizeObserver.observe(floating);
+    }
+  }
+  let frameId;
+  let prevRefRect = animationFrame ? getBoundingClientRect(reference) : null;
+  if (animationFrame) {
+    frameLoop();
+  }
+  function frameLoop() {
+    const nextRefRect = getBoundingClientRect(reference);
+    if (prevRefRect && !rectsAreEqual(prevRefRect, nextRefRect)) {
+      update3();
+    }
+    prevRefRect = nextRefRect;
+    frameId = requestAnimationFrame(frameLoop);
+  }
+  update3();
+  return () => {
+    var _resizeObserver2;
+    ancestors.forEach((ancestor) => {
+      ancestorScroll && ancestor.removeEventListener("scroll", update3);
+      ancestorResize && ancestor.removeEventListener("resize", update3);
+    });
+    cleanupIo == null || cleanupIo();
+    (_resizeObserver2 = resizeObserver) == null || _resizeObserver2.disconnect();
+    resizeObserver = null;
+    if (animationFrame) {
+      cancelAnimationFrame(frameId);
+    }
+  };
+}
+var offset2 = offset;
+var shift2 = shift;
+var flip2 = flip;
+var size2 = size;
+var hide2 = hide;
+var arrow2 = arrow;
+var limitShift2 = limitShift;
+var computePosition2 = (reference, floating, options) => {
+  const cache = /* @__PURE__ */ new Map();
+  const mergedOptions = {
+    platform,
+    ...options
+  };
+  const platformWithCache = {
+    ...mergedOptions.platform,
+    _c: cache
+  };
+  return computePosition(reference, floating, {
+    ...mergedOptions,
+    platform: platformWithCache
+  });
+};
+
+// node_modules/bits-ui/dist/internal/floating-svelte/floating-utils.svelte.js
+function get5(valueOrGetValue) {
+  return typeof valueOrGetValue === "function" ? valueOrGetValue() : valueOrGetValue;
+}
+function getDPR(element2) {
+  if (typeof window === "undefined") return 1;
+  const win = element2.ownerDocument.defaultView || window;
+  return win.devicePixelRatio || 1;
+}
+function roundByDPR(element2, value) {
+  const dpr = getDPR(element2);
+  return Math.round(value * dpr) / dpr;
+}
+function getFloatingContentCSSVars(name) {
+  return {
+    [`--bits-${name}-content-transform-origin`]: `var(--bits-floating-transform-origin)`,
+    [`--bits-${name}-content-available-width`]: `var(--bits-floating-available-width)`,
+    [`--bits-${name}-content-available-height`]: `var(--bits-floating-available-height)`,
+    [`--bits-${name}-anchor-width`]: `var(--bits-floating-anchor-width)`,
+    [`--bits-${name}-anchor-height`]: `var(--bits-floating-anchor-height)`
+  };
+}
+
+// node_modules/bits-ui/dist/internal/floating-svelte/use-floating.svelte.js
+function useFloating(options) {
+  const whileElementsMountedOption = options.whileElementsMounted;
+  const openOption = user_derived(() => get5(options.open) ?? true);
+  const middlewareOption = user_derived(() => get5(options.middleware));
+  const transformOption = user_derived(() => get5(options.transform) ?? true);
+  const placementOption = user_derived(() => get5(options.placement) ?? "bottom");
+  const strategyOption = user_derived(() => get5(options.strategy) ?? "absolute");
+  const sideOffsetOption = user_derived(() => get5(options.sideOffset) ?? 0);
+  const alignOffsetOption = user_derived(() => get5(options.alignOffset) ?? 0);
+  const reference = options.reference;
+  let x = state(0);
+  let y = state(0);
+  const floating = simpleBox(null);
+  let strategy = state(proxy(get2(strategyOption)));
+  let placement = state(proxy(get2(placementOption)));
+  let middlewareData = state(proxy({}));
+  let isPositioned = state(false);
+  let hasWhileMountedPosition = false;
+  let updateRequestId = 0;
+  const floatingStyles = user_derived(() => {
+    const xVal = floating.current ? roundByDPR(floating.current, get2(x)) : get2(x);
+    const yVal = floating.current ? roundByDPR(floating.current, get2(y)) : get2(y);
+    if (get2(transformOption)) {
+      return {
+        position: get2(strategy),
+        left: "0",
+        top: "0",
+        transform: `translate(${xVal}px, ${yVal}px)`,
+        ...floating.current && getDPR(floating.current) >= 1.5 && { willChange: "transform" }
+      };
+    }
+    return {
+      position: get2(strategy),
+      left: `${xVal}px`,
+      top: `${yVal}px`
+    };
+  });
+  let whileElementsMountedCleanup;
+  function update3() {
+    if (reference.current === null || floating.current === null) return;
+    const referenceNode = reference.current;
+    const floatingNode = floating.current;
+    const requestId = ++updateRequestId;
+    computePosition2(referenceNode, floatingNode, {
+      middleware: get2(middlewareOption),
+      placement: get2(placementOption),
+      strategy: get2(strategyOption)
+    }).then((position) => {
+      if (requestId !== updateRequestId) return;
+      if (reference.current !== referenceNode || floating.current !== floatingNode) return;
+      const referenceHidden = isReferenceHidden(referenceNode);
+      if (referenceHidden) {
+        set(
+          middlewareData,
+          {
+            ...get2(middlewareData),
+            hide: {
+              // oxlint-disable-next-line no-explicit-any
+              ...get2(middlewareData).hide,
+              referenceHidden: true
+            }
+          },
+          true
+        );
+        return;
+      }
+      if (!get2(openOption) && get2(x) !== 0 && get2(y) !== 0) {
+        const maxExpectedOffset = Math.max(Math.abs(get2(sideOffsetOption)), Math.abs(get2(alignOffsetOption)), 15);
+        if (position.x <= maxExpectedOffset && position.y <= maxExpectedOffset) return;
+      }
+      set(x, position.x, true);
+      set(y, position.y, true);
+      set(strategy, position.strategy, true);
+      set(placement, position.placement, true);
+      set(middlewareData, position.middlewareData, true);
+      set(isPositioned, true);
+    });
+  }
+  function cleanup() {
+    if (typeof whileElementsMountedCleanup === "function") {
+      whileElementsMountedCleanup();
+      whileElementsMountedCleanup = void 0;
+    }
+    updateRequestId++;
+  }
+  function attach2() {
+    cleanup();
+    if (whileElementsMountedOption === void 0) {
+      update3();
+      return;
+    }
+    if (!get2(openOption)) return;
+    if (reference.current === null || floating.current === null) return;
+    whileElementsMountedCleanup = whileElementsMountedOption(reference.current, floating.current, update3);
+  }
+  function reset2() {
+    if (!get2(openOption) && floating.current === null) {
+      set(isPositioned, false);
+    }
+  }
+  function trackWhileMountedDeps() {
+    return [
+      get2(middlewareOption),
+      get2(placementOption),
+      get2(strategyOption),
+      get2(sideOffsetOption),
+      get2(alignOffsetOption),
+      get2(openOption)
+    ];
+  }
+  user_effect(() => {
+    if (whileElementsMountedOption !== void 0) return;
+    if (!get2(openOption)) return;
+    update3();
+  });
+  user_effect(attach2);
+  user_effect(() => {
+    if (whileElementsMountedOption === void 0) return;
+    trackWhileMountedDeps();
+    if (!get2(openOption)) {
+      hasWhileMountedPosition = false;
+      return;
+    }
+    if (!get2(isPositioned)) {
+      hasWhileMountedPosition = false;
+      return;
+    }
+    if (!hasWhileMountedPosition) {
+      hasWhileMountedPosition = true;
+      return;
+    }
+    update3();
+  });
+  user_effect(reset2);
+  user_effect(() => cleanup);
+  return {
+    floating,
+    reference,
+    get strategy() {
+      return get2(strategy);
+    },
+    get placement() {
+      return get2(placement);
+    },
+    get middlewareData() {
+      return get2(middlewareData);
+    },
+    get isPositioned() {
+      return get2(isPositioned);
+    },
+    get floatingStyles() {
+      return get2(floatingStyles);
+    },
+    get update() {
+      return update3;
+    }
+  };
+}
+function isReferenceHidden(node) {
+  if (!(node instanceof Element)) return false;
+  if (!node.isConnected) return true;
+  if (node instanceof HTMLElement && node.hidden) return true;
+  return node.getClientRects().length === 0;
+}
+
+// node_modules/bits-ui/dist/bits/utilities/floating-layer/use-floating-layer.svelte.js
+var OPPOSITE_SIDE = { top: "bottom", right: "left", bottom: "top", left: "right" };
+var FloatingRootContext = new Context("Floating.Root");
+var FloatingContentContext = new Context("Floating.Content");
+var FloatingTooltipRootContext = new Context("Floating.Root");
+var FloatingRootState = class _FloatingRootState {
+  static create(tooltip = false) {
+    return tooltip ? FloatingTooltipRootContext.set(new _FloatingRootState()) : FloatingRootContext.set(new _FloatingRootState());
+  }
+  anchorNode = simpleBox(null);
+  customAnchorNode = simpleBox(null);
+  triggerNode = simpleBox(null);
+  constructor() {
+    user_effect(() => {
+      if (this.customAnchorNode.current) {
+        if (typeof this.customAnchorNode.current === "string") {
+          this.anchorNode.current = document.querySelector(this.customAnchorNode.current);
+        } else {
+          this.anchorNode.current = this.customAnchorNode.current;
+        }
+      } else {
+        this.anchorNode.current = this.triggerNode.current;
+      }
+    });
+  }
+};
+var FloatingContentState = class _FloatingContentState {
+  static create(opts, tooltip = false) {
+    return tooltip ? FloatingContentContext.set(new _FloatingContentState(opts, FloatingTooltipRootContext.get())) : FloatingContentContext.set(new _FloatingContentState(opts, FloatingRootContext.get()));
+  }
+  opts;
+  root;
+  // nodes
+  contentRef = simpleBox(null);
+  wrapperRef = simpleBox(null);
+  arrowRef = simpleBox(null);
+  contentAttachment = attachRef(this.contentRef);
+  wrapperAttachment = attachRef(this.wrapperRef);
+  arrowAttachment = attachRef(this.arrowRef);
+  // ids
+  arrowId = simpleBox(useId());
+  #transformedStyle = user_derived(() => {
+    if (typeof this.opts.style === "string") return cssToStyleObj(this.opts.style);
+    if (!this.opts.style) return {};
+  });
+  #updatePositionStrategy = void 0;
+  #arrowSize = new ElementSize(() => this.arrowRef.current ?? void 0);
+  #arrowWidth = user_derived(() => this.#arrowSize?.width ?? 0);
+  #arrowHeight = user_derived(() => this.#arrowSize?.height ?? 0);
+  #desiredPlacement = user_derived(() => this.opts.side?.current + (this.opts.align.current !== "center" ? `-${this.opts.align.current}` : ""));
+  #boundary = user_derived(() => Array.isArray(this.opts.collisionBoundary.current) ? this.opts.collisionBoundary.current : [this.opts.collisionBoundary.current]);
+  #hasExplicitBoundaries = user_derived(() => get2(this.#boundary).length > 0);
+  get hasExplicitBoundaries() {
+    return get2(this.#hasExplicitBoundaries);
+  }
+  set hasExplicitBoundaries(value) {
+    set(this.#hasExplicitBoundaries, value);
+  }
+  #detectOverflowOptions = user_derived(() => ({
+    padding: this.opts.collisionPadding.current,
+    boundary: get2(this.#boundary).filter(isNotNull),
+    altBoundary: this.hasExplicitBoundaries
+  }));
+  get detectOverflowOptions() {
+    return get2(this.#detectOverflowOptions);
+  }
+  set detectOverflowOptions(value) {
+    set(this.#detectOverflowOptions, value);
+  }
+  #availableWidth = state(void 0);
+  #availableHeight = state(void 0);
+  #anchorWidth = state(void 0);
+  #anchorHeight = state(void 0);
+  #middleware = user_derived(() => [
+    offset2({
+      mainAxis: this.opts.sideOffset.current + get2(this.#arrowHeight),
+      alignmentAxis: this.opts.alignOffset.current
+    }),
+    this.opts.avoidCollisions.current && shift2({
+      mainAxis: true,
+      crossAxis: false,
+      limiter: this.opts.sticky.current === "partial" ? limitShift2() : void 0,
+      ...this.detectOverflowOptions
+    }),
+    this.opts.avoidCollisions.current && flip2({ ...this.detectOverflowOptions }),
+    size2({
+      ...this.detectOverflowOptions,
+      apply: ({ rects, availableWidth, availableHeight }) => {
+        const { width: anchorWidth, height: anchorHeight } = rects.reference;
+        set(this.#availableWidth, availableWidth, true);
+        set(this.#availableHeight, availableHeight, true);
+        set(this.#anchorWidth, anchorWidth, true);
+        set(this.#anchorHeight, anchorHeight, true);
+      }
+    }),
+    this.arrowRef.current && arrow2({
+      element: this.arrowRef.current,
+      padding: this.opts.arrowPadding.current
+    }),
+    transformOrigin({
+      arrowWidth: get2(this.#arrowWidth),
+      arrowHeight: get2(this.#arrowHeight)
+    }),
+    this.opts.hideWhenDetached.current && hide2({ strategy: "referenceHidden", ...this.detectOverflowOptions })
+  ].filter(Boolean));
+  get middleware() {
+    return get2(this.#middleware);
+  }
+  set middleware(value) {
+    set(this.#middleware, value);
+  }
+  floating;
+  #placedSide = user_derived(() => getSideFromPlacement(this.floating.placement));
+  get placedSide() {
+    return get2(this.#placedSide);
+  }
+  set placedSide(value) {
+    set(this.#placedSide, value);
+  }
+  #placedAlign = user_derived(() => getAlignFromPlacement(this.floating.placement));
+  get placedAlign() {
+    return get2(this.#placedAlign);
+  }
+  set placedAlign(value) {
+    set(this.#placedAlign, value);
+  }
+  #arrowX = user_derived(() => this.floating.middlewareData.arrow?.x ?? 0);
+  get arrowX() {
+    return get2(this.#arrowX);
+  }
+  set arrowX(value) {
+    set(this.#arrowX, value);
+  }
+  #arrowY = user_derived(() => this.floating.middlewareData.arrow?.y ?? 0);
+  get arrowY() {
+    return get2(this.#arrowY);
+  }
+  set arrowY(value) {
+    set(this.#arrowY, value);
+  }
+  #cannotCenterArrow = user_derived(() => this.floating.middlewareData.arrow?.centerOffset !== 0);
+  get cannotCenterArrow() {
+    return get2(this.#cannotCenterArrow);
+  }
+  set cannotCenterArrow(value) {
+    set(this.#cannotCenterArrow, value);
+  }
+  #contentZIndex = state();
+  get contentZIndex() {
+    return get2(this.#contentZIndex);
+  }
+  set contentZIndex(value) {
+    set(this.#contentZIndex, value, true);
+  }
+  #arrowBaseSide = user_derived(() => OPPOSITE_SIDE[this.placedSide]);
+  get arrowBaseSide() {
+    return get2(this.#arrowBaseSide);
+  }
+  set arrowBaseSide(value) {
+    set(this.#arrowBaseSide, value);
+  }
+  #wrapperProps = user_derived(() => ({
+    id: this.opts.wrapperId.current,
+    "data-bits-floating-content-wrapper": "",
+    style: {
+      ...this.floating.floatingStyles,
+      transform: this.floating.isPositioned ? this.floating.floatingStyles.transform : "translate(0, -200%)",
+      minWidth: "max-content",
+      zIndex: this.contentZIndex,
+      "--bits-floating-transform-origin": `${this.floating.middlewareData.transformOrigin?.x} ${this.floating.middlewareData.transformOrigin?.y}`,
+      "--bits-floating-available-width": `${get2(this.#availableWidth)}px`,
+      "--bits-floating-available-height": `${get2(this.#availableHeight)}px`,
+      "--bits-floating-anchor-width": `${get2(this.#anchorWidth)}px`,
+      "--bits-floating-anchor-height": `${get2(this.#anchorHeight)}px`,
+      ...this.floating.middlewareData.hide?.referenceHidden && { visibility: "hidden", "pointer-events": "none" },
+      ...get2(this.#transformedStyle)
+    },
+    dir: this.opts.dir.current,
+    ...this.wrapperAttachment
+  }));
+  get wrapperProps() {
+    return get2(this.#wrapperProps);
+  }
+  set wrapperProps(value) {
+    set(this.#wrapperProps, value);
+  }
+  #props = user_derived(() => ({
+    "data-side": this.placedSide,
+    "data-align": this.placedAlign,
+    style: styleToString({ ...get2(this.#transformedStyle) }),
+    ...this.contentAttachment
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+  #arrowStyle = user_derived(() => ({
+    position: "absolute",
+    left: this.arrowX ? `${this.arrowX}px` : void 0,
+    top: this.arrowY ? `${this.arrowY}px` : void 0,
+    [this.arrowBaseSide]: 0,
+    "transform-origin": { top: "", right: "0 0", bottom: "center 0", left: "100% 0" }[this.placedSide],
+    transform: {
+      top: "translateY(100%)",
+      right: "translateY(50%) rotate(90deg) translateX(-50%)",
+      bottom: "rotate(180deg)",
+      left: "translateY(50%) rotate(-90deg) translateX(50%)"
+    }[this.placedSide],
+    visibility: this.cannotCenterArrow ? "hidden" : void 0
+  }));
+  get arrowStyle() {
+    return get2(this.#arrowStyle);
+  }
+  set arrowStyle(value) {
+    set(this.#arrowStyle, value);
+  }
+  constructor(opts, root71) {
+    this.opts = opts;
+    this.root = root71;
+    this.#updatePositionStrategy = opts.updatePositionStrategy;
+    if (opts.customAnchor) {
+      this.root.customAnchorNode.current = opts.customAnchor.current;
+    }
+    watch(() => opts.customAnchor.current, (customAnchor) => {
+      this.root.customAnchorNode.current = customAnchor;
+    });
+    this.floating = useFloating({
+      strategy: () => this.opts.strategy.current,
+      placement: () => get2(this.#desiredPlacement),
+      middleware: () => this.middleware,
+      reference: this.root.anchorNode,
+      whileElementsMounted: (...args) => {
+        const cleanup = autoUpdate(...args, {
+          animationFrame: this.#updatePositionStrategy?.current === "always"
+        });
+        return cleanup;
+      },
+      open: () => this.opts.enabled.current,
+      sideOffset: () => this.opts.sideOffset.current,
+      alignOffset: () => this.opts.alignOffset.current
+    });
+    user_effect(() => {
+      if (!this.floating.isPositioned) return;
+      this.opts.onPlaced?.current();
+    });
+    watch(() => this.contentRef.current, (contentNode) => {
+      if (!contentNode || !this.opts.enabled.current) return;
+      const win = getWindow(contentNode);
+      const rafId = win.requestAnimationFrame(() => {
+        if (this.contentRef.current !== contentNode || !this.opts.enabled.current) return;
+        const zIndex = win.getComputedStyle(contentNode).zIndex;
+        if (zIndex !== this.contentZIndex) {
+          this.contentZIndex = zIndex;
+        }
+      });
+      return () => {
+        win.cancelAnimationFrame(rafId);
+      };
+    });
+    user_effect(() => {
+      this.floating.floating.current = this.wrapperRef.current;
+    });
+  }
+};
+var FloatingArrowState = class _FloatingArrowState {
+  static create(opts) {
+    return new _FloatingArrowState(opts, FloatingContentContext.get());
+  }
+  opts;
+  content;
+  constructor(opts, content) {
+    this.opts = opts;
+    this.content = content;
+  }
+  #props = user_derived(() => ({
+    id: this.opts.id.current,
+    style: this.content.arrowStyle,
+    "data-side": this.content.placedSide,
+    ...this.content.arrowAttachment
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+};
+var FloatingAnchorState = class _FloatingAnchorState {
+  static create(opts, tooltip = false) {
+    return tooltip ? new _FloatingAnchorState(opts, FloatingTooltipRootContext.get()) : new _FloatingAnchorState(opts, FloatingRootContext.get());
+  }
+  opts;
+  root;
+  constructor(opts, root71) {
+    this.opts = opts;
+    this.root = root71;
+    if (opts.virtualEl && opts.virtualEl.current) {
+      root71.triggerNode = boxFrom(opts.virtualEl.current);
+    } else {
+      root71.triggerNode = opts.ref;
+    }
+  }
+};
+function transformOrigin(options) {
+  return {
+    name: "transformOrigin",
+    options,
+    fn(data2) {
+      const { placement, rects, middlewareData } = data2;
+      const cannotCenterArrow = middlewareData.arrow?.centerOffset !== 0;
+      const isArrowHidden = cannotCenterArrow;
+      const arrowWidth = isArrowHidden ? 0 : options.arrowWidth;
+      const arrowHeight = isArrowHidden ? 0 : options.arrowHeight;
+      const [placedSide, placedAlign] = getSideAndAlignFromPlacement(placement);
+      const noArrowAlign = { start: "0%", center: "50%", end: "100%" }[placedAlign];
+      const arrowXCenter = (middlewareData.arrow?.x ?? 0) + arrowWidth / 2;
+      const arrowYCenter = (middlewareData.arrow?.y ?? 0) + arrowHeight / 2;
+      let x = "";
+      let y = "";
+      if (placedSide === "bottom") {
+        x = isArrowHidden ? noArrowAlign : `${arrowXCenter}px`;
+        y = `${-arrowHeight}px`;
+      } else if (placedSide === "top") {
+        x = isArrowHidden ? noArrowAlign : `${arrowXCenter}px`;
+        y = `${rects.floating.height + arrowHeight}px`;
+      } else if (placedSide === "right") {
+        x = `${-arrowHeight}px`;
+        y = isArrowHidden ? noArrowAlign : `${arrowYCenter}px`;
+      } else if (placedSide === "left") {
+        x = `${rects.floating.width + arrowHeight}px`;
+        y = isArrowHidden ? noArrowAlign : `${arrowYCenter}px`;
+      }
+      return { data: { x, y } };
+    }
+  };
+}
+function getSideAndAlignFromPlacement(placement) {
+  const [side, align = "center"] = placement.split("-");
+  return [side, align];
+}
+function getSideFromPlacement(placement) {
+  return getSideAndAlignFromPlacement(placement)[0];
+}
+function getAlignFromPlacement(placement) {
+  return getSideAndAlignFromPlacement(placement)[1];
+}
+
+// node_modules/bits-ui/dist/bits/utilities/floating-layer/components/floating-layer.svelte
+function Floating_layer($$anchor, $$props) {
+  push($$props, true);
+  let tooltip = prop($$props, "tooltip", 3, false);
+  FloatingRootState.create(tooltip());
+  var fragment = comment();
+  var node = first_child(fragment);
+  snippet(node, () => $$props.children ?? noop);
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/internal/data-typeahead.svelte.js
+var DataTypeahead = class {
+  #opts;
+  #candidateValues = user_derived(() => this.#opts.candidateValues());
+  #search;
+  constructor(opts) {
+    this.#opts = opts;
+    this.#search = boxAutoReset("", { afterMs: 1e3, getWindow: this.#opts.getWindow });
+    this.handleTypeaheadSearch = this.handleTypeaheadSearch.bind(this);
+    this.resetTypeahead = this.resetTypeahead.bind(this);
+  }
+  handleTypeaheadSearch(key2) {
+    if (!this.#opts.enabled() || !get2(this.#candidateValues).length) return;
+    this.#search.current = this.#search.current + key2;
+    const currentItem = this.#opts.getCurrentItem();
+    const currentMatch = get2(this.#candidateValues).find((item) => item === currentItem) ?? "";
+    const values = get2(this.#candidateValues).map((item) => item ?? "");
+    const nextMatch = getNextMatch(values, this.#search.current, currentMatch);
+    const newItem = get2(this.#candidateValues).find((item) => item === nextMatch);
+    if (newItem) {
+      this.#opts.onMatch(newItem);
+    }
+    return newItem;
+  }
+  resetTypeahead() {
+    this.#search.current = "";
+  }
+};
+
+// node_modules/bits-ui/dist/bits/select/select.svelte.js
+var INTERACTION_KEYS = [
+  kbd_constants_exports.ARROW_LEFT,
+  kbd_constants_exports.ESCAPE,
+  kbd_constants_exports.ARROW_RIGHT,
+  kbd_constants_exports.SHIFT,
+  kbd_constants_exports.CAPS_LOCK,
+  kbd_constants_exports.CONTROL,
+  kbd_constants_exports.ALT,
+  kbd_constants_exports.META,
+  kbd_constants_exports.ENTER,
+  kbd_constants_exports.F1,
+  kbd_constants_exports.F2,
+  kbd_constants_exports.F3,
+  kbd_constants_exports.F4,
+  kbd_constants_exports.F5,
+  kbd_constants_exports.F6,
+  kbd_constants_exports.F7,
+  kbd_constants_exports.F8,
+  kbd_constants_exports.F9,
+  kbd_constants_exports.F10,
+  kbd_constants_exports.F11,
+  kbd_constants_exports.F12
+];
+var FIRST_KEYS2 = [kbd_constants_exports.ARROW_DOWN, kbd_constants_exports.PAGE_UP, kbd_constants_exports.HOME];
+var LAST_KEYS2 = [kbd_constants_exports.ARROW_UP, kbd_constants_exports.PAGE_DOWN, kbd_constants_exports.END];
+var FIRST_LAST_KEYS2 = [...FIRST_KEYS2, ...LAST_KEYS2];
+var SELECTION_KEYS2 = [kbd_constants_exports.ENTER, kbd_constants_exports.SPACE];
+var selectAttrs = createBitsAttrs({
+  component: "select",
+  parts: [
+    "trigger",
+    "content",
+    "item",
+    "viewport",
+    "scroll-up-button",
+    "scroll-down-button",
+    "group",
+    "group-label",
+    "separator",
+    "arrow",
+    "input",
+    "content-wrapper",
+    "item-text",
+    "value"
+  ]
+});
+var SelectRootContext = new Context("Select.Root | Combobox.Root");
+var SelectGroupContext = new Context("Select.Group | Combobox.Group");
+var SelectContentContext = new Context("Select.Content | Combobox.Content");
+var SelectBaseRootState = class {
+  opts;
+  #touchedInput = state(false);
+  get touchedInput() {
+    return get2(this.#touchedInput);
+  }
+  set touchedInput(value) {
+    set(this.#touchedInput, value, true);
+  }
+  #inputNode = state(null);
+  get inputNode() {
+    return get2(this.#inputNode);
+  }
+  set inputNode(value) {
+    set(this.#inputNode, value, true);
+  }
+  #contentNode = state(null);
+  get contentNode() {
+    return get2(this.#contentNode);
+  }
+  set contentNode(value) {
+    set(this.#contentNode, value, true);
+  }
+  contentPresence;
+  #viewportNode = state(null);
+  get viewportNode() {
+    return get2(this.#viewportNode);
+  }
+  set viewportNode(value) {
+    set(this.#viewportNode, value, true);
+  }
+  #triggerNode = state(null);
+  get triggerNode() {
+    return get2(this.#triggerNode);
+  }
+  set triggerNode(value) {
+    set(this.#triggerNode, value, true);
+  }
+  #valueNode = state(null);
+  get valueNode() {
+    return get2(this.#valueNode);
+  }
+  set valueNode(value) {
+    set(this.#valueNode, value, true);
+  }
+  #valueId = state("");
+  get valueId() {
+    return get2(this.#valueId);
+  }
+  set valueId(value) {
+    set(this.#valueId, value, true);
+  }
+  #highlightedNode = state(null);
+  get highlightedNode() {
+    return get2(this.#highlightedNode);
+  }
+  set highlightedNode(value) {
+    set(this.#highlightedNode, value, true);
+  }
+  #highlightedValue = user_derived(() => {
+    if (!this.highlightedNode) return null;
+    return this.highlightedNode.getAttribute("data-value");
+  });
+  get highlightedValue() {
+    return get2(this.#highlightedValue);
+  }
+  set highlightedValue(value) {
+    set(this.#highlightedValue, value);
+  }
+  #highlightedId = user_derived(() => {
+    if (!this.highlightedNode) return void 0;
+    return this.highlightedNode.id;
+  });
+  get highlightedId() {
+    return get2(this.#highlightedId);
+  }
+  set highlightedId(value) {
+    set(this.#highlightedId, value);
+  }
+  #highlightedLabel = user_derived(() => {
+    if (!this.highlightedNode) return null;
+    return this.highlightedNode.getAttribute("data-label");
+  });
+  get highlightedLabel() {
+    return get2(this.#highlightedLabel);
+  }
+  set highlightedLabel(value) {
+    set(this.#highlightedLabel, value);
+  }
+  #contentIsPositioned = state(false);
+  get contentIsPositioned() {
+    return get2(this.#contentIsPositioned);
+  }
+  set contentIsPositioned(value) {
+    set(this.#contentIsPositioned, value, true);
+  }
+  isUsingKeyboard = false;
+  isCombobox = false;
+  domContext = new DOMContext(() => null);
+  constructor(opts) {
+    this.opts = opts;
+    this.isCombobox = opts.isCombobox;
+    this.contentPresence = new PresenceManager({
+      ref: boxWith(() => this.contentNode),
+      open: this.opts.open,
+      onComplete: () => {
+        this.opts.onOpenChangeComplete.current(this.opts.open.current);
+      }
+    });
+    user_pre_effect(() => {
+      if (!this.opts.open.current) {
+        this.setHighlightedNode(null);
+      }
+    });
+  }
+  setHighlightedNode(node, initial = false) {
+    this.highlightedNode = node;
+    if (node && (this.isUsingKeyboard || initial)) {
+      this.scrollHighlightedNodeIntoView(node);
+    }
+  }
+  scrollHighlightedNodeIntoView(node) {
+    if (!this.viewportNode || !this.contentIsPositioned) return;
+    node.scrollIntoView({ block: this.opts.scrollAlignment.current });
+  }
+  getCandidateNodes() {
+    const node = this.contentNode;
+    if (!node) return [];
+    return Array.from(node.querySelectorAll(`[${this.getBitsAttr("item")}]:not([data-disabled])`));
+  }
+  setHighlightedToFirstCandidate(initial = false) {
+    this.setHighlightedNode(null);
+    let nodes = this.getCandidateNodes();
+    if (!nodes.length) return;
+    if (this.viewportNode) {
+      const viewportRect = this.viewportNode.getBoundingClientRect();
+      nodes = nodes.filter((node) => {
+        if (!this.viewportNode) return false;
+        const nodeRect = node.getBoundingClientRect();
+        const isNodeFullyVisible = nodeRect.right <= viewportRect.right && nodeRect.left >= viewportRect.left && nodeRect.bottom <= viewportRect.bottom && nodeRect.top >= viewportRect.top;
+        return isNodeFullyVisible;
+      });
+    }
+    this.setHighlightedNode(nodes[0], initial);
+  }
+  getNodeByValue(value) {
+    const candidateNodes = this.getCandidateNodes();
+    return candidateNodes.find((node) => node.dataset.value === value) ?? null;
+  }
+  /**
+   * Resolves the display label for a value: `items` entry when present, otherwise the
+   * mounted item's `data-label` or its text content.
+   */
+  getLabelForValue(value) {
+    if (value === "") return "";
+    const fromItems = this.opts.items.current.find((item) => item.value === value)?.label;
+    if (fromItems !== void 0) return fromItems;
+    const node = this.getNodeByValue(value);
+    if (node) {
+      const dataLabel = node.getAttribute("data-label");
+      if (dataLabel !== null && dataLabel !== "") return dataLabel;
+      return node.textContent?.trim() ?? value;
+    }
+    return value;
+  }
+  setOpen(open) {
+    this.opts.open.current = open;
+  }
+  toggleOpen() {
+    this.opts.open.current = !this.opts.open.current;
+  }
+  handleOpen() {
+    this.setOpen(true);
+  }
+  handleClose() {
+    this.setHighlightedNode(null);
+    this.setOpen(false);
+  }
+  toggleMenu() {
+    this.toggleOpen();
+  }
+  getBitsAttr = (part) => {
+    return selectAttrs.getAttr(part, this.isCombobox ? "combobox" : void 0);
+  };
+};
+var SelectSingleRootState = class extends SelectBaseRootState {
+  opts;
+  isMulti = false;
+  #hasValue = user_derived(() => this.opts.value.current !== "");
+  get hasValue() {
+    return get2(this.#hasValue);
+  }
+  set hasValue(value) {
+    set(this.#hasValue, value);
+  }
+  #currentLabel = user_derived(() => {
+    if (!this.opts.items.current.length) return "";
+    return this.opts.items.current.find((item) => item.value === this.opts.value.current)?.label ?? "";
+  });
+  get currentLabel() {
+    return get2(this.#currentLabel);
+  }
+  set currentLabel(value) {
+    set(this.#currentLabel, value);
+  }
+  #candidateLabels = user_derived(() => {
+    if (!this.opts.items.current.length) return [];
+    const filteredItems = this.opts.items.current.filter((item) => !item.disabled);
+    return filteredItems.map((item) => item.label);
+  });
+  get candidateLabels() {
+    return get2(this.#candidateLabels);
+  }
+  set candidateLabels(value) {
+    set(this.#candidateLabels, value);
+  }
+  #dataTypeaheadEnabled = user_derived(() => {
+    if (this.isMulti) return false;
+    if (this.opts.items.current.length === 0) return false;
+    return true;
+  });
+  get dataTypeaheadEnabled() {
+    return get2(this.#dataTypeaheadEnabled);
+  }
+  set dataTypeaheadEnabled(value) {
+    set(this.#dataTypeaheadEnabled, value);
+  }
+  constructor(opts) {
+    super(opts);
+    this.opts = opts;
+    user_effect(() => {
+      if (!this.opts.open.current && this.highlightedNode) {
+        this.setHighlightedNode(null);
+      }
+    });
+    watch(() => this.opts.open.current, () => {
+      if (!this.opts.open.current) return;
+      this.setInitialHighlightedNode();
+    });
+  }
+  includesItem(itemValue) {
+    return this.opts.value.current === itemValue;
+  }
+  toggleItem(itemValue, itemLabel = itemValue) {
+    const newValue = this.includesItem(itemValue) ? "" : itemValue;
+    this.opts.value.current = newValue;
+    if (newValue !== "") {
+      this.opts.inputValue.current = itemLabel;
+    }
+  }
+  setInitialHighlightedNode() {
+    afterTick(() => {
+      if (this.highlightedNode && this.domContext.getDocument().contains(this.highlightedNode)) return;
+      if (this.opts.value.current !== "") {
+        const node = this.getNodeByValue(this.opts.value.current);
+        if (node) {
+          this.setHighlightedNode(node, true);
+          return;
+        }
+      }
+      this.setHighlightedToFirstCandidate(true);
+    });
+  }
+};
+var SelectMultipleRootState = class extends SelectBaseRootState {
+  opts;
+  isMulti = true;
+  #hasValue = user_derived(() => this.opts.value.current.length > 0);
+  get hasValue() {
+    return get2(this.#hasValue);
+  }
+  set hasValue(value) {
+    set(this.#hasValue, value);
+  }
+  constructor(opts) {
+    super(opts);
+    this.opts = opts;
+    user_effect(() => {
+      if (!this.opts.open.current && this.highlightedNode) {
+        this.setHighlightedNode(null);
+      }
+    });
+    watch(() => this.opts.open.current, () => {
+      if (!this.opts.open.current) return;
+      this.setInitialHighlightedNode();
+    });
+  }
+  includesItem(itemValue) {
+    return this.opts.value.current.includes(itemValue);
+  }
+  toggleItem(itemValue, itemLabel = itemValue) {
+    if (this.includesItem(itemValue)) {
+      this.opts.value.current = this.opts.value.current.filter((v) => v !== itemValue);
+    } else {
+      this.opts.value.current = [...this.opts.value.current, itemValue];
+    }
+    this.opts.inputValue.current = itemLabel;
+  }
+  setInitialHighlightedNode() {
+    afterTick(() => {
+      if (!this.domContext) return;
+      if (this.highlightedNode && this.domContext.getDocument().contains(this.highlightedNode)) return;
+      if (this.opts.value.current.length && this.opts.value.current[0] !== "") {
+        const node = this.getNodeByValue(this.opts.value.current[0]);
+        if (node) {
+          this.setHighlightedNode(node, true);
+          return;
+        }
+      }
+      this.setHighlightedToFirstCandidate(true);
+    });
+  }
+};
+var SelectRootState = class {
+  static create(props) {
+    const { type, ...rest } = props;
+    const rootState = type === "single" ? new SelectSingleRootState(rest) : new SelectMultipleRootState(rest);
+    return SelectRootContext.set(rootState);
+  }
+};
+var SelectValueState = class _SelectValueState {
+  static create(opts) {
+    return new _SelectValueState(opts, SelectRootContext.get());
+  }
+  root;
+  opts;
+  attachment;
+  constructor(opts, root71) {
+    this.root = root71;
+    this.opts = opts;
+    this.attachment = attachRef(opts.ref, (v) => this.root.valueNode = v);
+    this.setValue = this.setValue.bind(this);
+  }
+  setValue(value) {
+    if (this.root.isMulti && !Array.isArray(value)) {
+      if (dev_fallback_default) throw new Error(`Expected an array of strings passed to \`setValue\` got ${typeof value}.`);
+      return;
+    }
+    if (!this.root.isMulti && typeof value !== "string") {
+      if (dev_fallback_default) throw new Error(`Expected a string passed to \`setValue\` got ${typeof value}.`);
+      return;
+    }
+    this.root.opts.value.current = value;
+  }
+  #snippetProps = user_derived(
+    // this way consumers get type narrowing for the value on `type`
+    () => {
+      if (this.root.isMulti) {
+        return {
+          selection: {
+            type: "multiple",
+            selected: this.root.opts.value.current.length > 0 ? this.root.opts.value.current.map((value2) => ({ value: value2, label: this.root.getLabelForValue(value2) })) : [],
+            setValue: this.setValue
+          },
+          placeholder: this.opts.placeholder.current ?? null,
+          disabled: this.root.opts.disabled.current
+        };
+      }
+      const value = this.root.opts.value.current;
+      return {
+        selection: {
+          type: "single",
+          selected: value !== "" ? {
+            value,
+            label: value === "" ? "" : this.root.getLabelForValue(value)
+          } : void 0,
+          setValue: this.setValue
+        },
+        placeholder: this.opts.placeholder.current ?? null,
+        disabled: this.root.opts.disabled.current
+      };
+    }
+  );
+  get snippetProps() {
+    return get2(this.#snippetProps);
+  }
+  set snippetProps(value) {
+    set(this.#snippetProps, value);
+  }
+  #props = user_derived(() => ({
+    id: this.opts.id.current,
+    "data-placeholder": this.root.hasValue ? void 0 : "",
+    "data-select-value": "",
+    ...this.attachment
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+};
+var SelectTriggerState = class _SelectTriggerState {
+  static create(opts) {
+    return new _SelectTriggerState(opts, SelectRootContext.get());
+  }
+  opts;
+  root;
+  attachment;
+  #domTypeahead;
+  #dataTypeahead;
+  constructor(opts, root71) {
+    this.opts = opts;
+    this.root = root71;
+    this.attachment = attachRef(opts.ref, (v) => this.root.triggerNode = v);
+    this.root.domContext = new DOMContext(opts.ref);
+    this.#domTypeahead = new DOMTypeahead({
+      getCurrentItem: () => this.root.highlightedNode,
+      onMatch: (node) => {
+        this.root.setHighlightedNode(node);
+      },
+      getActiveElement: () => this.root.domContext.getActiveElement(),
+      getWindow: () => this.root.domContext.getWindow()
+    });
+    this.#dataTypeahead = new DataTypeahead({
+      getCurrentItem: () => {
+        if (this.root.isMulti) return "";
+        return this.root.currentLabel;
+      },
+      onMatch: (label2) => {
+        if (this.root.isMulti) return;
+        if (!this.root.opts.items.current) return;
+        const matchedItem = this.root.opts.items.current.find((item) => item.label === label2);
+        if (!matchedItem) return;
+        this.root.opts.value.current = matchedItem.value;
+      },
+      enabled: () => !this.root.isMulti && this.root.dataTypeaheadEnabled,
+      candidateValues: () => this.root.isMulti ? [] : this.root.candidateLabels,
+      getWindow: () => this.root.domContext.getWindow()
+    });
+    this.onkeydown = this.onkeydown.bind(this);
+    this.onpointerdown = this.onpointerdown.bind(this);
+    this.onpointerup = this.onpointerup.bind(this);
+    this.onclick = this.onclick.bind(this);
+  }
+  #handleOpen() {
+    this.root.opts.open.current = true;
+    this.#dataTypeahead.resetTypeahead();
+    this.#domTypeahead.resetTypeahead();
+  }
+  #handlePointerOpen(_) {
+    this.#handleOpen();
+  }
+  /**
+   * Logic used to handle keyboard selection/deselection.
+   *
+   * If it returns true, it means the item was selected and whatever is calling
+   * this function should return early
+   *
+   */
+  #handleKeyboardSelection() {
+    const isCurrentSelectedValue = this.root.highlightedValue === this.root.opts.value.current;
+    if (!this.root.opts.allowDeselect.current && isCurrentSelectedValue && !this.root.isMulti) {
+      this.root.handleClose();
+      return true;
+    }
+    if (this.root.highlightedValue !== null) {
+      this.root.toggleItem(this.root.highlightedValue, this.root.highlightedLabel ?? void 0);
+    }
+    if (!this.root.isMulti && !isCurrentSelectedValue) {
+      this.root.handleClose();
+      return true;
+    }
+    return false;
+  }
+  onkeydown(e) {
+    this.root.isUsingKeyboard = true;
+    if (e.key === kbd_constants_exports.ARROW_UP || e.key === kbd_constants_exports.ARROW_DOWN) e.preventDefault();
+    if (!this.root.opts.open.current) {
+      if (e.key === kbd_constants_exports.ENTER || e.key === kbd_constants_exports.SPACE || e.key === kbd_constants_exports.ARROW_DOWN || e.key === kbd_constants_exports.ARROW_UP) {
+        e.preventDefault();
+        this.root.handleOpen();
+      } else if (!this.root.isMulti && this.root.dataTypeaheadEnabled) {
+        this.#dataTypeahead.handleTypeaheadSearch(e.key);
+        return;
+      }
+      if (this.root.hasValue) return;
+      const candidateNodes2 = this.root.getCandidateNodes();
+      if (!candidateNodes2.length) return;
+      if (e.key === kbd_constants_exports.ARROW_DOWN) {
+        const firstCandidate = candidateNodes2[0];
+        this.root.setHighlightedNode(firstCandidate);
+      } else if (e.key === kbd_constants_exports.ARROW_UP) {
+        const lastCandidate = candidateNodes2[candidateNodes2.length - 1];
+        this.root.setHighlightedNode(lastCandidate);
+      }
+      return;
+    }
+    if (e.key === kbd_constants_exports.TAB) {
+      this.root.handleClose();
+      return;
+    }
+    if ((e.key === kbd_constants_exports.ENTER || // if we're currently "typing ahead", we don't want to select the item
+    // just yet as the item the user is trying to get to may have a space in it,
+    // so we defer handling the close for this case until further down
+    e.key === kbd_constants_exports.SPACE && this.#domTypeahead.search === "") && !e.isComposing) {
+      e.preventDefault();
+      const shouldReturn = this.#handleKeyboardSelection();
+      if (shouldReturn) return;
+    }
+    if (e.key === kbd_constants_exports.ARROW_UP && e.altKey) {
+      this.root.handleClose();
+    }
+    if (FIRST_LAST_KEYS2.includes(e.key)) {
+      e.preventDefault();
+      const candidateNodes2 = this.root.getCandidateNodes();
+      const currHighlightedNode = this.root.highlightedNode;
+      const currIndex = currHighlightedNode ? candidateNodes2.indexOf(currHighlightedNode) : -1;
+      const loop2 = this.root.opts.loop.current;
+      let nextItem;
+      if (e.key === kbd_constants_exports.ARROW_DOWN) {
+        nextItem = next3(candidateNodes2, currIndex, loop2);
+      } else if (e.key === kbd_constants_exports.ARROW_UP) {
+        nextItem = prev2(candidateNodes2, currIndex, loop2);
+      } else if (e.key === kbd_constants_exports.PAGE_DOWN) {
+        nextItem = forward(candidateNodes2, currIndex, 10, loop2);
+      } else if (e.key === kbd_constants_exports.PAGE_UP) {
+        nextItem = backward(candidateNodes2, currIndex, 10, loop2);
+      } else if (e.key === kbd_constants_exports.HOME) {
+        nextItem = candidateNodes2[0];
+      } else if (e.key === kbd_constants_exports.END) {
+        nextItem = candidateNodes2[candidateNodes2.length - 1];
+      }
+      if (!nextItem) return;
+      this.root.setHighlightedNode(nextItem);
+      return;
+    }
+    const isModifierKey = e.ctrlKey || e.altKey || e.metaKey;
+    const isCharacterKey = e.key.length === 1;
+    const isSpaceKey = e.key === kbd_constants_exports.SPACE;
+    const candidateNodes = this.root.getCandidateNodes();
+    if (e.key === kbd_constants_exports.TAB) return;
+    if (!isModifierKey && (isCharacterKey || isSpaceKey)) {
+      const matchedNode = this.#domTypeahead.handleTypeaheadSearch(e.key, candidateNodes);
+      if (!matchedNode && isSpaceKey) {
+        e.preventDefault();
+        this.#handleKeyboardSelection();
+      }
+      return;
+    }
+    if (!this.root.highlightedNode) {
+      this.root.setHighlightedToFirstCandidate();
+    }
+  }
+  onclick(e) {
+    const currTarget = e.currentTarget;
+    currTarget.focus();
+  }
+  onpointerdown(e) {
+    if (this.root.opts.disabled.current) return;
+    if (e.pointerType === "touch") return e.preventDefault();
+    const target = e.target;
+    if (target?.hasPointerCapture(e.pointerId)) {
+      target?.releasePointerCapture(e.pointerId);
+    }
+    if (e.button === 0 && e.ctrlKey === false) {
+      if (this.root.opts.open.current === false) {
+        this.#handlePointerOpen(e);
+      } else {
+        this.root.handleClose();
+      }
+    }
+  }
+  onpointerup(e) {
+    if (this.root.opts.disabled.current) return;
+    e.preventDefault();
+    if (e.pointerType === "touch") {
+      if (this.root.opts.open.current === false) {
+        this.#handlePointerOpen(e);
+      } else {
+        this.root.handleClose();
+      }
+    }
+  }
+  #props = user_derived(() => ({
+    id: this.opts.id.current,
+    disabled: this.root.opts.disabled.current ? true : void 0,
+    "aria-haspopup": "listbox",
+    "aria-expanded": boolToStr(this.root.opts.open.current),
+    "aria-activedescendant": this.root.highlightedId,
+    "data-state": getDataOpenClosed(this.root.opts.open.current),
+    "data-disabled": boolToEmptyStrOrUndef(this.root.opts.disabled.current),
+    "data-placeholder": this.root.hasValue ? void 0 : "",
+    [this.root.getBitsAttr("trigger")]: "",
+    onpointerdown: this.onpointerdown,
+    onkeydown: this.onkeydown,
+    onclick: this.onclick,
+    onpointerup: this.onpointerup,
+    ...this.attachment
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+};
+var SelectContentState = class _SelectContentState {
+  static create(opts) {
+    return SelectContentContext.set(new _SelectContentState(opts, SelectRootContext.get()));
+  }
+  opts;
+  root;
+  attachment;
+  #isPositioned = state(false);
+  get isPositioned() {
+    return get2(this.#isPositioned);
+  }
+  set isPositioned(value) {
+    set(this.#isPositioned, value, true);
+  }
+  domContext;
+  constructor(opts, root71) {
+    this.opts = opts;
+    this.root = root71;
+    this.attachment = attachRef(opts.ref, (v) => this.root.contentNode = v);
+    this.domContext = new DOMContext(this.opts.ref);
+    if (this.root.domContext === null) {
+      this.root.domContext = this.domContext;
+    }
+    onDestroyEffect(() => {
+      this.root.contentNode = null;
+      this.root.contentIsPositioned = false;
+      this.isPositioned = false;
+    });
+    watch(() => this.root.opts.open.current, () => {
+      if (this.root.opts.open.current) return;
+      this.root.contentIsPositioned = false;
+      this.isPositioned = false;
+    });
+    watch([() => this.isPositioned, () => this.root.highlightedNode], () => {
+      if (!this.isPositioned || !this.root.highlightedNode) return;
+      this.root.scrollHighlightedNodeIntoView(this.root.highlightedNode);
+    });
+    this.onpointermove = this.onpointermove.bind(this);
+  }
+  onpointermove(_) {
+    this.root.isUsingKeyboard = false;
+  }
+  #styles = user_derived(() => {
+    return getFloatingContentCSSVars(this.root.isCombobox ? "combobox" : "select");
+  });
+  onInteractOutside = (e) => {
+    if (e.target === this.root.triggerNode || e.target === this.root.inputNode) {
+      e.preventDefault();
+      return;
+    }
+    this.opts.onInteractOutside.current(e);
+    if (e.defaultPrevented) return;
+    this.root.handleClose();
+  };
+  onEscapeKeydown = (e) => {
+    this.opts.onEscapeKeydown.current(e);
+    if (e.defaultPrevented) return;
+    this.root.handleClose();
+  };
+  onOpenAutoFocus = (e) => {
+    e.preventDefault();
+  };
+  onCloseAutoFocus = (e) => {
+    e.preventDefault();
+  };
+  get shouldRender() {
+    return this.root.contentPresence.shouldRender;
+  }
+  #snippetProps = user_derived(() => ({ open: this.root.opts.open.current }));
+  get snippetProps() {
+    return get2(this.#snippetProps);
+  }
+  set snippetProps(value) {
+    set(this.#snippetProps, value);
+  }
+  #props = user_derived(() => ({
+    id: this.opts.id.current,
+    role: "listbox",
+    "aria-multiselectable": this.root.isMulti ? "true" : void 0,
+    "data-state": getDataOpenClosed(this.root.opts.open.current),
+    ...getDataTransitionAttrs(this.root.contentPresence.transitionStatus),
+    [this.root.getBitsAttr("content")]: "",
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      outline: "none",
+      boxSizing: "border-box",
+      pointerEvents: "auto",
+      ...get2(this.#styles)
+    },
+    onpointermove: this.onpointermove,
+    ...this.attachment
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+  popperProps = {
+    onInteractOutside: this.onInteractOutside,
+    onEscapeKeydown: this.onEscapeKeydown,
+    onOpenAutoFocus: this.onOpenAutoFocus,
+    onCloseAutoFocus: this.onCloseAutoFocus,
+    trapFocus: false,
+    loop: false,
+    onPlaced: () => {
+      if (this.root.opts.open.current) {
+        this.root.contentIsPositioned = true;
+        this.isPositioned = true;
+      }
+    }
+  };
+};
+var SelectItemState = class _SelectItemState {
+  static create(opts) {
+    return new _SelectItemState(opts, SelectRootContext.get());
+  }
+  opts;
+  root;
+  attachment;
+  #isSelected = user_derived(() => this.root.includesItem(this.opts.value.current));
+  get isSelected() {
+    return get2(this.#isSelected);
+  }
+  set isSelected(value) {
+    set(this.#isSelected, value);
+  }
+  #isHighlighted = user_derived(() => this.root.highlightedValue === this.opts.value.current);
+  get isHighlighted() {
+    return get2(this.#isHighlighted);
+  }
+  set isHighlighted(value) {
+    set(this.#isHighlighted, value);
+  }
+  prevHighlighted = new Previous(() => this.isHighlighted);
+  #mounted = state(false);
+  get mounted() {
+    return get2(this.#mounted);
+  }
+  set mounted(value) {
+    set(this.#mounted, value, true);
+  }
+  constructor(opts, root71) {
+    this.opts = opts;
+    this.root = root71;
+    this.attachment = attachRef(opts.ref);
+    watch([() => this.isHighlighted, () => this.prevHighlighted.current], () => {
+      if (this.isHighlighted) {
+        this.opts.onHighlight.current();
+      } else if (this.prevHighlighted.current) {
+        this.opts.onUnhighlight.current();
+      }
+    });
+    watch(() => this.mounted, () => {
+      if (!this.mounted) return;
+      this.root.setInitialHighlightedNode();
+    });
+    this.onpointerdown = this.onpointerdown.bind(this);
+    this.onpointerup = this.onpointerup.bind(this);
+    this.onpointermove = this.onpointermove.bind(this);
+  }
+  handleSelect() {
+    if (this.opts.disabled.current) return;
+    const isCurrentSelectedValue = this.opts.value.current === this.root.opts.value.current;
+    if (!this.root.opts.allowDeselect.current && isCurrentSelectedValue && !this.root.isMulti) {
+      this.root.handleClose();
+      return;
+    }
+    this.root.toggleItem(this.opts.value.current, this.opts.label.current);
+    if (!this.root.isMulti && !isCurrentSelectedValue) {
+      this.root.handleClose();
+    }
+  }
+  #snippetProps = user_derived(() => ({ selected: this.isSelected, highlighted: this.isHighlighted }));
+  get snippetProps() {
+    return get2(this.#snippetProps);
+  }
+  set snippetProps(value) {
+    set(this.#snippetProps, value);
+  }
+  onpointerdown(e) {
+    e.preventDefault();
+  }
+  /**
+   * Using `pointerup` instead of `click` allows power users to pointerdown
+   * the trigger, then release pointerup on an item to select it vs having to do
+   * multiple clicks.
+   */
+  onpointerup(e) {
+    if (e.defaultPrevented || !this.opts.ref.current) return;
+    if (e.pointerType === "touch" && !isIOS) {
+      on(
+        this.opts.ref.current,
+        "click",
+        () => {
+          this.handleSelect();
+          this.root.setHighlightedNode(this.opts.ref.current);
+        },
+        { once: true }
+      );
+      return;
+    }
+    e.preventDefault();
+    this.handleSelect();
+    if (e.pointerType === "touch") {
+      this.root.setHighlightedNode(this.opts.ref.current);
+    }
+  }
+  onpointermove(e) {
+    if (e.pointerType === "touch") return;
+    if (this.root.highlightedNode !== this.opts.ref.current) {
+      this.root.setHighlightedNode(this.opts.ref.current);
+    }
+  }
+  #props = user_derived(() => ({
+    id: this.opts.id.current,
+    role: "option",
+    "aria-selected": this.root.includesItem(this.opts.value.current) ? "true" : void 0,
+    "data-value": this.opts.value.current,
+    "data-disabled": boolToEmptyStrOrUndef(this.opts.disabled.current),
+    "data-highlighted": this.root.highlightedValue === this.opts.value.current && !this.opts.disabled.current ? "" : void 0,
+    "data-selected": this.root.includesItem(this.opts.value.current) ? "" : void 0,
+    "data-label": this.opts.label.current,
+    [this.root.getBitsAttr("item")]: "",
+    onpointermove: this.onpointermove,
+    onpointerdown: this.onpointerdown,
+    onpointerup: this.onpointerup,
+    ...this.attachment
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+};
+var SelectGroupState = class _SelectGroupState {
+  static create(opts) {
+    return SelectGroupContext.set(new _SelectGroupState(opts, SelectRootContext.get()));
+  }
+  opts;
+  root;
+  #labelNode = state(null);
+  get labelNode() {
+    return get2(this.#labelNode);
+  }
+  set labelNode(value) {
+    set(this.#labelNode, value, true);
+  }
+  attachment;
+  constructor(opts, root71) {
+    this.opts = opts;
+    this.root = root71;
+    this.attachment = attachRef(opts.ref);
+  }
+  #props = user_derived(() => ({
+    id: this.opts.id.current,
+    role: "group",
+    [this.root.getBitsAttr("group")]: "",
+    "aria-labelledby": this.labelNode?.id ?? void 0,
+    ...this.attachment
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+};
+var SelectGroupHeadingState = class _SelectGroupHeadingState {
+  static create(opts) {
+    return new _SelectGroupHeadingState(opts, SelectGroupContext.get());
+  }
+  opts;
+  group;
+  attachment;
+  constructor(opts, group) {
+    this.opts = opts;
+    this.group = group;
+    this.attachment = attachRef(opts.ref, (v) => this.group.labelNode = v);
+  }
+  #props = user_derived(() => ({
+    id: this.opts.id.current,
+    [this.group.root.getBitsAttr("group-label")]: "",
+    ...this.attachment
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+};
+var SelectHiddenInputState = class _SelectHiddenInputState {
+  static create(opts) {
+    return new _SelectHiddenInputState(opts, SelectRootContext.get());
+  }
+  opts;
+  root;
+  #shouldRender = user_derived(() => this.root.opts.name.current !== "");
+  get shouldRender() {
+    return get2(this.#shouldRender);
+  }
+  set shouldRender(value) {
+    set(this.#shouldRender, value);
+  }
+  constructor(opts, root71) {
+    this.opts = opts;
+    this.root = root71;
+    this.onfocus = this.onfocus.bind(this);
+  }
+  onfocus(e) {
+    e.preventDefault();
+    if (!this.root.isCombobox) {
+      this.root.triggerNode?.focus();
+    } else {
+      this.root.inputNode?.focus();
+    }
+  }
+  #props = user_derived(() => ({
+    disabled: boolToTrueOrUndef(this.root.opts.disabled.current),
+    required: boolToTrueOrUndef(this.root.opts.required.current),
+    name: this.root.opts.name.current,
+    value: this.opts.value.current,
+    onfocus: this.onfocus
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+};
+var SelectViewportState = class _SelectViewportState {
+  static create(opts) {
+    return new _SelectViewportState(opts, SelectContentContext.get());
+  }
+  opts;
+  content;
+  root;
+  attachment;
+  #prevScrollTop = state(0);
+  get prevScrollTop() {
+    return get2(this.#prevScrollTop);
+  }
+  set prevScrollTop(value) {
+    set(this.#prevScrollTop, value, true);
+  }
+  constructor(opts, content) {
+    this.opts = opts;
+    this.content = content;
+    this.root = content.root;
+    this.attachment = attachRef(opts.ref, (v) => {
+      this.root.viewportNode = v;
+    });
+  }
+  #props = user_derived(() => ({
+    id: this.opts.id.current,
+    role: "presentation",
+    [this.root.getBitsAttr("viewport")]: "",
+    style: {
+      // we use position: 'relative' here on the `viewport` so that when we call
+      // `selectedItem.offsetTop` in calculations, the offset is relative to the viewport
+      // (independent of the scrollUpButton).
+      position: "relative",
+      flex: 1,
+      overflow: "auto"
+    },
+    ...this.attachment
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+};
+var SelectScrollButtonImplState = class {
+  opts;
+  content;
+  root;
+  attachment;
+  autoScrollTimer = null;
+  userScrollTimer = -1;
+  isUserScrolling = false;
+  onAutoScroll = noop3;
+  #mounted = state(false);
+  get mounted() {
+    return get2(this.#mounted);
+  }
+  set mounted(value) {
+    set(this.#mounted, value, true);
+  }
+  constructor(opts, content) {
+    this.opts = opts;
+    this.content = content;
+    this.root = content.root;
+    this.attachment = attachRef(opts.ref);
+    watch([() => this.mounted], () => {
+      if (!this.mounted) {
+        this.isUserScrolling = false;
+        return;
+      }
+      if (this.isUserScrolling) return;
+    });
+    user_effect(() => {
+      if (this.mounted) return;
+      this.clearAutoScrollInterval();
+    });
+    this.onpointerdown = this.onpointerdown.bind(this);
+    this.onpointermove = this.onpointermove.bind(this);
+    this.onpointerleave = this.onpointerleave.bind(this);
+  }
+  handleUserScroll() {
+    this.content.domContext.clearTimeout(this.userScrollTimer);
+    this.isUserScrolling = true;
+    this.userScrollTimer = this.content.domContext.setTimeout(
+      () => {
+        this.isUserScrolling = false;
+      },
+      200
+    );
+  }
+  clearAutoScrollInterval() {
+    if (this.autoScrollTimer === null) return;
+    this.content.domContext.clearTimeout(this.autoScrollTimer);
+    this.autoScrollTimer = null;
+  }
+  onpointerdown(_) {
+    if (this.autoScrollTimer !== null) return;
+    const autoScroll = (tick2) => {
+      this.onAutoScroll();
+      this.autoScrollTimer = this.content.domContext.setTimeout(() => autoScroll(tick2 + 1), this.opts.delay.current(tick2));
+    };
+    this.autoScrollTimer = this.content.domContext.setTimeout(() => autoScroll(1), this.opts.delay.current(0));
+  }
+  onpointermove(e) {
+    this.onpointerdown(e);
+  }
+  onpointerleave(_) {
+    this.clearAutoScrollInterval();
+  }
+  #props = user_derived(() => ({
+    id: this.opts.id.current,
+    "aria-hidden": boolToStrTrueOrUndef(true),
+    style: { flexShrink: 0 },
+    onpointerdown: this.onpointerdown,
+    onpointermove: this.onpointermove,
+    onpointerleave: this.onpointerleave,
+    ...this.attachment
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+};
+var SelectScrollDownButtonState = class _SelectScrollDownButtonState {
+  static create(opts) {
+    return new _SelectScrollDownButtonState(new SelectScrollButtonImplState(opts, SelectContentContext.get()));
+  }
+  scrollButtonState;
+  content;
+  root;
+  #canScrollDown = state(false);
+  get canScrollDown() {
+    return get2(this.#canScrollDown);
+  }
+  set canScrollDown(value) {
+    set(this.#canScrollDown, value, true);
+  }
+  scrollIntoViewTimer = null;
+  constructor(scrollButtonState) {
+    this.scrollButtonState = scrollButtonState;
+    this.content = scrollButtonState.content;
+    this.root = scrollButtonState.root;
+    this.scrollButtonState.onAutoScroll = this.handleAutoScroll;
+    watch(
+      [
+        () => this.root.viewportNode,
+        () => this.content.isPositioned
+      ],
+      () => {
+        if (!this.root.viewportNode || !this.content.isPositioned) return;
+        this.handleScroll(true);
+        return on(this.root.viewportNode, "scroll", () => this.handleScroll());
+      }
+    );
+    watch(
+      [
+        () => this.root.opts.inputValue.current,
+        () => this.root.viewportNode,
+        () => this.content.isPositioned
+      ],
+      () => {
+        if (!this.root.viewportNode || !this.content.isPositioned) return;
+        this.handleScroll(true);
+      }
+    );
+    watch(() => this.scrollButtonState.mounted, () => {
+      if (!this.scrollButtonState.mounted) return;
+      if (this.scrollIntoViewTimer) {
+        clearTimeout(this.scrollIntoViewTimer);
+      }
+      this.scrollIntoViewTimer = afterSleep(5, () => {
+        const activeItem = this.root.highlightedNode;
+        if (!activeItem) return;
+        this.root.scrollHighlightedNodeIntoView(activeItem);
+      });
+    });
+  }
+  /**
+   * @param manual - if true, it means the function was invoked manually outside of an event
+   * listener, so we don't call `handleUserScroll` to prevent the auto scroll from kicking in.
+   */
+  handleScroll = (manual = false) => {
+    if (!manual) {
+      this.scrollButtonState.handleUserScroll();
+    }
+    if (!this.root.viewportNode) return;
+    const maxScroll = this.root.viewportNode.scrollHeight - this.root.viewportNode.clientHeight;
+    const paddingTop = Number.parseInt(getComputedStyle(this.root.viewportNode).paddingTop, 10);
+    this.canScrollDown = Math.ceil(this.root.viewportNode.scrollTop) < maxScroll - paddingTop;
+  };
+  handleAutoScroll = () => {
+    const viewport = this.root.viewportNode;
+    const selectedItem = this.root.highlightedNode;
+    if (!viewport || !selectedItem) return;
+    viewport.scrollTop = viewport.scrollTop + selectedItem.offsetHeight;
+  };
+  #props = user_derived(() => ({
+    ...this.scrollButtonState.props,
+    [this.root.getBitsAttr("scroll-down-button")]: ""
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+};
+var SelectScrollUpButtonState = class _SelectScrollUpButtonState {
+  static create(opts) {
+    return new _SelectScrollUpButtonState(new SelectScrollButtonImplState(opts, SelectContentContext.get()));
+  }
+  scrollButtonState;
+  content;
+  root;
+  #canScrollUp = state(false);
+  get canScrollUp() {
+    return get2(this.#canScrollUp);
+  }
+  set canScrollUp(value) {
+    set(this.#canScrollUp, value, true);
+  }
+  constructor(scrollButtonState) {
+    this.scrollButtonState = scrollButtonState;
+    this.content = scrollButtonState.content;
+    this.root = scrollButtonState.root;
+    this.scrollButtonState.onAutoScroll = this.handleAutoScroll;
+    watch(
+      [
+        () => this.root.viewportNode,
+        () => this.content.isPositioned
+      ],
+      () => {
+        if (!this.root.viewportNode || !this.content.isPositioned) return;
+        this.handleScroll(true);
+        return on(this.root.viewportNode, "scroll", () => this.handleScroll());
+      }
+    );
+  }
+  /**
+   * @param manual - if true, it means the function was invoked manually outside of an event
+   * listener, so we don't call `handleUserScroll` to prevent the auto scroll from kicking in.
+   */
+  handleScroll = (manual = false) => {
+    if (!manual) {
+      this.scrollButtonState.handleUserScroll();
+    }
+    if (!this.root.viewportNode) return;
+    const paddingTop = Number.parseInt(getComputedStyle(this.root.viewportNode).paddingTop, 10);
+    this.canScrollUp = this.root.viewportNode.scrollTop - paddingTop > 0.1;
+  };
+  handleAutoScroll = () => {
+    if (!this.root.viewportNode || !this.root.highlightedNode) return;
+    this.root.viewportNode.scrollTop = this.root.viewportNode.scrollTop - this.root.highlightedNode.offsetHeight;
+  };
+  #props = user_derived(() => ({
+    ...this.scrollButtonState.props,
+    [this.root.getBitsAttr("scroll-up-button")]: ""
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+};
+
+// node_modules/bits-ui/dist/bits/select/components/select-hidden-input.svelte
+function Select_hidden_input($$anchor, $$props) {
+  push($$props, true);
+  let value = prop($$props, "value", 15);
+  const hiddenInputState = SelectHiddenInputState.create({ value: boxWith(() => value()) });
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent = ($$anchor2) => {
+      Hidden_input($$anchor2, spread_props(() => hiddenInputState.props, {
+        get autocomplete() {
+          return $$props.autocomplete;
+        },
+        get value() {
+          return value();
+        },
+        set value($$value) {
+          value($$value);
+        }
+      }));
+    };
+    if_block(node, ($$render) => {
+      if (hiddenInputState.shouldRender) $$render(consequent);
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/utilities/floating-layer/components/index.js
+var components_exports = {};
+__export(components_exports, {
+  Anchor: () => Floating_layer_anchor,
+  Arrow: () => Floating_layer_arrow,
+  Content: () => Floating_layer_content,
+  ContentStatic: () => Floating_layer_content_static,
+  Root: () => Floating_layer
+});
+
+// node_modules/bits-ui/dist/bits/utilities/floating-layer/components/floating-layer-anchor.svelte
+function Floating_layer_anchor($$anchor, $$props) {
+  push($$props, true);
+  let tooltip = prop($$props, "tooltip", 3, false);
+  FloatingAnchorState.create(
+    {
+      id: boxWith(() => $$props.id),
+      virtualEl: boxWith(() => $$props.virtualEl),
+      ref: $$props.ref
+    },
+    tooltip()
+  );
+  var fragment = comment();
+  var node = first_child(fragment);
+  snippet(node, () => $$props.children ?? noop);
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/utilities/arrow/arrow.svelte
+var rest_excludes14 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "id",
+  "children",
+  "child",
+  "width",
+  "height"
+]);
+var root15 = from_svg(`<svg viewBox="0 0 30 10" preserveAspectRatio="none" data-arrow=""><polygon points="0,0 30,0 15,10" fill="currentColor"></polygon></svg>`);
+var root_1 = from_html(`<span><!></span>`);
+function Arrow($$anchor, $$props) {
+  push($$props, true);
+  let id = prop($$props, "id", 19, useId), width = prop($$props, "width", 3, 10), height = prop($$props, "height", 3, 5), restProps = rest_props($$props, rest_excludes14);
+  const mergedProps = user_derived(() => mergeProps(restProps, { id: id() }));
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent = ($$anchor2) => {
+      var fragment_1 = comment();
+      var node_1 = first_child(fragment_1);
+      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
+      append($$anchor2, fragment_1);
+    };
+    var alternate_1 = ($$anchor2) => {
+      var span = root_1();
+      attribute_effect(span, () => ({ ...get2(mergedProps) }));
+      var node_2 = child(span);
+      {
+        var consequent_1 = ($$anchor3) => {
+          var fragment_2 = comment();
+          var node_3 = first_child(fragment_2);
+          snippet(node_3, () => $$props.children ?? noop);
+          append($$anchor3, fragment_2);
+        };
+        var alternate = ($$anchor3) => {
+          var svg = root15();
+          template_effect(() => {
+            set_attribute2(svg, "width", width());
+            set_attribute2(svg, "height", height());
+          });
+          append($$anchor3, svg);
+        };
+        if_block(node_2, ($$render) => {
+          if ($$props.children) $$render(consequent_1);
+          else $$render(alternate, -1);
+        });
+      }
+      reset(span);
+      append($$anchor2, span);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.child) $$render(consequent);
+      else $$render(alternate_1, -1);
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/utilities/floating-layer/components/floating-layer-arrow.svelte
+var rest_excludes15 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "id", "ref"]);
+function Floating_layer_arrow($$anchor, $$props) {
+  push($$props, true);
+  let id = prop($$props, "id", 19, useId), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes15);
+  const arrowState = FloatingArrowState.create({
+    id: boxWith(() => id()),
+    ref: boxWith(() => ref(), (v) => ref(v))
+  });
+  const mergedProps = user_derived(() => mergeProps(restProps, arrowState.props));
+  Arrow($$anchor, spread_props(() => get2(mergedProps)));
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/utilities/floating-layer/components/floating-layer-content.svelte
+function Floating_layer_content($$anchor, $$props) {
+  push($$props, true);
+  let side = prop($$props, "side", 3, "bottom"), sideOffset = prop($$props, "sideOffset", 3, 0), align = prop($$props, "align", 3, "center"), alignOffset = prop($$props, "alignOffset", 3, 0), arrowPadding = prop($$props, "arrowPadding", 3, 0), avoidCollisions = prop($$props, "avoidCollisions", 3, true), collisionBoundary = prop($$props, "collisionBoundary", 19, () => []), collisionPadding = prop($$props, "collisionPadding", 3, 0), hideWhenDetached = prop($$props, "hideWhenDetached", 3, false), onPlaced = prop($$props, "onPlaced", 3, () => {
+  }), sticky = prop($$props, "sticky", 3, "partial"), updatePositionStrategy = prop($$props, "updatePositionStrategy", 3, "optimized"), strategy = prop($$props, "strategy", 3, "fixed"), dir = prop($$props, "dir", 3, "ltr"), style = prop($$props, "style", 19, () => ({})), wrapperId = prop($$props, "wrapperId", 19, useId), customAnchor = prop($$props, "customAnchor", 3, null), tooltip = prop($$props, "tooltip", 3, false);
+  const contentState = FloatingContentState.create(
+    {
+      side: boxWith(() => side()),
+      sideOffset: boxWith(() => sideOffset()),
+      align: boxWith(() => align()),
+      alignOffset: boxWith(() => alignOffset()),
+      id: boxWith(() => $$props.id),
+      arrowPadding: boxWith(() => arrowPadding()),
+      avoidCollisions: boxWith(() => avoidCollisions()),
+      collisionBoundary: boxWith(() => collisionBoundary()),
+      collisionPadding: boxWith(() => collisionPadding()),
+      hideWhenDetached: boxWith(() => hideWhenDetached()),
+      onPlaced: boxWith(() => onPlaced()),
+      sticky: boxWith(() => sticky()),
+      updatePositionStrategy: boxWith(() => updatePositionStrategy()),
+      strategy: boxWith(() => strategy()),
+      dir: boxWith(() => dir()),
+      style: boxWith(() => style()),
+      enabled: boxWith(() => $$props.enabled),
+      wrapperId: boxWith(() => wrapperId()),
+      customAnchor: boxWith(() => customAnchor())
+    },
+    tooltip()
+  );
+  const mergedProps = user_derived(() => mergeProps(contentState.wrapperProps, { style: { pointerEvents: "auto" } }));
+  var fragment = comment();
+  var node = first_child(fragment);
+  snippet(node, () => $$props.content ?? noop, () => ({ props: contentState.props, wrapperProps: get2(mergedProps) }));
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/utilities/floating-layer/components/floating-layer-content-static.svelte
+function Floating_layer_content_static($$anchor, $$props) {
+  push($$props, true);
+  onMount(() => {
+    $$props.onPlaced?.();
+  });
+  var fragment = comment();
+  var node = first_child(fragment);
+  snippet(node, () => $$props.content ?? noop, () => ({ props: {}, wrapperProps: {} }));
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/utilities/popper-layer/popper-content.svelte
+var rest_excludes16 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "content",
+  "isStatic",
+  "onPlaced"
+]);
+function Popper_content($$anchor, $$props) {
+  let isStatic = prop($$props, "isStatic", 3, false), restProps = rest_props($$props, rest_excludes16);
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent = ($$anchor2) => {
+      Floating_layer_content_static($$anchor2, {
+        get content() {
+          return $$props.content;
+        },
+        get onPlaced() {
+          return $$props.onPlaced;
+        }
+      });
+    };
+    var alternate = ($$anchor2) => {
+      Floating_layer_content($$anchor2, spread_props(
+        {
+          get content() {
+            return $$props.content;
+          },
+          get onPlaced() {
+            return $$props.onPlaced;
+          }
+        },
+        () => restProps
+      ));
+    };
+    if_block(node, ($$render) => {
+      if (isStatic()) $$render(consequent);
+      else $$render(alternate, -1);
+    });
+  }
+  append($$anchor, fragment);
+}
+
+// node_modules/bits-ui/dist/bits/utilities/popper-layer/popper-layer-inner.svelte
+var rest_excludes17 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "popper",
+  "onEscapeKeydown",
+  "escapeKeydownBehavior",
+  "preventOverflowTextSelection",
+  "id",
+  "onPointerDown",
+  "onPointerUp",
+  "side",
+  "sideOffset",
+  "align",
+  "alignOffset",
+  "arrowPadding",
+  "avoidCollisions",
+  "collisionBoundary",
+  "collisionPadding",
+  "sticky",
+  "hideWhenDetached",
+  "updatePositionStrategy",
+  "strategy",
+  "dir",
+  "preventScroll",
+  "wrapperId",
+  "style",
+  "onPlaced",
+  "onInteractOutside",
+  "onCloseAutoFocus",
+  "onOpenAutoFocus",
+  "onFocusOutside",
+  "interactOutsideBehavior",
+  "loop",
+  "trapFocus",
+  "isValidEvent",
+  "customAnchor",
+  "isStatic",
+  "enabled",
+  "ref",
+  "tooltip",
+  "contentPointerEvents"
+]);
+var root16 = from_html(`<!> <!>`, 1);
+function Popper_layer_inner($$anchor, $$props) {
+  push($$props, true);
+  let interactOutsideBehavior = prop($$props, "interactOutsideBehavior", 3, "close"), trapFocus = prop($$props, "trapFocus", 3, true), isValidEvent2 = prop($$props, "isValidEvent", 3, () => false), customAnchor = prop($$props, "customAnchor", 3, null), isStatic = prop($$props, "isStatic", 3, false), tooltip = prop($$props, "tooltip", 3, false), contentPointerEvents = prop($$props, "contentPointerEvents", 3, "auto"), restProps = rest_props($$props, rest_excludes17);
+  const resolvedPreventScroll = user_derived(() => $$props.preventScroll ?? true);
+  const effectiveStrategy = user_derived(() => $$props.strategy ?? (get2(resolvedPreventScroll) ? "fixed" : "absolute"));
+  {
+    const content = ($$anchor2, $$arg0) => {
+      let floatingProps = () => ($$arg0?.()).props;
+      let wrapperProps = () => ($$arg0?.()).wrapperProps;
+      var fragment_1 = root16();
+      var node = first_child(fragment_1);
+      {
+        var consequent = ($$anchor3) => {
+          Scroll_lock($$anchor3, {
+            get preventScroll() {
+              return get2(resolvedPreventScroll);
+            }
+          });
+        };
+        var consequent_1 = ($$anchor3) => {
+          Scroll_lock($$anchor3, {
+            get preventScroll() {
+              return get2(resolvedPreventScroll);
+            }
+          });
+        };
+        if_block(node, ($$render) => {
+          if ($$props.forceMount && $$props.enabled) $$render(consequent);
+          else if (!$$props.forceMount) $$render(consequent_1, 1);
+        });
+      }
+      var node_1 = sibling(node, 2);
+      {
+        const focusScope = ($$anchor3, $$arg02) => {
+          let focusScopeProps = () => ($$arg02?.()).props;
+          Escape_layer($$anchor3, {
+            get onEscapeKeydown() {
+              return $$props.onEscapeKeydown;
+            },
+            get escapeKeydownBehavior() {
+              return $$props.escapeKeydownBehavior;
+            },
+            get enabled() {
+              return $$props.enabled;
+            },
+            get ref() {
+              return $$props.ref;
+            },
+            children: ($$anchor4, $$slotProps) => {
+              {
+                const children2 = ($$anchor5, $$arg03) => {
+                  let dismissibleProps = () => ($$arg03?.()).props;
+                  Text_selection_layer($$anchor5, {
+                    get id() {
+                      return $$props.id;
+                    },
+                    get preventOverflowTextSelection() {
+                      return $$props.preventOverflowTextSelection;
+                    },
+                    get onPointerDown() {
+                      return $$props.onPointerDown;
+                    },
+                    get onPointerUp() {
+                      return $$props.onPointerUp;
+                    },
+                    get enabled() {
+                      return $$props.enabled;
+                    },
+                    get ref() {
+                      return $$props.ref;
+                    },
+                    children: ($$anchor6, $$slotProps2) => {
+                      var fragment_7 = comment();
+                      var node_2 = first_child(fragment_7);
+                      {
+                        let $0 = user_derived(() => ({
+                          props: mergeProps(restProps, floatingProps(), dismissibleProps(), focusScopeProps(), { style: { pointerEvents: contentPointerEvents() } }),
+                          wrapperProps: wrapperProps()
+                        }));
+                        snippet(node_2, () => $$props.popper ?? noop, () => get2($0));
+                      }
+                      append($$anchor6, fragment_7);
+                    },
+                    $$slots: { default: true }
+                  });
+                };
+                Dismissible_layer($$anchor4, {
+                  get id() {
+                    return $$props.id;
+                  },
+                  get onInteractOutside() {
+                    return $$props.onInteractOutside;
+                  },
+                  get onFocusOutside() {
+                    return $$props.onFocusOutside;
+                  },
+                  get interactOutsideBehavior() {
+                    return interactOutsideBehavior();
+                  },
+                  get isValidEvent() {
+                    return isValidEvent2();
+                  },
+                  get enabled() {
+                    return $$props.enabled;
+                  },
+                  get ref() {
+                    return $$props.ref;
+                  },
+                  children: children2,
+                  $$slots: { default: true }
+                });
+              }
+            },
+            $$slots: { default: true }
+          });
+        };
+        Focus_scope(node_1, {
+          get onOpenAutoFocus() {
+            return $$props.onOpenAutoFocus;
+          },
+          get onCloseAutoFocus() {
+            return $$props.onCloseAutoFocus;
+          },
+          get loop() {
+            return $$props.loop;
+          },
+          get enabled() {
+            return $$props.enabled;
+          },
+          get trapFocus() {
+            return trapFocus();
+          },
+          get forceMount() {
+            return $$props.forceMount;
+          },
+          get ref() {
+            return $$props.ref;
+          },
+          focusScope,
+          $$slots: { focusScope: true }
+        });
+      }
+      append($$anchor2, fragment_1);
+    };
+    Popper_content($$anchor, {
+      get isStatic() {
+        return isStatic();
+      },
+      get id() {
+        return $$props.id;
+      },
+      get side() {
+        return $$props.side;
+      },
+      get sideOffset() {
+        return $$props.sideOffset;
+      },
+      get align() {
+        return $$props.align;
+      },
+      get alignOffset() {
+        return $$props.alignOffset;
+      },
+      get arrowPadding() {
+        return $$props.arrowPadding;
+      },
+      get avoidCollisions() {
+        return $$props.avoidCollisions;
+      },
+      get collisionBoundary() {
+        return $$props.collisionBoundary;
+      },
+      get collisionPadding() {
+        return $$props.collisionPadding;
+      },
+      get sticky() {
+        return $$props.sticky;
+      },
+      get hideWhenDetached() {
+        return $$props.hideWhenDetached;
+      },
+      get updatePositionStrategy() {
+        return $$props.updatePositionStrategy;
+      },
+      get strategy() {
+        return get2(effectiveStrategy);
+      },
+      get dir() {
+        return $$props.dir;
+      },
+      get wrapperId() {
+        return $$props.wrapperId;
+      },
+      get style() {
+        return $$props.style;
+      },
+      get onPlaced() {
+        return $$props.onPlaced;
+      },
+      get customAnchor() {
+        return customAnchor();
+      },
+      get enabled() {
+        return $$props.enabled;
+      },
+      get tooltip() {
+        return tooltip();
+      },
+      content,
+      $$slots: { content: true }
+    });
+  }
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/utilities/popper-layer/popper-layer.svelte
+var rest_excludes18 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "popper",
+  "open",
+  "onEscapeKeydown",
+  "escapeKeydownBehavior",
+  "preventOverflowTextSelection",
+  "id",
+  "onPointerDown",
+  "onPointerUp",
+  "side",
+  "sideOffset",
+  "align",
+  "alignOffset",
+  "arrowPadding",
+  "avoidCollisions",
+  "collisionBoundary",
+  "collisionPadding",
+  "sticky",
+  "hideWhenDetached",
+  "updatePositionStrategy",
+  "strategy",
+  "dir",
+  "preventScroll",
+  "wrapperId",
+  "style",
+  "onPlaced",
+  "onInteractOutside",
+  "onCloseAutoFocus",
+  "onOpenAutoFocus",
+  "onFocusOutside",
+  "interactOutsideBehavior",
+  "loop",
+  "trapFocus",
+  "isValidEvent",
+  "customAnchor",
+  "isStatic",
+  "ref",
+  "shouldRender"
+]);
+function Popper_layer($$anchor, $$props) {
+  let interactOutsideBehavior = prop($$props, "interactOutsideBehavior", 3, "close"), trapFocus = prop($$props, "trapFocus", 3, true), isValidEvent2 = prop($$props, "isValidEvent", 3, () => false), customAnchor = prop($$props, "customAnchor", 3, null), isStatic = prop($$props, "isStatic", 3, false), restProps = rest_props($$props, rest_excludes18);
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent = ($$anchor2) => {
+      Popper_layer_inner($$anchor2, spread_props(
+        {
+          get popper() {
+            return $$props.popper;
+          },
+          get onEscapeKeydown() {
+            return $$props.onEscapeKeydown;
+          },
+          get escapeKeydownBehavior() {
+            return $$props.escapeKeydownBehavior;
+          },
+          get preventOverflowTextSelection() {
+            return $$props.preventOverflowTextSelection;
+          },
+          get id() {
+            return $$props.id;
+          },
+          get onPointerDown() {
+            return $$props.onPointerDown;
+          },
+          get onPointerUp() {
+            return $$props.onPointerUp;
+          },
+          get side() {
+            return $$props.side;
+          },
+          get sideOffset() {
+            return $$props.sideOffset;
+          },
+          get align() {
+            return $$props.align;
+          },
+          get alignOffset() {
+            return $$props.alignOffset;
+          },
+          get arrowPadding() {
+            return $$props.arrowPadding;
+          },
+          get avoidCollisions() {
+            return $$props.avoidCollisions;
+          },
+          get collisionBoundary() {
+            return $$props.collisionBoundary;
+          },
+          get collisionPadding() {
+            return $$props.collisionPadding;
+          },
+          get sticky() {
+            return $$props.sticky;
+          },
+          get hideWhenDetached() {
+            return $$props.hideWhenDetached;
+          },
+          get updatePositionStrategy() {
+            return $$props.updatePositionStrategy;
+          },
+          get strategy() {
+            return $$props.strategy;
+          },
+          get dir() {
+            return $$props.dir;
+          },
+          get preventScroll() {
+            return $$props.preventScroll;
+          },
+          get wrapperId() {
+            return $$props.wrapperId;
+          },
+          get style() {
+            return $$props.style;
+          },
+          get onPlaced() {
+            return $$props.onPlaced;
+          },
+          get customAnchor() {
+            return customAnchor();
+          },
+          get isStatic() {
+            return isStatic();
+          },
+          get enabled() {
+            return $$props.open;
+          },
+          get onInteractOutside() {
+            return $$props.onInteractOutside;
+          },
+          get onCloseAutoFocus() {
+            return $$props.onCloseAutoFocus;
+          },
+          get onOpenAutoFocus() {
+            return $$props.onOpenAutoFocus;
+          },
+          get interactOutsideBehavior() {
+            return interactOutsideBehavior();
+          },
+          get loop() {
+            return $$props.loop;
+          },
+          get trapFocus() {
+            return trapFocus();
+          },
+          get isValidEvent() {
+            return isValidEvent2();
+          },
+          get onFocusOutside() {
+            return $$props.onFocusOutside;
+          },
+          forceMount: false,
+          get ref() {
+            return $$props.ref;
+          }
+        },
+        () => restProps
+      ));
+    };
+    if_block(node, ($$render) => {
+      if ($$props.shouldRender) $$render(consequent);
+    });
+  }
+  append($$anchor, fragment);
+}
+
+// node_modules/bits-ui/dist/bits/utilities/popper-layer/popper-layer-force-mount.svelte
+var rest_excludes19 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "popper",
+  "onEscapeKeydown",
+  "escapeKeydownBehavior",
+  "preventOverflowTextSelection",
+  "id",
+  "onPointerDown",
+  "onPointerUp",
+  "side",
+  "sideOffset",
+  "align",
+  "alignOffset",
+  "arrowPadding",
+  "avoidCollisions",
+  "collisionBoundary",
+  "collisionPadding",
+  "sticky",
+  "hideWhenDetached",
+  "updatePositionStrategy",
+  "strategy",
+  "dir",
+  "preventScroll",
+  "wrapperId",
+  "style",
+  "onPlaced",
+  "onInteractOutside",
+  "onCloseAutoFocus",
+  "onOpenAutoFocus",
+  "onFocusOutside",
+  "interactOutsideBehavior",
+  "loop",
+  "trapFocus",
+  "isValidEvent",
+  "customAnchor",
+  "isStatic",
+  "enabled"
+]);
+function Popper_layer_force_mount($$anchor, $$props) {
+  let interactOutsideBehavior = prop($$props, "interactOutsideBehavior", 3, "close"), trapFocus = prop($$props, "trapFocus", 3, true), isValidEvent2 = prop($$props, "isValidEvent", 3, () => false), customAnchor = prop($$props, "customAnchor", 3, null), isStatic = prop($$props, "isStatic", 3, false), restProps = rest_props($$props, rest_excludes19);
+  Popper_layer_inner($$anchor, spread_props(
+    {
+      get popper() {
+        return $$props.popper;
+      },
+      get onEscapeKeydown() {
+        return $$props.onEscapeKeydown;
+      },
+      get escapeKeydownBehavior() {
+        return $$props.escapeKeydownBehavior;
+      },
+      get preventOverflowTextSelection() {
+        return $$props.preventOverflowTextSelection;
+      },
+      get id() {
+        return $$props.id;
+      },
+      get onPointerDown() {
+        return $$props.onPointerDown;
+      },
+      get onPointerUp() {
+        return $$props.onPointerUp;
+      },
+      get side() {
+        return $$props.side;
+      },
+      get sideOffset() {
+        return $$props.sideOffset;
+      },
+      get align() {
+        return $$props.align;
+      },
+      get alignOffset() {
+        return $$props.alignOffset;
+      },
+      get arrowPadding() {
+        return $$props.arrowPadding;
+      },
+      get avoidCollisions() {
+        return $$props.avoidCollisions;
+      },
+      get collisionBoundary() {
+        return $$props.collisionBoundary;
+      },
+      get collisionPadding() {
+        return $$props.collisionPadding;
+      },
+      get sticky() {
+        return $$props.sticky;
+      },
+      get hideWhenDetached() {
+        return $$props.hideWhenDetached;
+      },
+      get updatePositionStrategy() {
+        return $$props.updatePositionStrategy;
+      },
+      get strategy() {
+        return $$props.strategy;
+      },
+      get dir() {
+        return $$props.dir;
+      },
+      get preventScroll() {
+        return $$props.preventScroll;
+      },
+      get wrapperId() {
+        return $$props.wrapperId;
+      },
+      get style() {
+        return $$props.style;
+      },
+      get onPlaced() {
+        return $$props.onPlaced;
+      },
+      get customAnchor() {
+        return customAnchor();
+      },
+      get isStatic() {
+        return isStatic();
+      },
+      get enabled() {
+        return $$props.enabled;
+      },
+      get onInteractOutside() {
+        return $$props.onInteractOutside;
+      },
+      get onCloseAutoFocus() {
+        return $$props.onCloseAutoFocus;
+      },
+      get onOpenAutoFocus() {
+        return $$props.onOpenAutoFocus;
+      },
+      get interactOutsideBehavior() {
+        return interactOutsideBehavior();
+      },
+      get loop() {
+        return $$props.loop;
+      },
+      get trapFocus() {
+        return trapFocus();
+      },
+      get isValidEvent() {
+        return isValidEvent2();
+      },
+      get onFocusOutside() {
+        return $$props.onFocusOutside;
+      }
+    },
+    () => restProps,
+    { forceMount: true }
+  ));
+}
+
+// node_modules/bits-ui/dist/bits/select/components/select-content.svelte
+var rest_excludes20 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "id",
+  "ref",
+  "forceMount",
+  "side",
+  "onInteractOutside",
+  "onEscapeKeydown",
+  "children",
+  "child",
+  "preventScroll",
+  "style"
+]);
+var root17 = from_html(`<div><div><!></div></div>`);
+function Select_content($$anchor, $$props) {
+  const uid2 = props_id();
+  push($$props, true);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), forceMount = prop($$props, "forceMount", 3, false), side = prop($$props, "side", 3, "bottom"), onInteractOutside = prop($$props, "onInteractOutside", 3, noop3), onEscapeKeydown = prop($$props, "onEscapeKeydown", 3, noop3), preventScroll = prop($$props, "preventScroll", 3, false), restProps = rest_props($$props, rest_excludes20);
+  const contentState = SelectContentState.create({
+    id: boxWith(() => id()),
+    ref: boxWith(() => ref(), (v) => ref(v)),
+    onInteractOutside: boxWith(() => onInteractOutside()),
+    onEscapeKeydown: boxWith(() => onEscapeKeydown())
+  });
+  const mergedProps = user_derived(() => mergeProps(restProps, contentState.props));
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent_1 = ($$anchor2) => {
+      {
+        const popper = ($$anchor3, $$arg0) => {
+          let props = () => ($$arg0?.()).props;
+          let wrapperProps = () => ($$arg0?.()).wrapperProps;
+          const finalProps = user_derived(() => mergeProps(props(), { style: contentState.props.style }, { style: $$props.style }));
+          var fragment_2 = comment();
+          var node_1 = first_child(fragment_2);
+          {
+            var consequent = ($$anchor4) => {
+              var fragment_3 = comment();
+              var node_2 = first_child(fragment_3);
+              {
+                let $0 = user_derived(() => ({
+                  props: get2(finalProps),
+                  wrapperProps: wrapperProps(),
+                  ...contentState.snippetProps
+                }));
+                snippet(node_2, () => $$props.child, () => get2($0));
+              }
+              append($$anchor4, fragment_3);
+            };
+            var alternate = ($$anchor4) => {
+              var div = root17();
+              attribute_effect(div, () => ({ ...wrapperProps() }));
+              var div_1 = child(div);
+              attribute_effect(div_1, () => ({ ...get2(finalProps) }));
+              var node_3 = child(div_1);
+              snippet(node_3, () => $$props.children ?? noop);
+              reset(div_1);
+              reset(div);
+              append($$anchor4, div);
+            };
+            if_block(node_1, ($$render) => {
+              if ($$props.child) $$render(consequent);
+              else $$render(alternate, -1);
+            });
+          }
+          append($$anchor3, fragment_2);
+        };
+        Popper_layer_force_mount($$anchor2, spread_props(() => get2(mergedProps), () => contentState.popperProps, {
+          get ref() {
+            return contentState.opts.ref;
+          },
+          get side() {
+            return side();
+          },
+          get enabled() {
+            return contentState.root.opts.open.current;
+          },
+          get id() {
+            return id();
+          },
+          get preventScroll() {
+            return preventScroll();
+          },
+          forceMount: true,
+          get shouldRender() {
+            return contentState.shouldRender;
+          },
+          popper,
+          $$slots: { popper: true }
+        }));
+      }
+    };
+    var consequent_3 = ($$anchor2) => {
+      {
+        const popper = ($$anchor3, $$arg0) => {
+          let props = () => ($$arg0?.()).props;
+          let wrapperProps = () => ($$arg0?.()).wrapperProps;
+          const finalProps = user_derived(() => mergeProps(props(), { style: contentState.props.style }, { style: $$props.style }));
+          var fragment_5 = comment();
+          var node_4 = first_child(fragment_5);
+          {
+            var consequent_2 = ($$anchor4) => {
+              var fragment_6 = comment();
+              var node_5 = first_child(fragment_6);
+              {
+                let $0 = user_derived(() => ({
+                  props: get2(finalProps),
+                  wrapperProps: wrapperProps(),
+                  ...contentState.snippetProps
+                }));
+                snippet(node_5, () => $$props.child, () => get2($0));
+              }
+              append($$anchor4, fragment_6);
+            };
+            var alternate_1 = ($$anchor4) => {
+              var div_2 = root17();
+              attribute_effect(div_2, () => ({ ...wrapperProps() }));
+              var div_3 = child(div_2);
+              attribute_effect(div_3, () => ({ ...get2(finalProps) }));
+              var node_6 = child(div_3);
+              snippet(node_6, () => $$props.children ?? noop);
+              reset(div_3);
+              reset(div_2);
+              append($$anchor4, div_2);
+            };
+            if_block(node_4, ($$render) => {
+              if ($$props.child) $$render(consequent_2);
+              else $$render(alternate_1, -1);
+            });
+          }
+          append($$anchor3, fragment_5);
+        };
+        Popper_layer($$anchor2, spread_props(() => get2(mergedProps), () => contentState.popperProps, {
+          get ref() {
+            return contentState.opts.ref;
+          },
+          get side() {
+            return side();
+          },
+          get open() {
+            return contentState.root.opts.open.current;
+          },
+          get id() {
+            return id();
+          },
+          get preventScroll() {
+            return preventScroll();
+          },
+          forceMount: false,
+          get shouldRender() {
+            return contentState.shouldRender;
+          },
+          popper,
+          $$slots: { popper: true }
+        }));
+      }
+    };
+    if_block(node, ($$render) => {
+      if (forceMount()) $$render(consequent_1);
+      else if (!forceMount()) $$render(consequent_3, 1);
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/select/components/select-content-static.svelte
+var rest_excludes21 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "id",
+  "ref",
+  "forceMount",
+  "onInteractOutside",
+  "onEscapeKeydown",
+  "children",
+  "child",
+  "preventScroll",
+  "style"
+]);
+var root18 = from_html(`<div><!></div>`);
+function Select_content_static($$anchor, $$props) {
+  const uid2 = props_id();
+  push($$props, true);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), forceMount = prop($$props, "forceMount", 3, false), onInteractOutside = prop($$props, "onInteractOutside", 3, noop3), onEscapeKeydown = prop($$props, "onEscapeKeydown", 3, noop3), preventScroll = prop($$props, "preventScroll", 3, false), restProps = rest_props($$props, rest_excludes21);
+  const contentState = SelectContentState.create({
+    id: boxWith(() => id()),
+    ref: boxWith(() => ref(), (v) => ref(v)),
+    onInteractOutside: boxWith(() => onInteractOutside()),
+    onEscapeKeydown: boxWith(() => onEscapeKeydown())
+  });
+  const mergedProps = user_derived(() => mergeProps(restProps, contentState.props));
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent_1 = ($$anchor2) => {
+      {
+        const popper = ($$anchor3, $$arg0) => {
+          let props = () => ($$arg0?.()).props;
+          const finalProps = user_derived(() => mergeProps(props(), { style: contentState.props.style }, { style: $$props.style }));
+          var fragment_2 = comment();
+          var node_1 = first_child(fragment_2);
+          {
+            var consequent = ($$anchor4) => {
+              var fragment_3 = comment();
+              var node_2 = first_child(fragment_3);
+              {
+                let $0 = user_derived(() => ({ props: get2(finalProps), ...contentState.snippetProps }));
+                snippet(node_2, () => $$props.child, () => get2($0));
+              }
+              append($$anchor4, fragment_3);
+            };
+            var alternate = ($$anchor4) => {
+              var div = root18();
+              attribute_effect(div, () => ({ ...get2(finalProps) }));
+              var node_3 = child(div);
+              snippet(node_3, () => $$props.children ?? noop);
+              reset(div);
+              append($$anchor4, div);
+            };
+            if_block(node_1, ($$render) => {
+              if ($$props.child) $$render(consequent);
+              else $$render(alternate, -1);
+            });
+          }
+          append($$anchor3, fragment_2);
+        };
+        Popper_layer_force_mount($$anchor2, spread_props(() => get2(mergedProps), () => contentState.popperProps, {
+          get ref() {
+            return contentState.opts.ref;
+          },
+          isStatic: true,
+          get enabled() {
+            return contentState.root.opts.open.current;
+          },
+          get id() {
+            return id();
+          },
+          get preventScroll() {
+            return preventScroll();
+          },
+          forceMount: true,
+          get shouldRender() {
+            return contentState.shouldRender;
+          },
+          popper,
+          $$slots: { popper: true }
+        }));
+      }
+    };
+    var consequent_3 = ($$anchor2) => {
+      {
+        const popper = ($$anchor3, $$arg0) => {
+          let props = () => ($$arg0?.()).props;
+          const finalProps = user_derived(() => mergeProps(props(), { style: contentState.props.style }, { style: $$props.style }));
+          var fragment_5 = comment();
+          var node_4 = first_child(fragment_5);
+          {
+            var consequent_2 = ($$anchor4) => {
+              var fragment_6 = comment();
+              var node_5 = first_child(fragment_6);
+              {
+                let $0 = user_derived(() => ({ props: get2(finalProps), ...contentState.snippetProps }));
+                snippet(node_5, () => $$props.child, () => get2($0));
+              }
+              append($$anchor4, fragment_6);
+            };
+            var alternate_1 = ($$anchor4) => {
+              var div_1 = root18();
+              attribute_effect(div_1, () => ({ ...get2(finalProps) }));
+              var node_6 = child(div_1);
+              snippet(node_6, () => $$props.children ?? noop);
+              reset(div_1);
+              append($$anchor4, div_1);
+            };
+            if_block(node_4, ($$render) => {
+              if ($$props.child) $$render(consequent_2);
+              else $$render(alternate_1, -1);
+            });
+          }
+          append($$anchor3, fragment_5);
+        };
+        Popper_layer($$anchor2, spread_props(() => get2(mergedProps), () => contentState.popperProps, {
+          get ref() {
+            return contentState.opts.ref;
+          },
+          isStatic: true,
+          get open() {
+            return contentState.root.opts.open.current;
+          },
+          get id() {
+            return id();
+          },
+          get preventScroll() {
+            return preventScroll();
+          },
+          forceMount: false,
+          get shouldRender() {
+            return contentState.shouldRender;
+          },
+          popper,
+          $$slots: { popper: true }
+        }));
+      }
+    };
+    if_block(node, ($$render) => {
+      if (forceMount()) $$render(consequent_1);
+      else if (!forceMount()) $$render(consequent_3, 1);
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/utilities/mounted.svelte
+function Mounted($$anchor, $$props) {
+  push($$props, true);
+  let mounted = prop($$props, "mounted", 15, false), onMountedChange = prop($$props, "onMountedChange", 3, noop3);
+  onMountEffect(() => {
+    mounted(true);
+    onMountedChange()(true);
+    return () => {
+      mounted(false);
+      onMountedChange()(false);
+    };
+  });
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/select/components/select-item.svelte
+var rest_excludes22 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "id",
+  "ref",
+  "value",
+  "label",
+  "disabled",
+  "children",
+  "child",
+  "onHighlight",
+  "onUnhighlight"
+]);
+var root19 = from_html(`<div><!></div>`);
+var root_12 = from_html(`<!> <!>`, 1);
+function Select_item($$anchor, $$props) {
+  const uid2 = props_id();
+  push($$props, true);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), label2 = prop($$props, "label", 19, () => $$props.value), disabled = prop($$props, "disabled", 3, false), onHighlight = prop($$props, "onHighlight", 3, noop3), onUnhighlight = prop($$props, "onUnhighlight", 3, noop3), restProps = rest_props($$props, rest_excludes22);
+  const itemState = SelectItemState.create({
+    id: boxWith(() => id()),
+    ref: boxWith(() => ref(), (v) => ref(v)),
+    value: boxWith(() => $$props.value),
+    disabled: boxWith(() => disabled()),
+    label: boxWith(() => label2()),
+    onHighlight: boxWith(() => onHighlight()),
+    onUnhighlight: boxWith(() => onUnhighlight())
+  });
+  const mergedProps = user_derived(() => mergeProps(restProps, itemState.props));
+  var fragment = root_12();
+  var node = first_child(fragment);
+  {
+    var consequent = ($$anchor2) => {
+      var fragment_1 = comment();
+      var node_1 = first_child(fragment_1);
+      {
+        let $0 = user_derived(() => ({ props: get2(mergedProps), ...itemState.snippetProps }));
+        snippet(node_1, () => $$props.child, () => get2($0));
+      }
+      append($$anchor2, fragment_1);
+    };
+    var alternate = ($$anchor2) => {
+      var div = root19();
+      attribute_effect(div, () => ({ ...get2(mergedProps) }));
+      var node_2 = child(div);
+      snippet(node_2, () => $$props.children ?? noop, () => itemState.snippetProps);
+      reset(div);
+      append($$anchor2, div);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.child) $$render(consequent);
+      else $$render(alternate, -1);
+    });
+  }
+  var node_3 = sibling(node, 2);
+  Mounted(node_3, {
+    get mounted() {
+      return itemState.mounted;
+    },
+    set mounted($$value) {
+      itemState.mounted = $$value;
+    }
+  });
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/select/components/select-group.svelte
+var rest_excludes23 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "id",
+  "ref",
+  "children",
+  "child"
+]);
+var root20 = from_html(`<div><!></div>`);
+function Select_group($$anchor, $$props) {
+  const uid2 = props_id();
+  push($$props, true);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes23);
+  const groupState = SelectGroupState.create({
+    id: boxWith(() => id()),
+    ref: boxWith(() => ref(), (v) => ref(v))
+  });
+  const mergedProps = user_derived(() => mergeProps(restProps, groupState.props));
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent = ($$anchor2) => {
+      var fragment_1 = comment();
+      var node_1 = first_child(fragment_1);
+      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
+      append($$anchor2, fragment_1);
+    };
+    var alternate = ($$anchor2) => {
+      var div = root20();
+      attribute_effect(div, () => ({ ...get2(mergedProps) }));
+      var node_2 = child(div);
+      snippet(node_2, () => $$props.children ?? noop);
+      reset(div);
+      append($$anchor2, div);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.child) $$render(consequent);
+      else $$render(alternate, -1);
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/select/components/select-group-heading.svelte
+var rest_excludes24 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "id",
+  "ref",
+  "child",
+  "children"
+]);
+var root21 = from_html(`<div><!></div>`);
+function Select_group_heading($$anchor, $$props) {
+  const uid2 = props_id();
+  push($$props, true);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes24);
+  const groupHeadingState = SelectGroupHeadingState.create({
+    id: boxWith(() => id()),
+    ref: boxWith(() => ref(), (v) => ref(v))
+  });
+  const mergedProps = user_derived(() => mergeProps(restProps, groupHeadingState.props));
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent = ($$anchor2) => {
+      var fragment_1 = comment();
+      var node_1 = first_child(fragment_1);
+      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
+      append($$anchor2, fragment_1);
+    };
+    var alternate = ($$anchor2) => {
+      var div = root21();
+      attribute_effect(div, () => ({ ...get2(mergedProps) }));
+      var node_2 = child(div);
+      snippet(node_2, () => $$props.children ?? noop);
+      reset(div);
+      append($$anchor2, div);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.child) $$render(consequent);
+      else $$render(alternate, -1);
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/select/components/select-viewport.svelte
+var rest_excludes25 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "id",
+  "ref",
+  "children",
+  "child"
+]);
+var root22 = from_html(`<div><!></div>`);
+var $$css = {
+  hash: "svelte-18zq11a",
+  code: "\n	/* Hide scrollbars cross browser and enable momentum scroll for touch devices */[data-select-viewport] {scrollbar-width:none !important;-ms-overflow-style:none !important;-webkit-overflow-scrolling:touch !important;}[data-combobox-viewport] {scrollbar-width:none !important;-ms-overflow-style:none !important;-webkit-overflow-scrolling:touch !important;}[data-combobox-viewport]::-webkit-scrollbar {display:none !important;}[data-select-viewport]::-webkit-scrollbar {display:none !important;}"
+};
+function Select_viewport($$anchor, $$props) {
+  const uid2 = props_id();
+  push($$props, true);
+  append_styles($$anchor, $$css);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes25);
+  const viewportState = SelectViewportState.create({
+    id: boxWith(() => id()),
+    ref: boxWith(() => ref(), (v) => ref(v))
+  });
+  const mergedProps = user_derived(() => mergeProps(restProps, viewportState.props));
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent = ($$anchor2) => {
+      var fragment_1 = comment();
+      var node_1 = first_child(fragment_1);
+      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
+      append($$anchor2, fragment_1);
+    };
+    var alternate = ($$anchor2) => {
+      var div = root22();
+      attribute_effect(div, () => ({ ...get2(mergedProps) }));
+      var node_2 = child(div);
+      snippet(node_2, () => $$props.children ?? noop);
+      reset(div);
+      append($$anchor2, div);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.child) $$render(consequent);
+      else $$render(alternate, -1);
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/select/components/select-scroll-down-button.svelte
+var rest_excludes26 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "id",
+  "ref",
+  "delay",
+  "child",
+  "children"
+]);
+var root23 = from_html(`<div><!></div>`);
+var root_13 = from_html(`<!> <!>`, 1);
+function Select_scroll_down_button($$anchor, $$props) {
+  const uid2 = props_id();
+  push($$props, true);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), delay = prop($$props, "delay", 3, () => 50), restProps = rest_props($$props, rest_excludes26);
+  const scrollButtonState = SelectScrollDownButtonState.create({
+    id: boxWith(() => id()),
+    ref: boxWith(() => ref(), (v) => ref(v)),
+    delay: boxWith(() => delay())
+  });
+  const mergedProps = user_derived(() => mergeProps(restProps, scrollButtonState.props));
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent_1 = ($$anchor2) => {
+      var fragment_1 = root_13();
+      var node_1 = first_child(fragment_1);
+      Mounted(node_1, {
+        get mounted() {
+          return scrollButtonState.scrollButtonState.mounted;
+        },
+        set mounted($$value) {
+          scrollButtonState.scrollButtonState.mounted = $$value;
+        }
+      });
+      var node_2 = sibling(node_1, 2);
+      {
+        var consequent = ($$anchor3) => {
+          var fragment_2 = comment();
+          var node_3 = first_child(fragment_2);
+          snippet(node_3, () => $$props.child, () => ({ props: restProps }));
+          append($$anchor3, fragment_2);
+        };
+        var alternate = ($$anchor3) => {
+          var div = root23();
+          attribute_effect(div, () => ({ ...get2(mergedProps) }));
+          var node_4 = child(div);
+          snippet(node_4, () => $$props.children ?? noop);
+          reset(div);
+          append($$anchor3, div);
+        };
+        if_block(node_2, ($$render) => {
+          if ($$props.child) $$render(consequent);
+          else $$render(alternate, -1);
+        });
+      }
+      append($$anchor2, fragment_1);
+    };
+    if_block(node, ($$render) => {
+      if (scrollButtonState.canScrollDown) $$render(consequent_1);
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/select/components/select-scroll-up-button.svelte
+var rest_excludes27 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "id",
+  "ref",
+  "delay",
+  "child",
+  "children"
+]);
+var root24 = from_html(`<div><!></div>`);
+var root_14 = from_html(`<!> <!>`, 1);
+function Select_scroll_up_button($$anchor, $$props) {
+  const uid2 = props_id();
+  push($$props, true);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), delay = prop($$props, "delay", 3, () => 50), restProps = rest_props($$props, rest_excludes27);
+  const scrollButtonState = SelectScrollUpButtonState.create({
+    id: boxWith(() => id()),
+    ref: boxWith(() => ref(), (v) => ref(v)),
+    delay: boxWith(() => delay())
+  });
+  const mergedProps = user_derived(() => mergeProps(restProps, scrollButtonState.props));
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent_1 = ($$anchor2) => {
+      var fragment_1 = root_14();
+      var node_1 = first_child(fragment_1);
+      Mounted(node_1, {
+        get mounted() {
+          return scrollButtonState.scrollButtonState.mounted;
+        },
+        set mounted($$value) {
+          scrollButtonState.scrollButtonState.mounted = $$value;
+        }
+      });
+      var node_2 = sibling(node_1, 2);
+      {
+        var consequent = ($$anchor3) => {
+          var fragment_2 = comment();
+          var node_3 = first_child(fragment_2);
+          snippet(node_3, () => $$props.child, () => ({ props: restProps }));
+          append($$anchor3, fragment_2);
+        };
+        var alternate = ($$anchor3) => {
+          var div = root24();
+          attribute_effect(div, () => ({ ...get2(mergedProps) }));
+          var node_4 = child(div);
+          snippet(node_4, () => $$props.children ?? noop);
+          reset(div);
+          append($$anchor3, div);
+        };
+        if_block(node_2, ($$render) => {
+          if ($$props.child) $$render(consequent);
+          else $$render(alternate, -1);
+        });
+      }
+      append($$anchor2, fragment_1);
+    };
+    if_block(node, ($$render) => {
+      if (scrollButtonState.canScrollUp) $$render(consequent_1);
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
 // node_modules/bits-ui/dist/bits/label/exports.js
 var exports_exports2 = {};
 __export(exports_exports2, {
@@ -30156,7 +37040,7 @@ var LabelRootState = class _LabelRootState {
 };
 
 // node_modules/bits-ui/dist/bits/label/components/label.svelte
-var rest_excludes13 = /* @__PURE__ */ new Set([
+var rest_excludes28 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -30166,11 +37050,11 @@ var rest_excludes13 = /* @__PURE__ */ new Set([
   "ref",
   "for"
 ]);
-var root14 = from_html(`<label><!></label>`);
+var root25 = from_html(`<label><!></label>`);
 function Label($$anchor, $$props) {
   const uid2 = props_id();
   push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes13);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes28);
   const rootState = LabelRootState.create({
     id: boxWith(() => id()),
     ref: boxWith(() => ref(), (v) => ref(v))
@@ -30186,7 +37070,7 @@ function Label($$anchor, $$props) {
       append($$anchor2, fragment_1);
     };
     var alternate = ($$anchor2) => {
-      var label2 = root14();
+      var label2 = root25();
       attribute_effect(label2, () => ({ ...get2(mergedProps), for: $$props.for }));
       var node_2 = child(label2);
       snippet(node_2, () => $$props.children ?? noop);
@@ -30202,98 +37086,267 @@ function Label($$anchor, $$props) {
   pop();
 }
 
-// node_modules/bits-ui/dist/bits/progress/exports.js
+// node_modules/bits-ui/dist/bits/select/exports.js
 var exports_exports3 = {};
 __export(exports_exports3, {
-  Root: () => Progress
+  Content: () => Select_content,
+  ContentStatic: () => Select_content_static,
+  Group: () => Select_group,
+  GroupHeading: () => Select_group_heading,
+  Item: () => Select_item,
+  Portal: () => Portal,
+  Root: () => Select,
+  ScrollDownButton: () => Select_scroll_down_button,
+  ScrollUpButton: () => Select_scroll_up_button,
+  Trigger: () => Select_trigger,
+  Value: () => Select_value,
+  Viewport: () => Select_viewport
 });
 
-// node_modules/bits-ui/dist/bits/progress/progress.svelte.js
-var progressAttrs = createBitsAttrs({ component: "progress", parts: ["root"] });
-var ProgressRootState = class _ProgressRootState {
-  static create(opts) {
-    return new _ProgressRootState(opts);
+// node_modules/bits-ui/dist/bits/select/components/select.svelte
+var root26 = from_html(`<!> <!>`, 1);
+function Select($$anchor, $$props) {
+  push($$props, true);
+  let value = prop($$props, "value", 15), onValueChange = prop($$props, "onValueChange", 3, noop3), name = prop($$props, "name", 3, ""), disabled = prop($$props, "disabled", 3, false), open = prop($$props, "open", 15, false), onOpenChange = prop($$props, "onOpenChange", 3, noop3), onOpenChangeComplete = prop($$props, "onOpenChangeComplete", 3, noop3), loop2 = prop($$props, "loop", 3, false), scrollAlignment = prop($$props, "scrollAlignment", 3, "nearest"), required = prop($$props, "required", 3, false), items = prop($$props, "items", 19, () => []), allowDeselect = prop($$props, "allowDeselect", 3, false);
+  function handleDefaultValue() {
+    if (value() !== void 0) return;
+    value($$props.type === "single" ? "" : []);
   }
-  opts;
-  attachment;
-  constructor(opts) {
-    this.opts = opts;
-    this.attachment = attachRef(this.opts.ref);
+  handleDefaultValue();
+  watch.pre(() => value(), () => {
+    handleDefaultValue();
+  });
+  let inputValue = state("");
+  const rootState = SelectRootState.create({
+    type: $$props.type,
+    value: boxWith(() => value(), (v) => {
+      value(v);
+      onValueChange()(v);
+    }),
+    disabled: boxWith(() => disabled()),
+    required: boxWith(() => required()),
+    open: boxWith(() => open(), (v) => {
+      open(v);
+      onOpenChange()(v);
+    }),
+    loop: boxWith(() => loop2()),
+    scrollAlignment: boxWith(() => scrollAlignment()),
+    name: boxWith(() => name()),
+    isCombobox: false,
+    items: boxWith(() => items()),
+    allowDeselect: boxWith(() => allowDeselect()),
+    inputValue: boxWith(() => get2(inputValue), (v) => set(inputValue, v, true)),
+    onOpenChangeComplete: boxWith(() => onOpenChangeComplete())
+  });
+  var fragment = root26();
+  var node = first_child(fragment);
+  Floating_layer(node, {
+    children: ($$anchor2, $$slotProps) => {
+      var fragment_1 = comment();
+      var node_1 = first_child(fragment_1);
+      snippet(node_1, () => $$props.children ?? noop);
+      append($$anchor2, fragment_1);
+    },
+    $$slots: { default: true }
+  });
+  var node_2 = sibling(node, 2);
+  {
+    var consequent_1 = ($$anchor2) => {
+      var fragment_2 = comment();
+      var node_3 = first_child(fragment_2);
+      {
+        var consequent = ($$anchor3) => {
+          Select_hidden_input($$anchor3, {
+            get autocomplete() {
+              return $$props.autocomplete;
+            }
+          });
+        };
+        var alternate = ($$anchor3) => {
+          var fragment_4 = comment();
+          var node_4 = first_child(fragment_4);
+          each(node_4, 16, () => rootState.opts.value.current, (item) => item, ($$anchor4, item) => {
+            Select_hidden_input($$anchor4, {
+              get value() {
+                return item;
+              },
+              get autocomplete() {
+                return $$props.autocomplete;
+              }
+            });
+          });
+          append($$anchor3, fragment_4);
+        };
+        if_block(node_3, ($$render) => {
+          if (rootState.opts.value.current.length === 0) $$render(consequent);
+          else $$render(alternate, -1);
+        });
+      }
+      append($$anchor2, fragment_2);
+    };
+    var d = user_derived(() => Array.isArray(rootState.opts.value.current));
+    var alternate_1 = ($$anchor2) => {
+      Select_hidden_input($$anchor2, {
+        get autocomplete() {
+          return $$props.autocomplete;
+        },
+        get value() {
+          return rootState.opts.value.current;
+        },
+        set value($$value) {
+          rootState.opts.value.current = $$value;
+        }
+      });
+    };
+    if_block(node_2, ($$render) => {
+      if (get2(d)) $$render(consequent_1);
+      else $$render(alternate_1, -1);
+    });
   }
-  #props = user_derived(() => ({
-    role: "progressbar",
-    value: this.opts.value.current,
-    "aria-valuemin": this.opts.min.current,
-    "aria-valuemax": this.opts.max.current,
-    "aria-valuenow": this.opts.value.current === null ? void 0 : this.opts.value.current,
-    "data-value": this.opts.value.current === null ? void 0 : this.opts.value.current,
-    "data-state": getProgressDataState(this.opts.value.current, this.opts.max.current),
-    "data-max": this.opts.max.current,
-    "data-min": this.opts.min.current,
-    "data-indeterminate": this.opts.value.current === null ? "" : void 0,
-    [progressAttrs.root]: "",
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-function getProgressDataState(value, max) {
-  if (value === null) return "indeterminate";
-  return value === max ? "loaded" : "loading";
+  append($$anchor, fragment);
+  pop();
 }
 
-// node_modules/bits-ui/dist/bits/progress/components/progress.svelte
-var rest_excludes14 = /* @__PURE__ */ new Set([
+// node_modules/bits-ui/dist/bits/select/components/select-value.svelte
+var rest_excludes29 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
-  "child",
-  "children",
-  "value",
-  "max",
-  "min",
+  "ref",
   "id",
-  "ref"
+  "placeholder",
+  "child",
+  "children"
 ]);
-var root15 = from_html(`<div><!></div>`);
-function Progress($$anchor, $$props) {
+var root27 = from_html(`<span><!></span>`);
+function Select_value($$anchor, $$props) {
   const uid2 = props_id();
   push($$props, true);
-  let value = prop($$props, "value", 3, 0), max = prop($$props, "max", 3, 100), min = prop($$props, "min", 3, 0), id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes14);
-  const rootState = ProgressRootState.create({
-    value: boxWith(() => value()),
-    max: boxWith(() => max()),
-    min: boxWith(() => min()),
+  let ref = prop($$props, "ref", 15, null), id = prop($$props, "id", 19, () => createId(uid2)), restProps = rest_props($$props, rest_excludes29);
+  const valueState = SelectValueState.create({
     id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v))
+    ref: boxWith(() => ref(), (v) => ref(v)),
+    placeholder: boxWith(() => $$props.placeholder)
   });
-  const mergedProps = user_derived(() => mergeProps(restProps, rootState.props));
+  const mergedProps = user_derived(() => mergeProps(restProps, valueState.props));
   var fragment = comment();
   var node = first_child(fragment);
   {
     var consequent = ($$anchor2) => {
       var fragment_1 = comment();
       var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
+      {
+        let $0 = user_derived(() => ({ props: get2(mergedProps), ...valueState.snippetProps }));
+        snippet(node_1, () => $$props.child, () => get2($0));
+      }
       append($$anchor2, fragment_1);
     };
-    var alternate = ($$anchor2) => {
-      var div = root15();
-      attribute_effect(div, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(div);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(div);
-      append($$anchor2, div);
+    var alternate_1 = ($$anchor2) => {
+      var span = root27();
+      attribute_effect(span, () => ({ ...get2(mergedProps) }));
+      var node_2 = child(span);
+      {
+        var consequent_1 = ($$anchor3) => {
+          var fragment_2 = comment();
+          var node_3 = first_child(fragment_2);
+          snippet(node_3, () => $$props.children ?? noop, () => valueState.snippetProps);
+          append($$anchor3, fragment_2);
+        };
+        var consequent_2 = ($$anchor3) => {
+          var text4 = text();
+          template_effect(() => set_text(text4, valueState.snippetProps.selection.selected?.label ?? $$props.placeholder));
+          append($$anchor3, text4);
+        };
+        var consequent_3 = ($$anchor3) => {
+          var text_1 = text();
+          template_effect(($0) => set_text(text_1, $0), [
+            () => valueState.snippetProps.selection.selected.length > 0 ? valueState.snippetProps.selection.selected.map((selected) => selected.label).join(", ") : $$props.placeholder
+          ]);
+          append($$anchor3, text_1);
+        };
+        var alternate = ($$anchor3) => {
+          var text_2 = text();
+          template_effect(() => set_text(text_2, $$props.placeholder));
+          append($$anchor3, text_2);
+        };
+        if_block(node_2, ($$render) => {
+          if ($$props.children) $$render(consequent_1);
+          else if (valueState.snippetProps.selection.type === "single") $$render(consequent_2, 1);
+          else if (valueState.snippetProps.selection.type === "multiple" && valueState.snippetProps.selection.selected) $$render(consequent_3, 2);
+          else $$render(alternate, -1);
+        });
+      }
+      reset(span);
+      append($$anchor2, span);
     };
     if_block(node, ($$render) => {
       if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
+      else $$render(alternate_1, -1);
     });
   }
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/select/components/select-trigger.svelte
+var rest_excludes30 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "id",
+  "ref",
+  "child",
+  "children",
+  "type"
+]);
+var root28 = from_html(`<button><!></button>`);
+function Select_trigger($$anchor, $$props) {
+  const uid2 = props_id();
+  push($$props, true);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), type = prop($$props, "type", 3, "button"), restProps = rest_props($$props, rest_excludes30);
+  const triggerState = SelectTriggerState.create({
+    id: boxWith(() => id()),
+    ref: boxWith(() => ref(), (v) => ref(v))
+  });
+  const mergedProps = user_derived(() => mergeProps(restProps, triggerState.props, { type: type() }));
+  var fragment = comment();
+  var node = first_child(fragment);
+  component(node, () => components_exports.Anchor, ($$anchor2, FloatingLayer_Anchor) => {
+    FloatingLayer_Anchor($$anchor2, {
+      get id() {
+        return id();
+      },
+      get ref() {
+        return triggerState.opts.ref;
+      },
+      children: ($$anchor3, $$slotProps) => {
+        var fragment_1 = comment();
+        var node_1 = first_child(fragment_1);
+        {
+          var consequent = ($$anchor4) => {
+            var fragment_2 = comment();
+            var node_2 = first_child(fragment_2);
+            snippet(node_2, () => $$props.child, () => ({ props: get2(mergedProps) }));
+            append($$anchor4, fragment_2);
+          };
+          var alternate = ($$anchor4) => {
+            var button = root28();
+            attribute_effect(button, () => ({ ...get2(mergedProps) }));
+            var node_3 = child(button);
+            snippet(node_3, () => $$props.children ?? noop);
+            reset(button);
+            append($$anchor4, button);
+          };
+          if_block(node_1, ($$render) => {
+            if ($$props.child) $$render(consequent);
+            else $$render(alternate, -1);
+          });
+        }
+        append($$anchor3, fragment_1);
+      },
+      $$slots: { default: true }
+    });
+  });
   append($$anchor, fragment);
   pop();
 }
@@ -30377,9 +37430,9 @@ var TabsListState = class _TabsListState {
   root;
   attachment;
   #isDisabled = user_derived(() => this.root.opts.disabled.current);
-  constructor(opts, root52) {
+  constructor(opts, root71) {
     this.opts = opts;
-    this.root = root52;
+    this.root = root71;
     this.attachment = attachRef(opts.ref);
   }
   #props = user_derived(() => ({
@@ -30409,9 +37462,9 @@ var TabsTriggerState = class _TabsTriggerState {
   #isActive = user_derived(() => this.root.opts.value.current === this.opts.value.current);
   #isDisabled = user_derived(() => this.opts.disabled.current || this.root.opts.disabled.current);
   #ariaControls = user_derived(() => this.root.valueToContentId.get(this.opts.value.current));
-  constructor(opts, root52) {
+  constructor(opts, root71) {
     this.opts = opts;
-    this.root = root52;
+    this.root = root71;
     this.attachment = attachRef(opts.ref);
     watch([() => this.opts.id.current, () => this.opts.value.current], ([id, value]) => {
       return this.root.registerTrigger(id, value);
@@ -30483,9 +37536,9 @@ var TabsContentState = class _TabsContentState {
   attachment;
   #isActive = user_derived(() => this.root.opts.value.current === this.opts.value.current);
   #ariaLabelledBy = user_derived(() => this.root.valueToTriggerId.get(this.opts.value.current));
-  constructor(opts, root52) {
+  constructor(opts, root71) {
     this.opts = opts;
-    this.root = root52;
+    this.root = root71;
     this.attachment = attachRef(opts.ref);
     watch([() => this.opts.id.current, () => this.opts.value.current], ([id, value]) => {
       return this.root.registerContent(id, value);
@@ -30515,7 +37568,7 @@ function getTabDataState(condition) {
 }
 
 // node_modules/bits-ui/dist/bits/tabs/components/tabs.svelte
-var rest_excludes15 = /* @__PURE__ */ new Set([
+var rest_excludes31 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -30530,11 +37583,11 @@ var rest_excludes15 = /* @__PURE__ */ new Set([
   "children",
   "child"
 ]);
-var root16 = from_html(`<div><!></div>`);
+var root29 = from_html(`<div><!></div>`);
 function Tabs($$anchor, $$props) {
   const uid2 = props_id();
   push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15, ""), onValueChange = prop($$props, "onValueChange", 3, noop3), orientation = prop($$props, "orientation", 3, "horizontal"), loop2 = prop($$props, "loop", 3, true), activationMode = prop($$props, "activationMode", 3, "automatic"), disabled = prop($$props, "disabled", 3, false), restProps = rest_props($$props, rest_excludes15);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15, ""), onValueChange = prop($$props, "onValueChange", 3, noop3), orientation = prop($$props, "orientation", 3, "horizontal"), loop2 = prop($$props, "loop", 3, true), activationMode = prop($$props, "activationMode", 3, "automatic"), disabled = prop($$props, "disabled", 3, false), restProps = rest_props($$props, rest_excludes31);
   const rootState = TabsRootState.create({
     id: boxWith(() => id()),
     value: boxWith(() => value(), (v) => {
@@ -30558,7 +37611,7 @@ function Tabs($$anchor, $$props) {
       append($$anchor2, fragment_1);
     };
     var alternate = ($$anchor2) => {
-      var div = root16();
+      var div = root29();
       attribute_effect(div, () => ({ ...get2(mergedProps) }));
       var node_2 = child(div);
       snippet(node_2, () => $$props.children ?? noop);
@@ -30575,7 +37628,7 @@ function Tabs($$anchor, $$props) {
 }
 
 // node_modules/bits-ui/dist/bits/tabs/components/tabs-content.svelte
-var rest_excludes16 = /* @__PURE__ */ new Set([
+var rest_excludes32 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -30585,11 +37638,11 @@ var rest_excludes16 = /* @__PURE__ */ new Set([
   "ref",
   "value"
 ]);
-var root17 = from_html(`<div><!></div>`);
+var root30 = from_html(`<div><!></div>`);
 function Tabs_content($$anchor, $$props) {
   const uid2 = props_id();
   push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes16);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes32);
   const contentState = TabsContentState.create({
     value: boxWith(() => $$props.value),
     id: boxWith(() => id()),
@@ -30606,7 +37659,7 @@ function Tabs_content($$anchor, $$props) {
       append($$anchor2, fragment_1);
     };
     var alternate = ($$anchor2) => {
-      var div = root17();
+      var div = root30();
       attribute_effect(div, () => ({ ...get2(mergedProps) }));
       var node_2 = child(div);
       snippet(node_2, () => $$props.children ?? noop);
@@ -30623,7 +37676,7 @@ function Tabs_content($$anchor, $$props) {
 }
 
 // node_modules/bits-ui/dist/bits/tabs/components/tabs-list.svelte
-var rest_excludes17 = /* @__PURE__ */ new Set([
+var rest_excludes33 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -30632,11 +37685,11 @@ var rest_excludes17 = /* @__PURE__ */ new Set([
   "id",
   "ref"
 ]);
-var root18 = from_html(`<div><!></div>`);
+var root31 = from_html(`<div><!></div>`);
 function Tabs_list($$anchor, $$props) {
   const uid2 = props_id();
   push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes17);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes33);
   const listState = TabsListState.create({
     id: boxWith(() => id()),
     ref: boxWith(() => ref(), (v) => ref(v))
@@ -30652,7 +37705,7 @@ function Tabs_list($$anchor, $$props) {
       append($$anchor2, fragment_1);
     };
     var alternate = ($$anchor2) => {
-      var div = root18();
+      var div = root31();
       attribute_effect(div, () => ({ ...get2(mergedProps) }));
       var node_2 = child(div);
       snippet(node_2, () => $$props.children ?? noop);
@@ -30669,7 +37722,7 @@ function Tabs_list($$anchor, $$props) {
 }
 
 // node_modules/bits-ui/dist/bits/tabs/components/tabs-trigger.svelte
-var rest_excludes18 = /* @__PURE__ */ new Set([
+var rest_excludes34 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -30681,11 +37734,11 @@ var rest_excludes18 = /* @__PURE__ */ new Set([
   "value",
   "ref"
 ]);
-var root19 = from_html(`<button><!></button>`);
+var root32 = from_html(`<button><!></button>`);
 function Tabs_trigger($$anchor, $$props) {
   const uid2 = props_id();
   push($$props, true);
-  let disabled = prop($$props, "disabled", 3, false), id = prop($$props, "id", 19, () => createId(uid2)), type = prop($$props, "type", 3, "button"), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes18);
+  let disabled = prop($$props, "disabled", 3, false), id = prop($$props, "id", 19, () => createId(uid2)), type = prop($$props, "type", 3, "button"), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes34);
   const triggerState = TabsTriggerState.create({
     id: boxWith(() => id()),
     disabled: boxWith(() => disabled() ?? false),
@@ -30703,7 +37756,7 @@ function Tabs_trigger($$anchor, $$props) {
       append($$anchor2, fragment_1);
     };
     var alternate = ($$anchor2) => {
-      var button = root19();
+      var button = root32();
       attribute_effect(button, () => ({ ...get2(mergedProps) }));
       var node_2 = child(button);
       snippet(node_2, () => $$props.children ?? noop);
@@ -30719,11 +37772,321 @@ function Tabs_trigger($$anchor, $$props) {
   pop();
 }
 
+// node_modules/bits-ui/dist/bits/toggle-group/exports.js
+var exports_exports5 = {};
+__export(exports_exports5, {
+  Item: () => Toggle_group_item,
+  Root: () => Toggle_group
+});
+
+// node_modules/bits-ui/dist/bits/toggle-group/toggle-group.svelte.js
+var toggleGroupAttrs = createBitsAttrs({ component: "toggle-group", parts: ["root", "item"] });
+var ToggleGroupRootContext = new Context("ToggleGroup.Root");
+var ToggleGroupBaseState = class {
+  opts;
+  rovingFocusGroup;
+  attachment;
+  constructor(opts) {
+    this.opts = opts;
+    this.attachment = attachRef(this.opts.ref);
+    this.rovingFocusGroup = new RovingFocusGroup({
+      candidateAttr: toggleGroupAttrs.item,
+      rootNode: opts.ref,
+      loop: opts.loop,
+      orientation: opts.orientation
+    });
+  }
+  #props = user_derived(() => ({
+    id: this.opts.id.current,
+    [toggleGroupAttrs.root]: "",
+    role: "group",
+    "data-orientation": this.opts.orientation.current,
+    "data-disabled": boolToEmptyStrOrUndef(this.opts.disabled.current),
+    ...this.attachment
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+};
+var ToggleGroupSingleState = class extends ToggleGroupBaseState {
+  opts;
+  isMulti = false;
+  #anyPressed = user_derived(() => this.opts.value.current !== "");
+  get anyPressed() {
+    return get2(this.#anyPressed);
+  }
+  set anyPressed(value) {
+    set(this.#anyPressed, value);
+  }
+  constructor(opts) {
+    super(opts);
+    this.opts = opts;
+  }
+  includesItem(item) {
+    return this.opts.value.current === item;
+  }
+  toggleItem(item, id) {
+    if (this.includesItem(item)) {
+      this.opts.value.current = "";
+    } else {
+      this.opts.value.current = item;
+      this.rovingFocusGroup.setCurrentTabStopId(id);
+    }
+  }
+};
+var ToggleGroupMultipleState = class extends ToggleGroupBaseState {
+  opts;
+  isMulti = true;
+  #anyPressed = user_derived(() => this.opts.value.current.length > 0);
+  get anyPressed() {
+    return get2(this.#anyPressed);
+  }
+  set anyPressed(value) {
+    set(this.#anyPressed, value);
+  }
+  constructor(opts) {
+    super(opts);
+    this.opts = opts;
+  }
+  includesItem(item) {
+    return this.opts.value.current.includes(item);
+  }
+  toggleItem(item, id) {
+    if (this.includesItem(item)) {
+      this.opts.value.current = this.opts.value.current.filter((v) => v !== item);
+    } else {
+      this.opts.value.current = [...this.opts.value.current, item];
+      this.rovingFocusGroup.setCurrentTabStopId(id);
+    }
+  }
+};
+var ToggleGroupRootState = class {
+  static create(opts) {
+    const { type, ...rest } = opts;
+    const rootState = type === "single" ? new ToggleGroupSingleState(rest) : new ToggleGroupMultipleState(rest);
+    return ToggleGroupRootContext.set(rootState);
+  }
+};
+var ToggleGroupItemState = class _ToggleGroupItemState {
+  static create(opts) {
+    return new _ToggleGroupItemState(opts, ToggleGroupRootContext.get());
+  }
+  opts;
+  root;
+  attachment;
+  #isDisabled = user_derived(() => this.opts.disabled.current || this.root.opts.disabled.current);
+  #isPressed = user_derived(() => this.root.includesItem(this.opts.value.current));
+  get isPressed() {
+    return get2(this.#isPressed);
+  }
+  set isPressed(value) {
+    set(this.#isPressed, value);
+  }
+  #ariaChecked = user_derived(() => {
+    return this.root.isMulti ? void 0 : getAriaChecked(this.isPressed, false);
+  });
+  #ariaPressed = user_derived(() => {
+    return this.root.isMulti ? boolToStr(this.isPressed) : void 0;
+  });
+  constructor(opts, root71) {
+    this.opts = opts;
+    this.root = root71;
+    this.attachment = attachRef(this.opts.ref);
+    user_effect(() => {
+      if (!this.root.opts.rovingFocus.current) {
+        set(this.#tabIndex, 0);
+      } else {
+        set(this.#tabIndex, this.root.rovingFocusGroup.getTabIndex(this.opts.ref.current), true);
+      }
+    });
+    this.onclick = this.onclick.bind(this);
+    this.onkeydown = this.onkeydown.bind(this);
+  }
+  #toggleItem() {
+    if (get2(this.#isDisabled)) return;
+    this.root.toggleItem(this.opts.value.current, this.opts.id.current);
+  }
+  onclick(_) {
+    if (get2(this.#isDisabled)) return;
+    this.root.toggleItem(this.opts.value.current, this.opts.id.current);
+  }
+  onkeydown(e) {
+    if (get2(this.#isDisabled)) return;
+    if (e.key === kbd_constants_exports.ENTER || e.key === kbd_constants_exports.SPACE) {
+      e.preventDefault();
+      this.#toggleItem();
+      return;
+    }
+    if (!this.root.opts.rovingFocus.current) return;
+    this.root.rovingFocusGroup.handleKeydown(this.opts.ref.current, e);
+  }
+  #tabIndex = state(0);
+  #snippetProps = user_derived(() => ({ pressed: this.isPressed }));
+  get snippetProps() {
+    return get2(this.#snippetProps);
+  }
+  set snippetProps(value) {
+    set(this.#snippetProps, value);
+  }
+  #props = user_derived(() => ({
+    id: this.opts.id.current,
+    role: this.root.isMulti ? void 0 : "radio",
+    tabindex: get2(this.#tabIndex),
+    "data-orientation": this.root.opts.orientation.current,
+    "data-disabled": boolToEmptyStrOrUndef(get2(this.#isDisabled)),
+    "data-state": getToggleItemDataState(this.isPressed),
+    "data-value": this.opts.value.current,
+    "aria-pressed": get2(this.#ariaPressed),
+    "aria-checked": get2(this.#ariaChecked),
+    disabled: boolToTrueOrUndef(get2(this.#isDisabled)),
+    [toggleGroupAttrs.item]: "",
+    onclick: this.onclick,
+    onkeydown: this.onkeydown,
+    ...this.attachment
+  }));
+  get props() {
+    return get2(this.#props);
+  }
+  set props(value) {
+    set(this.#props, value);
+  }
+};
+function getToggleItemDataState(condition) {
+  return condition ? "on" : "off";
+}
+
+// node_modules/bits-ui/dist/bits/toggle-group/components/toggle-group.svelte
+var rest_excludes35 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "id",
+  "ref",
+  "value",
+  "onValueChange",
+  "type",
+  "disabled",
+  "loop",
+  "orientation",
+  "rovingFocus",
+  "child",
+  "children"
+]);
+var root33 = from_html(`<div><!></div>`);
+function Toggle_group($$anchor, $$props) {
+  const uid2 = props_id();
+  push($$props, true);
+  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15), onValueChange = prop($$props, "onValueChange", 3, noop3), disabled = prop($$props, "disabled", 3, false), loop2 = prop($$props, "loop", 3, true), orientation = prop($$props, "orientation", 3, "horizontal"), rovingFocus = prop($$props, "rovingFocus", 3, true), restProps = rest_props($$props, rest_excludes35);
+  function handleDefaultValue() {
+    if (value() !== void 0) return;
+    value($$props.type === "single" ? "" : []);
+  }
+  handleDefaultValue();
+  watch.pre(() => value(), () => {
+    handleDefaultValue();
+  });
+  const rootState = ToggleGroupRootState.create({
+    id: boxWith(() => id()),
+    value: boxWith(() => value(), (v) => {
+      value(v);
+      onValueChange()(v);
+    }),
+    disabled: boxWith(() => disabled()),
+    loop: boxWith(() => loop2()),
+    orientation: boxWith(() => orientation()),
+    rovingFocus: boxWith(() => rovingFocus()),
+    type: $$props.type,
+    ref: boxWith(() => ref(), (v) => ref(v))
+  });
+  const mergedProps = user_derived(() => mergeProps(restProps, rootState.props));
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent = ($$anchor2) => {
+      var fragment_1 = comment();
+      var node_1 = first_child(fragment_1);
+      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
+      append($$anchor2, fragment_1);
+    };
+    var alternate = ($$anchor2) => {
+      var div = root33();
+      attribute_effect(div, () => ({ ...get2(mergedProps) }));
+      var node_2 = child(div);
+      snippet(node_2, () => $$props.children ?? noop);
+      reset(div);
+      append($$anchor2, div);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.child) $$render(consequent);
+      else $$render(alternate, -1);
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// node_modules/bits-ui/dist/bits/toggle-group/components/toggle-group-item.svelte
+var rest_excludes36 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "children",
+  "child",
+  "ref",
+  "value",
+  "disabled",
+  "id",
+  "type"
+]);
+var root34 = from_html(`<button><!></button>`);
+function Toggle_group_item($$anchor, $$props) {
+  const uid2 = props_id();
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), disabled = prop($$props, "disabled", 3, false), id = prop($$props, "id", 19, () => createId(uid2)), type = prop($$props, "type", 3, "button"), restProps = rest_props($$props, rest_excludes36);
+  const itemState = ToggleGroupItemState.create({
+    id: boxWith(() => id()),
+    value: boxWith(() => $$props.value),
+    disabled: boxWith(() => disabled() ?? false),
+    ref: boxWith(() => ref(), (v) => ref(v))
+  });
+  const mergedProps = user_derived(() => mergeProps(restProps, itemState.props, { type: type() }));
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent = ($$anchor2) => {
+      var fragment_1 = comment();
+      var node_1 = first_child(fragment_1);
+      {
+        let $0 = user_derived(() => ({ props: get2(mergedProps), ...itemState.snippetProps }));
+        snippet(node_1, () => $$props.child, () => get2($0));
+      }
+      append($$anchor2, fragment_1);
+    };
+    var alternate = ($$anchor2) => {
+      var button = root34();
+      attribute_effect(button, () => ({ ...get2(mergedProps) }));
+      var node_2 = child(button);
+      snippet(node_2, () => $$props.children ?? noop, () => itemState.snippetProps);
+      reset(button);
+      append($$anchor2, button);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.child) $$render(consequent);
+      else $$render(alternate, -1);
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
 // src/lib/components/ui/tabs/tabs.svelte
-var rest_excludes19 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "value", "class"]);
+var rest_excludes37 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "value", "class"]);
 function Tabs2($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15, ""), restProps = rest_props($$props, rest_excludes19);
+  let ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15, ""), restProps = rest_props($$props, rest_excludes37);
   var fragment = comment();
   var node = first_child(fragment);
   {
@@ -30759,10 +38122,10 @@ function Tabs2($$anchor, $$props) {
 }
 
 // src/lib/components/ui/tabs/tabs-content.svelte
-var rest_excludes20 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
+var rest_excludes38 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
 function Tabs_content2($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes20);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes38);
   var fragment = comment();
   var node = first_child(fragment);
   {
@@ -31196,10 +38559,10 @@ var tabsListVariants = tv({
   },
   defaultVariants: { variant: "default" }
 });
-var rest_excludes21 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "variant", "class"]);
+var rest_excludes39 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "variant", "class"]);
 function Tabs_list2($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), variant = prop($$props, "variant", 3, "default"), restProps = rest_props($$props, rest_excludes21);
+  let ref = prop($$props, "ref", 15, null), variant = prop($$props, "variant", 3, "default"), restProps = rest_props($$props, rest_excludes39);
   var fragment = comment();
   var node = first_child(fragment);
   {
@@ -31232,10 +38595,10 @@ function Tabs_list2($$anchor, $$props) {
 }
 
 // src/lib/components/ui/tabs/tabs-trigger.svelte
-var rest_excludes22 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
+var rest_excludes40 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
 function Tabs_trigger2($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes22);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes40);
   var fragment = comment();
   var node = first_child(fragment);
   {
@@ -31265,7 +38628,7 @@ function Tabs_trigger2($$anchor, $$props) {
 }
 
 // src/lib/components/ui/table/table.svelte
-var rest_excludes23 = /* @__PURE__ */ new Set([
+var rest_excludes41 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -31273,11 +38636,11 @@ var rest_excludes23 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root20 = from_html(`<div data-slot="table-container" class="relative w-full overflow-x-auto"><table><!></table></div>`);
+var root35 = from_html(`<div data-slot="table-container" class="relative w-full overflow-x-auto"><table><!></table></div>`);
 function Table($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes23);
-  var div = root20();
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes41);
+  var div = root35();
   var table = child(div);
   attribute_effect(table, ($0) => ({ "data-slot": "table", class: $0, ...restProps }), [() => cn("w-full caption-bottom text-sm", $$props.class)]);
   var node = child(table);
@@ -31290,7 +38653,7 @@ function Table($$anchor, $$props) {
 }
 
 // src/lib/components/ui/table/table-body.svelte
-var rest_excludes24 = /* @__PURE__ */ new Set([
+var rest_excludes42 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -31298,11 +38661,11 @@ var rest_excludes24 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root21 = from_html(`<tbody><!></tbody>`);
+var root36 = from_html(`<tbody><!></tbody>`);
 function Table_body($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes24);
-  var tbody = root21();
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes42);
+  var tbody = root36();
   attribute_effect(tbody, ($0) => ({ "data-slot": "table-body", class: $0, ...restProps }), [() => cn("[&_tr:last-child]:border-0", $$props.class)]);
   var node = child(tbody);
   snippet(node, () => $$props.children ?? noop);
@@ -31313,10 +38676,10 @@ function Table_body($$anchor, $$props) {
 }
 
 // src/lib/components/ui/table/table-caption.svelte
-var root22 = from_html(`<caption><!></caption>`);
+var root37 = from_html(`<caption><!></caption>`);
 
 // src/lib/components/ui/table/table-cell.svelte
-var rest_excludes25 = /* @__PURE__ */ new Set([
+var rest_excludes43 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -31324,11 +38687,11 @@ var rest_excludes25 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root23 = from_html(`<td><!></td>`);
+var root38 = from_html(`<td><!></td>`);
 function Table_cell($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes25);
-  var td = root23();
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes43);
+  var td = root38();
   attribute_effect(td, ($0) => ({ "data-slot": "table-cell", class: $0, ...restProps }), [
     () => cn("p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0", $$props.class)
   ]);
@@ -31341,10 +38704,10 @@ function Table_cell($$anchor, $$props) {
 }
 
 // src/lib/components/ui/table/table-footer.svelte
-var root24 = from_html(`<tfoot><!></tfoot>`);
+var root39 = from_html(`<tfoot><!></tfoot>`);
 
 // src/lib/components/ui/table/table-head.svelte
-var rest_excludes26 = /* @__PURE__ */ new Set([
+var rest_excludes44 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -31352,11 +38715,11 @@ var rest_excludes26 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root25 = from_html(`<th><!></th>`);
+var root40 = from_html(`<th><!></th>`);
 function Table_head($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes26);
-  var th = root25();
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes44);
+  var th = root40();
   attribute_effect(th, ($0) => ({ "data-slot": "table-head", class: $0, ...restProps }), [
     () => cn("text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0", $$props.class)
   ]);
@@ -31369,7 +38732,7 @@ function Table_head($$anchor, $$props) {
 }
 
 // src/lib/components/ui/table/table-header.svelte
-var rest_excludes27 = /* @__PURE__ */ new Set([
+var rest_excludes45 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -31377,11 +38740,11 @@ var rest_excludes27 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root26 = from_html(`<thead><!></thead>`);
+var root41 = from_html(`<thead><!></thead>`);
 function Table_header($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes27);
-  var thead = root26();
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes45);
+  var thead = root41();
   attribute_effect(thead, ($0) => ({ "data-slot": "table-header", class: $0, ...restProps }), [() => cn("[&_tr]:border-b", $$props.class)]);
   var node = child(thead);
   snippet(node, () => $$props.children ?? noop);
@@ -31392,7 +38755,7 @@ function Table_header($$anchor, $$props) {
 }
 
 // src/lib/components/ui/table/table-row.svelte
-var rest_excludes28 = /* @__PURE__ */ new Set([
+var rest_excludes46 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -31400,11 +38763,11 @@ var rest_excludes28 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root27 = from_html(`<tr><!></tr>`);
+var root42 = from_html(`<tr><!></tr>`);
 function Table_row($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes28);
-  var tr = root27();
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes46);
+  var tr = root42();
   attribute_effect(tr, ($0) => ({ "data-slot": "table-row", class: $0, ...restProps }), [
     () => cn("hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors", $$props.class)
   ]);
@@ -31417,10 +38780,10 @@ function Table_row($$anchor, $$props) {
 }
 
 // src/lib/components/ui/accordion/accordion.svelte
-var rest_excludes29 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "value", "class"]);
+var rest_excludes47 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "value", "class"]);
 function Accordion2($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15), restProps = rest_props($$props, rest_excludes29);
+  let ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15), restProps = rest_props($$props, rest_excludes47);
   var fragment = comment();
   var node = first_child(fragment);
   {
@@ -31456,7 +38819,7 @@ function Accordion2($$anchor, $$props) {
 }
 
 // src/lib/components/ui/accordion/accordion-content.svelte
-var rest_excludes30 = /* @__PURE__ */ new Set([
+var rest_excludes48 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -31464,10 +38827,10 @@ var rest_excludes30 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root28 = from_html(`<div><!></div>`);
+var root43 = from_html(`<div><!></div>`);
 function Accordion_content2($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes30);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes48);
   var fragment = comment();
   var node = first_child(fragment);
   component(node, () => exports_exports.Content, ($$anchor2, AccordionPrimitive_Content) => {
@@ -31485,7 +38848,7 @@ function Accordion_content2($$anchor, $$props) {
           ref($$value);
         },
         children: ($$anchor3, $$slotProps) => {
-          var div = root28();
+          var div = root43();
           var node_1 = child(div);
           snippet(node_1, () => $$props.children ?? noop);
           reset(div);
@@ -31503,10 +38866,10 @@ function Accordion_content2($$anchor, $$props) {
 }
 
 // src/lib/components/ui/accordion/accordion-item.svelte
-var rest_excludes31 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
+var rest_excludes49 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
 function Accordion_item2($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes31);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes49);
   var fragment = comment();
   var node = first_child(fragment);
   {
@@ -31564,7 +38927,7 @@ var LucideContext = Symbol("lucide-context");
 var getLucideContext = () => getContext(LucideContext);
 
 // node_modules/@lucide/svelte/dist/Icon.svelte
-var rest_excludes32 = /* @__PURE__ */ new Set([
+var rest_excludes50 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -31576,21 +38939,21 @@ var rest_excludes32 = /* @__PURE__ */ new Set([
   "iconNode",
   "children"
 ]);
-var root29 = from_svg(`<svg><!><!></svg>`);
+var root44 = from_svg(`<svg><!><!></svg>`);
 function Icon($$anchor, $$props) {
   push($$props, true);
   const globalProps = getLucideContext() ?? {};
-  const color = prop($$props, "color", 19, () => globalProps.color ?? "currentColor"), size = prop($$props, "size", 19, () => globalProps.size ?? 24), strokeWidth = prop($$props, "strokeWidth", 19, () => globalProps.strokeWidth ?? 2), absoluteStrokeWidth = prop($$props, "absoluteStrokeWidth", 19, () => globalProps.absoluteStrokeWidth ?? false), iconNode = prop($$props, "iconNode", 19, () => []), props = rest_props($$props, rest_excludes32);
-  const calculatedStrokeWidth = user_derived(() => absoluteStrokeWidth() ? Number(strokeWidth()) * 24 / Number(size()) : strokeWidth());
-  var svg = root29();
+  const color = prop($$props, "color", 19, () => globalProps.color ?? "currentColor"), size3 = prop($$props, "size", 19, () => globalProps.size ?? 24), strokeWidth = prop($$props, "strokeWidth", 19, () => globalProps.strokeWidth ?? 2), absoluteStrokeWidth = prop($$props, "absoluteStrokeWidth", 19, () => globalProps.absoluteStrokeWidth ?? false), iconNode = prop($$props, "iconNode", 19, () => []), props = rest_props($$props, rest_excludes50);
+  const calculatedStrokeWidth = user_derived(() => absoluteStrokeWidth() ? Number(strokeWidth()) * 24 / Number(size3()) : strokeWidth());
+  var svg = root44();
   attribute_effect(
     svg,
     ($0) => ({
       ...defaultAttributes_default,
       ...$0,
       ...props,
-      width: size(),
-      height: size(),
+      width: size3(),
+      height: size3(),
       stroke: color(),
       "stroke-width": get2(calculatedStrokeWidth),
       class: [
@@ -31624,9 +38987,9 @@ function Icon($$anchor, $$props) {
 }
 
 // node_modules/@lucide/svelte/dist/icons/chevron-down.svelte
-var rest_excludes33 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+var rest_excludes51 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
 function Chevron_down($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes33);
+  let props = rest_props($$props, rest_excludes51);
   const iconNode = [["path", { "d": "m6 9 6 6 6-6" }]];
   Icon($$anchor, spread_props({ name: "chevron-down" }, () => props, {
     get iconNode() {
@@ -31636,9 +38999,9 @@ function Chevron_down($$anchor, $$props) {
 }
 
 // node_modules/@lucide/svelte/dist/icons/chevron-up.svelte
-var rest_excludes34 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+var rest_excludes52 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
 function Chevron_up($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes34);
+  let props = rest_props($$props, rest_excludes52);
   const iconNode = [["path", { "d": "m18 15-6-6-6 6" }]];
   Icon($$anchor, spread_props({ name: "chevron-up" }, () => props, {
     get iconNode() {
@@ -31648,7 +39011,7 @@ function Chevron_up($$anchor, $$props) {
 }
 
 // src/lib/components/ui/accordion/accordion-trigger.svelte
-var rest_excludes35 = /* @__PURE__ */ new Set([
+var rest_excludes53 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -31657,10 +39020,10 @@ var rest_excludes35 = /* @__PURE__ */ new Set([
   "level",
   "children"
 ]);
-var root30 = from_html(`<!> <!> <!>`, 1);
+var root45 = from_html(`<!> <!> <!>`, 1);
 function Accordion_trigger2($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), level = prop($$props, "level", 3, 3), restProps = rest_props($$props, rest_excludes35);
+  let ref = prop($$props, "ref", 15, null), level = prop($$props, "level", 3, 3), restProps = rest_props($$props, rest_excludes53);
   var fragment = comment();
   var node = first_child(fragment);
   component(node, () => exports_exports.Header, ($$anchor2, AccordionPrimitive_Header) => {
@@ -31691,7 +39054,7 @@ function Accordion_trigger2($$anchor, $$props) {
                   ref($$value);
                 },
                 children: ($$anchor5, $$slotProps2) => {
-                  var fragment_2 = root30();
+                  var fragment_2 = root45();
                   var node_2 = first_child(fragment_2);
                   snippet(node_2, () => $$props.children ?? noop);
                   var node_3 = sibling(node_2, 2);
@@ -31720,6 +39083,522 @@ function Accordion_trigger2($$anchor, $$props) {
   pop();
 }
 
+// src/lib/components/ui/select/select.svelte
+var rest_excludes54 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "open", "value"]);
+function Select2($$anchor, $$props) {
+  push($$props, true);
+  let open = prop($$props, "open", 15, false), value = prop($$props, "value", 15), restProps = rest_props($$props, rest_excludes54);
+  var fragment = comment();
+  var node = first_child(fragment);
+  component(node, () => exports_exports3.Root, ($$anchor2, SelectPrimitive_Root) => {
+    SelectPrimitive_Root($$anchor2, spread_props(() => restProps, {
+      get open() {
+        return open();
+      },
+      set open($$value) {
+        open($$value);
+      },
+      get value() {
+        return value();
+      },
+      set value($$value) {
+        value($$value);
+      }
+    }));
+  });
+  append($$anchor, fragment);
+  pop();
+}
+
+// src/lib/components/ui/select/select-label.svelte
+var root46 = from_html(`<div><!></div>`);
+
+// node_modules/@lucide/svelte/dist/icons/check.svelte
+var rest_excludes55 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+function Check($$anchor, $$props) {
+  let props = rest_props($$props, rest_excludes55);
+  const iconNode = [["path", { "d": "M20 6 9 17l-5-5" }]];
+  Icon($$anchor, spread_props({ name: "check" }, () => props, {
+    get iconNode() {
+      return iconNode;
+    }
+  }));
+}
+
+// src/lib/components/ui/select/select-item.svelte
+var rest_excludes56 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "ref",
+  "class",
+  "value",
+  "label",
+  "children"
+]);
+var root47 = from_html(`<span class="absolute end-2 flex size-3.5 items-center justify-center"><!></span> <span class="flex flex-1 gap-2 shrink-0 whitespace-nowrap"><!></span>`, 1);
+function Select_item2($$anchor, $$props) {
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes56);
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    const children2 = ($$anchor2, $$arg0) => {
+      let selected = () => ($$arg0?.()).selected;
+      let highlighted = () => ($$arg0?.()).highlighted;
+      var fragment_1 = root47();
+      var span = first_child(fragment_1);
+      var node_1 = child(span);
+      {
+        var consequent = ($$anchor3) => {
+          Check($$anchor3, { class: "cn-select-item-indicator-icon" });
+        };
+        if_block(node_1, ($$render) => {
+          if (selected()) $$render(consequent);
+        });
+      }
+      reset(span);
+      var span_1 = sibling(span, 2);
+      var node_2 = child(span_1);
+      {
+        var consequent_1 = ($$anchor3) => {
+          var fragment_3 = comment();
+          var node_3 = first_child(fragment_3);
+          snippet(node_3, () => $$props.children, () => ({ selected: selected(), highlighted: highlighted() }));
+          append($$anchor3, fragment_3);
+        };
+        var alternate = ($$anchor3) => {
+          var text4 = text();
+          template_effect(() => set_text(text4, $$props.label || $$props.value));
+          append($$anchor3, text4);
+        };
+        if_block(node_2, ($$render) => {
+          if ($$props.children) $$render(consequent_1);
+          else $$render(alternate, -1);
+        });
+      }
+      reset(span_1);
+      append($$anchor2, fragment_1);
+    };
+    let $0 = user_derived(() => cn("focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 focus:bg-accent data-highlighted:bg-accent data-highlighted:text-accent-foreground focus:text-accent-foreground relative flex w-full cursor-default items-center outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0", $$props.class));
+    component(node, () => exports_exports3.Item, ($$anchor2, SelectPrimitive_Item) => {
+      SelectPrimitive_Item($$anchor2, spread_props(
+        {
+          get value() {
+            return $$props.value;
+          },
+          "data-slot": "select-item",
+          get class() {
+            return get2($0);
+          }
+        },
+        () => restProps,
+        {
+          get ref() {
+            return ref();
+          },
+          set ref($$value) {
+            ref($$value);
+          },
+          children: children2,
+          $$slots: { default: true }
+        }
+      ));
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// src/lib/components/ui/select/select-portal.svelte
+var rest_excludes57 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+function Select_portal($$anchor, $$props) {
+  let restProps = rest_props($$props, rest_excludes57);
+  var fragment = comment();
+  var node = first_child(fragment);
+  component(node, () => exports_exports3.Portal, ($$anchor2, SelectPrimitive_Portal) => {
+    SelectPrimitive_Portal($$anchor2, spread_props(() => restProps));
+  });
+  append($$anchor, fragment);
+}
+
+// src/lib/components/ui/select/select-scroll-up-button.svelte
+var rest_excludes58 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
+function Select_scroll_up_button2($$anchor, $$props) {
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes58);
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    let $0 = user_derived(() => cn("bg-popover z-10 flex cursor-default items-center justify-center py-1 [&_svg:not([class*='size-'])]:size-4 top-0 w-full", $$props.class));
+    component(node, () => exports_exports3.ScrollUpButton, ($$anchor2, SelectPrimitive_ScrollUpButton) => {
+      SelectPrimitive_ScrollUpButton($$anchor2, spread_props(
+        {
+          "data-slot": "select-scroll-up-button",
+          get class() {
+            return get2($0);
+          }
+        },
+        () => restProps,
+        {
+          get ref() {
+            return ref();
+          },
+          set ref($$value) {
+            ref($$value);
+          },
+          children: ($$anchor3, $$slotProps) => {
+            Chevron_up($$anchor3, {});
+          },
+          $$slots: { default: true }
+        }
+      ));
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// src/lib/components/ui/select/select-scroll-down-button.svelte
+var rest_excludes59 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
+function Select_scroll_down_button2($$anchor, $$props) {
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes59);
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    let $0 = user_derived(() => cn("bg-popover z-10 flex cursor-default items-center justify-center py-1 [&_svg:not([class*='size-'])]:size-4 bottom-0 w-full", $$props.class));
+    component(node, () => exports_exports3.ScrollDownButton, ($$anchor2, SelectPrimitive_ScrollDownButton) => {
+      SelectPrimitive_ScrollDownButton($$anchor2, spread_props(
+        {
+          "data-slot": "select-scroll-down-button",
+          get class() {
+            return get2($0);
+          }
+        },
+        () => restProps,
+        {
+          get ref() {
+            return ref();
+          },
+          set ref($$value) {
+            ref($$value);
+          },
+          children: ($$anchor3, $$slotProps) => {
+            Chevron_down($$anchor3, {});
+          },
+          $$slots: { default: true }
+        }
+      ));
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// src/lib/components/ui/select/select-content.svelte
+var rest_excludes60 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "ref",
+  "class",
+  "sideOffset",
+  "portalProps",
+  "children",
+  "preventScroll"
+]);
+var root48 = from_html(`<!> <!> <!>`, 1);
+function Select_content2($$anchor, $$props) {
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), sideOffset = prop($$props, "sideOffset", 3, 4), preventScroll = prop($$props, "preventScroll", 3, true), restProps = rest_props($$props, rest_excludes60);
+  Select_portal($$anchor, spread_props(() => $$props.portalProps, {
+    children: ($$anchor2, $$slotProps) => {
+      var fragment_1 = comment();
+      var node = first_child(fragment_1);
+      {
+        let $0 = user_derived(() => cn("bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg shadow-md ring-1 duration-100 data-[side=inline-start]:slide-in-from-right-2 data-[side=inline-end]:slide-in-from-left-2 relative isolate z-50 overflow-x-hidden overflow-y-auto", $$props.class));
+        component(node, () => exports_exports3.Content, ($$anchor3, SelectPrimitive_Content) => {
+          SelectPrimitive_Content($$anchor3, spread_props(
+            {
+              get sideOffset() {
+                return sideOffset();
+              },
+              get preventScroll() {
+                return preventScroll();
+              },
+              "data-slot": "select-content",
+              get class() {
+                return get2($0);
+              }
+            },
+            () => restProps,
+            {
+              get ref() {
+                return ref();
+              },
+              set ref($$value) {
+                ref($$value);
+              },
+              children: ($$anchor4, $$slotProps2) => {
+                var fragment_2 = root48();
+                var node_1 = first_child(fragment_2);
+                Select_scroll_up_button2(node_1, {});
+                var node_2 = sibling(node_1, 2);
+                {
+                  let $02 = user_derived(() => cn("h-(--bits-select-anchor-height) w-full min-w-(--bits-select-anchor-width) scroll-my-1"));
+                  component(node_2, () => exports_exports3.Viewport, ($$anchor5, SelectPrimitive_Viewport) => {
+                    SelectPrimitive_Viewport($$anchor5, {
+                      get class() {
+                        return get2($02);
+                      },
+                      children: ($$anchor6, $$slotProps3) => {
+                        var fragment_3 = comment();
+                        var node_3 = first_child(fragment_3);
+                        snippet(node_3, () => $$props.children ?? noop);
+                        append($$anchor6, fragment_3);
+                      },
+                      $$slots: { default: true }
+                    });
+                  });
+                }
+                var node_4 = sibling(node_2, 2);
+                Select_scroll_down_button2(node_4, {});
+                append($$anchor4, fragment_2);
+              },
+              $$slots: { default: true }
+            }
+          ));
+        });
+      }
+      append($$anchor2, fragment_1);
+    },
+    $$slots: { default: true }
+  }));
+  pop();
+}
+
+// src/lib/components/ui/select/select-trigger.svelte
+var rest_excludes61 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "ref",
+  "class",
+  "children",
+  "size"
+]);
+var root49 = from_html(`<!> <!>`, 1);
+function Select_trigger2($$anchor, $$props) {
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), size3 = prop($$props, "size", 3, "default"), restProps = rest_props($$props, rest_excludes61);
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    let $0 = user_derived(() => cn("border-input data-placeholder:text-muted-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg border bg-transparent py-2 pr-2 pl-2.5 text-sm transition-colors select-none focus-visible:ring-3 aria-invalid:ring-3 data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:flex *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex w-fit items-center justify-between whitespace-nowrap outline-none disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center [&_svg]:pointer-events-none [&_svg]:shrink-0", $$props.class));
+    component(node, () => exports_exports3.Trigger, ($$anchor2, SelectPrimitive_Trigger) => {
+      SelectPrimitive_Trigger($$anchor2, spread_props(
+        {
+          "data-slot": "select-trigger",
+          get "data-size"() {
+            return size3();
+          },
+          get class() {
+            return get2($0);
+          }
+        },
+        () => restProps,
+        {
+          get ref() {
+            return ref();
+          },
+          set ref($$value) {
+            ref($$value);
+          },
+          children: ($$anchor3, $$slotProps) => {
+            var fragment_1 = root49();
+            var node_1 = first_child(fragment_1);
+            snippet(node_1, () => $$props.children ?? noop);
+            var node_2 = sibling(node_1, 2);
+            Chevron_down(node_2, { class: "text-muted-foreground size-4 pointer-events-none" });
+            append($$anchor3, fragment_1);
+          },
+          $$slots: { default: true }
+        }
+      ));
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// src/lib/components/ui/toggle/toggle.svelte
+var toggleVariants = tv({
+  base: "hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 rounded-lg text-sm font-medium transition-all [&_svg:not([class*='size-'])]:size-4 group/toggle hover:bg-muted inline-flex items-center justify-center whitespace-nowrap outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  variants: {
+    variant: {
+      default: "bg-transparent",
+      outline: "border-input hover:bg-muted border bg-transparent"
+    },
+    size: {
+      default: "h-8 min-w-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+      sm: "h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
+      lg: "h-9 min-w-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+    }
+  },
+  defaultVariants: { variant: "default", size: "default" }
+});
+
+// src/lib/components/ui/toggle-group/toggle-group.svelte
+function setToggleGroupCtx(props) {
+  setContext("toggleGroup", props);
+}
+function getToggleGroupCtx() {
+  return getContext("toggleGroup");
+}
+var rest_excludes62 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "ref",
+  "value",
+  "class",
+  "size",
+  "spacing",
+  "orientation",
+  "variant"
+]);
+function Toggle_group2($$anchor, $$props) {
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15), size3 = prop($$props, "size", 3, "default"), spacing = prop($$props, "spacing", 3, 0), orientation = prop($$props, "orientation", 3, "horizontal"), variant = prop($$props, "variant", 3, "default"), restProps = rest_props($$props, rest_excludes62);
+  setToggleGroupCtx({
+    get variant() {
+      return variant();
+    },
+    get size() {
+      return size3();
+    },
+    get spacing() {
+      return spacing();
+    },
+    get orientation() {
+      return orientation();
+    }
+  });
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    let $0 = user_derived(() => `--gap: ${spacing()}`);
+    let $1 = user_derived(() => cn("rounded-lg data-[size=sm]:rounded-[min(var(--radius-md),10px)] group/toggle-group flex w-fit flex-row items-center gap-[--spacing(var(--gap))] data-vertical:flex-col data-vertical:items-stretch", $$props.class));
+    component(node, () => exports_exports5.Root, ($$anchor2, ToggleGroupPrimitive_Root) => {
+      ToggleGroupPrimitive_Root($$anchor2, spread_props(
+        {
+          get orientation() {
+            return orientation();
+          },
+          "data-slot": "toggle-group",
+          get "data-variant"() {
+            return variant();
+          },
+          get "data-size"() {
+            return size3();
+          },
+          get "data-spacing"() {
+            return spacing();
+          },
+          get style() {
+            return get2($0);
+          },
+          get class() {
+            return get2($1);
+          }
+        },
+        () => restProps,
+        {
+          get value() {
+            return value();
+          },
+          set value($$value) {
+            value($$value);
+          },
+          get ref() {
+            return ref();
+          },
+          set ref($$value) {
+            ref($$value);
+          }
+        }
+      ));
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
+// src/lib/components/ui/toggle-group/toggle-group-item.svelte
+var rest_excludes63 = /* @__PURE__ */ new Set([
+  "$$slots",
+  "$$events",
+  "$$legacy",
+  "ref",
+  "value",
+  "class",
+  "size",
+  "variant"
+]);
+function Toggle_group_item2($$anchor, $$props) {
+  push($$props, true);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes63);
+  const ctx = getToggleGroupCtx();
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    let $0 = user_derived(() => ctx.variant || $$props.variant);
+    let $1 = user_derived(() => ctx.size || $$props.size);
+    let $2 = user_derived(() => cn(
+      "group-data-[spacing=0]/toggle-group:rounded-none group-data-[spacing=0]/toggle-group:px-2 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pr-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:pl-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-l-lg group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-lg group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-r-lg group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-lg shrink-0 focus:z-10 focus-visible:z-10 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-l-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-l group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t",
+      toggleVariants({
+        variant: ctx.variant || $$props.variant,
+        size: ctx.size || $$props.size
+      }),
+      $$props.class
+    ));
+    component(node, () => exports_exports5.Item, ($$anchor2, ToggleGroupPrimitive_Item) => {
+      ToggleGroupPrimitive_Item($$anchor2, spread_props(
+        {
+          "data-slot": "toggle-group-item",
+          get "data-variant"() {
+            return get2($0);
+          },
+          get "data-size"() {
+            return get2($1);
+          },
+          get "data-spacing"() {
+            return ctx.spacing;
+          },
+          get class() {
+            return get2($2);
+          },
+          get value() {
+            return $$props.value;
+          }
+        },
+        () => restProps,
+        {
+          get ref() {
+            return ref();
+          },
+          set ref($$value) {
+            ref($$value);
+          }
+        }
+      ));
+    });
+  }
+  append($$anchor, fragment);
+  pop();
+}
+
 // src/lib/components/ui/badge/badge.svelte
 var badgeVariants = tv({
   base: "h-5 gap-1 rounded-4xl border border-transparent px-2 py-0.5 text-xs font-medium transition-all has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive group/badge inline-flex w-fit shrink-0 items-center justify-center overflow-hidden whitespace-nowrap transition-colors focus-visible:ring-[3px] [&>svg]:pointer-events-none",
@@ -31735,7 +39614,7 @@ var badgeVariants = tv({
   },
   defaultVariants: { variant: "default" }
 });
-var rest_excludes36 = /* @__PURE__ */ new Set([
+var rest_excludes64 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -31747,7 +39626,7 @@ var rest_excludes36 = /* @__PURE__ */ new Set([
 ]);
 function Badge($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), variant = prop($$props, "variant", 3, "default"), restProps = rest_props($$props, rest_excludes36);
+  let ref = prop($$props, "ref", 15, null), variant = prop($$props, "variant", 3, "default"), restProps = rest_props($$props, rest_excludes64);
   var fragment = comment();
   var node = first_child(fragment);
   element(node, () => $$props.href ? "a" : "span", false, ($$element, $$anchor2) => {
@@ -31798,7 +39677,7 @@ var buttonVariants = tv({
   },
   defaultVariants: { variant: "default", size: "default" }
 });
-var rest_excludes37 = /* @__PURE__ */ new Set([
+var rest_excludes65 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -31811,17 +39690,17 @@ var rest_excludes37 = /* @__PURE__ */ new Set([
   "disabled",
   "children"
 ]);
-var root31 = from_html(`<a><!></a>`);
-var root_1 = from_html(`<button><!></button>`);
+var root50 = from_html(`<a><!></a>`);
+var root_15 = from_html(`<button><!></button>`);
 function Button($$anchor, $$props) {
   push($$props, true);
   "use strict";
-  let variant = prop($$props, "variant", 3, "default"), size = prop($$props, "size", 3, "default"), ref = prop($$props, "ref", 15, null), href = prop($$props, "href", 3, void 0), type = prop($$props, "type", 3, "button"), restProps = rest_props($$props, rest_excludes37);
+  let variant = prop($$props, "variant", 3, "default"), size3 = prop($$props, "size", 3, "default"), ref = prop($$props, "ref", 15, null), href = prop($$props, "href", 3, void 0), type = prop($$props, "type", 3, "button"), restProps = rest_props($$props, rest_excludes65);
   var fragment = comment();
   var node = first_child(fragment);
   {
     var consequent = ($$anchor2) => {
-      var a2 = root31();
+      var a2 = root50();
       attribute_effect(
         a2,
         ($0) => ({
@@ -31834,7 +39713,7 @@ function Button($$anchor, $$props) {
           ...restProps
         }),
         [
-          () => cn(buttonVariants({ variant: variant(), size: size() }), $$props.class)
+          () => cn(buttonVariants({ variant: variant(), size: size3() }), $$props.class)
         ]
       );
       var node_1 = child(a2);
@@ -31844,7 +39723,7 @@ function Button($$anchor, $$props) {
       append($$anchor2, a2);
     };
     var alternate = ($$anchor2) => {
-      var button = root_1();
+      var button = root_15();
       attribute_effect(
         button,
         ($0) => ({
@@ -31855,7 +39734,7 @@ function Button($$anchor, $$props) {
           ...restProps
         }),
         [
-          () => cn(buttonVariants({ variant: variant(), size: size() }), $$props.class)
+          () => cn(buttonVariants({ variant: variant(), size: size3() }), $$props.class)
         ]
       );
       var node_2 = child(button);
@@ -31873,64 +39752,129 @@ function Button($$anchor, $$props) {
   pop();
 }
 
-// src/lib/components/ui/progress/progress.svelte
-var rest_excludes38 = /* @__PURE__ */ new Set([
+// src/lib/components/ui/input/input.svelte
+var rest_excludes66 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
   "ref",
+  "value",
+  "type",
+  "files",
   "class",
-  "max",
-  "value"
+  "data-slot"
 ]);
-var root32 = from_html(`<div data-slot="progress-indicator" class="bg-primary size-full flex-1 transition-all"></div>`);
-function Progress2($$anchor, $$props) {
+var root51 = from_html(`<input/>`);
+function Input($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), max = prop($$props, "max", 3, 100), restProps = rest_props($$props, rest_excludes38);
+  let ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15), files = prop($$props, "files", 15), dataSlot = prop($$props, "data-slot", 3, "input"), restProps = rest_props($$props, rest_excludes66);
   var fragment = comment();
   var node = first_child(fragment);
   {
-    let $0 = user_derived(() => cn("bg-muted h-1 rounded-full relative flex w-full items-center overflow-x-hidden", $$props.class));
-    component(node, () => exports_exports3.Root, ($$anchor2, ProgressPrimitive_Root) => {
-      ProgressPrimitive_Root($$anchor2, spread_props(
-        {
-          "data-slot": "progress",
-          get class() {
-            return get2($0);
-          },
-          get value() {
-            return $$props.value;
-          },
-          get max() {
-            return max();
-          }
-        },
-        () => restProps,
-        {
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          },
-          children: ($$anchor3, $$slotProps) => {
-            var div = root32();
-            template_effect(() => set_style(div, `transform: translateX(-${100 - 100 * ($$props.value ?? 0) / (max() ?? 1)}%)`));
-            append($$anchor3, div);
-          },
-          $$slots: { default: true }
-        }
-      ));
+    var consequent = ($$anchor2) => {
+      var input = root51();
+      attribute_effect(
+        input,
+        ($0) => ({
+          "data-slot": dataSlot(),
+          class: $0,
+          type: "file",
+          ...restProps
+        }),
+        [
+          () => cn("dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium focus-visible:ring-3 aria-invalid:ring-3 md:text-sm file:text-foreground placeholder:text-muted-foreground w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50", $$props.class)
+        ],
+        void 0,
+        void 0,
+        void 0,
+        true
+      );
+      bind_this(input, ($$value) => ref($$value), () => ref());
+      bind_files(input, files);
+      bind_value(input, value);
+      append($$anchor2, input);
+    };
+    var alternate = ($$anchor2) => {
+      var input_1 = root51();
+      attribute_effect(
+        input_1,
+        ($0) => ({
+          "data-slot": dataSlot(),
+          class: $0,
+          type: $$props.type,
+          ...restProps
+        }),
+        [
+          () => cn("dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium focus-visible:ring-3 aria-invalid:ring-3 md:text-sm file:text-foreground placeholder:text-muted-foreground w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50", $$props.class)
+        ],
+        void 0,
+        void 0,
+        void 0,
+        true
+      );
+      bind_this(input_1, ($$value) => ref($$value), () => ref());
+      bind_value(input_1, value);
+      append($$anchor2, input_1);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.type === "file") $$render(consequent);
+      else $$render(alternate, -1);
     });
   }
   append($$anchor, fragment);
   pop();
 }
 
+// src/ui/ScoreGauge.svelte
+var root52 = from_html(`<div class="relative shrink-0"><svg class="-rotate-90"><circle fill="none" stroke="currentColor" class="text-muted opacity-40"></circle><circle fill="none" stroke-linecap="round" style="transition: stroke-dashoffset 600ms ease"></circle></svg> <div class="absolute inset-0 flex flex-col items-center justify-center"><span class="text-2xl font-bold leading-none"> </span> <span class="text-[10px] uppercase tracking-wide text-muted-foreground">Score</span></div></div>`);
+function ScoreGauge($$anchor, $$props) {
+  "use strict";
+  let size3 = prop($$props, "size", 3, 96);
+  const stroke = 8;
+  const r2 = user_derived(() => (size3() - stroke) / 2);
+  const c = user_derived(() => 2 * Math.PI * get2(r2));
+  const offset3 = user_derived(() => get2(c) * (1 - Math.max(0, Math.min(100, $$props.value)) / 100));
+  const color = user_derived(() => $$props.value >= 80 ? "#10b981" : $$props.value >= 50 ? "#f59e0b" : "#ef4444");
+  var div = root52();
+  var svg = child(div);
+  var circle = child(svg);
+  set_attribute2(circle, "stroke-width", stroke);
+  var circle_1 = sibling(circle);
+  set_attribute2(circle_1, "stroke-width", stroke);
+  reset(svg);
+  var div_1 = sibling(svg, 2);
+  var span = child(div_1);
+  var text4 = child(span, true);
+  reset(span);
+  next(2);
+  reset(div_1);
+  reset(div);
+  template_effect(
+    ($0) => {
+      set_style(div, `width:${size3() ?? ""}px;height:${size3() ?? ""}px`);
+      set_attribute2(svg, "width", size3());
+      set_attribute2(svg, "height", size3());
+      set_attribute2(svg, "viewBox", `0 0 ${size3() ?? ""} ${size3() ?? ""}`);
+      set_attribute2(circle, "cx", size3() / 2);
+      set_attribute2(circle, "cy", size3() / 2);
+      set_attribute2(circle, "r", get2(r2));
+      set_attribute2(circle_1, "cx", size3() / 2);
+      set_attribute2(circle_1, "cy", size3() / 2);
+      set_attribute2(circle_1, "r", get2(r2));
+      set_attribute2(circle_1, "stroke", get2(color));
+      set_attribute2(circle_1, "stroke-dasharray", get2(c));
+      set_attribute2(circle_1, "stroke-dashoffset", get2(offset3));
+      set_text(text4, $0);
+    },
+    [() => Math.round($$props.value)]
+  );
+  append($$anchor, div);
+}
+
 // node_modules/@lucide/svelte/dist/icons/file-text.svelte
-var rest_excludes39 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+var rest_excludes67 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
 function File_text($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes39);
+  let props = rest_props($$props, rest_excludes67);
   const iconNode = [
     [
       "path",
@@ -31951,17 +39895,47 @@ function File_text($$anchor, $$props) {
 }
 
 // src/ui/ReportView.svelte
-var root33 = from_html(`<!> Open note`, 1);
-var root_12 = from_html(`<div class="flex items-center"><!></div>`);
-var root_2 = from_html(`<!> <!> <!>`, 1);
+var root53 = from_html(`<!> Open note`, 1);
+var root_16 = from_html(`<div class="mt-1"><!></div>`);
+var root_2 = from_html(`<!> <div class="flex min-w-48 flex-col gap-1"><div class="flex items-center gap-2"><span class="text-lg font-semibold"> </span> <!></div> <span class="truncate text-sm text-muted-foreground"> </span> <span class="text-sm text-muted-foreground"> </span> <!></div> <div class="ml-auto flex gap-6"><div class="text-center"><div class="text-2xl font-bold text-emerald-500"> </div> <div class="text-xs text-muted-foreground"> </div></div> <div class="text-center"><div class="text-2xl font-bold text-amber-500"> </div> <div class="text-xs text-muted-foreground"> </div></div> <div class="text-center"><div class="text-2xl font-bold text-red-500"> </div> <div class="text-xs text-muted-foreground"> </div></div></div>`, 1);
 var root_3 = from_html(`<!> <!>`, 1);
-var root_4 = from_html(`<!> <!> <!> <!> <!>`, 1);
-var root_5 = from_html(`<span class="flex w-full items-center gap-2 pr-2"><!> <span class="truncate"> </span> <span class="ml-auto text-muted-foreground"> </span></span>`);
-var root_6 = from_html(`<p class="text-muted-foreground">No issues found on this page.</p>`);
-var root_7 = from_html(`<div class="flex flex-col gap-4"><!> <!> <!></div>`);
+var root_4 = from_html(`<!> <!> <!>`, 1);
+var root_5 = from_html(`<div class="flex items-center gap-3"><span class="w-36 shrink-0 truncate text-sm"> </span> <span class="h-2 flex-1 overflow-hidden rounded-full bg-muted"><span class="block h-full rounded-full bg-primary"></span></span> <span class="w-8 shrink-0 text-right text-sm font-medium"> </span></div>`);
+var root_6 = from_html(`<p class="py-4 text-center text-sm text-muted-foreground">No issues match these filters.</p>`);
+var root_7 = from_html(`<span class="flex w-full items-center gap-2 pr-2 text-left"><span></span> <span class="flex min-w-0 flex-col"><span class="flex items-center gap-2"><span class="font-medium"> </span> <!> <!></span> <span class="truncate text-sm font-normal text-muted-foreground"> </span></span> <!></span>`);
+var root_8 = from_html(`<span class="truncate text-sm"> </span>`);
+var root_9 = from_html(`<div class="flex flex-col gap-1 pl-4"><span class="text-xs font-medium text-muted-foreground">Affected pages</span> <!></div>`);
+var root_10 = from_html(`<div class="flex flex-wrap items-center gap-2"><!> <!> <!></div> <!>`, 1);
+var root_11 = from_html(`<span class="flex w-full items-center gap-2 pr-2"><!> <span class="truncate"> </span> <span class="ml-auto text-muted-foreground"> </span></span>`);
+var root_122 = from_html(`<p class="text-muted-foreground">No issues found on this page.</p>`);
+var root_132 = from_html(`<div class="flex flex-col gap-4"><!> <!></div>`);
 function ReportView($$anchor, $$props) {
   push($$props, true);
-  function issues(findings) {
+  const totals = user_derived(() => statusTotals($$props.report));
+  const issues = user_derived(() => buildIssues($$props.report));
+  const categoryNames = user_derived(() => $$props.report.categories.map((c) => c.category));
+  let sort = state("worst");
+  const sortedCategories = user_derived(() => [...$$props.report.categories].sort((a2, b) => {
+    if (get2(sort) === "az") return a2.category.localeCompare(b.category);
+    return get2(sort) === "worst" ? a2.score - b.score : b.score - a2.score;
+  }));
+  let sevFilter = state(proxy(["fail", "warn", "info"]));
+  let catFilter = state("all");
+  let query = state("");
+  const filteredIssues = user_derived(() => get2(issues).filter((i) => {
+    if (!get2(sevFilter).includes(i.status)) return false;
+    if (get2(catFilter) !== "all" && i.category !== get2(catFilter)) return false;
+    const q = get2(query).trim().toLowerCase();
+    if (q && !`${i.title} ${i.message} ${i.ruleId}`.toLowerCase().includes(q)) return false;
+    return true;
+  }));
+  function statusLabel(status) {
+    return status === "fail" ? "Error" : status === "warn" ? "Warning" : "Info";
+  }
+  function statusBadge(status) {
+    return status === "fail" ? "destructive" : status === "warn" ? "secondary" : "outline";
+  }
+  function pageIssues(findings) {
     return findings.filter((f) => f.status === "fail" || f.status === "warn");
   }
   function openNote() {
@@ -31969,539 +39943,808 @@ function ReportView($$anchor, $$props) {
     const file = $$props.plugin.app.vault.getAbstractFileByPath($$props.path);
     if (file instanceof import_obsidian4.TFile) openInObsidian($$props.plugin.app, file);
   }
-  var div = root_7();
+  var div = root_132();
   var node = child(div);
-  {
-    var consequent = ($$anchor2) => {
-      var div_1 = root_12();
-      var node_1 = child(div_1);
-      Button(node_1, {
-        variant: "outline",
-        size: "sm",
-        class: "ml-auto",
-        onclick: openNote,
-        children: ($$anchor3, $$slotProps) => {
-          var fragment = root33();
-          var node_2 = first_child(fragment);
-          File_text(node_2, { "data-icon": "inline-start" });
-          next();
-          append($$anchor3, fragment);
-        },
-        $$slots: { default: true }
-      });
-      reset(div_1);
-      append($$anchor2, div_1);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.path) $$render(consequent);
-    });
-  }
-  var node_3 = sibling(node, 2);
-  component(node_3, () => Card, ($$anchor2, Card_Root) => {
+  component(node, () => Card, ($$anchor2, Card_Root) => {
     Card_Root($$anchor2, {
       children: ($$anchor3, $$slotProps) => {
-        var fragment_1 = root_3();
-        var node_4 = first_child(fragment_1);
-        component(node_4, () => Card_header, ($$anchor4, Card_Header) => {
-          Card_Header($$anchor4, {
-            children: ($$anchor5, $$slotProps2) => {
-              var fragment_2 = root_2();
-              var node_5 = first_child(fragment_2);
-              component(node_5, () => Card_title, ($$anchor6, Card_Title) => {
-                Card_Title($$anchor6, {
-                  children: ($$anchor7, $$slotProps3) => {
-                    next();
-                    var text4 = text();
-                    template_effect(($0) => set_text(text4, $0), [() => hostOf($$props.report.startUrl)]);
-                    append($$anchor7, text4);
-                  },
-                  $$slots: { default: true }
-                });
-              });
-              var node_6 = sibling(node_5, 2);
-              component(node_6, () => Card_description, ($$anchor6, Card_Description) => {
-                Card_Description($$anchor6, {
-                  children: ($$anchor7, $$slotProps3) => {
-                    next();
-                    var text_1 = text();
-                    template_effect(() => set_text(text_1, `${$$props.report.pagesScanned ?? ""} pages scanned \xB7 ${$$props.report.startUrl ?? ""}`));
-                    append($$anchor7, text_1);
-                  },
-                  $$slots: { default: true }
-                });
-              });
-              var node_7 = sibling(node_6, 2);
-              component(node_7, () => Card_action, ($$anchor6, Card_Action) => {
-                Card_Action($$anchor6, {
-                  children: ($$anchor7, $$slotProps3) => {
-                    {
-                      let $0 = user_derived(() => scoreVariant($$props.report.score));
-                      Badge($$anchor7, {
-                        get variant() {
-                          return get2($0);
-                        },
-                        class: "text-base",
-                        children: ($$anchor8, $$slotProps4) => {
-                          next();
-                          var text_2 = text();
-                          template_effect(() => set_text(text_2, `${$$props.report.score ?? ""}/100`));
-                          append($$anchor8, text_2);
-                        },
-                        $$slots: { default: true }
-                      });
-                    }
-                  },
-                  $$slots: { default: true }
-                });
-              });
-              append($$anchor5, fragment_2);
-            },
-            $$slots: { default: true }
-          });
-        });
-        var node_8 = sibling(node_4, 2);
-        component(node_8, () => Card_content, ($$anchor4, Card_Content) => {
+        var fragment = comment();
+        var node_1 = first_child(fragment);
+        component(node_1, () => Card_content, ($$anchor4, Card_Content) => {
           Card_Content($$anchor4, {
+            class: "flex flex-wrap items-center gap-6 pt-6",
             children: ($$anchor5, $$slotProps2) => {
-              Progress2($$anchor5, {
+              var fragment_1 = root_2();
+              var node_2 = first_child(fragment_1);
+              ScoreGauge(node_2, {
                 get value() {
                   return $$props.report.score;
-                },
-                max: 100
+                }
               });
+              var div_1 = sibling(node_2, 2);
+              var div_2 = child(div_1);
+              var span = child(div_2);
+              var text4 = child(span, true);
+              reset(span);
+              var node_3 = sibling(span, 2);
+              {
+                let $0 = user_derived(() => gradeVariant($$props.report.score));
+                Badge(node_3, {
+                  get variant() {
+                    return get2($0);
+                  },
+                  children: ($$anchor6, $$slotProps3) => {
+                    next();
+                    var text_1 = text();
+                    template_effect(($02) => set_text(text_1, `Grade ${$02 ?? ""}`), [() => grade($$props.report.score)]);
+                    append($$anchor6, text_1);
+                  },
+                  $$slots: { default: true }
+                });
+              }
+              reset(div_2);
+              var span_1 = sibling(div_2, 2);
+              var text_2 = child(span_1, true);
+              reset(span_1);
+              var span_2 = sibling(span_1, 2);
+              var text_3 = child(span_2);
+              reset(span_2);
+              var node_4 = sibling(span_2, 2);
+              {
+                var consequent = ($$anchor6) => {
+                  var div_3 = root_16();
+                  var node_5 = child(div_3);
+                  Button(node_5, {
+                    variant: "outline",
+                    size: "sm",
+                    onclick: openNote,
+                    children: ($$anchor7, $$slotProps3) => {
+                      var fragment_3 = root53();
+                      var node_6 = first_child(fragment_3);
+                      File_text(node_6, { "data-icon": "inline-start" });
+                      next();
+                      append($$anchor7, fragment_3);
+                    },
+                    $$slots: { default: true }
+                  });
+                  reset(div_3);
+                  append($$anchor6, div_3);
+                };
+                if_block(node_4, ($$render) => {
+                  if ($$props.path) $$render(consequent);
+                });
+              }
+              reset(div_1);
+              var div_4 = sibling(div_1, 2);
+              var div_5 = child(div_4);
+              var div_6 = child(div_5);
+              var text_4 = child(div_6, true);
+              reset(div_6);
+              var div_7 = sibling(div_6, 2);
+              var text_5 = child(div_7);
+              reset(div_7);
+              reset(div_5);
+              var div_8 = sibling(div_5, 2);
+              var div_9 = child(div_8);
+              var text_6 = child(div_9, true);
+              reset(div_9);
+              var div_10 = sibling(div_9, 2);
+              var text_7 = child(div_10);
+              reset(div_10);
+              reset(div_8);
+              var div_11 = sibling(div_8, 2);
+              var div_12 = child(div_11);
+              var text_8 = child(div_12, true);
+              reset(div_12);
+              var div_13 = sibling(div_12, 2);
+              var text_9 = child(div_13);
+              reset(div_13);
+              reset(div_11);
+              reset(div_4);
+              template_effect(
+                ($0, $1, $2, $3, $4) => {
+                  set_text(text4, $0);
+                  set_text(text_2, $$props.report.startUrl);
+                  set_text(text_3, `${$1 ?? ""} \xB7 ${$$props.report.pagesScanned ?? ""} pages crawled`);
+                  set_text(text_4, get2(totals).pass);
+                  set_text(text_5, `Passed \xB7 ${$2 ?? ""}%`);
+                  set_text(text_6, get2(totals).warn);
+                  set_text(text_7, `Warnings \xB7 ${$3 ?? ""}%`);
+                  set_text(text_8, get2(totals).fail);
+                  set_text(text_9, `Failed \xB7 ${$4 ?? ""}%`);
+                },
+                [
+                  () => hostOf($$props.report.startUrl),
+                  () => formatDate($$props.report.generatedAt),
+                  () => pct(get2(totals).pass, get2(totals).total),
+                  () => pct(get2(totals).warn, get2(totals).total),
+                  () => pct(get2(totals).fail, get2(totals).total)
+                ]
+              );
+              append($$anchor5, fragment_1);
             },
             $$slots: { default: true }
           });
         });
-        append($$anchor3, fragment_1);
+        append($$anchor3, fragment);
       },
       $$slots: { default: true }
     });
   });
-  var node_9 = sibling(node_3, 2);
-  component(node_9, () => Tabs2, ($$anchor2, Tabs_Root) => {
+  var node_7 = sibling(node, 2);
+  component(node_7, () => Tabs2, ($$anchor2, Tabs_Root) => {
     Tabs_Root($$anchor2, {
       value: "categories",
       children: ($$anchor3, $$slotProps) => {
-        var fragment_8 = root_2();
-        var node_10 = first_child(fragment_8);
-        component(node_10, () => Tabs_list2, ($$anchor4, Tabs_List) => {
+        var fragment_4 = root_4();
+        var node_8 = first_child(fragment_4);
+        component(node_8, () => Tabs_list2, ($$anchor4, Tabs_List) => {
           Tabs_List($$anchor4, {
             children: ($$anchor5, $$slotProps2) => {
-              var fragment_9 = root_3();
-              var node_11 = first_child(fragment_9);
-              component(node_11, () => Tabs_trigger2, ($$anchor6, Tabs_Trigger) => {
+              var fragment_5 = root_3();
+              var node_9 = first_child(fragment_5);
+              component(node_9, () => Tabs_trigger2, ($$anchor6, Tabs_Trigger) => {
                 Tabs_Trigger($$anchor6, {
                   value: "categories",
                   children: ($$anchor7, $$slotProps3) => {
                     next();
-                    var text_3 = text("Categories");
-                    append($$anchor7, text_3);
+                    var text_10 = text("Categories & issues");
+                    append($$anchor7, text_10);
                   },
                   $$slots: { default: true }
                 });
               });
-              var node_12 = sibling(node_11, 2);
-              component(node_12, () => Tabs_trigger2, ($$anchor6, Tabs_Trigger_1) => {
+              var node_10 = sibling(node_9, 2);
+              component(node_10, () => Tabs_trigger2, ($$anchor6, Tabs_Trigger_1) => {
                 Tabs_Trigger_1($$anchor6, {
                   value: "pages",
                   children: ($$anchor7, $$slotProps3) => {
                     next();
-                    var text_4 = text("Pages");
-                    append($$anchor7, text_4);
+                    var text_11 = text("Pages");
+                    append($$anchor7, text_11);
                   },
                   $$slots: { default: true }
                 });
               });
-              append($$anchor5, fragment_9);
+              append($$anchor5, fragment_5);
             },
             $$slots: { default: true }
           });
         });
-        var node_13 = sibling(node_10, 2);
-        component(node_13, () => Tabs_content2, ($$anchor4, Tabs_Content) => {
+        var node_11 = sibling(node_8, 2);
+        component(node_11, () => Tabs_content2, ($$anchor4, Tabs_Content) => {
           Tabs_Content($$anchor4, {
             value: "categories",
+            class: "flex flex-col gap-4",
             children: ($$anchor5, $$slotProps2) => {
-              var fragment_10 = comment();
-              var node_14 = first_child(fragment_10);
-              component(node_14, () => Card, ($$anchor6, Card_Root_1) => {
+              var fragment_6 = root_3();
+              var node_12 = first_child(fragment_6);
+              component(node_12, () => Card, ($$anchor6, Card_Root_1) => {
                 Card_Root_1($$anchor6, {
                   children: ($$anchor7, $$slotProps3) => {
-                    var fragment_11 = comment();
-                    var node_15 = first_child(fragment_11);
-                    component(node_15, () => Card_content, ($$anchor8, Card_Content_1) => {
-                      Card_Content_1($$anchor8, {
+                    var fragment_7 = root_3();
+                    var node_13 = first_child(fragment_7);
+                    component(node_13, () => Card_header, ($$anchor8, Card_Header) => {
+                      Card_Header($$anchor8, {
                         children: ($$anchor9, $$slotProps4) => {
-                          var fragment_12 = comment();
-                          var node_16 = first_child(fragment_12);
-                          component(node_16, () => Table, ($$anchor10, Table_Root) => {
-                            Table_Root($$anchor10, {
+                          var fragment_8 = root_3();
+                          var node_14 = first_child(fragment_8);
+                          component(node_14, () => Card_title, ($$anchor10, Card_Title) => {
+                            Card_Title($$anchor10, {
                               children: ($$anchor11, $$slotProps5) => {
-                                var fragment_13 = root_3();
-                                var node_17 = first_child(fragment_13);
-                                component(node_17, () => Table_header, ($$anchor12, Table_Header) => {
-                                  Table_Header($$anchor12, {
-                                    children: ($$anchor13, $$slotProps6) => {
-                                      var fragment_14 = comment();
-                                      var node_18 = first_child(fragment_14);
-                                      component(node_18, () => Table_row, ($$anchor14, Table_Row) => {
-                                        Table_Row($$anchor14, {
-                                          children: ($$anchor15, $$slotProps7) => {
-                                            var fragment_15 = root_4();
-                                            var node_19 = first_child(fragment_15);
-                                            component(node_19, () => Table_head, ($$anchor16, Table_Head) => {
-                                              Table_Head($$anchor16, {
-                                                children: ($$anchor17, $$slotProps8) => {
-                                                  next();
-                                                  var text_5 = text("Category");
-                                                  append($$anchor17, text_5);
-                                                },
-                                                $$slots: { default: true }
-                                              });
-                                            });
-                                            var node_20 = sibling(node_19, 2);
-                                            component(node_20, () => Table_head, ($$anchor16, Table_Head_1) => {
-                                              Table_Head_1($$anchor16, {
-                                                class: "text-right",
-                                                children: ($$anchor17, $$slotProps8) => {
-                                                  next();
-                                                  var text_6 = text("Score");
-                                                  append($$anchor17, text_6);
-                                                },
-                                                $$slots: { default: true }
-                                              });
-                                            });
-                                            var node_21 = sibling(node_20, 2);
-                                            component(node_21, () => Table_head, ($$anchor16, Table_Head_2) => {
-                                              Table_Head_2($$anchor16, {
-                                                class: "text-right",
-                                                children: ($$anchor17, $$slotProps8) => {
-                                                  next();
-                                                  var text_7 = text("Pass");
-                                                  append($$anchor17, text_7);
-                                                },
-                                                $$slots: { default: true }
-                                              });
-                                            });
-                                            var node_22 = sibling(node_21, 2);
-                                            component(node_22, () => Table_head, ($$anchor16, Table_Head_3) => {
-                                              Table_Head_3($$anchor16, {
-                                                class: "text-right",
-                                                children: ($$anchor17, $$slotProps8) => {
-                                                  next();
-                                                  var text_8 = text("Warn");
-                                                  append($$anchor17, text_8);
-                                                },
-                                                $$slots: { default: true }
-                                              });
-                                            });
-                                            var node_23 = sibling(node_22, 2);
-                                            component(node_23, () => Table_head, ($$anchor16, Table_Head_4) => {
-                                              Table_Head_4($$anchor16, {
-                                                class: "text-right",
-                                                children: ($$anchor17, $$slotProps8) => {
-                                                  next();
-                                                  var text_9 = text("Fail");
-                                                  append($$anchor17, text_9);
-                                                },
-                                                $$slots: { default: true }
-                                              });
-                                            });
-                                            append($$anchor15, fragment_15);
-                                          },
-                                          $$slots: { default: true }
-                                        });
-                                      });
-                                      append($$anchor13, fragment_14);
-                                    },
-                                    $$slots: { default: true }
-                                  });
-                                });
-                                var node_24 = sibling(node_17, 2);
-                                component(node_24, () => Table_body, ($$anchor12, Table_Body) => {
-                                  Table_Body($$anchor12, {
-                                    children: ($$anchor13, $$slotProps6) => {
-                                      var fragment_16 = comment();
-                                      var node_25 = first_child(fragment_16);
-                                      each(node_25, 17, () => $$props.report.categories, (cat) => cat.category, ($$anchor14, cat) => {
-                                        var fragment_17 = comment();
-                                        var node_26 = first_child(fragment_17);
-                                        component(node_26, () => Table_row, ($$anchor15, Table_Row_1) => {
-                                          Table_Row_1($$anchor15, {
-                                            children: ($$anchor16, $$slotProps7) => {
-                                              var fragment_18 = root_4();
-                                              var node_27 = first_child(fragment_18);
-                                              component(node_27, () => Table_cell, ($$anchor17, Table_Cell) => {
-                                                Table_Cell($$anchor17, {
-                                                  class: "font-medium",
-                                                  children: ($$anchor18, $$slotProps8) => {
-                                                    next();
-                                                    var text_10 = text();
-                                                    template_effect(() => set_text(text_10, get2(cat).category));
-                                                    append($$anchor18, text_10);
-                                                  },
-                                                  $$slots: { default: true }
-                                                });
-                                              });
-                                              var node_28 = sibling(node_27, 2);
-                                              component(node_28, () => Table_cell, ($$anchor17, Table_Cell_1) => {
-                                                Table_Cell_1($$anchor17, {
-                                                  class: "text-right",
-                                                  children: ($$anchor18, $$slotProps8) => {
-                                                    {
-                                                      let $0 = user_derived(() => scoreVariant(get2(cat).score));
-                                                      Badge($$anchor18, {
-                                                        get variant() {
-                                                          return get2($0);
-                                                        },
-                                                        children: ($$anchor19, $$slotProps9) => {
-                                                          next();
-                                                          var text_11 = text();
-                                                          template_effect(() => set_text(text_11, get2(cat).score));
-                                                          append($$anchor19, text_11);
-                                                        },
-                                                        $$slots: { default: true }
-                                                      });
-                                                    }
-                                                  },
-                                                  $$slots: { default: true }
-                                                });
-                                              });
-                                              var node_29 = sibling(node_28, 2);
-                                              component(node_29, () => Table_cell, ($$anchor17, Table_Cell_2) => {
-                                                Table_Cell_2($$anchor17, {
-                                                  class: "text-right",
-                                                  children: ($$anchor18, $$slotProps8) => {
-                                                    next();
-                                                    var text_12 = text();
-                                                    template_effect(() => set_text(text_12, get2(cat).pass));
-                                                    append($$anchor18, text_12);
-                                                  },
-                                                  $$slots: { default: true }
-                                                });
-                                              });
-                                              var node_30 = sibling(node_29, 2);
-                                              component(node_30, () => Table_cell, ($$anchor17, Table_Cell_3) => {
-                                                Table_Cell_3($$anchor17, {
-                                                  class: "text-right",
-                                                  children: ($$anchor18, $$slotProps8) => {
-                                                    next();
-                                                    var text_13 = text();
-                                                    template_effect(() => set_text(text_13, get2(cat).warn));
-                                                    append($$anchor18, text_13);
-                                                  },
-                                                  $$slots: { default: true }
-                                                });
-                                              });
-                                              var node_31 = sibling(node_30, 2);
-                                              component(node_31, () => Table_cell, ($$anchor17, Table_Cell_4) => {
-                                                Table_Cell_4($$anchor17, {
-                                                  class: "text-right",
-                                                  children: ($$anchor18, $$slotProps8) => {
-                                                    next();
-                                                    var text_14 = text();
-                                                    template_effect(() => set_text(text_14, get2(cat).fail));
-                                                    append($$anchor18, text_14);
-                                                  },
-                                                  $$slots: { default: true }
-                                                });
-                                              });
-                                              append($$anchor16, fragment_18);
-                                            },
-                                            $$slots: { default: true }
-                                          });
-                                        });
-                                        append($$anchor14, fragment_17);
-                                      });
-                                      append($$anchor13, fragment_16);
-                                    },
-                                    $$slots: { default: true }
-                                  });
-                                });
-                                append($$anchor11, fragment_13);
+                                next();
+                                var text_12 = text("Category scores");
+                                append($$anchor11, text_12);
                               },
                               $$slots: { default: true }
                             });
                           });
-                          append($$anchor9, fragment_12);
+                          var node_15 = sibling(node_14, 2);
+                          component(node_15, () => Card_action, ($$anchor10, Card_Action) => {
+                            Card_Action($$anchor10, {
+                              children: ($$anchor11, $$slotProps5) => {
+                                var fragment_9 = comment();
+                                var node_16 = first_child(fragment_9);
+                                component(node_16, () => Toggle_group2, ($$anchor12, ToggleGroup_Root) => {
+                                  ToggleGroup_Root($$anchor12, {
+                                    type: "single",
+                                    variant: "outline",
+                                    size: "sm",
+                                    get value() {
+                                      return get2(sort);
+                                    },
+                                    set value($$value) {
+                                      set(sort, $$value, true);
+                                    },
+                                    children: ($$anchor13, $$slotProps6) => {
+                                      var fragment_10 = root_4();
+                                      var node_17 = first_child(fragment_10);
+                                      component(node_17, () => Toggle_group_item2, ($$anchor14, ToggleGroup_Item) => {
+                                        ToggleGroup_Item($$anchor14, {
+                                          value: "worst",
+                                          children: ($$anchor15, $$slotProps7) => {
+                                            next();
+                                            var text_13 = text("Worst");
+                                            append($$anchor15, text_13);
+                                          },
+                                          $$slots: { default: true }
+                                        });
+                                      });
+                                      var node_18 = sibling(node_17, 2);
+                                      component(node_18, () => Toggle_group_item2, ($$anchor14, ToggleGroup_Item_1) => {
+                                        ToggleGroup_Item_1($$anchor14, {
+                                          value: "best",
+                                          children: ($$anchor15, $$slotProps7) => {
+                                            next();
+                                            var text_14 = text("Best");
+                                            append($$anchor15, text_14);
+                                          },
+                                          $$slots: { default: true }
+                                        });
+                                      });
+                                      var node_19 = sibling(node_18, 2);
+                                      component(node_19, () => Toggle_group_item2, ($$anchor14, ToggleGroup_Item_2) => {
+                                        ToggleGroup_Item_2($$anchor14, {
+                                          value: "az",
+                                          children: ($$anchor15, $$slotProps7) => {
+                                            next();
+                                            var text_15 = text("A\u2013Z");
+                                            append($$anchor15, text_15);
+                                          },
+                                          $$slots: { default: true }
+                                        });
+                                      });
+                                      append($$anchor13, fragment_10);
+                                    },
+                                    $$slots: { default: true }
+                                  });
+                                });
+                                append($$anchor11, fragment_9);
+                              },
+                              $$slots: { default: true }
+                            });
+                          });
+                          append($$anchor9, fragment_8);
                         },
                         $$slots: { default: true }
                       });
                     });
-                    append($$anchor7, fragment_11);
+                    var node_20 = sibling(node_13, 2);
+                    component(node_20, () => Card_content, ($$anchor8, Card_Content_1) => {
+                      Card_Content_1($$anchor8, {
+                        class: "grid gap-x-8 gap-y-3 sm:grid-cols-2",
+                        children: ($$anchor9, $$slotProps4) => {
+                          var fragment_11 = comment();
+                          var node_21 = first_child(fragment_11);
+                          each(node_21, 17, () => get2(sortedCategories), (cat) => cat.category, ($$anchor10, cat) => {
+                            var div_14 = root_5();
+                            var span_3 = child(div_14);
+                            var text_16 = child(span_3, true);
+                            reset(span_3);
+                            var span_4 = sibling(span_3, 2);
+                            var span_5 = child(span_4);
+                            reset(span_4);
+                            var span_6 = sibling(span_4, 2);
+                            var text_17 = child(span_6, true);
+                            reset(span_6);
+                            reset(div_14);
+                            template_effect(() => {
+                              set_text(text_16, get2(cat).category);
+                              set_style(span_5, `width:${get2(cat).score ?? ""}%`);
+                              set_text(text_17, get2(cat).score);
+                            });
+                            append($$anchor10, div_14);
+                          });
+                          append($$anchor9, fragment_11);
+                        },
+                        $$slots: { default: true }
+                      });
+                    });
+                    append($$anchor7, fragment_7);
                   },
                   $$slots: { default: true }
                 });
               });
-              append($$anchor5, fragment_10);
+              var node_22 = sibling(node_12, 2);
+              component(node_22, () => Card, ($$anchor6, Card_Root_2) => {
+                Card_Root_2($$anchor6, {
+                  children: ($$anchor7, $$slotProps3) => {
+                    var fragment_12 = root_3();
+                    var node_23 = first_child(fragment_12);
+                    component(node_23, () => Card_header, ($$anchor8, Card_Header_1) => {
+                      Card_Header_1($$anchor8, {
+                        children: ($$anchor9, $$slotProps4) => {
+                          var fragment_13 = root_3();
+                          var node_24 = first_child(fragment_13);
+                          component(node_24, () => Card_title, ($$anchor10, Card_Title_1) => {
+                            Card_Title_1($$anchor10, {
+                              children: ($$anchor11, $$slotProps5) => {
+                                next();
+                                var text_18 = text("Issues");
+                                append($$anchor11, text_18);
+                              },
+                              $$slots: { default: true }
+                            });
+                          });
+                          var node_25 = sibling(node_24, 2);
+                          component(node_25, () => Card_description, ($$anchor10, Card_Description) => {
+                            Card_Description($$anchor10, {
+                              children: ($$anchor11, $$slotProps5) => {
+                                next();
+                                var text_19 = text();
+                                template_effect(() => set_text(text_19, `${get2(issues).length ?? ""} rules flagged across ${$$props.report.pagesScanned ?? ""} pages`));
+                                append($$anchor11, text_19);
+                              },
+                              $$slots: { default: true }
+                            });
+                          });
+                          append($$anchor9, fragment_13);
+                        },
+                        $$slots: { default: true }
+                      });
+                    });
+                    var node_26 = sibling(node_23, 2);
+                    component(node_26, () => Card_content, ($$anchor8, Card_Content_2) => {
+                      Card_Content_2($$anchor8, {
+                        class: "flex flex-col gap-3",
+                        children: ($$anchor9, $$slotProps4) => {
+                          var fragment_15 = root_10();
+                          var div_15 = first_child(fragment_15);
+                          var node_27 = child(div_15);
+                          component(node_27, () => Toggle_group2, ($$anchor10, ToggleGroup_Root_1) => {
+                            ToggleGroup_Root_1($$anchor10, {
+                              type: "multiple",
+                              variant: "outline",
+                              size: "sm",
+                              get value() {
+                                return get2(sevFilter);
+                              },
+                              set value($$value) {
+                                set(sevFilter, $$value, true);
+                              },
+                              children: ($$anchor11, $$slotProps5) => {
+                                var fragment_16 = root_4();
+                                var node_28 = first_child(fragment_16);
+                                component(node_28, () => Toggle_group_item2, ($$anchor12, ToggleGroup_Item_3) => {
+                                  ToggleGroup_Item_3($$anchor12, {
+                                    value: "fail",
+                                    children: ($$anchor13, $$slotProps6) => {
+                                      next();
+                                      var text_20 = text();
+                                      template_effect(() => set_text(text_20, `Errors ${get2(totals).fail ?? ""}`));
+                                      append($$anchor13, text_20);
+                                    },
+                                    $$slots: { default: true }
+                                  });
+                                });
+                                var node_29 = sibling(node_28, 2);
+                                component(node_29, () => Toggle_group_item2, ($$anchor12, ToggleGroup_Item_4) => {
+                                  ToggleGroup_Item_4($$anchor12, {
+                                    value: "warn",
+                                    children: ($$anchor13, $$slotProps6) => {
+                                      next();
+                                      var text_21 = text();
+                                      template_effect(() => set_text(text_21, `Warnings ${get2(totals).warn ?? ""}`));
+                                      append($$anchor13, text_21);
+                                    },
+                                    $$slots: { default: true }
+                                  });
+                                });
+                                var node_30 = sibling(node_29, 2);
+                                component(node_30, () => Toggle_group_item2, ($$anchor12, ToggleGroup_Item_5) => {
+                                  ToggleGroup_Item_5($$anchor12, {
+                                    value: "info",
+                                    children: ($$anchor13, $$slotProps6) => {
+                                      next();
+                                      var text_22 = text();
+                                      template_effect(() => set_text(text_22, `Info ${get2(totals).info ?? ""}`));
+                                      append($$anchor13, text_22);
+                                    },
+                                    $$slots: { default: true }
+                                  });
+                                });
+                                append($$anchor11, fragment_16);
+                              },
+                              $$slots: { default: true }
+                            });
+                          });
+                          var node_31 = sibling(node_27, 2);
+                          component(node_31, () => Select2, ($$anchor10, Select_Root) => {
+                            Select_Root($$anchor10, {
+                              type: "single",
+                              get value() {
+                                return get2(catFilter);
+                              },
+                              set value($$value) {
+                                set(catFilter, $$value, true);
+                              },
+                              children: ($$anchor11, $$slotProps5) => {
+                                var fragment_20 = root_3();
+                                var node_32 = first_child(fragment_20);
+                                component(node_32, () => Select_trigger2, ($$anchor12, Select_Trigger) => {
+                                  Select_Trigger($$anchor12, {
+                                    class: "w-44",
+                                    children: ($$anchor13, $$slotProps6) => {
+                                      next();
+                                      var text_23 = text();
+                                      template_effect(() => set_text(text_23, get2(catFilter) === "all" ? "All categories" : get2(catFilter)));
+                                      append($$anchor13, text_23);
+                                    },
+                                    $$slots: { default: true }
+                                  });
+                                });
+                                var node_33 = sibling(node_32, 2);
+                                component(node_33, () => Select_content2, ($$anchor12, Select_Content) => {
+                                  Select_Content($$anchor12, {
+                                    children: ($$anchor13, $$slotProps6) => {
+                                      var fragment_22 = root_3();
+                                      var node_34 = first_child(fragment_22);
+                                      component(node_34, () => Select_item2, ($$anchor14, Select_Item) => {
+                                        Select_Item($$anchor14, {
+                                          value: "all",
+                                          children: ($$anchor15, $$slotProps7) => {
+                                            next();
+                                            var text_24 = text("All categories");
+                                            append($$anchor15, text_24);
+                                          },
+                                          $$slots: { default: true }
+                                        });
+                                      });
+                                      var node_35 = sibling(node_34, 2);
+                                      each(node_35, 16, () => get2(categoryNames), (c) => c, ($$anchor14, c) => {
+                                        var fragment_23 = comment();
+                                        var node_36 = first_child(fragment_23);
+                                        component(node_36, () => Select_item2, ($$anchor15, Select_Item_1) => {
+                                          Select_Item_1($$anchor15, {
+                                            get value() {
+                                              return c;
+                                            },
+                                            children: ($$anchor16, $$slotProps7) => {
+                                              next();
+                                              var text_25 = text();
+                                              template_effect(() => set_text(text_25, c));
+                                              append($$anchor16, text_25);
+                                            },
+                                            $$slots: { default: true }
+                                          });
+                                        });
+                                        append($$anchor14, fragment_23);
+                                      });
+                                      append($$anchor13, fragment_22);
+                                    },
+                                    $$slots: { default: true }
+                                  });
+                                });
+                                append($$anchor11, fragment_20);
+                              },
+                              $$slots: { default: true }
+                            });
+                          });
+                          var node_37 = sibling(node_31, 2);
+                          Input(node_37, {
+                            placeholder: "Filter\u2026",
+                            class: "h-8 w-40",
+                            get value() {
+                              return get2(query);
+                            },
+                            set value($$value) {
+                              set(query, $$value, true);
+                            }
+                          });
+                          reset(div_15);
+                          var node_38 = sibling(div_15, 2);
+                          {
+                            var consequent_1 = ($$anchor10) => {
+                              var p_1 = root_6();
+                              append($$anchor10, p_1);
+                            };
+                            var alternate = ($$anchor10) => {
+                              var fragment_25 = comment();
+                              var node_39 = first_child(fragment_25);
+                              component(node_39, () => Accordion2, ($$anchor11, Accordion_Root) => {
+                                Accordion_Root($$anchor11, {
+                                  type: "multiple",
+                                  class: "w-full",
+                                  children: ($$anchor12, $$slotProps5) => {
+                                    var fragment_26 = comment();
+                                    var node_40 = first_child(fragment_26);
+                                    each(node_40, 17, () => get2(filteredIssues), (issue) => issue.ruleId, ($$anchor13, issue) => {
+                                      var fragment_27 = comment();
+                                      var node_41 = first_child(fragment_27);
+                                      component(node_41, () => Accordion_item2, ($$anchor14, Accordion_Item) => {
+                                        Accordion_Item($$anchor14, {
+                                          get value() {
+                                            return get2(issue).ruleId;
+                                          },
+                                          children: ($$anchor15, $$slotProps6) => {
+                                            var fragment_28 = root_3();
+                                            var node_42 = first_child(fragment_28);
+                                            component(node_42, () => Accordion_trigger2, ($$anchor16, Accordion_Trigger) => {
+                                              Accordion_Trigger($$anchor16, {
+                                                children: ($$anchor17, $$slotProps7) => {
+                                                  var span_7 = root_7();
+                                                  var span_8 = child(span_7);
+                                                  var span_9 = sibling(span_8, 2);
+                                                  var span_10 = child(span_9);
+                                                  var span_11 = child(span_10);
+                                                  var text_26 = child(span_11, true);
+                                                  reset(span_11);
+                                                  var node_43 = sibling(span_11, 2);
+                                                  {
+                                                    let $0 = user_derived(() => statusBadge(get2(issue).status));
+                                                    Badge(node_43, {
+                                                      get variant() {
+                                                        return get2($0);
+                                                      },
+                                                      children: ($$anchor18, $$slotProps8) => {
+                                                        next();
+                                                        var text_27 = text();
+                                                        template_effect(($02) => set_text(text_27, $02), [() => statusLabel(get2(issue).status)]);
+                                                        append($$anchor18, text_27);
+                                                      },
+                                                      $$slots: { default: true }
+                                                    });
+                                                  }
+                                                  var node_44 = sibling(node_43, 2);
+                                                  Badge(node_44, {
+                                                    variant: "outline",
+                                                    children: ($$anchor18, $$slotProps8) => {
+                                                      next();
+                                                      var text_28 = text();
+                                                      template_effect(() => set_text(text_28, get2(issue).category));
+                                                      append($$anchor18, text_28);
+                                                    },
+                                                    $$slots: { default: true }
+                                                  });
+                                                  reset(span_10);
+                                                  var span_12 = sibling(span_10, 2);
+                                                  var text_29 = child(span_12, true);
+                                                  reset(span_12);
+                                                  reset(span_9);
+                                                  var node_45 = sibling(span_9, 2);
+                                                  Badge(node_45, {
+                                                    variant: "secondary",
+                                                    class: "ml-auto shrink-0",
+                                                    children: ($$anchor18, $$slotProps8) => {
+                                                      next();
+                                                      var text_30 = text();
+                                                      template_effect(() => set_text(text_30, `${get2(issue).pages.length ?? ""} page${get2(issue).pages.length === 1 ? "" : "s"}`));
+                                                      append($$anchor18, text_30);
+                                                    },
+                                                    $$slots: { default: true }
+                                                  });
+                                                  reset(span_7);
+                                                  template_effect(
+                                                    ($0) => {
+                                                      set_class(span_8, 1, $0);
+                                                      set_text(text_26, get2(issue).title);
+                                                      set_text(text_29, get2(issue).message);
+                                                    },
+                                                    [
+                                                      () => clsx2(cn("size-2 shrink-0 rounded-full", statusDot(get2(issue).status)))
+                                                    ]
+                                                  );
+                                                  append($$anchor17, span_7);
+                                                },
+                                                $$slots: { default: true }
+                                              });
+                                            });
+                                            var node_46 = sibling(node_42, 2);
+                                            component(node_46, () => Accordion_content2, ($$anchor16, Accordion_Content) => {
+                                              Accordion_Content($$anchor16, {
+                                                children: ($$anchor17, $$slotProps7) => {
+                                                  var div_16 = root_9();
+                                                  var node_47 = sibling(child(div_16), 2);
+                                                  each(node_47, 16, () => get2(issue).pages, (p2) => p2, ($$anchor18, p2) => {
+                                                    var span_13 = root_8();
+                                                    var text_31 = child(span_13, true);
+                                                    reset(span_13);
+                                                    template_effect(() => set_text(text_31, p2));
+                                                    append($$anchor18, span_13);
+                                                  });
+                                                  reset(div_16);
+                                                  append($$anchor17, div_16);
+                                                },
+                                                $$slots: { default: true }
+                                              });
+                                            });
+                                            append($$anchor15, fragment_28);
+                                          },
+                                          $$slots: { default: true }
+                                        });
+                                      });
+                                      append($$anchor13, fragment_27);
+                                    });
+                                    append($$anchor12, fragment_26);
+                                  },
+                                  $$slots: { default: true }
+                                });
+                              });
+                              append($$anchor10, fragment_25);
+                            };
+                            if_block(node_38, ($$render) => {
+                              if (get2(filteredIssues).length === 0) $$render(consequent_1);
+                              else $$render(alternate, -1);
+                            });
+                          }
+                          append($$anchor9, fragment_15);
+                        },
+                        $$slots: { default: true }
+                      });
+                    });
+                    append($$anchor7, fragment_12);
+                  },
+                  $$slots: { default: true }
+                });
+              });
+              append($$anchor5, fragment_6);
             },
             $$slots: { default: true }
           });
         });
-        var node_32 = sibling(node_13, 2);
-        component(node_32, () => Tabs_content2, ($$anchor4, Tabs_Content_1) => {
+        var node_48 = sibling(node_11, 2);
+        component(node_48, () => Tabs_content2, ($$anchor4, Tabs_Content_1) => {
           Tabs_Content_1($$anchor4, {
             value: "pages",
             children: ($$anchor5, $$slotProps2) => {
-              var fragment_25 = comment();
-              var node_33 = first_child(fragment_25);
-              component(node_33, () => Accordion2, ($$anchor6, Accordion_Root) => {
-                Accordion_Root($$anchor6, {
+              var fragment_32 = comment();
+              var node_49 = first_child(fragment_32);
+              component(node_49, () => Accordion2, ($$anchor6, Accordion_Root_1) => {
+                Accordion_Root_1($$anchor6, {
                   type: "single",
                   class: "w-full",
                   children: ($$anchor7, $$slotProps3) => {
-                    var fragment_26 = comment();
-                    var node_34 = first_child(fragment_26);
-                    each(node_34, 19, () => $$props.report.pages, (page) => page.url, ($$anchor8, page, i) => {
-                      const probs = user_derived(() => issues(get2(page).findings));
-                      var fragment_27 = comment();
-                      var node_35 = first_child(fragment_27);
+                    var fragment_33 = comment();
+                    var node_50 = first_child(fragment_33);
+                    each(node_50, 19, () => $$props.report.pages, (page) => page.url, ($$anchor8, page, i) => {
+                      const probs = user_derived(() => pageIssues(get2(page).findings));
+                      var fragment_34 = comment();
+                      var node_51 = first_child(fragment_34);
                       {
                         let $0 = user_derived(() => `page-${get2(i)}`);
-                        component(node_35, () => Accordion_item2, ($$anchor9, Accordion_Item) => {
-                          Accordion_Item($$anchor9, {
+                        component(node_51, () => Accordion_item2, ($$anchor9, Accordion_Item_1) => {
+                          Accordion_Item_1($$anchor9, {
                             get value() {
                               return get2($0);
                             },
                             children: ($$anchor10, $$slotProps4) => {
-                              var fragment_28 = root_3();
-                              var node_36 = first_child(fragment_28);
-                              component(node_36, () => Accordion_trigger2, ($$anchor11, Accordion_Trigger) => {
-                                Accordion_Trigger($$anchor11, {
+                              var fragment_35 = root_3();
+                              var node_52 = first_child(fragment_35);
+                              component(node_52, () => Accordion_trigger2, ($$anchor11, Accordion_Trigger_1) => {
+                                Accordion_Trigger_1($$anchor11, {
                                   children: ($$anchor12, $$slotProps5) => {
-                                    var span = root_5();
-                                    var node_37 = child(span);
+                                    var span_14 = root_11();
+                                    var node_53 = child(span_14);
                                     {
                                       let $02 = user_derived(() => scoreVariant(get2(page).score));
-                                      Badge(node_37, {
+                                      Badge(node_53, {
                                         get variant() {
                                           return get2($02);
                                         },
                                         children: ($$anchor13, $$slotProps6) => {
                                           next();
-                                          var text_15 = text();
-                                          template_effect(() => set_text(text_15, get2(page).score));
-                                          append($$anchor13, text_15);
+                                          var text_32 = text();
+                                          template_effect(() => set_text(text_32, get2(page).score));
+                                          append($$anchor13, text_32);
                                         },
                                         $$slots: { default: true }
                                       });
                                     }
-                                    var span_1 = sibling(node_37, 2);
-                                    var text_16 = child(span_1, true);
-                                    reset(span_1);
-                                    var span_2 = sibling(span_1, 2);
-                                    var text_17 = child(span_2);
-                                    reset(span_2);
-                                    reset(span);
+                                    var span_15 = sibling(node_53, 2);
+                                    var text_33 = child(span_15, true);
+                                    reset(span_15);
+                                    var span_16 = sibling(span_15, 2);
+                                    var text_34 = child(span_16);
+                                    reset(span_16);
+                                    reset(span_14);
                                     template_effect(() => {
-                                      set_text(text_16, get2(page).url);
-                                      set_text(text_17, `${get2(probs).length ?? ""} issue${get2(probs).length === 1 ? "" : "s"}`);
+                                      set_text(text_33, get2(page).url);
+                                      set_text(text_34, `${get2(probs).length ?? ""} issue${get2(probs).length === 1 ? "" : "s"}`);
                                     });
-                                    append($$anchor12, span);
+                                    append($$anchor12, span_14);
                                   },
                                   $$slots: { default: true }
                                 });
                               });
-                              var node_38 = sibling(node_36, 2);
-                              component(node_38, () => Accordion_content2, ($$anchor11, Accordion_Content) => {
-                                Accordion_Content($$anchor11, {
+                              var node_54 = sibling(node_52, 2);
+                              component(node_54, () => Accordion_content2, ($$anchor11, Accordion_Content_1) => {
+                                Accordion_Content_1($$anchor11, {
                                   children: ($$anchor12, $$slotProps5) => {
-                                    var fragment_30 = comment();
-                                    var node_39 = first_child(fragment_30);
+                                    var fragment_37 = comment();
+                                    var node_55 = first_child(fragment_37);
                                     {
-                                      var consequent_1 = ($$anchor13) => {
-                                        var p2 = root_6();
-                                        append($$anchor13, p2);
+                                      var consequent_2 = ($$anchor13) => {
+                                        var p_2 = root_122();
+                                        append($$anchor13, p_2);
                                       };
-                                      var alternate = ($$anchor13) => {
-                                        var fragment_31 = comment();
-                                        var node_40 = first_child(fragment_31);
-                                        component(node_40, () => Table, ($$anchor14, Table_Root_1) => {
-                                          Table_Root_1($$anchor14, {
+                                      var alternate_1 = ($$anchor13) => {
+                                        var fragment_38 = comment();
+                                        var node_56 = first_child(fragment_38);
+                                        component(node_56, () => Table, ($$anchor14, Table_Root) => {
+                                          Table_Root($$anchor14, {
                                             children: ($$anchor15, $$slotProps6) => {
-                                              var fragment_32 = root_3();
-                                              var node_41 = first_child(fragment_32);
-                                              component(node_41, () => Table_header, ($$anchor16, Table_Header_1) => {
-                                                Table_Header_1($$anchor16, {
+                                              var fragment_39 = root_3();
+                                              var node_57 = first_child(fragment_39);
+                                              component(node_57, () => Table_header, ($$anchor16, Table_Header) => {
+                                                Table_Header($$anchor16, {
                                                   children: ($$anchor17, $$slotProps7) => {
-                                                    var fragment_33 = comment();
-                                                    var node_42 = first_child(fragment_33);
-                                                    component(node_42, () => Table_row, ($$anchor18, Table_Row_2) => {
-                                                      Table_Row_2($$anchor18, {
+                                                    var fragment_40 = comment();
+                                                    var node_58 = first_child(fragment_40);
+                                                    component(node_58, () => Table_row, ($$anchor18, Table_Row) => {
+                                                      Table_Row($$anchor18, {
                                                         children: ($$anchor19, $$slotProps8) => {
-                                                          var fragment_34 = root_2();
-                                                          var node_43 = first_child(fragment_34);
-                                                          component(node_43, () => Table_head, ($$anchor20, Table_Head_5) => {
-                                                            Table_Head_5($$anchor20, {
+                                                          var fragment_41 = root_4();
+                                                          var node_59 = first_child(fragment_41);
+                                                          component(node_59, () => Table_head, ($$anchor20, Table_Head) => {
+                                                            Table_Head($$anchor20, {
                                                               children: ($$anchor21, $$slotProps9) => {
                                                                 next();
-                                                                var text_18 = text("Severity");
-                                                                append($$anchor21, text_18);
+                                                                var text_35 = text("Severity");
+                                                                append($$anchor21, text_35);
                                                               },
                                                               $$slots: { default: true }
                                                             });
                                                           });
-                                                          var node_44 = sibling(node_43, 2);
-                                                          component(node_44, () => Table_head, ($$anchor20, Table_Head_6) => {
-                                                            Table_Head_6($$anchor20, {
+                                                          var node_60 = sibling(node_59, 2);
+                                                          component(node_60, () => Table_head, ($$anchor20, Table_Head_1) => {
+                                                            Table_Head_1($$anchor20, {
                                                               children: ($$anchor21, $$slotProps9) => {
                                                                 next();
-                                                                var text_19 = text("Issue");
-                                                                append($$anchor21, text_19);
+                                                                var text_36 = text("Issue");
+                                                                append($$anchor21, text_36);
                                                               },
                                                               $$slots: { default: true }
                                                             });
                                                           });
-                                                          var node_45 = sibling(node_44, 2);
-                                                          component(node_45, () => Table_head, ($$anchor20, Table_Head_7) => {
-                                                            Table_Head_7($$anchor20, {
+                                                          var node_61 = sibling(node_60, 2);
+                                                          component(node_61, () => Table_head, ($$anchor20, Table_Head_2) => {
+                                                            Table_Head_2($$anchor20, {
                                                               children: ($$anchor21, $$slotProps9) => {
                                                                 next();
-                                                                var text_20 = text("Details");
-                                                                append($$anchor21, text_20);
+                                                                var text_37 = text("Details");
+                                                                append($$anchor21, text_37);
                                                               },
                                                               $$slots: { default: true }
                                                             });
                                                           });
-                                                          append($$anchor19, fragment_34);
+                                                          append($$anchor19, fragment_41);
                                                         },
                                                         $$slots: { default: true }
                                                       });
                                                     });
-                                                    append($$anchor17, fragment_33);
+                                                    append($$anchor17, fragment_40);
                                                   },
                                                   $$slots: { default: true }
                                                 });
                                               });
-                                              var node_46 = sibling(node_41, 2);
-                                              component(node_46, () => Table_body, ($$anchor16, Table_Body_1) => {
-                                                Table_Body_1($$anchor16, {
+                                              var node_62 = sibling(node_57, 2);
+                                              component(node_62, () => Table_body, ($$anchor16, Table_Body) => {
+                                                Table_Body($$anchor16, {
                                                   children: ($$anchor17, $$slotProps7) => {
-                                                    var fragment_35 = comment();
-                                                    var node_47 = first_child(fragment_35);
-                                                    each(node_47, 19, () => get2(probs), (f, fi) => `${f.ruleId}-${fi}`, ($$anchor18, f) => {
-                                                      var fragment_36 = comment();
-                                                      var node_48 = first_child(fragment_36);
-                                                      component(node_48, () => Table_row, ($$anchor19, Table_Row_3) => {
-                                                        Table_Row_3($$anchor19, {
+                                                    var fragment_42 = comment();
+                                                    var node_63 = first_child(fragment_42);
+                                                    each(node_63, 19, () => get2(probs), (f, fi) => `${f.ruleId}-${fi}`, ($$anchor18, f) => {
+                                                      var fragment_43 = comment();
+                                                      var node_64 = first_child(fragment_43);
+                                                      component(node_64, () => Table_row, ($$anchor19, Table_Row_1) => {
+                                                        Table_Row_1($$anchor19, {
                                                           children: ($$anchor20, $$slotProps8) => {
-                                                            var fragment_37 = root_2();
-                                                            var node_49 = first_child(fragment_37);
-                                                            component(node_49, () => Table_cell, ($$anchor21, Table_Cell_5) => {
-                                                              Table_Cell_5($$anchor21, {
+                                                            var fragment_44 = root_4();
+                                                            var node_65 = first_child(fragment_44);
+                                                            component(node_65, () => Table_cell, ($$anchor21, Table_Cell) => {
+                                                              Table_Cell($$anchor21, {
                                                                 children: ($$anchor22, $$slotProps9) => {
                                                                   {
-                                                                    let $02 = user_derived(() => severityVariant(get2(f).severity));
+                                                                    let $02 = user_derived(() => statusBadge(get2(f).status));
                                                                     Badge($$anchor22, {
                                                                       get variant() {
                                                                         return get2($02);
                                                                       },
                                                                       children: ($$anchor23, $$slotProps10) => {
                                                                         next();
-                                                                        var text_21 = text();
-                                                                        template_effect(() => set_text(text_21, get2(f).severity));
-                                                                        append($$anchor23, text_21);
+                                                                        var text_38 = text();
+                                                                        template_effect(($03) => set_text(text_38, $03), [() => statusLabel(get2(f).status)]);
+                                                                        append($$anchor23, text_38);
                                                                       },
                                                                       $$slots: { default: true }
                                                                     });
@@ -32510,80 +40753,80 @@ function ReportView($$anchor, $$props) {
                                                                 $$slots: { default: true }
                                                               });
                                                             });
-                                                            var node_50 = sibling(node_49, 2);
-                                                            component(node_50, () => Table_cell, ($$anchor21, Table_Cell_6) => {
-                                                              Table_Cell_6($$anchor21, {
+                                                            var node_66 = sibling(node_65, 2);
+                                                            component(node_66, () => Table_cell, ($$anchor21, Table_Cell_1) => {
+                                                              Table_Cell_1($$anchor21, {
                                                                 class: "font-medium",
                                                                 children: ($$anchor22, $$slotProps9) => {
                                                                   next();
-                                                                  var text_22 = text();
-                                                                  template_effect(() => set_text(text_22, get2(f).title));
-                                                                  append($$anchor22, text_22);
+                                                                  var text_39 = text();
+                                                                  template_effect(() => set_text(text_39, get2(f).title));
+                                                                  append($$anchor22, text_39);
                                                                 },
                                                                 $$slots: { default: true }
                                                               });
                                                             });
-                                                            var node_51 = sibling(node_50, 2);
-                                                            component(node_51, () => Table_cell, ($$anchor21, Table_Cell_7) => {
-                                                              Table_Cell_7($$anchor21, {
+                                                            var node_67 = sibling(node_66, 2);
+                                                            component(node_67, () => Table_cell, ($$anchor21, Table_Cell_2) => {
+                                                              Table_Cell_2($$anchor21, {
                                                                 class: "text-muted-foreground",
                                                                 children: ($$anchor22, $$slotProps9) => {
                                                                   next();
-                                                                  var text_23 = text();
-                                                                  template_effect(() => set_text(text_23, get2(f).message));
-                                                                  append($$anchor22, text_23);
+                                                                  var text_40 = text();
+                                                                  template_effect(() => set_text(text_40, get2(f).message));
+                                                                  append($$anchor22, text_40);
                                                                 },
                                                                 $$slots: { default: true }
                                                               });
                                                             });
-                                                            append($$anchor20, fragment_37);
+                                                            append($$anchor20, fragment_44);
                                                           },
                                                           $$slots: { default: true }
                                                         });
                                                       });
-                                                      append($$anchor18, fragment_36);
+                                                      append($$anchor18, fragment_43);
                                                     });
-                                                    append($$anchor17, fragment_35);
+                                                    append($$anchor17, fragment_42);
                                                   },
                                                   $$slots: { default: true }
                                                 });
                                               });
-                                              append($$anchor15, fragment_32);
+                                              append($$anchor15, fragment_39);
                                             },
                                             $$slots: { default: true }
                                           });
                                         });
-                                        append($$anchor13, fragment_31);
+                                        append($$anchor13, fragment_38);
                                       };
-                                      if_block(node_39, ($$render) => {
-                                        if (get2(probs).length === 0) $$render(consequent_1);
-                                        else $$render(alternate, -1);
+                                      if_block(node_55, ($$render) => {
+                                        if (get2(probs).length === 0) $$render(consequent_2);
+                                        else $$render(alternate_1, -1);
                                       });
                                     }
-                                    append($$anchor12, fragment_30);
+                                    append($$anchor12, fragment_37);
                                   },
                                   $$slots: { default: true }
                                 });
                               });
-                              append($$anchor10, fragment_28);
+                              append($$anchor10, fragment_35);
                             },
                             $$slots: { default: true }
                           });
                         });
                       }
-                      append($$anchor8, fragment_27);
+                      append($$anchor8, fragment_34);
                     });
-                    append($$anchor7, fragment_26);
+                    append($$anchor7, fragment_33);
                   },
                   $$slots: { default: true }
                 });
               });
-              append($$anchor5, fragment_25);
+              append($$anchor5, fragment_32);
             },
             $$slots: { default: true }
           });
         });
-        append($$anchor3, fragment_8);
+        append($$anchor3, fragment_4);
       },
       $$slots: { default: true }
     });
@@ -32605,7 +40848,7 @@ var fieldVariants = tv({
   },
   defaultVariants: { orientation: "vertical" }
 });
-var rest_excludes40 = /* @__PURE__ */ new Set([
+var rest_excludes68 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -32614,11 +40857,11 @@ var rest_excludes40 = /* @__PURE__ */ new Set([
   "orientation",
   "children"
 ]);
-var root34 = from_html(`<div><!></div>`);
+var root54 = from_html(`<div><!></div>`);
 function Field($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), orientation = prop($$props, "orientation", 3, "vertical"), restProps = rest_props($$props, rest_excludes40);
-  var div = root34();
+  let ref = prop($$props, "ref", 15, null), orientation = prop($$props, "orientation", 3, "vertical"), restProps = rest_props($$props, rest_excludes68);
+  var div = root54();
   attribute_effect(
     div,
     ($0) => ({
@@ -32641,13 +40884,13 @@ function Field($$anchor, $$props) {
 }
 
 // src/lib/components/ui/field/field-set.svelte
-var root35 = from_html(`<fieldset><!></fieldset>`);
+var root55 = from_html(`<fieldset><!></fieldset>`);
 
 // src/lib/components/ui/field/field-legend.svelte
-var root36 = from_html(`<legend><!></legend>`);
+var root56 = from_html(`<legend><!></legend>`);
 
 // src/lib/components/ui/field/field-group.svelte
-var rest_excludes41 = /* @__PURE__ */ new Set([
+var rest_excludes69 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -32655,11 +40898,11 @@ var rest_excludes41 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root37 = from_html(`<div><!></div>`);
+var root57 = from_html(`<div><!></div>`);
 function Field_group($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes41);
-  var div = root37();
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes69);
+  var div = root57();
   attribute_effect(div, ($0) => ({ "data-slot": "field-group", class: $0, ...restProps }), [
     () => cn("gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group @container/field-group flex w-full flex-col", $$props.class)
   ]);
@@ -32672,13 +40915,13 @@ function Field_group($$anchor, $$props) {
 }
 
 // src/lib/components/ui/field/field-content.svelte
-var root38 = from_html(`<div><!></div>`);
+var root58 = from_html(`<div><!></div>`);
 
 // src/lib/components/ui/label/label.svelte
-var rest_excludes42 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
+var rest_excludes70 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
 function Label2($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes42);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes70);
   var fragment = comment();
   var node = first_child(fragment);
   {
@@ -32708,7 +40951,7 @@ function Label2($$anchor, $$props) {
 }
 
 // src/lib/components/ui/field/field-label.svelte
-var rest_excludes43 = /* @__PURE__ */ new Set([
+var rest_excludes71 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -32718,7 +40961,7 @@ var rest_excludes43 = /* @__PURE__ */ new Set([
 ]);
 function Field_label($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes43);
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes71);
   {
     let $0 = user_derived(() => cn("has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit leading-snug", "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col", $$props.class));
     Label2($$anchor, spread_props(
@@ -32750,10 +40993,10 @@ function Field_label($$anchor, $$props) {
 }
 
 // src/lib/components/ui/field/field-title.svelte
-var root39 = from_html(`<div><!></div>`);
+var root59 = from_html(`<div><!></div>`);
 
 // src/lib/components/ui/field/field-description.svelte
-var rest_excludes44 = /* @__PURE__ */ new Set([
+var rest_excludes72 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -32761,11 +41004,11 @@ var rest_excludes44 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root40 = from_html(`<p><!></p>`);
+var root60 = from_html(`<p><!></p>`);
 function Field_description($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes44);
-  var p2 = root40();
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes72);
+  var p2 = root60();
   attribute_effect(p2, ($0) => ({ "data-slot": "field-description", class: $0, ...restProps }), [
     () => cn("text-muted-foreground text-left text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal font-normal group-has-[[data-orientation=horizontal]]/field:text-balance", "last:mt-0 nth-last-2:-mt-1", "[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4", $$props.class)
   ]);
@@ -32778,91 +41021,18 @@ function Field_description($$anchor, $$props) {
 }
 
 // src/lib/components/ui/field/field-separator.svelte
-var root41 = from_html(`<span class="text-muted-foreground px-2 bg-background relative mx-auto block w-fit" data-slot="field-separator-content"><!></span>`);
-var root_13 = from_html(`<div><!> <!></div>`);
+var root61 = from_html(`<span class="text-muted-foreground px-2 bg-background relative mx-auto block w-fit" data-slot="field-separator-content"><!></span>`);
+var root_17 = from_html(`<div><!> <!></div>`);
 
 // src/lib/components/ui/field/field-error.svelte
-var root42 = from_html(`<li> </li>`);
-var root_14 = from_html(`<ul class="ml-4 flex list-disc flex-col gap-1"></ul>`);
+var root62 = from_html(`<li> </li>`);
+var root_18 = from_html(`<ul class="ml-4 flex list-disc flex-col gap-1"></ul>`);
 var root_22 = from_html(`<div><!></div>`);
 
-// src/lib/components/ui/input/input.svelte
-var rest_excludes45 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "value",
-  "type",
-  "files",
-  "class",
-  "data-slot"
-]);
-var root43 = from_html(`<input/>`);
-function Input($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15), files = prop($$props, "files", 15), dataSlot = prop($$props, "data-slot", 3, "input"), restProps = rest_props($$props, rest_excludes45);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var input = root43();
-      attribute_effect(
-        input,
-        ($0) => ({
-          "data-slot": dataSlot(),
-          class: $0,
-          type: "file",
-          ...restProps
-        }),
-        [
-          () => cn("dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium focus-visible:ring-3 aria-invalid:ring-3 md:text-sm file:text-foreground placeholder:text-muted-foreground w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50", $$props.class)
-        ],
-        void 0,
-        void 0,
-        void 0,
-        true
-      );
-      bind_this(input, ($$value) => ref($$value), () => ref());
-      bind_files(input, files);
-      bind_value(input, value);
-      append($$anchor2, input);
-    };
-    var alternate = ($$anchor2) => {
-      var input_1 = root43();
-      attribute_effect(
-        input_1,
-        ($0) => ({
-          "data-slot": dataSlot(),
-          class: $0,
-          type: $$props.type,
-          ...restProps
-        }),
-        [
-          () => cn("dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium focus-visible:ring-3 aria-invalid:ring-3 md:text-sm file:text-foreground placeholder:text-muted-foreground w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50", $$props.class)
-        ],
-        void 0,
-        void 0,
-        void 0,
-        true
-      );
-      bind_this(input_1, ($$value) => ref($$value), () => ref());
-      bind_value(input_1, value);
-      append($$anchor2, input_1);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.type === "file") $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
 // node_modules/@lucide/svelte/dist/icons/loader-circle.svelte
-var rest_excludes46 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+var rest_excludes73 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
 function Loader_circle($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes46);
+  let props = rest_props($$props, rest_excludes73);
   const iconNode = [["path", { "d": "M21 12a9 9 0 1 1-6.219-8.56" }]];
   Icon($$anchor, spread_props({ name: "loader-circle" }, () => props, {
     get iconNode() {
@@ -32872,7 +41042,7 @@ function Loader_circle($$anchor, $$props) {
 }
 
 // src/lib/components/ui/spinner/spinner.svelte
-var rest_excludes47 = /* @__PURE__ */ new Set([
+var rest_excludes74 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -32885,7 +41055,7 @@ var rest_excludes47 = /* @__PURE__ */ new Set([
 ]);
 function Spinner($$anchor, $$props) {
   push($$props, true);
-  let role = prop($$props, "role", 3, "status"), ariaLabel = prop($$props, "aria-label", 3, "Loading"), restProps = rest_props($$props, rest_excludes47);
+  let role = prop($$props, "role", 3, "status"), ariaLabel = prop($$props, "aria-label", 3, "Loading"), restProps = rest_props($$props, rest_excludes74);
   {
     let $0 = user_derived(() => $$props.name === null ? void 0 : $$props.name);
     let $1 = user_derived(() => $$props.color === null ? void 0 : $$props.color);
@@ -32919,9 +41089,9 @@ function Spinner($$anchor, $$props) {
 }
 
 // node_modules/@lucide/svelte/dist/icons/play.svelte
-var rest_excludes48 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+var rest_excludes75 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
 function Play($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes48);
+  let props = rest_props($$props, rest_excludes75);
   const iconNode = [
     [
       "path",
@@ -32938,8 +41108,8 @@ function Play($$anchor, $$props) {
 }
 
 // src/ui/RunAuditForm.svelte
-var root44 = from_html(`<!> <!>`, 1);
-var root_15 = from_html(`<!> <!> <!>`, 1);
+var root63 = from_html(`<!> <!>`, 1);
+var root_19 = from_html(`<!> <!> <!>`, 1);
 var root_23 = from_html(`<!> Auditing\u2026`, 1);
 var root_32 = from_html(`<!> Run audit`, 1);
 function RunAuditForm($$anchor, $$props) {
@@ -32955,12 +41125,12 @@ function RunAuditForm($$anchor, $$props) {
     Card_Root($$anchor2, {
       class: "mx-auto max-w-xl",
       children: ($$anchor3, $$slotProps) => {
-        var fragment_1 = root_15();
+        var fragment_1 = root_19();
         var node_1 = first_child(fragment_1);
         component(node_1, () => Card_header, ($$anchor4, Card_Header) => {
           Card_Header($$anchor4, {
             children: ($$anchor5, $$slotProps2) => {
-              var fragment_2 = root44();
+              var fragment_2 = root63();
               var node_2 = first_child(fragment_2);
               component(node_2, () => Card_title, ($$anchor6, Card_Title) => {
                 Card_Title($$anchor6, {
@@ -32998,12 +41168,12 @@ function RunAuditForm($$anchor, $$props) {
               component(node_5, () => Field_group, ($$anchor6, Field_FieldGroup) => {
                 Field_FieldGroup($$anchor6, {
                   children: ($$anchor7, $$slotProps3) => {
-                    var fragment_5 = root44();
+                    var fragment_5 = root63();
                     var node_6 = first_child(fragment_5);
                     component(node_6, () => Field, ($$anchor8, Field_Field) => {
                       Field_Field($$anchor8, {
                         children: ($$anchor9, $$slotProps4) => {
-                          var fragment_6 = root44();
+                          var fragment_6 = root63();
                           var node_7 = first_child(fragment_6);
                           component(node_7, () => Field_label, ($$anchor10, Field_FieldLabel) => {
                             Field_FieldLabel($$anchor10, {
@@ -33040,7 +41210,7 @@ function RunAuditForm($$anchor, $$props) {
                     component(node_9, () => Field, ($$anchor8, Field_Field_1) => {
                       Field_Field_1($$anchor8, {
                         children: ($$anchor9, $$slotProps4) => {
-                          var fragment_7 = root_15();
+                          var fragment_7 = root_19();
                           var node_10 = first_child(fragment_7);
                           component(node_10, () => Field_label, ($$anchor10, Field_FieldLabel_1) => {
                             Field_FieldLabel_1($$anchor10, {
@@ -33151,7 +41321,7 @@ function RunAuditForm($$anchor, $$props) {
 }
 
 // src/lib/components/ui/empty/empty.svelte
-var rest_excludes49 = /* @__PURE__ */ new Set([
+var rest_excludes76 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -33159,11 +41329,11 @@ var rest_excludes49 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root45 = from_html(`<div><!></div>`);
+var root64 = from_html(`<div><!></div>`);
 function Empty($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes49);
-  var div = root45();
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes76);
+  var div = root64();
   attribute_effect(div, ($0) => ({ "data-slot": "empty", class: $0, ...restProps }), [
     () => cn("gap-4 rounded-xl border-dashed p-6 flex w-full min-w-0 flex-1 flex-col items-center justify-center text-center text-balance", $$props.class)
   ]);
@@ -33176,7 +41346,7 @@ function Empty($$anchor, $$props) {
 }
 
 // src/lib/components/ui/empty/empty-header.svelte
-var rest_excludes50 = /* @__PURE__ */ new Set([
+var rest_excludes77 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -33184,11 +41354,11 @@ var rest_excludes50 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root46 = from_html(`<div><!></div>`);
+var root65 = from_html(`<div><!></div>`);
 function Empty_header($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes50);
-  var div = root46();
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes77);
+  var div = root65();
   attribute_effect(div, ($0) => ({ "data-slot": "empty-header", class: $0, ...restProps }), [
     () => cn("gap-2 flex max-w-sm flex-col items-center", $$props.class)
   ]);
@@ -33211,7 +41381,7 @@ var emptyMediaVariants = tv({
   },
   defaultVariants: { variant: "default" }
 });
-var rest_excludes51 = /* @__PURE__ */ new Set([
+var rest_excludes78 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -33220,11 +41390,11 @@ var rest_excludes51 = /* @__PURE__ */ new Set([
   "children",
   "variant"
 ]);
-var root47 = from_html(`<div><!></div>`);
+var root66 = from_html(`<div><!></div>`);
 function Empty_media($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), variant = prop($$props, "variant", 3, "default"), restProps = rest_props($$props, rest_excludes51);
-  var div = root47();
+  let ref = prop($$props, "ref", 15, null), variant = prop($$props, "variant", 3, "default"), restProps = rest_props($$props, rest_excludes78);
+  var div = root66();
   attribute_effect(
     div,
     ($0) => ({
@@ -33246,7 +41416,7 @@ function Empty_media($$anchor, $$props) {
 }
 
 // src/lib/components/ui/empty/empty-title.svelte
-var rest_excludes52 = /* @__PURE__ */ new Set([
+var rest_excludes79 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -33254,11 +41424,11 @@ var rest_excludes52 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root48 = from_html(`<div><!></div>`);
+var root67 = from_html(`<div><!></div>`);
 function Empty_title($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes52);
-  var div = root48();
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes79);
+  var div = root67();
   attribute_effect(div, ($0) => ({ "data-slot": "empty-title", class: $0, ...restProps }), [
     () => cn("text-sm font-medium tracking-tight", $$props.class)
   ]);
@@ -33271,7 +41441,7 @@ function Empty_title($$anchor, $$props) {
 }
 
 // src/lib/components/ui/empty/empty-description.svelte
-var rest_excludes53 = /* @__PURE__ */ new Set([
+var rest_excludes80 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -33279,11 +41449,11 @@ var rest_excludes53 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root49 = from_html(`<div><!></div>`);
+var root68 = from_html(`<div><!></div>`);
 function Empty_description($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes53);
-  var div = root49();
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes80);
+  var div = root68();
   attribute_effect(div, ($0) => ({ "data-slot": "empty-description", class: $0, ...restProps }), [
     () => cn("text-sm/relaxed text-muted-foreground [&>a:hover]:text-primary text-sm/relaxed [&>a]:underline [&>a]:underline-offset-4", $$props.class)
   ]);
@@ -33296,7 +41466,7 @@ function Empty_description($$anchor, $$props) {
 }
 
 // src/lib/components/ui/empty/empty-content.svelte
-var rest_excludes54 = /* @__PURE__ */ new Set([
+var rest_excludes81 = /* @__PURE__ */ new Set([
   "$$slots",
   "$$events",
   "$$legacy",
@@ -33304,11 +41474,11 @@ var rest_excludes54 = /* @__PURE__ */ new Set([
   "class",
   "children"
 ]);
-var root50 = from_html(`<div><!></div>`);
+var root69 = from_html(`<div><!></div>`);
 function Empty_content($$anchor, $$props) {
   push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes54);
-  var div = root50();
+  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes81);
+  var div = root69();
   attribute_effect(div, ($0) => ({ "data-slot": "empty-content", class: $0, ...restProps }), [
     () => cn("gap-2.5 text-sm flex w-full max-w-sm min-w-0 flex-col items-center text-balance", $$props.class)
   ]);
@@ -33321,9 +41491,9 @@ function Empty_content($$anchor, $$props) {
 }
 
 // node_modules/@lucide/svelte/dist/icons/plus.svelte
-var rest_excludes55 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+var rest_excludes82 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
 function Plus($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes55);
+  let props = rest_props($$props, rest_excludes82);
   const iconNode = [["path", { "d": "M5 12h14" }], ["path", { "d": "M12 5v14" }]];
   Icon($$anchor, spread_props({ name: "plus" }, () => props, {
     get iconNode() {
@@ -33333,9 +41503,9 @@ function Plus($$anchor, $$props) {
 }
 
 // node_modules/@lucide/svelte/dist/icons/gauge.svelte
-var rest_excludes56 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
+var rest_excludes83 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
 function Gauge($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes56);
+  let props = rest_props($$props, rest_excludes83);
   const iconNode = [
     ["path", { "d": "m12 14 4-4" }],
     ["path", { "d": "M3.34 19a10 10 0 1 1 17.32 0" }]
@@ -33348,8 +41518,8 @@ function Gauge($$anchor, $$props) {
 }
 
 // src/ui/Dashboard.svelte
-var root51 = from_html(`<!> New`, 1);
-var root_16 = from_html(`<p class="p-2 text-sm text-muted-foreground">No audits yet.</p>`);
+var root70 = from_html(`<!> New`, 1);
+var root_110 = from_html(`<p class="p-2 text-sm text-muted-foreground">No audits yet.</p>`);
 var root_24 = from_html(`<span class="flex w-full justify-between items-center gap-2"><span class="truncate text-sm font-medium"> </span> <!></span> <span class="text-xs w-full flex justify-start items-center text-muted-foreground"> </span>`, 1);
 var root_33 = from_html(`<!> <!> <!>`, 1);
 var root_42 = from_html(`<!> New audit`, 1);
@@ -33432,7 +41602,7 @@ function Dashboard($$anchor, $$props) {
       return get2(running);
     },
     children: ($$anchor2, $$slotProps) => {
-      var fragment = root51();
+      var fragment = root70();
       var node_2 = first_child(fragment);
       Plus(node_2, { "data-icon": "inline-start" });
       next();
@@ -33445,7 +41615,7 @@ function Dashboard($$anchor, $$props) {
   var node_3 = child(div_2);
   {
     var consequent = ($$anchor2) => {
-      var p2 = root_16();
+      var p2 = root_110();
       append($$anchor2, p2);
     };
     var alternate = ($$anchor2) => {
@@ -33695,6 +41865,12 @@ var SafiSiteAuditPlugin = class extends import_obsidian7.Plugin {
 };
 /*! Bundled license information:
 
+tabbable/dist/index.esm.js:
+  (*!
+  * tabbable 6.5.0
+  * @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
+  *)
+
 @lucide/svelte/dist/defaultAttributes.js:
   (**
    * @file
@@ -33732,6 +41908,15 @@ var SafiSiteAuditPlugin = class extends import_obsidian7.Plugin {
    *)
 
 @lucide/svelte/dist/icons/chevron-up.js:
+  (**
+   * @file
+   * @license @lucide/svelte v1.21.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+@lucide/svelte/dist/icons/check.js:
   (**
    * @file
    * @license @lucide/svelte v1.21.0 - ISC

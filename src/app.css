@@ -47,8 +47,9 @@
 	--ssa-card-foreground: oklch(0.141 0.005 285.823);
 	--ssa-popover: oklch(1 0 0);
 	--ssa-popover-foreground: oklch(0.141 0.005 285.823);
-	--ssa-primary: oklch(0.21 0.006 285.885);
-	--ssa-primary-foreground: oklch(0.985 0 0);
+	/* Brand colour follows Obsidian's installed theme accent. */
+	--ssa-primary: var(--interactive-accent, oklch(0.21 0.006 285.885));
+	--ssa-primary-foreground: var(--text-on-accent, oklch(0.985 0 0));
 	--ssa-secondary: oklch(0.967 0.001 286.375);
 	--ssa-secondary-foreground: oklch(0.21 0.006 285.885);
 	--ssa-muted: oklch(0.967 0.001 286.375);
@@ -59,7 +60,7 @@
 	--ssa-destructive-foreground: oklch(0.985 0 0);
 	--ssa-border: oklch(0.92 0.004 286.32);
 	--ssa-input: oklch(0.92 0.004 286.32);
-	--ssa-ring: oklch(0.705 0.015 286.067);
+	--ssa-ring: var(--interactive-accent, oklch(0.705 0.015 286.067));
 
 	color: var(--ssa-foreground);
 }
@@ -71,8 +72,8 @@
 	--ssa-card-foreground: oklch(0.985 0 0);
 	--ssa-popover: oklch(0.21 0.006 285.885);
 	--ssa-popover-foreground: oklch(0.985 0 0);
-	--ssa-primary: oklch(0.92 0.004 286.32);
-	--ssa-primary-foreground: oklch(0.21 0.006 285.885);
+	--ssa-primary: var(--interactive-accent, oklch(0.92 0.004 286.32));
+	--ssa-primary-foreground: var(--text-on-accent, oklch(0.21 0.006 285.885));
 	--ssa-secondary: oklch(0.274 0.006 286.033);
 	--ssa-secondary-foreground: oklch(0.985 0 0);
 	--ssa-muted: oklch(0.274 0.006 286.033);
@@ -83,7 +84,7 @@
 	--ssa-destructive-foreground: oklch(0.985 0 0);
 	--ssa-border: oklch(1 0 0 / 10%);
 	--ssa-input: oklch(1 0 0 / 15%);
-	--ssa-ring: oklch(0.552 0.016 285.938);
+	--ssa-ring: var(--interactive-accent, oklch(0.552 0.016 285.938));
 }
 
 @layer base {
