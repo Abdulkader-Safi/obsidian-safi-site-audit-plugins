@@ -37,6 +37,9 @@ const context = await esbuild.context({
 		esbuildSvelte({
 			compilerOptions: { css: "injected", runes: true },
 			preprocess: sveltePreprocess(),
+			// Silence Svelte compiler warnings from third-party components (bits-ui);
+			// keep warnings for our own source.
+			filterWarnings: (warning) => !warning.filename?.includes("node_modules"),
 		}),
 	],
 });
