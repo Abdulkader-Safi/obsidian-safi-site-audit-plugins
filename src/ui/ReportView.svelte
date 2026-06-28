@@ -193,27 +193,25 @@
 							{#each filteredIssues as issue (issue.ruleId)}
 								<Accordion.Item value={issue.ruleId}>
 									<Accordion.Trigger>
-										<span class="flex min-w-0 flex-1 items-start gap-2 pr-2 text-left">
-											<span class={cn("mt-[6px] size-2 shrink-0 rounded-full", statusDot(issue.status))}></span>
-											<span class="flex min-w-0 flex-1 flex-col gap-0.5">
-												<span class="flex flex-wrap items-center gap-2">
-													<span class="font-medium">{issue.title}</span>
-													<Badge variant={statusBadge(issue.status)}>{statusLabel(issue.status)}</Badge>
-													<Badge variant="outline">{issue.category}</Badge>
-												</span>
-												<span class="text-sm font-normal text-muted-foreground">{issue.message}</span>
-											</span>
-											<Badge variant="secondary" class="ml-2 shrink-0 self-start">
+										<span class="flex min-w-0 flex-1 items-center gap-2 pr-2 text-left">
+											<span class={cn("size-2 shrink-0 rounded-full", statusDot(issue.status))}></span>
+											<span class="truncate font-medium">{issue.title}</span>
+											<Badge variant={statusBadge(issue.status)} class="shrink-0">{statusLabel(issue.status)}</Badge>
+											<Badge variant="outline" class="shrink-0">{issue.category}</Badge>
+											<Badge variant="secondary" class="ml-auto shrink-0">
 												{issue.pages.length} page{issue.pages.length === 1 ? "" : "s"}
 											</Badge>
 										</span>
 									</Accordion.Trigger>
 									<Accordion.Content>
-										<div class="flex flex-col gap-1 pl-4">
-											<span class="text-xs font-medium text-muted-foreground">Affected pages</span>
-											{#each issue.pages as p (p)}
-												<span class="truncate text-sm">{p}</span>
-											{/each}
+										<div class="flex flex-col gap-3 pl-4">
+											<p class="text-sm text-muted-foreground">{issue.message}</p>
+											<div class="flex flex-col gap-1">
+												<span class="text-xs font-medium text-muted-foreground">Affected pages</span>
+												{#each issue.pages as p (p)}
+													<span class="truncate text-sm">{p}</span>
+												{/each}
+											</div>
 										</div>
 									</Accordion.Content>
 								</Accordion.Item>

@@ -2660,6 +2660,14 @@
     color: inherit;
     background: transparent;
   }
+  .safi-site-audit :where(h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd) {
+    margin: 0;
+  }
+  .safi-site-audit :where(h1, h2, h3, h4, h5, h6) {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
 }
 @property --tw-scale-x {
   syntax: "*";

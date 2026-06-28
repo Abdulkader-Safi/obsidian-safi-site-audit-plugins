@@ -112,4 +112,14 @@
 		color: inherit;
 		background: transparent;
 	}
+	/* Without preflight, headings/paragraphs keep UA margins and line-heights,
+	   which broke flex layouts like the Accordion's <h3> header. Normalise them. */
+	.safi-site-audit :where(h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd) {
+		margin: 0;
+	}
+	.safi-site-audit :where(h1, h2, h3, h4, h5, h6) {
+		font-size: inherit;
+		font-weight: inherit;
+		line-height: inherit;
+	}
 }

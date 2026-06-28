@@ -39902,9 +39902,9 @@ var root_3 = from_html(`<!> <!>`, 1);
 var root_4 = from_html(`<!> <!> <!>`, 1);
 var root_5 = from_html(`<div class="flex items-center gap-3"><span class="w-36 shrink-0 truncate text-sm"> </span> <span class="h-2 flex-1 overflow-hidden rounded-full bg-muted"><span class="block h-full rounded-full bg-primary"></span></span> <span class="w-8 shrink-0 text-right text-sm font-medium"> </span></div>`);
 var root_6 = from_html(`<p class="py-4 text-center text-sm text-muted-foreground">No issues match these filters.</p>`);
-var root_7 = from_html(`<span class="flex min-w-0 flex-1 items-start gap-2 pr-2 text-left"><span></span> <span class="flex min-w-0 flex-1 flex-col gap-0.5"><span class="flex flex-wrap items-center gap-2"><span class="font-medium"> </span> <!> <!></span> <span class="text-sm font-normal text-muted-foreground"> </span></span> <!></span>`);
+var root_7 = from_html(`<span class="flex min-w-0 flex-1 items-center gap-2 pr-2 text-left"><span></span> <span class="truncate font-medium"> </span> <!> <!> <!></span>`);
 var root_8 = from_html(`<span class="truncate text-sm"> </span>`);
-var root_9 = from_html(`<div class="flex flex-col gap-1 pl-4"><span class="text-xs font-medium text-muted-foreground">Affected pages</span> <!></div>`);
+var root_9 = from_html(`<div class="flex flex-col gap-3 pl-4"><p class="text-sm text-muted-foreground"> </p> <div class="flex flex-col gap-1"><span class="text-xs font-medium text-muted-foreground">Affected pages</span> <!></div></div>`);
 var root_10 = from_html(`<div class="flex flex-wrap items-center gap-2"><!> <!> <!></div> <!>`, 1);
 var root_11 = from_html(`<span class="flex w-full items-center gap-2 pr-2"><!> <span class="truncate"> </span> <span class="ml-auto text-muted-foreground"> </span></span>`);
 var root_122 = from_html(`<p class="text-muted-foreground">No issues found on this page.</p>`);
@@ -40466,17 +40466,16 @@ function ReportView($$anchor, $$props) {
                                                   var span_7 = root_7();
                                                   var span_8 = child(span_7);
                                                   var span_9 = sibling(span_8, 2);
-                                                  var span_10 = child(span_9);
-                                                  var span_11 = child(span_10);
-                                                  var text_26 = child(span_11, true);
-                                                  reset(span_11);
-                                                  var node_43 = sibling(span_11, 2);
+                                                  var text_26 = child(span_9, true);
+                                                  reset(span_9);
+                                                  var node_43 = sibling(span_9, 2);
                                                   {
                                                     let $0 = user_derived(() => statusBadge(get2(issue).status));
                                                     Badge(node_43, {
                                                       get variant() {
                                                         return get2($0);
                                                       },
+                                                      class: "shrink-0",
                                                       children: ($$anchor18, $$slotProps8) => {
                                                         next();
                                                         var text_27 = text();
@@ -40489,6 +40488,7 @@ function ReportView($$anchor, $$props) {
                                                   var node_44 = sibling(node_43, 2);
                                                   Badge(node_44, {
                                                     variant: "outline",
+                                                    class: "shrink-0",
                                                     children: ($$anchor18, $$slotProps8) => {
                                                       next();
                                                       var text_28 = text();
@@ -40497,20 +40497,15 @@ function ReportView($$anchor, $$props) {
                                                     },
                                                     $$slots: { default: true }
                                                   });
-                                                  reset(span_10);
-                                                  var span_12 = sibling(span_10, 2);
-                                                  var text_29 = child(span_12, true);
-                                                  reset(span_12);
-                                                  reset(span_9);
-                                                  var node_45 = sibling(span_9, 2);
+                                                  var node_45 = sibling(node_44, 2);
                                                   Badge(node_45, {
                                                     variant: "secondary",
-                                                    class: "ml-2 shrink-0 self-start",
+                                                    class: "ml-auto shrink-0",
                                                     children: ($$anchor18, $$slotProps8) => {
                                                       next();
-                                                      var text_30 = text();
-                                                      template_effect(() => set_text(text_30, `${get2(issue).pages.length ?? ""} page${get2(issue).pages.length === 1 ? "" : "s"}`));
-                                                      append($$anchor18, text_30);
+                                                      var text_29 = text();
+                                                      template_effect(() => set_text(text_29, `${get2(issue).pages.length ?? ""} page${get2(issue).pages.length === 1 ? "" : "s"}`));
+                                                      append($$anchor18, text_29);
                                                     },
                                                     $$slots: { default: true }
                                                   });
@@ -40519,10 +40514,9 @@ function ReportView($$anchor, $$props) {
                                                     ($0) => {
                                                       set_class(span_8, 1, $0);
                                                       set_text(text_26, get2(issue).title);
-                                                      set_text(text_29, get2(issue).message);
                                                     },
                                                     [
-                                                      () => clsx2(cn("mt-[6px] size-2 shrink-0 rounded-full", statusDot(get2(issue).status)))
+                                                      () => clsx2(cn("size-2 shrink-0 rounded-full", statusDot(get2(issue).status)))
                                                     ]
                                                   );
                                                   append($$anchor17, span_7);
@@ -40535,15 +40529,21 @@ function ReportView($$anchor, $$props) {
                                               Accordion_Content($$anchor16, {
                                                 children: ($$anchor17, $$slotProps7) => {
                                                   var div_16 = root_9();
-                                                  var node_47 = sibling(child(div_16), 2);
+                                                  var p_2 = child(div_16);
+                                                  var text_30 = child(p_2, true);
+                                                  reset(p_2);
+                                                  var div_17 = sibling(p_2, 2);
+                                                  var node_47 = sibling(child(div_17), 2);
                                                   each(node_47, 16, () => get2(issue).pages, (p2) => p2, ($$anchor18, p2) => {
-                                                    var span_13 = root_8();
-                                                    var text_31 = child(span_13, true);
-                                                    reset(span_13);
+                                                    var span_10 = root_8();
+                                                    var text_31 = child(span_10, true);
+                                                    reset(span_10);
                                                     template_effect(() => set_text(text_31, p2));
-                                                    append($$anchor18, span_13);
+                                                    append($$anchor18, span_10);
                                                   });
+                                                  reset(div_17);
                                                   reset(div_16);
+                                                  template_effect(() => set_text(text_30, get2(issue).message));
                                                   append($$anchor17, div_16);
                                                 },
                                                 $$slots: { default: true }
@@ -40614,8 +40614,8 @@ function ReportView($$anchor, $$props) {
                               component(node_52, () => Accordion_trigger2, ($$anchor11, Accordion_Trigger_1) => {
                                 Accordion_Trigger_1($$anchor11, {
                                   children: ($$anchor12, $$slotProps5) => {
-                                    var span_14 = root_11();
-                                    var node_53 = child(span_14);
+                                    var span_11 = root_11();
+                                    var node_53 = child(span_11);
                                     {
                                       let $02 = user_derived(() => scoreVariant(get2(page).score));
                                       Badge(node_53, {
@@ -40631,18 +40631,18 @@ function ReportView($$anchor, $$props) {
                                         $$slots: { default: true }
                                       });
                                     }
-                                    var span_15 = sibling(node_53, 2);
-                                    var text_33 = child(span_15, true);
-                                    reset(span_15);
-                                    var span_16 = sibling(span_15, 2);
-                                    var text_34 = child(span_16);
-                                    reset(span_16);
-                                    reset(span_14);
+                                    var span_12 = sibling(node_53, 2);
+                                    var text_33 = child(span_12, true);
+                                    reset(span_12);
+                                    var span_13 = sibling(span_12, 2);
+                                    var text_34 = child(span_13);
+                                    reset(span_13);
+                                    reset(span_11);
                                     template_effect(() => {
                                       set_text(text_33, get2(page).url);
                                       set_text(text_34, `${get2(probs).length ?? ""} issue${get2(probs).length === 1 ? "" : "s"}`);
                                     });
-                                    append($$anchor12, span_14);
+                                    append($$anchor12, span_11);
                                   },
                                   $$slots: { default: true }
                                 });
@@ -40655,8 +40655,8 @@ function ReportView($$anchor, $$props) {
                                     var node_55 = first_child(fragment_37);
                                     {
                                       var consequent_2 = ($$anchor13) => {
-                                        var p_2 = root_122();
-                                        append($$anchor13, p_2);
+                                        var p_3 = root_122();
+                                        append($$anchor13, p_3);
                                       };
                                       var alternate_1 = ($$anchor13) => {
                                         var fragment_38 = comment();
