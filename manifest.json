@@ -5,6 +5,7 @@
 	"minAppVersion": "1.5.0",
 	"description": "Run website audits (SEO, content, links, images, security, crawlability and more) and save each one as a Markdown note.",
 	"author": "Abdulkader Safi",
-	"authorUrl": "https://safi-studio.com",
+	"authorUrl": "https://abdulkadersafi.com",
+	"fundingUrl": "https://ko-fi.com/abdulkadersafi",
 	"isDesktopOnly": true
 }
