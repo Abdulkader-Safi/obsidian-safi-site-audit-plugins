@@ -65,6 +65,8 @@
 
 /* audit row in the sidebar */
 .ssa-audit-row {
+	width: 100%;
+	height: fit-content;
 	display: flex;
 	flex-direction: column;
 	gap: 0.15rem;
