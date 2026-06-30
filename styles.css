@@ -45,7 +45,7 @@
 .ssa-sidebar-list {
 	display: flex;
 	flex-direction: column;
-	gap: 0.25rem;
+	gap: 0.4rem;
 	min-height: 0;
 	flex: 1;
 	overflow-y: auto;
@@ -98,6 +98,8 @@
 	font-weight: var(--font-medium);
 }
 .ssa-audit-row-date {
+	width: 100%;
+	text-align: left;
 	font-size: var(--font-ui-smaller);
 	color: var(--text-muted);
 }
@@ -303,22 +305,17 @@
 /* ---- toggle group ---- */
 .ssa-toggles {
 	display: inline-flex;
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-m);
-	overflow: hidden;
+	gap: 0.35rem;
 }
 .ssa-toggle {
 	padding: 0.35rem 0.75rem;
-	border: none;
-	border-left: 1px solid var(--background-modifier-border);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-m);
 	background: transparent;
 	color: var(--text-muted);
 	font-size: var(--font-ui-smaller);
 	font-weight: var(--font-medium);
 	cursor: pointer;
-}
-.ssa-toggle:first-child {
-	border-left: none;
 }
 .ssa-toggle:hover {
 	background: var(--background-modifier-hover);
