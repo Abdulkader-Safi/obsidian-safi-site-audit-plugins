@@ -57,9 +57,9 @@ export class SafiSiteAuditSettingTab extends PluginSettingTab {
 						this.plugin.settings.auditFolder = value.trim() || "Site Audits";
 						await this.plugin.saveSettings();
 					});
-				new FolderSuggest(this.app, text.inputEl, async (path) => {
+				new FolderSuggest(this.app, text.inputEl, (path) => {
 					this.plugin.settings.auditFolder = path;
-					await this.plugin.saveSettings();
+					void this.plugin.saveSettings();
 				});
 			});
 

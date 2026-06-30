@@ -94,9 +94,9 @@ var SafiSiteAuditSettingTab = class extends import_obsidian.PluginSettingTab {
         this.plugin.settings.auditFolder = value.trim() || "Site Audits";
         await this.plugin.saveSettings();
       });
-      new FolderSuggest(this.app, text4.inputEl, async (path) => {
+      new FolderSuggest(this.app, text4.inputEl, (path) => {
         this.plugin.settings.auditFolder = path;
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
     });
     new import_obsidian.Setting(containerEl).setName("Default pages").setDesc("Pages to crawl when the run dialog's page field is left empty.").addText(
@@ -23475,21 +23475,20 @@ async function shimFetch(input, init2 = {}) {
   const request = (0, import_obsidian3.requestUrl)(param).then((resp) => new ShimResponse(resp));
   const signal = init2.signal;
   if (!signal) return request;
-  if (signal.aborted) throw signal.reason ?? new DOMException("Aborted", "AbortError");
+  const reason = () => signal.reason ?? new DOMException("Aborted", "AbortError");
+  if (signal.aborted) throw reason();
   const aborted2 = new Promise((_, reject) => {
-    signal.addEventListener("abort", () => reject(signal.reason ?? new DOMException("Aborted", "AbortError")), {
-      once: true
-    });
+    signal.addEventListener("abort", () => reject(reason()), { once: true });
   });
   return Promise.race([request, aborted2]);
 }
 async function withObsidianFetch(fn) {
-  const original = globalThis.fetch;
-  globalThis.fetch = shimFetch;
+  const original = window.fetch;
+  window.fetch = shimFetch;
   try {
     return await fn();
   } finally {
-    globalThis.fetch = original;
+    window.fetch = original;
   }
 }
 
@@ -24388,8 +24387,6 @@ var AuditDashboardView = class extends import_obsidian7.ItemView {
   async onOpen() {
     this.contentEl.empty();
     this.contentEl.addClass("safi-site-audit");
-    this.contentEl.style.height = "100%";
-    this.contentEl.style.padding = "0";
     this.component = mount(Dashboard, {
       target: this.contentEl,
       props: { plugin: this.plugin }
@@ -24397,7 +24394,7 @@ var AuditDashboardView = class extends import_obsidian7.ItemView {
   }
   async onClose() {
     if (this.component) {
-      unmount(this.component);
+      void unmount(this.component);
       this.component = null;
     }
   }
@@ -24422,7 +24419,7 @@ var SafiSiteAuditPlugin = class extends import_obsidian8.Plugin {
     const existing = workspace.getLeavesOfType(VIEW_TYPE_SITE_AUDIT)[0];
     const leaf = existing ?? workspace.getLeaf("tab");
     await leaf.setViewState({ type: VIEW_TYPE_SITE_AUDIT, active: true });
-    workspace.revealLeaf(leaf);
+    await workspace.revealLeaf(leaf);
   }
   async loadSettings() {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());

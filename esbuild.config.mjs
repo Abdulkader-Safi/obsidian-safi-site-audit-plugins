@@ -1,7 +1,7 @@
 import esbuild from "esbuild";
 import esbuildSvelte from "esbuild-svelte";
 import { sveltePreprocess } from "svelte-preprocess";
-import builtins from "builtin-modules";
+import { builtinModules } from "node:module";
 
 const prod = process.argv[2] === "production";
 
@@ -25,7 +25,8 @@ const context = await esbuild.context({
 		"playwright",
 		"playwright-core",
 		"@axe-core/playwright",
-		...builtins,
+		...builtinModules,
+		...builtinModules.map((m) => `node:${m}`),
 	],
 	plugins: [
 		esbuildSvelte({

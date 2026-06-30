@@ -3,7 +3,7 @@ import { requestUrl, type RequestUrlParam } from "obsidian";
 // The Safi-Studio-Scanner SDK calls the global `fetch` directly (src/http.ts) with
 // `redirect:"manual"` and reads response headers. In Obsidian's renderer that hits CORS
 // for cross-origin sites. Obsidian's requestUrl() bypasses CORS, so we patch
-// globalThis.fetch with a requestUrl-backed shim for the duration of an audit.
+// window.fetch with a requestUrl-backed shim for the duration of an audit.
 //
 // ponytail: requestUrl auto-follows redirects, so the SDK's redirect-chain counter always
 // sees 0. That only affects the "redirect chain" rule; everything else works. Acceptable.
@@ -74,21 +74,21 @@ export async function shimFetch(input: string | URL, init: FetchInit = {}): Prom
 	// and audit() never resolves. The losing requestUrl settles later and is ignored.
 	const signal = init.signal;
 	if (!signal) return request;
-	if (signal.aborted) throw signal.reason ?? new DOMException("Aborted", "AbortError");
+	const reason = (): Error =>
+		(signal.reason as Error | undefined) ?? new DOMException("Aborted", "AbortError");
+	if (signal.aborted) throw reason();
 	const aborted = new Promise<never>((_, reject) => {
-		signal.addEventListener("abort", () => reject(signal.reason ?? new DOMException("Aborted", "AbortError")), {
-			once: true,
-		});
+		signal.addEventListener("abort", () => reject(reason()), { once: true });
 	});
 	return Promise.race([request, aborted]);
 }
 
 export async function withObsidianFetch<T>(fn: () => Promise<T>): Promise<T> {
-	const original = globalThis.fetch;
-	(globalThis as unknown as { fetch: unknown }).fetch = shimFetch;
+	const original = window.fetch;
+	(window as unknown as { fetch: unknown }).fetch = shimFetch;
 	try {
 		return await fn();
 	} finally {
-		globalThis.fetch = original;
+		window.fetch = original;
 	}
 }

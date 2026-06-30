@@ -26,7 +26,7 @@ export default class SafiSiteAuditPlugin extends Plugin {
 		const existing = workspace.getLeavesOfType(VIEW_TYPE_SITE_AUDIT)[0];
 		const leaf = existing ?? workspace.getLeaf("tab");
 		await leaf.setViewState({ type: VIEW_TYPE_SITE_AUDIT, active: true });
-		workspace.revealLeaf(leaf);
+		await workspace.revealLeaf(leaf);
 	}
 
 	async loadSettings() {
