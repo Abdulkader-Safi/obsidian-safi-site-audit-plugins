@@ -49,6 +49,13 @@ export function gradeVariant(score: number): BadgeVariant {
 	return "destructive";
 }
 
+// Traffic-light class for a 0-100 score bar: green good, amber middling, red bad.
+export function scoreBar(score: number): string {
+	if (score >= 80) return "is-good";
+	if (score >= 50) return "is-mid";
+	return "is-bad";
+}
+
 export function statusDot(status: Status): string {
 	if (status === "fail") return "ssa-dot-fail";
 	if (status === "warn") return "ssa-dot-warn";

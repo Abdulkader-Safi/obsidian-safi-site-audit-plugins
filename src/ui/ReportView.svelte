@@ -10,6 +10,7 @@
 		gradeVariant,
 		hostOf,
 		pct,
+		scoreBar,
 		scoreVariant,
 		statusDot,
 		statusTotals,
@@ -149,7 +150,7 @@
 							<div class="ssa-cat-row">
 								<span class="ssa-cat-name">{cat.category}</span>
 								<span class="ssa-cat-bar">
-									<span class="ssa-cat-bar-fill" style="width:{cat.score}%"></span>
+									<span class="ssa-cat-bar-fill {scoreBar(cat.score)}" style="width:{cat.score}%"></span>
 								</span>
 								<span class="ssa-cat-score">{cat.score}</span>
 							</div>

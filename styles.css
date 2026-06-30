@@ -200,11 +200,12 @@
 	display: inline-flex;
 	align-items: center;
 	gap: 0.25rem;
-	padding: 0.1rem 0.45rem;
+	padding: 0.2rem 0.5rem;
 	border: 1px solid transparent;
 	border-radius: var(--radius-s);
 	font-size: var(--font-ui-smaller);
 	font-weight: var(--font-medium);
+	line-height: 1.4;
 	white-space: nowrap;
 }
 .ssa-badge-default {
@@ -307,7 +308,7 @@
 	overflow: hidden;
 }
 .ssa-toggle {
-	padding: 0.25rem 0.6rem;
+	padding: 0.35rem 0.75rem;
 	border: none;
 	border-left: 1px solid var(--background-modifier-border);
 	background: transparent;
@@ -533,7 +534,13 @@
 	display: block;
 	height: 100%;
 	border-radius: 999px;
-	background: var(--interactive-accent);
+	background: var(--color-green);
+}
+.ssa-cat-bar-fill.is-mid {
+	background: var(--color-yellow);
+}
+.ssa-cat-bar-fill.is-bad {
+	background: var(--color-red);
 }
 .ssa-cat-score {
 	width: 2rem;
@@ -548,7 +555,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 0.5rem;
+	gap: 0.6rem;
 }
 .ssa-filters .ssa-input {
 	width: 10rem;

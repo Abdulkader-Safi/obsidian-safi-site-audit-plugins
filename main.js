@@ -23542,6 +23542,11 @@ function gradeVariant(score) {
   if (score >= 60) return "secondary";
   return "destructive";
 }
+function scoreBar(score) {
+  if (score >= 80) return "is-good";
+  if (score >= 50) return "is-mid";
+  return "is-bad";
+}
 function statusDot(status) {
   if (status === "fail") return "ssa-dot-fail";
   if (status === "warn") return "ssa-dot-warn";
@@ -23652,7 +23657,7 @@ function ScoreGauge($$anchor, $$props) {
 
 // src/ui/ReportView.svelte
 var root3 = from_html(`<div class="ssa-mt"><button class="ssa-btn ssa-btn-outline ssa-btn-sm"><span></span> Open note</button></div>`);
-var root_1 = from_html(`<div class="ssa-cat-row"><span class="ssa-cat-name"> </span> <span class="ssa-cat-bar"><span class="ssa-cat-bar-fill"></span></span> <span class="ssa-cat-score"> </span></div>`);
+var root_1 = from_html(`<div class="ssa-cat-row"><span class="ssa-cat-name"> </span> <span class="ssa-cat-bar"><span></span></span> <span class="ssa-cat-score"> </span></div>`);
 var root_2 = from_html(`<option> </option>`);
 var root_3 = from_html(`<p class="ssa-no-results">No issues match these filters.</p>`);
 var root_4 = from_html(`<span class="ssa-page-url"> </span>`);
@@ -23813,11 +23818,15 @@ function ReportView($$anchor, $$props) {
         var text_11 = child(span_8, true);
         reset(span_8);
         reset(div_24);
-        template_effect(() => {
-          set_text(text_10, get2(cat).category);
-          set_style(span_7, `width:${get2(cat).score ?? ""}%`);
-          set_text(text_11, get2(cat).score);
-        });
+        template_effect(
+          ($0) => {
+            set_text(text_10, get2(cat).category);
+            set_class(span_7, 1, `ssa-cat-bar-fill ${$0 ?? ""}`);
+            set_style(span_7, `width:${get2(cat).score ?? ""}%`);
+            set_text(text_11, get2(cat).score);
+          },
+          [() => scoreBar(get2(cat).score)]
+        );
         append($$anchor3, div_24);
       });
       reset(div_23);
