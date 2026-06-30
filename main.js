@@ -12798,7 +12798,7 @@ Cheerio.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
 Object.assign(Cheerio.prototype, attributes_exports, traversing_exports, manipulation_exports, css_exports, forms_exports, extract_exports);
 
 // node_modules/cheerio/dist/browser/load.js
-function getLoad(parse6, render4) {
+function getLoad(parse6, render5) {
   return function load2(content, options, isDocument2 = true) {
     if (content == null) {
       throw new Error("cheerio.load() expects a string");
@@ -12815,7 +12815,7 @@ function getLoad(parse6, render4) {
         return parse6(content2, options2, isDocument3, context);
       }
       _render(dom) {
-        return render4(dom, this.options);
+        return render5(dom, this.options);
       }
     }
     function initialize(selector, context, root6 = initialRoot, opts) {
@@ -23331,6 +23331,10 @@ function esc(s) {
   return s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 }
 
+// src/scanner.ts
+var audit2 = audit;
+var render4 = render3;
+
 // src/report-file.ts
 var FENCE = "ssa-report-json";
 function buildNote(report) {
@@ -23344,7 +23348,7 @@ function buildNote(report) {
     "---",
     ""
   ].join("\n");
-  const body = render3(report, "md");
+  const body = render4(report, "md");
   const data2 = `
 
 ## Report data
@@ -23505,7 +23509,7 @@ async function runAudit(opts, settings) {
   };
   if (settings.userAgent.trim()) options.userAgent = settings.userAgent.trim();
   if (settings.psiKey.trim()) options.psiKey = settings.psiKey.trim();
-  return withObsidianFetch(() => audit(opts.url, options));
+  return withObsidianFetch(() => audit2(opts.url, options));
 }
 
 // src/ui/ReportView.svelte
@@ -24422,7 +24426,8 @@ var SafiSiteAuditPlugin = class extends import_obsidian8.Plugin {
     await workspace.revealLeaf(leaf);
   }
   async loadSettings() {
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    const saved = await this.loadData();
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, saved);
   }
   async saveSettings() {
     await this.saveData(this.settings);

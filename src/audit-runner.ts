@@ -1,4 +1,4 @@
-import { audit, type AuditOptions, type AuditReport } from "safi-studio-scanner";
+import { audit, type AuditOptions, type AuditReport } from "./scanner";
 import { withObsidianFetch } from "./fetch-shim";
 import type { SafiSiteAuditSettings } from "./settings";
 

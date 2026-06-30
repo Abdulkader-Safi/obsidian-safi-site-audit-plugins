@@ -1,5 +1,5 @@
 import { App, TFile, TFolder, normalizePath } from "obsidian";
-import type { AuditReport } from "safi-studio-scanner";
+import type { AuditReport } from "./scanner";
 import { auditFileName, buildNote, parseNote } from "./report-file";
 import type { SafiSiteAuditSettings } from "./settings";
 
@@ -24,7 +24,9 @@ export function listAudits(app: App, settings: SafiSiteAuditSettings): AuditList
 	const items: AuditListItem[] = [];
 	for (const child of folder.children) {
 		if (!(child instanceof TFile) || child.extension !== "md") continue;
-		const fm = app.metadataCache.getFileCache(child)?.frontmatter;
+		const fm = app.metadataCache.getFileCache(child)?.frontmatter as
+			| { ssa_audit?: boolean; url?: string; date?: string; score?: number; pages?: number }
+			| undefined;
 		if (!fm?.ssa_audit) continue;
 		items.push({
 			file: child,

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { Notice, type TFile, type EventRef } from "obsidian";
-	import type { AuditReport } from "safi-studio-scanner";
+	import type { AuditReport } from "../scanner";
 	import type SafiSiteAuditPlugin from "../main";
 	import {
 		listAudits,

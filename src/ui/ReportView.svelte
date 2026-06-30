@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { TFile } from "obsidian";
-	import type { AuditReport, Finding } from "safi-studio-scanner";
+	import type { AuditReport, Finding } from "../scanner";
 	import type SafiSiteAuditPlugin from "../main";
 	import { openInObsidian } from "../audit-store";
 	import {

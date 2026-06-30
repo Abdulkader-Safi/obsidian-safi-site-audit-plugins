@@ -1,6 +1,6 @@
 {
 	"name": "safi-site-audit",
-	"version": "0.5.1",
+	"version": "0.5.2",
 	"description": "Obsidian plugin that runs website audits and saves them as Markdown notes.",
 	"type": "module",
 	"license": "MIT",

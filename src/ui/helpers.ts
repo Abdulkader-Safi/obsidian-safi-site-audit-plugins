@@ -1,4 +1,4 @@
-import type { AuditReport, Severity, Status } from "safi-studio-scanner";
+import type { AuditReport, Severity, Status } from "../scanner";
 
 type BadgeVariant = "default" | "secondary" | "destructive" | "outline";
 

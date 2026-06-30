@@ -1,4 +1,4 @@
-import { render, type AuditReport } from "safi-studio-scanner";
+import { render, type AuditReport } from "./scanner";
 
 // Each audit is one Markdown note: small frontmatter for the dashboard list, the SDK's
 // rendered Markdown for human reading, and the full report JSON in a fenced block so the
