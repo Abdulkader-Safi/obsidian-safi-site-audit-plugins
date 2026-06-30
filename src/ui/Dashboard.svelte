@@ -13,13 +13,7 @@
 	import ReportView from "./ReportView.svelte";
 	import RunAuditForm from "./RunAuditForm.svelte";
 	import { formatDate, hostOf, scoreVariant } from "./helpers";
-
-	import { Button } from "$lib/components/ui/button";
-	import { Badge } from "$lib/components/ui/badge";
-	import * as Empty from "$lib/components/ui/empty";
-	import { cn } from "$lib/utils";
-	import PlusIcon from "@lucide/svelte/icons/plus";
-	import GaugeIcon from "@lucide/svelte/icons/gauge";
+	import { icon } from "./icon";
 
 	let { plugin }: { plugin: SafiSiteAuditPlugin } = $props();
 
@@ -86,40 +80,38 @@
 	}
 </script>
 
-<div class="flex h-full min-h-0">
-	<aside class="flex w-64 shrink-0 flex-col border-r bg-muted/30">
-		<div class="flex items-center gap-2 border-b p-3">
-			<GaugeIcon class="size-4" />
-			<span class="font-semibold">Safi Site Audit</span>
-			<Button size="sm" class="ml-auto" onclick={startNew} disabled={running}>
-				<PlusIcon data-icon="inline-start" />
+<div class="ssa-layout">
+	<aside class="ssa-sidebar">
+		<div class="ssa-sidebar-head">
+			<span use:icon={"gauge"}></span>
+			<span>Safi Site Audit</span>
+			<button class="ssa-btn ssa-btn-primary ssa-btn-sm ssa-spacer" onclick={startNew} disabled={running}>
+				<span use:icon={"plus"}></span>
 				New
-			</Button>
+			</button>
 		</div>
-		<div class="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-2">
+		<div class="ssa-sidebar-list">
 			{#if items.length === 0}
-				<p class="p-2 text-sm text-muted-foreground">No audits yet.</p>
+				<p class="ssa-empty-note">No audits yet.</p>
 			{:else}
-				<!-- ponytail: native row, not <Button> — the button primitive forces a fixed
-				     height and whitespace-nowrap, which squeezes this two-line item. -->
 				{#each items as item (item.file.path)}
-					<Button
-						variant={selectedPath === item.file.path ? "default" : "ghost"}
+					<button
+						class="ssa-audit-row"
+						class:is-active={selectedPath === item.file.path}
 						onclick={() => open(item)}
-						class="flex flex-col justify-start items-start h-fit! py-2! px-4!"
 					>
-						<span class="flex w-full justify-between items-center gap-2">
-							<span class="truncate text-sm font-medium">{hostOf(item.url)}</span>
-							<Badge variant={scoreVariant(item.score)} class="ml-auto shrink-0">{item.score}</Badge>
+						<span class="ssa-audit-row-top">
+							<span class="ssa-audit-row-host">{hostOf(item.url)}</span>
+							<span class="ssa-badge ssa-badge-{scoreVariant(item.score)}">{item.score}</span>
 						</span>
-						<span class="text-xs w-full flex justify-start items-center text-muted-foreground">{formatDate(item.date)}</span>
-					</Button>
+						<span class="ssa-audit-row-date">{formatDate(item.date)}</span>
+					</button>
 				{/each}
 			{/if}
 		</div>
 	</aside>
 
-	<main class="min-w-0 flex-1 overflow-y-auto p-4">
+	<main class="ssa-main">
 		{#if mode === "detail" && selected}
 			<ReportView report={selected} path={selectedPath} {plugin} />
 		{:else if mode === "new"}
@@ -130,23 +122,17 @@
 				onSubmit={run}
 			/>
 		{:else}
-			<Empty.Root class="h-full">
-				<Empty.Header>
-					<Empty.Media variant="icon">
-						<GaugeIcon />
-					</Empty.Media>
-					<Empty.Title>No audit selected</Empty.Title>
-					<Empty.Description>
-						Pick an audit from the sidebar, or run a new one.
-					</Empty.Description>
-				</Empty.Header>
-				<Empty.Content>
-					<Button onclick={startNew}>
-						<PlusIcon data-icon="inline-start" />
-						New audit
-					</Button>
-				</Empty.Content>
-			</Empty.Root>
+			<div class="ssa-empty">
+				<div class="ssa-empty-media">
+					<span use:icon={"gauge"}></span>
+				</div>
+				<div class="ssa-empty-title">No audit selected</div>
+				<div class="ssa-empty-desc">Pick an audit from the sidebar, or run a new one.</div>
+				<button class="ssa-btn ssa-btn-primary ssa-mt" onclick={startNew}>
+					<span use:icon={"plus"}></span>
+					New audit
+				</button>
+			</div>
 		{/if}
 	</main>
 </div>

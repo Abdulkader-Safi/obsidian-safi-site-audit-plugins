@@ -1,10 +1,5 @@
 <script lang="ts">
-	import * as Card from "$lib/components/ui/card";
-	import * as Field from "$lib/components/ui/field";
-	import { Button } from "$lib/components/ui/button";
-	import { Input } from "$lib/components/ui/input";
-	import { Spinner } from "$lib/components/ui/spinner";
-	import PlayIcon from "@lucide/svelte/icons/play";
+	import { icon } from "./icon";
 
 	let {
 		defaultPages,
@@ -26,26 +21,30 @@
 	}
 </script>
 
-<Card.Root class="mx-auto max-w-xl">
-	<Card.Header>
-		<Card.Title>Run a new audit</Card.Title>
-		<Card.Description>Crawls the site and saves the report to “{folder}”.</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<Field.FieldGroup>
-			<Field.Field>
-				<Field.FieldLabel for="ssa-url">Website URL</Field.FieldLabel>
-				<Input
+<div class="ssa-card ssa-card-narrow">
+	<div class="ssa-card-header">
+		<div>
+			<div class="ssa-card-title">Run a new audit</div>
+			<div class="ssa-card-desc">Crawls the site and saves the report to “{folder}”.</div>
+		</div>
+	</div>
+	<div class="ssa-card-content">
+		<div class="ssa-field-group">
+			<div class="ssa-field">
+				<label class="ssa-field-label" for="ssa-url">Website URL</label>
+				<input
+					class="ssa-input"
 					id="ssa-url"
 					placeholder="https://example.com"
 					bind:value={url}
 					disabled={running}
 					onkeydown={(e) => e.key === "Enter" && submit()}
 				/>
-			</Field.Field>
-			<Field.Field>
-				<Field.FieldLabel for="ssa-pages">Pages</Field.FieldLabel>
-				<Input
+			</div>
+			<div class="ssa-field">
+				<label class="ssa-field-label" for="ssa-pages">Pages</label>
+				<input
+					class="ssa-input"
 					id="ssa-pages"
 					type="number"
 					min="1"
@@ -53,21 +52,21 @@
 					bind:value={pages}
 					disabled={running}
 				/>
-				<Field.FieldDescription>
+				<div class="ssa-field-desc">
 					Leave empty to crawl up to {defaultPages} pages. Multi-page crawls can take a minute.
-				</Field.FieldDescription>
-			</Field.Field>
-		</Field.FieldGroup>
-	</Card.Content>
-	<Card.Footer>
-		<Button onclick={submit} disabled={running}>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ssa-card-footer">
+		<button class="ssa-btn ssa-btn-primary" onclick={submit} disabled={running}>
 			{#if running}
-				<Spinner data-icon="inline-start" />
+				<span class="ssa-spinner"></span>
 				Auditing…
 			{:else}
-				<PlayIcon data-icon="inline-start" />
+				<span use:icon={"play"}></span>
 				Run audit
 			{/if}
-		</Button>
-	</Card.Footer>
-</Card.Root>
+		</button>
+	</div>
+</div>
