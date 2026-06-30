@@ -10,7 +10,7 @@
 		"version": "node version-bump.mjs && git add manifest.json versions.json"
 	},
 	"dependencies": {
-		"safi-studio-scanner": "github:Abdulkader-Safi/Safi-Studio-Scanner"
+		"safi-studio-scanner": "github:Abdulkader-Safi/Safi-Studio-Scanner#v1.0.0"
 	},
 	"devDependencies": {
 		"@types/node": "^22.0.0",
