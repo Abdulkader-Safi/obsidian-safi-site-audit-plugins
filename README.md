@@ -5,9 +5,11 @@ Markdown note. It wraps the [Safi-Studio-Scanner](https://github.com/Abdulkader-
 engine, which scores a site across SEO, content, links, images, structured data, security,
 crawlability and more.
 
+![Safi Site Audit dashboard](Screenshot.png)
+
 ## What it does
 
-- Run an audit on any URL from a dashboard (Svelte + Tailwind + shadcn-svelte).
+- Run an audit on any URL from a dashboard built with Svelte and plain CSS.
 - Each audit is saved as a Markdown note in a folder you choose in settings. The note is
   readable on its own and also carries the full report data, so the dashboard can show a
   rich view (overall score, category breakdown, per-page issues).
@@ -36,9 +38,12 @@ redirects are auto-followed, so the redirect-chain rule reports 0.
 ## Development
 
 ```bash
-npm install        # also builds the scanner SDK (git dependency)
-npm run build      # tailwind CSS -> styles.css, then esbuild -> main.js
-npm run dev:js     # watch build for the bundle
-npm run dev:css    # watch build for styles
+npm install        # pulls the scanner SDK (pinned git dependency)
+npm run build      # esbuild -> main.js
+npm run dev        # watch build for the bundle
 npm test           # report-file round-trip self-check
 ```
+
+Styling lives in `styles.css` (hand-written, scoped under `.safi-site-audit`, built on
+Obsidian's own theme variables). It is not generated, so edits to it only need a plugin
+reload, not a rebuild.
