@@ -49,19 +49,11 @@ export function gradeVariant(score: number): BadgeVariant {
 	return "destructive";
 }
 
-// ponytail: traffic-light data-viz colors. There's no green/amber semantic token in the
-// shadcn palette, and a score bar genuinely needs them.
-export function barColor(score: number): string {
-	if (score >= 80) return "bg-emerald-500";
-	if (score >= 50) return "bg-amber-500";
-	return "bg-red-500";
-}
-
 export function statusDot(status: Status): string {
-	if (status === "fail") return "bg-red-500";
-	if (status === "warn") return "bg-amber-500";
-	if (status === "info") return "bg-sky-500";
-	return "bg-emerald-500";
+	if (status === "fail") return "ssa-dot-fail";
+	if (status === "warn") return "ssa-dot-warn";
+	if (status === "info") return "ssa-dot-info";
+	return "ssa-dot-pass";
 }
 
 export interface StatusTotals {

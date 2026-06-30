@@ -13,10 +13,6 @@
 		"isolatedModules": true,
 		"verbatimModuleSyntax": true,
 		"resolveJsonModule": true,
-		"paths": {
-			"$lib": ["src/lib"],
-			"$lib/*": ["src/lib/*"]
-		},
 		"types": ["node", "svelte"]
 	},
 	"include": ["src/**/*.ts", "src/**/*.svelte"]

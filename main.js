@@ -50,7 +50,7 @@ __export(main_exports, {
   default: () => SafiSiteAuditPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian7 = require("obsidian");
+var import_obsidian8 = require("obsidian");
 
 // src/settings.ts
 var import_obsidian = require("obsidian");
@@ -101,15 +101,15 @@ var SafiSiteAuditSettingTab = class extends import_obsidian.PluginSettingTab {
     });
     new import_obsidian.Setting(containerEl).setName("Default pages").setDesc("Pages to crawl when the run dialog's page field is left empty.").addText(
       (text4) => text4.setPlaceholder("20").setValue(String(this.plugin.settings.defaultMaxPages)).onChange(async (value) => {
-        const n2 = Number(value);
-        this.plugin.settings.defaultMaxPages = Number.isFinite(n2) && n2 > 0 ? Math.floor(n2) : 20;
+        const n = Number(value);
+        this.plugin.settings.defaultMaxPages = Number.isFinite(n) && n > 0 ? Math.floor(n) : 20;
         await this.plugin.saveSettings();
       })
     );
     new import_obsidian.Setting(containerEl).setName("Concurrency").setDesc("How many pages to fetch in parallel.").addText(
       (text4) => text4.setPlaceholder("5").setValue(String(this.plugin.settings.concurrency)).onChange(async (value) => {
-        const n2 = Number(value);
-        this.plugin.settings.concurrency = Number.isFinite(n2) && n2 > 0 ? Math.floor(n2) : 5;
+        const n = Number(value);
+        this.plugin.settings.concurrency = Number.isFinite(n) && n > 0 ? Math.floor(n) : 5;
         await this.plugin.saveSettings();
       })
     );
@@ -130,10 +130,7 @@ var SafiSiteAuditSettingTab = class extends import_obsidian.PluginSettingTab {
 };
 
 // src/view.ts
-var import_obsidian6 = require("obsidian");
-
-// node_modules/esm-env/true.js
-var true_default = true;
+var import_obsidian7 = require("obsidian");
 
 // node_modules/esm-env/dev-fallback.js
 var node_env = globalThis.process?.env?.NODE_ENV;
@@ -152,9 +149,6 @@ var object_prototype = Object.prototype;
 var array_prototype = Array.prototype;
 var get_prototype_of = Object.getPrototypeOf;
 var is_extensible = Object.isExtensible;
-function is_function(thing) {
-  return typeof thing === "function";
-}
 var noop = () => {
 };
 function run_all(arr) {
@@ -170,20 +164,6 @@ function deferred() {
     reject = rej;
   });
   return { promise, resolve, reject };
-}
-function to_array(value, n2) {
-  if (Array.isArray(value)) {
-    return value;
-  }
-  if (n2 === void 0 || !(Symbol.iterator in value)) {
-    return Array.from(value);
-  }
-  const array = [];
-  for (const element2 of value) {
-    array.push(element2);
-    if (array.length === n2) break;
-  }
-  return array;
 }
 
 // node_modules/svelte/src/internal/client/constants.js
@@ -231,7 +211,6 @@ var IS_XHTML = (
   // We gotta write it like this because after downleveling the pure comment may end up in the wrong location
   !!globalThis.document?.contentType && /* @__PURE__ */ globalThis.document.contentType.includes("xml")
 );
-var ELEMENT_NODE = 1;
 var TEXT_NODE = 3;
 var COMMENT_NODE = 8;
 
@@ -293,10 +272,10 @@ https://svelte.dev/e/derived_references_self`);
     throw new Error(`https://svelte.dev/e/derived_references_self`);
   }
 }
-function each_key_duplicate(a2, b, value) {
+function each_key_duplicate(a, b, value) {
   if (dev_fallback_default) {
     const error = new Error(`each_key_duplicate
-${value ? `Keyed each block has duplicate key \`${value}\` at indexes ${a2} and ${b}` : `Keyed each block has duplicate key at indexes ${a2} and ${b}`}
+${value ? `Keyed each block has duplicate key \`${value}\` at indexes ${a} and ${b}` : `Keyed each block has duplicate key at indexes ${a} and ${b}`}
 https://svelte.dev/e/each_key_duplicate`);
     error.name = "Svelte error";
     throw error;
@@ -304,10 +283,10 @@ https://svelte.dev/e/each_key_duplicate`);
     throw new Error(`https://svelte.dev/e/each_key_duplicate`);
   }
 }
-function each_key_volatile(index4, a2, b) {
+function each_key_volatile(index3, a, b) {
   if (dev_fallback_default) {
     const error = new Error(`each_key_volatile
-Keyed each block has key that is not idempotent \u2014 the key for item at index ${index4} was \`${a2}\` but is now \`${b}\`. Keys must be the same each time for a given item
+Keyed each block has key that is not idempotent \u2014 the key for item at index ${index3} was \`${a}\` but is now \`${b}\`. Keys must be the same each time for a given item
 https://svelte.dev/e/each_key_volatile`);
     error.name = "Svelte error";
     throw error;
@@ -370,17 +349,6 @@ https://svelte.dev/e/hydration_failed`);
     throw new Error(`https://svelte.dev/e/hydration_failed`);
   }
 }
-function invalid_snippet() {
-  if (dev_fallback_default) {
-    const error = new Error(`invalid_snippet
-Could not \`{@render}\` snippet due to the expression being \`null\` or \`undefined\`. Consider using optional chaining \`{@render snippet?.()}\`
-https://svelte.dev/e/invalid_snippet`);
-    error.name = "Svelte error";
-    throw error;
-  } else {
-    throw new Error(`https://svelte.dev/e/invalid_snippet`);
-  }
-}
 function props_invalid_value(key2) {
   if (dev_fallback_default) {
     const error = new Error(`props_invalid_value
@@ -392,17 +360,6 @@ https://svelte.dev/e/props_invalid_value`);
     throw new Error(`https://svelte.dev/e/props_invalid_value`);
   }
 }
-function props_rest_readonly(property) {
-  if (dev_fallback_default) {
-    const error = new Error(`props_rest_readonly
-Rest element properties of \`$props()\` such as \`${property}\` are readonly
-https://svelte.dev/e/props_rest_readonly`);
-    error.name = "Svelte error";
-    throw error;
-  } else {
-    throw new Error(`https://svelte.dev/e/props_rest_readonly`);
-  }
-}
 function rune_outside_svelte(rune) {
   if (dev_fallback_default) {
     const error = new Error(`rune_outside_svelte
@@ -412,17 +369,6 @@ https://svelte.dev/e/rune_outside_svelte`);
     throw error;
   } else {
     throw new Error(`https://svelte.dev/e/rune_outside_svelte`);
-  }
-}
-function set_context_after_init() {
-  if (dev_fallback_default) {
-    const error = new Error(`set_context_after_init
-\`setContext\` must be called when a component first initializes, not in a subsequent effect or after an \`await\` expression
-https://svelte.dev/e/set_context_after_init`);
-    error.name = "Svelte error";
-    throw error;
-  } else {
-    throw new Error(`https://svelte.dev/e/set_context_after_init`);
   }
 }
 function state_descriptors_fixed() {
@@ -498,8 +444,6 @@ var UNINITIALIZED = Symbol("uninitialized");
 var FILENAME = Symbol("filename");
 var HMR = Symbol("hmr");
 var NAMESPACE_HTML = "http://www.w3.org/1999/xhtml";
-var NAMESPACE_SVG = "http://www.w3.org/2000/svg";
-var ATTACHMENT_KEY = "@attach";
 
 // node_modules/svelte/src/internal/client/warnings.js
 var bold = "font-weight: bold";
@@ -651,12 +595,12 @@ function skip_nodes(remove2 = true) {
         depth += 1;
       }
     }
-    var next4 = (
+    var next3 = (
       /** @type {TemplateNode} */
       get_next_sibling(node)
     );
     if (remove2) node.remove();
-    node = next4;
+    node = next3;
   }
 }
 function read_hydration_instruction(node) {
@@ -674,8 +618,8 @@ function read_hydration_instruction(node) {
 function equals(value) {
   return value === this.v;
 }
-function safe_not_equal(a2, b) {
-  return a2 != a2 ? b == b : a2 !== b || a2 !== null && typeof a2 === "object" || typeof a2 === "function";
+function safe_not_equal(a, b) {
+  return a != a ? b == b : a !== b || a !== null && typeof a === "object" || typeof a === "function";
 }
 function safe_equals(value) {
   return !safe_not_equal(value, this.v);
@@ -688,24 +632,18 @@ var tracing_mode_flag = false;
 
 // node_modules/svelte/src/internal/client/dev/tracing.js
 var tracing_expressions = null;
-function tag(source2, label2) {
-  source2.label = label2;
-  tag_proxy(source2.v, label2);
+function tag(source2, label) {
+  source2.label = label;
+  tag_proxy(source2.v, label);
   return source2;
 }
-function tag_proxy(value, label2) {
-  value?.[PROXY_PATH_SYMBOL]?.(label2);
+function tag_proxy(value, label) {
+  value?.[PROXY_PATH_SYMBOL]?.(label);
   return value;
-}
-function label(value) {
-  if (typeof value === "symbol") return `Symbol(${value.description})`;
-  if (typeof value === "function") return "<function>";
-  if (typeof value === "object" && value) return "<object>";
-  return String(value);
 }
 
 // node_modules/svelte/src/internal/shared/dev.js
-function get_error(label2) {
+function get_error(label) {
   const error = new Error();
   const stack2 = get_stack();
   if (stack2.length === 0) {
@@ -716,7 +654,7 @@ function get_error(label2) {
     value: stack2.join("\n")
   });
   define_property(error, "name", {
-    value: label2
+    value: label
   });
   return (
     /** @type {Error & { stack: string }} */
@@ -767,42 +705,6 @@ var dev_current_component_function = null;
 function set_dev_current_component_function(fn) {
   dev_current_component_function = fn;
 }
-function getContext(key2) {
-  const context_map = get_or_init_context_map("getContext");
-  const result = (
-    /** @type {T} */
-    context_map.get(key2)
-  );
-  return result;
-}
-function setContext(key2, context) {
-  const context_map = get_or_init_context_map("setContext");
-  if (async_mode_flag) {
-    var flags2 = (
-      /** @type {Effect} */
-      active_effect.f
-    );
-    var valid = !active_reaction && (flags2 & BRANCH_EFFECT) !== 0 && // pop() runs synchronously, so this indicates we're setting context after an await
-    !/** @type {ComponentContext} */
-    component_context.i;
-    if (!valid) {
-      set_context_after_init();
-    }
-  }
-  context_map.set(key2, context);
-  return context;
-}
-function hasContext(key2) {
-  const context_map = get_or_init_context_map("hasContext");
-  return context_map.has(key2);
-}
-function getAllContexts() {
-  const context_map = get_or_init_context_map("getAllContexts");
-  return (
-    /** @type {T} */
-    context_map
-  );
-}
 function push(props, runes = false, fn) {
   component_context = {
     p: component_context,
@@ -847,23 +749,6 @@ function pop(component2) {
 }
 function is_runes() {
   return !legacy_mode_flag || component_context !== null && component_context.l === null;
-}
-function get_or_init_context_map(name) {
-  if (component_context === null) {
-    lifecycle_outside_component(name);
-  }
-  return component_context.c ??= new Map(get_parent_context(component_context) || void 0);
-}
-function get_parent_context(component_context2) {
-  let parent2 = component_context2.p;
-  while (parent2 !== null) {
-    const context_map = parent2.c;
-    if (context_map !== null) {
-      return context_map;
-    }
-    parent2 = parent2.p;
-  }
-  return null;
 }
 
 // node_modules/svelte/src/internal/client/dom/task.js
@@ -1585,7 +1470,7 @@ function derived(fn) {
 }
 var OBSOLETE = Symbol("obsolete");
 // @__NO_SIDE_EFFECTS__
-function async_derived(fn, label2, location) {
+function async_derived(fn, label, location) {
   let parent2 = (
     /** @type {Effect | null} */
     active_effect
@@ -1602,7 +1487,7 @@ function async_derived(fn, label2, location) {
     /** @type {V} */
     UNINITIALIZED
   );
-  if (dev_fallback_default) signal.label = label2 ?? fn.toString();
+  if (dev_fallback_default) signal.label = label ?? fn.toString();
   var should_suspend = !active_reaction;
   var deferreds = /* @__PURE__ */ new Set();
   async_effect(() => {
@@ -1702,17 +1587,17 @@ function async_derived(fn, label2, location) {
     signal.f |= ASYNC;
   }
   return new Promise((fulfil) => {
-    function next4(p2) {
+    function next3(p) {
       function go() {
-        if (p2 === promise) {
+        if (p === promise) {
           fulfil(signal);
         } else {
-          next4(promise);
+          next3(promise);
         }
       }
-      p2.then(go, go);
+      p.then(go, go);
     }
-    next4(promise);
+    next3(promise);
   });
 }
 // @__NO_SIDE_EFFECTS__
@@ -2010,11 +1895,11 @@ var Batch = class _Batch {
     var effects = collected_effects = [];
     var render_effects = [];
     var updates = legacy_updates = [];
-    for (const root71 of roots) {
+    for (const root6 of roots) {
       try {
-        this.#traverse(root71, effects, render_effects);
+        this.#traverse(root6, effects, render_effects);
       } catch (e) {
-        reset_all(root71);
+        reset_all(root6);
         if (!this.#is_deferred()) this.discard();
         throw e;
       }
@@ -2071,7 +1956,7 @@ var Batch = class _Batch {
     if (this.#roots.length > 0) {
       if (next_batch !== null) {
         const batch2 = next_batch;
-        batch2.#roots.push(...this.#roots.filter((r2) => !batch2.#roots.includes(r2)));
+        batch2.#roots.push(...this.#roots.filter((r) => !batch2.#roots.includes(r)));
       } else {
         next_batch = this;
       }
@@ -2087,9 +1972,9 @@ var Batch = class _Batch {
    * @param {Effect[]} effects
    * @param {Effect[]} render_effects
    */
-  #traverse(root71, effects, render_effects) {
-    root71.f ^= CLEAN;
-    var effect2 = root71.first;
+  #traverse(root6, effects, render_effects) {
+    root6.f ^= CLEAN;
+    var effect2 = root6.first;
     while (effect2 !== null) {
       var flags2 = effect2.f;
       var is_branch = (flags2 & (BRANCH_EFFECT | ROOT_EFFECT)) !== 0;
@@ -2113,9 +1998,9 @@ var Batch = class _Batch {
         }
       }
       while (effect2 !== null) {
-        var next4 = effect2.next;
-        if (next4 !== null) {
-          effect2 = next4;
+        var next3 = effect2.next;
+        if (next3 !== null) {
+          effect2 = next3;
           break;
         }
         effect2 = effect2.parent;
@@ -2331,8 +2216,8 @@ var Batch = class _Batch {
         }
         if (batch.#roots.length > 0 && !batch.#decrement_queued) {
           batch.apply();
-          for (var root71 of batch.#roots) {
-            batch.#traverse(root71, [], []);
+          for (var root6 of batch.#roots) {
+            batch.#traverse(root6, [], []);
           }
           batch.#roots = [];
         }
@@ -2473,17 +2358,17 @@ var Batch = class _Batch {
   }
   #unlink() {
     if (!this.linked) return;
-    var prev3 = this.#prev;
-    var next4 = this.#next;
-    if (prev3 === null) {
-      first_batch = next4;
+    var prev2 = this.#prev;
+    var next3 = this.#next;
+    if (prev2 === null) {
+      first_batch = next3;
     } else {
-      prev3.#next = next4;
+      prev2.#next = next3;
     }
-    if (next4 === null) {
-      last_batch = prev3;
+    if (next3 === null) {
+      last_batch = prev2;
     } else {
-      next4.#prev = prev3;
+      next3.#prev = prev2;
     }
     this.linked = false;
   }
@@ -2571,8 +2456,8 @@ function flush_queued_effects(effects) {
             }
             ancestor = ancestor.parent;
           }
-          for (let j2 = ordered_effects.length - 1; j2 >= 0; j2--) {
-            const e2 = ordered_effects[j2];
+          for (let j = ordered_effects.length - 1; j >= 0; j--) {
+            const e2 = ordered_effects[j];
             if ((e2.f & (DESTROYED | INERT)) !== 0) continue;
             update_effect(e2);
           }
@@ -2951,8 +2836,8 @@ function proxy(value) {
         var exists = prop3 in target;
         if (s === void 0 && (!exists || get_descriptor(target, prop3)?.writable)) {
           s = with_parent(() => {
-            var p2 = proxy(exists ? target[prop3] : UNINITIALIZED);
-            var s2 = state(p2, stack2);
+            var p = proxy(exists ? target[prop3] : UNINITIALIZED);
+            var s2 = state(p, stack2);
             if (dev_fallback_default) {
               tag(s2, get_label(path, prop3));
             }
@@ -2994,8 +2879,8 @@ function proxy(value) {
         if (s !== void 0 || active_effect !== null && (!has2 || get_descriptor(target, prop3)?.writable)) {
           if (s === void 0) {
             s = with_parent(() => {
-              var p2 = has2 ? proxy(target[prop3]) : UNINITIALIZED;
-              var s2 = state(p2, stack2);
+              var p = has2 ? proxy(target[prop3]) : UNINITIALIZED;
+              var s2 = state(p, stack2);
               if (dev_fallback_default) {
                 tag(s2, get_label(path, prop3));
               }
@@ -3039,8 +2924,8 @@ function proxy(value) {
           }
         } else {
           has2 = s.v !== UNINITIALIZED;
-          var p2 = with_parent(() => proxy(value2));
-          set(s, p2);
+          var p = with_parent(() => proxy(value2));
+          set(s, p);
         }
         var descriptor = Reflect.getOwnPropertyDescriptor(target, prop3);
         if (descriptor?.set) {
@@ -3052,9 +2937,9 @@ function proxy(value) {
               /** @type {Source<number>} */
               sources.get("length")
             );
-            var n2 = Number(prop3);
-            if (Number.isInteger(n2) && n2 >= ls.v) {
-              set(ls, n2 + 1);
+            var n = Number(prop3);
+            if (Number.isInteger(n) && n >= ls.v) {
+              set(ls, n + 1);
             }
           }
           increment(version);
@@ -3094,8 +2979,8 @@ function get_proxied_value(value) {
   }
   return value;
 }
-function is(a2, b) {
-  return Object.is(get_proxied_value(a2), get_proxied_value(b));
+function is(a, b) {
+  return Object.is(get_proxied_value(a), get_proxied_value(b));
 }
 var ARRAY_MUTATING_METHODS = /* @__PURE__ */ new Set([
   "copyWithin",
@@ -3137,8 +3022,8 @@ function init_array_prototype_warnings() {
   }
   const { indexOf, lastIndexOf, includes: includes2 } = array_prototype2;
   array_prototype2.indexOf = function(item, from_index) {
-    const index4 = indexOf.call(this, item, from_index);
-    if (index4 === -1) {
+    const index3 = indexOf.call(this, item, from_index);
+    if (index3 === -1) {
       for (let i = from_index ?? 0; i < this.length; i += 1) {
         if (get_proxied_value(this[i]) === item) {
           state_proxy_equality_mismatch("array.indexOf(...)");
@@ -3146,11 +3031,11 @@ function init_array_prototype_warnings() {
         }
       }
     }
-    return index4;
+    return index3;
   };
   array_prototype2.lastIndexOf = function(item, from_index) {
-    const index4 = lastIndexOf.call(this, item, from_index ?? this.length - 1);
-    if (index4 === -1) {
+    const index3 = lastIndexOf.call(this, item, from_index ?? this.length - 1);
+    if (index3 === -1) {
       for (let i = 0; i <= (from_index ?? this.length - 1); i += 1) {
         if (get_proxied_value(this[i]) === item) {
           state_proxy_equality_mismatch("array.lastIndexOf(...)");
@@ -3158,7 +3043,7 @@ function init_array_prototype_warnings() {
         }
       }
     }
-    return index4;
+    return index3;
   };
   array_prototype2.includes = function(item, from_index) {
     const has2 = includes2.call(this, item, from_index);
@@ -3331,27 +3216,16 @@ function merge_text_nodes(text4) {
   ) {
     return;
   }
-  let next4 = text4.nextSibling;
-  while (next4 !== null && next4.nodeType === TEXT_NODE) {
-    next4.remove();
+  let next3 = text4.nextSibling;
+  while (next3 !== null && next3.nodeType === TEXT_NODE) {
+    next3.remove();
     text4.nodeValue += /** @type {string} */
-    next4.nodeValue;
-    next4 = text4.nextSibling;
+    next3.nodeValue;
+    next3 = text4.nextSibling;
   }
 }
 
 // node_modules/svelte/src/internal/client/dom/elements/misc.js
-function autofocus(dom, value) {
-  if (value) {
-    const body = document.body;
-    dom.autofocus = true;
-    queue_micro_task(() => {
-      if (document.activeElement === body) {
-        dom.focus();
-      }
-    });
-  }
-}
 var listening_to_form_reset = false;
 function add_form_reset_listener() {
   if (!listening_to_form_reset) {
@@ -3392,13 +3266,13 @@ function without_reactive_context(fn) {
 }
 function listen_to_event_and_reset_event(element2, event2, handler, on_reset = handler) {
   element2.addEventListener(event2, () => without_reactive_context(handler));
-  const prev3 = (
+  const prev2 = (
     /** @type {any} */
     element2[FORM_RESET_HANDLER]
   );
-  if (prev3) {
+  if (prev2) {
     element2[FORM_RESET_HANDLER] = () => {
-      prev3();
+      prev2();
       on_reset(true);
     };
   } else {
@@ -3530,15 +3404,6 @@ function user_effect(fn) {
 function create_user_effect(fn) {
   return create_effect(EFFECT | USER_EFFECT, fn);
 }
-function user_pre_effect(fn) {
-  validate_effect("$effect.pre");
-  if (dev_fallback_default) {
-    define_property(fn, "name", {
-      value: "$effect.pre"
-    });
-  }
-  return create_effect(RENDER_EFFECT | USER_EFFECT, fn);
-}
 function effect_root(fn) {
   Batch.ensure();
   const effect2 = create_effect(ROOT_EFFECT | EFFECT_PRESERVED, fn);
@@ -3586,13 +3451,6 @@ function block(fn, flags2 = 0) {
   }
   return effect2;
 }
-function managed(fn, flags2 = 0) {
-  var effect2 = create_effect(MANAGED_EFFECT | flags2, fn);
-  if (dev_fallback_default) {
-    effect2.dev_stack = dev_stack;
-  }
-  return effect2;
-}
 function branch(fn) {
   return create_effect(BRANCH_EFFECT | EFFECT_PRESERVED, fn);
 }
@@ -3621,23 +3479,23 @@ function destroy_effect_children(signal, remove_dom = false) {
         controller.abort(STALE_REACTION);
       });
     }
-    var next4 = effect2.next;
+    var next3 = effect2.next;
     if ((effect2.f & ROOT_EFFECT) !== 0) {
       effect2.parent = null;
     } else {
       destroy_effect(effect2, remove_dom);
     }
-    effect2 = next4;
+    effect2 = next3;
   }
 }
 function destroy_block_effect_children(signal) {
   var effect2 = signal.first;
   while (effect2 !== null) {
-    var next4 = effect2.next;
+    var next3 = effect2.next;
     if ((effect2.f & BRANCH_EFFECT) === 0) {
       destroy_effect(effect2);
     }
-    effect2 = next4;
+    effect2 = next3;
   }
 }
 function destroy_effect(effect2, remove_dom = true) {
@@ -3673,20 +3531,20 @@ function destroy_effect(effect2, remove_dom = true) {
 }
 function remove_effect_dom(node, end2) {
   while (node !== null) {
-    var next4 = node === end2 ? null : get_next_sibling(node);
+    var next3 = node === end2 ? null : get_next_sibling(node);
     node.remove();
-    node = next4;
+    node = next3;
   }
 }
 function unlink_effect(effect2) {
   var parent2 = effect2.parent;
-  var prev3 = effect2.prev;
-  var next4 = effect2.next;
-  if (prev3 !== null) prev3.next = next4;
-  if (next4 !== null) next4.prev = prev3;
+  var prev2 = effect2.prev;
+  var next3 = effect2.next;
+  if (prev2 !== null) prev2.next = next3;
+  if (next3 !== null) next3.prev = prev2;
   if (parent2 !== null) {
-    if (parent2.first === effect2) parent2.first = next4;
-    if (parent2.last === effect2) parent2.last = prev3;
+    if (parent2.first === effect2) parent2.first = next3;
+    if (parent2.last === effect2) parent2.last = prev2;
   }
 }
 function pause_effect(effect2, callback, destroy = true) {
@@ -3761,9 +3619,9 @@ function move_effect(effect2, fragment) {
   var node = effect2.nodes.start;
   var end2 = effect2.nodes.end;
   while (node !== null) {
-    var next4 = node === end2 ? null : get_next_sibling(node);
+    var next3 = node === end2 ? null : get_next_sibling(node);
     fragment.append(node);
-    node = next4;
+    node = next3;
   }
 }
 
@@ -3843,7 +3701,7 @@ function is_dirty(reaction) {
   }
   return false;
 }
-function schedule_possible_effect_self_invalidation(signal, effect2, root71 = true) {
+function schedule_possible_effect_self_invalidation(signal, effect2, root6 = true) {
   var reactions = signal.reactions;
   if (reactions === null) return;
   if (!async_mode_flag && current_sources !== null && current_sources.has(signal)) {
@@ -3859,7 +3717,7 @@ function schedule_possible_effect_self_invalidation(signal, effect2, root71 = tr
         false
       );
     } else if (effect2 === reaction) {
-      if (root71) {
+      if (root6) {
         set_signal_status(reaction, DIRTY);
       } else if ((reaction.f & CLEAN) !== 0) {
         set_signal_status(reaction, MAYBE_DIRTY);
@@ -3980,13 +3838,13 @@ function update_reaction(reaction) {
 function remove_reaction(signal, dependency) {
   let reactions = dependency.reactions;
   if (reactions !== null) {
-    var index4 = index_of.call(reactions, signal);
-    if (index4 !== -1) {
+    var index3 = index_of.call(reactions, signal);
+    if (index3 !== -1) {
       var new_length = reactions.length - 1;
       if (new_length === 0) {
         reactions = dependency.reactions = null;
       } else {
-        reactions[index4] = reactions[new_length];
+        reactions[index3] = reactions[new_length];
         reactions.pop();
       }
     }
@@ -4218,44 +4076,51 @@ function untrack(fn) {
     untracking = previous_untracking;
   }
 }
-
-// node_modules/svelte/src/attachments/index.js
-function createAttachmentKey() {
-  return Symbol(ATTACHMENT_KEY);
+function deep_read_state(value) {
+  if (typeof value !== "object" || !value || value instanceof EventTarget) {
+    return;
+  }
+  if (STATE_SYMBOL in value) {
+    deep_read(value);
+  } else if (!Array.isArray(value)) {
+    for (let key2 in value) {
+      const prop3 = value[key2];
+      if (typeof prop3 === "object" && prop3 && STATE_SYMBOL in prop3) {
+        deep_read(prop3);
+      }
+    }
+  }
+}
+function deep_read(value, visited = /* @__PURE__ */ new Set()) {
+  if (typeof value === "object" && value !== null && // We don't want to traverse DOM elements
+  !(value instanceof EventTarget) && !visited.has(value)) {
+    visited.add(value);
+    if (value instanceof Date) {
+      value.getTime();
+    }
+    for (let key2 in value) {
+      try {
+        deep_read(value[key2], visited);
+      } catch (e) {
+      }
+    }
+    const proto = get_prototype_of(value);
+    if (proto !== Object.prototype && proto !== Array.prototype && proto !== Map.prototype && proto !== Set.prototype && proto !== Date.prototype) {
+      const descriptors = get_descriptors(proto);
+      for (let key2 in descriptors) {
+        const get4 = descriptors[key2].get;
+        if (get4) {
+          try {
+            get4.call(value);
+          } catch (e) {
+          }
+        }
+      }
+    }
+  }
 }
 
 // node_modules/svelte/src/utils.js
-function is_capture_event(name) {
-  return name.endsWith("capture") && name !== "gotpointercapture" && name !== "lostpointercapture";
-}
-var DELEGATED_EVENTS = [
-  "beforeinput",
-  "click",
-  "change",
-  "dblclick",
-  "contextmenu",
-  "focusin",
-  "focusout",
-  "input",
-  "keydown",
-  "keyup",
-  "mousedown",
-  "mousemove",
-  "mouseout",
-  "mouseover",
-  "mouseup",
-  "pointerdown",
-  "pointermove",
-  "pointerout",
-  "pointerover",
-  "pointerup",
-  "touchend",
-  "touchmove",
-  "touchstart"
-];
-function can_delegate_event(event_name) {
-  return DELEGATED_EVENTS.includes(event_name);
-}
 var DOM_BOOLEAN_ATTRIBUTES = [
   "allowfullscreen",
   "async",
@@ -4286,25 +4151,6 @@ var DOM_BOOLEAN_ATTRIBUTES = [
   "disablepictureinpicture",
   "disableremoteplayback"
 ];
-var ATTRIBUTE_ALIASES = {
-  // no `class: 'className'` because we handle that separately
-  formnovalidate: "formNoValidate",
-  ismap: "isMap",
-  nomodule: "noModule",
-  playsinline: "playsInline",
-  readonly: "readOnly",
-  defaultvalue: "defaultValue",
-  defaultchecked: "defaultChecked",
-  srcobject: "srcObject",
-  novalidate: "noValidate",
-  allowfullscreen: "allowFullscreen",
-  disablepictureinpicture: "disablePictureInPicture",
-  disableremoteplayback: "disableRemotePlayback"
-};
-function normalize_attribute(name) {
-  name = name.toLowerCase();
-  return ATTRIBUTE_ALIASES[name] ?? name;
-}
 var DOM_PROPERTIES = [
   ...DOM_BOOLEAN_ATTRIBUTES,
   "formNoValidate",
@@ -4355,58 +4201,11 @@ var RUNES = (
     "$host"
   ]
 );
-var RAW_TEXT_ELEMENTS = (
-  /** @type {const} */
-  ["textarea", "script", "style", "title"]
-);
-function is_raw_text_element(name) {
-  return RAW_TEXT_ELEMENTS.includes(
-    /** @type {typeof RAW_TEXT_ELEMENTS[number]} */
-    name
-  );
-}
-
-// node_modules/svelte/src/internal/client/dev/css.js
-var all_styles = /* @__PURE__ */ new Map();
-function register_style(hash2, style) {
-  var styles = all_styles.get(hash2);
-  if (!styles) {
-    styles = /* @__PURE__ */ new Set();
-    all_styles.set(hash2, styles);
-  }
-  styles.add(style);
-}
 
 // node_modules/svelte/src/internal/client/dom/elements/events.js
 var event_symbol = Symbol("events");
 var all_registered_events = /* @__PURE__ */ new Set();
 var root_event_handles = /* @__PURE__ */ new Set();
-function create_event(event_name, dom, handler, options = {}) {
-  function target_handler(event2) {
-    if (!options.capture) {
-      handle_event_propagation.call(dom, event2);
-    }
-    if (!event2.cancelBubble) {
-      return without_reactive_context(() => {
-        return handler?.call(this, event2);
-      });
-    }
-  }
-  if (event_name.startsWith("pointer") || event_name.startsWith("touch") || event_name === "wheel") {
-    queue_micro_task(() => {
-      dom.addEventListener(event_name, target_handler, options);
-    });
-  } else {
-    dom.addEventListener(event_name, target_handler, options);
-  }
-  return target_handler;
-}
-function on(element2, type, handler, options = {}) {
-  var target_handler = create_event(type, element2, handler, options);
-  return () => {
-    element2.removeEventListener(type, target_handler, options);
-  };
-}
 function delegated(event_name, element2, handler) {
   (element2[event_symbol] ??= {})[event_name] = handler;
 }
@@ -4573,82 +4372,6 @@ function from_html(content, flags2) {
     return clone2;
   };
 }
-// @__NO_SIDE_EFFECTS__
-function from_namespace(content, flags2, ns = "svg") {
-  var has_start = !content.startsWith("<!>");
-  var is_fragment = (flags2 & TEMPLATE_FRAGMENT) !== 0;
-  var wrapped = `<${ns}>${has_start ? content : "<!>" + content}</${ns}>`;
-  var node;
-  return () => {
-    if (hydrating) {
-      assign_nodes(hydrate_node, null);
-      return hydrate_node;
-    }
-    if (!node) {
-      var fragment = (
-        /** @type {DocumentFragment} */
-        create_fragment_from_html(wrapped)
-      );
-      var root71 = (
-        /** @type {Element} */
-        get_first_child(fragment)
-      );
-      if (is_fragment) {
-        node = document.createDocumentFragment();
-        while (get_first_child(root71)) {
-          node.appendChild(
-            /** @type {TemplateNode} */
-            get_first_child(root71)
-          );
-        }
-      } else {
-        node = /** @type {Element} */
-        get_first_child(root71);
-      }
-    }
-    var clone2 = (
-      /** @type {TemplateNode} */
-      node.cloneNode(true)
-    );
-    if (is_fragment) {
-      var start = (
-        /** @type {TemplateNode} */
-        get_first_child(clone2)
-      );
-      var end2 = (
-        /** @type {TemplateNode} */
-        clone2.lastChild
-      );
-      assign_nodes(start, end2);
-    } else {
-      assign_nodes(clone2, clone2);
-    }
-    return clone2;
-  };
-}
-// @__NO_SIDE_EFFECTS__
-function from_svg(content, flags2) {
-  return /* @__PURE__ */ from_namespace(content, flags2, "svg");
-}
-function text(value = "") {
-  if (!hydrating) {
-    var t = create_text(value + "");
-    assign_nodes(t, t);
-    return t;
-  }
-  var node = hydrate_node;
-  if (node.nodeType !== TEXT_NODE) {
-    node.before(node = create_text());
-    set_hydrate_node(node);
-  } else {
-    merge_text_nodes(
-      /** @type {Text} */
-      node
-    );
-  }
-  assign_nodes(node, node);
-  return node;
-}
 function comment() {
   if (hydrating) {
     assign_nodes(hydrate_node, null);
@@ -4681,21 +4404,9 @@ function append(anchor, dom) {
     dom
   );
 }
-function props_id() {
-  if (hydrating && hydrate_node && hydrate_node.nodeType === COMMENT_NODE && hydrate_node.textContent?.startsWith(`$`)) {
-    const id = hydrate_node.textContent.substring(1);
-    hydrate_next();
-    return id;
-  }
-  (window.__svelte ??= {}).uid ??= 1;
-  return `c${window.__svelte.uid++}`;
-}
 
 // node_modules/svelte/src/internal/client/render.js
 var should_intro = true;
-function set_should_intro(value) {
-  should_intro = value;
-}
 function set_text(text4, value) {
   var str = value == null ? "" : typeof value === "object" ? `${value}` : value;
   if (str !== /** @type {any} */
@@ -4942,34 +4653,34 @@ var BranchManager = class {
         onscreen = offscreen.effect;
       }
     }
-    for (const [b, k2] of this.#batches) {
+    for (const [b, k] of this.#batches) {
       this.#batches.delete(b);
       if (b === batch) {
         break;
       }
-      const offscreen2 = this.#offscreen.get(k2);
+      const offscreen2 = this.#offscreen.get(k);
       if (offscreen2) {
         destroy_effect(offscreen2.effect);
-        this.#offscreen.delete(k2);
+        this.#offscreen.delete(k);
       }
     }
-    for (const [k2, effect2] of this.#onscreen) {
-      if (k2 === key2 || this.#outroing.has(k2)) continue;
+    for (const [k, effect2] of this.#onscreen) {
+      if (k === key2 || this.#outroing.has(k)) continue;
       const on_destroy = () => {
         const keys = Array.from(this.#batches.values());
-        if (keys.includes(k2)) {
+        if (keys.includes(k)) {
           var fragment = document.createDocumentFragment();
           move_effect(effect2, fragment);
           fragment.append(create_text());
-          this.#offscreen.set(k2, { effect: effect2, fragment });
+          this.#offscreen.set(k, { effect: effect2, fragment });
         } else {
           destroy_effect(effect2);
         }
-        this.#outroing.delete(k2);
-        this.#onscreen.delete(k2);
+        this.#outroing.delete(k);
+        this.#onscreen.delete(k);
       };
       if (this.#transition || !onscreen) {
-        this.#outroing.add(k2);
+        this.#outroing.add(k);
         pause_effect(effect2, on_destroy, false);
       } else {
         on_destroy();
@@ -4982,10 +4693,10 @@ var BranchManager = class {
   #discard = (batch) => {
     this.#batches.delete(batch);
     const keys = Array.from(this.#batches.values());
-    for (const [k2, branch2] of this.#offscreen) {
-      if (!keys.includes(k2)) {
+    for (const [k, branch2] of this.#offscreen) {
+      if (!keys.includes(k)) {
         destroy_effect(branch2.effect);
-        this.#offscreen.delete(k2);
+        this.#offscreen.delete(k);
       }
     }
   };
@@ -5018,15 +4729,15 @@ var BranchManager = class {
     }
     this.#batches.set(batch, key2);
     if (defer) {
-      for (const [k2, effect2] of this.#onscreen) {
-        if (k2 === key2) {
+      for (const [k, effect2] of this.#onscreen) {
+        if (k === key2) {
           batch.unskip_effect(effect2);
         } else {
           batch.skip_effect(effect2);
         }
       }
-      for (const [k2, branch2] of this.#offscreen) {
-        if (k2 === key2) {
+      for (const [k, branch2] of this.#offscreen) {
+        if (k === key2) {
           batch.unskip_effect(branch2.effect);
         } else {
           batch.skip_effect(branch2.effect);
@@ -5084,31 +4795,9 @@ function if_block(node, fn, elseif = false) {
 
 // node_modules/svelte/src/internal/client/dom/blocks/key.js
 var NAN = Symbol("NaN");
-function key(node, get_key, render_fn) {
-  if (hydrating) {
-    hydrate_next();
-  }
-  var branches = new BranchManager(node);
-  var legacy = !is_runes();
-  block(() => {
-    var key2 = get_key();
-    if (key2 !== key2) {
-      key2 = /** @type {any} */
-      NAN;
-    }
-    if (legacy && key2 !== null && typeof key2 === "object") {
-      key2 = /** @type {V} */
-      {};
-    }
-    branches.ensure(key2, render_fn);
-  });
-}
 
 // node_modules/svelte/src/internal/client/dom/blocks/each.js
-function index(_, i) {
-  return i;
-}
-function pause_effects(state3, to_destroy, controlled_anchor) {
+function pause_effects(state2, to_destroy, controlled_anchor) {
   var transitions = [];
   var length = to_destroy.length;
   var group;
@@ -5124,12 +4813,12 @@ function pause_effects(state3, to_destroy, controlled_anchor) {
           if (group.pending.size === 0) {
             var groups = (
               /** @type {Set<EachOutroGroup>} */
-              state3.outrogroups
+              state2.outrogroups
             );
-            destroy_effects(state3, array_from(group.done));
+            destroy_effects(state2, array_from(group.done));
             groups.delete(group);
             if (groups.size === 0) {
-              state3.outrogroups = null;
+              state2.outrogroups = null;
             }
           }
         } else {
@@ -5152,26 +4841,26 @@ function pause_effects(state3, to_destroy, controlled_anchor) {
       );
       clear_text_content(parent_node);
       parent_node.append(anchor);
-      state3.items.clear();
+      state2.items.clear();
     }
-    destroy_effects(state3, to_destroy, !fast_path);
+    destroy_effects(state2, to_destroy, !fast_path);
   } else {
     group = {
       pending: new Set(to_destroy),
       done: /* @__PURE__ */ new Set()
     };
-    (state3.outrogroups ??= /* @__PURE__ */ new Set()).add(group);
+    (state2.outrogroups ??= /* @__PURE__ */ new Set()).add(group);
   }
 }
-function destroy_effects(state3, to_destroy, remove_dom = true) {
+function destroy_effects(state2, to_destroy, remove_dom = true) {
   var preserved_effects;
-  if (state3.pending.size > 0) {
+  if (state2.pending.size > 0) {
     preserved_effects = /* @__PURE__ */ new Set();
-    for (const keys of state3.pending.values()) {
+    for (const keys of state2.pending.values()) {
       for (const key2 of keys) {
         preserved_effects.add(
           /** @type {EachItem} */
-          state3.items.get(key2).e
+          state2.items.get(key2).e
         );
       }
     }
@@ -5217,12 +4906,12 @@ function each(node, flags2, get_collection, get_key, render_fn, fallback_fn = nu
   var pending2 = /* @__PURE__ */ new Map();
   var first_run = true;
   function commit(batch) {
-    if ((state3.effect.f & DESTROYED) !== 0) {
+    if ((state2.effect.f & DESTROYED) !== 0) {
       return;
     }
-    state3.pending.delete(batch);
-    state3.fallback = fallback2;
-    reconcile(state3, array, anchor, flags2, get_key);
+    state2.pending.delete(batch);
+    state2.fallback = fallback2;
+    reconcile(state2, array, anchor, flags2, get_key);
     if (fallback2 !== null) {
       if (array.length === 0) {
         if ((fallback2.f & EFFECT_OFFSCREEN) === 0) {
@@ -5239,7 +4928,7 @@ function each(node, flags2, get_collection, get_key, render_fn, fallback_fn = nu
     }
   }
   function discard(batch) {
-    state3.pending.delete(batch);
+    state2.pending.delete(batch);
   }
   var effect2 = block(() => {
     array = /** @type {V[]} */
@@ -5261,7 +4950,7 @@ function each(node, flags2, get_collection, get_key, render_fn, fallback_fn = nu
       current_batch
     );
     var defer = should_defer_append();
-    for (var index4 = 0; index4 < length; index4 += 1) {
+    for (var index3 = 0; index3 < length; index3 += 1) {
       if (hydrating && hydrate_node.nodeType === COMMENT_NODE && /** @type {Comment} */
       hydrate_node.data === HYDRATION_END) {
         anchor = /** @type {Comment} */
@@ -5269,18 +4958,18 @@ function each(node, flags2, get_collection, get_key, render_fn, fallback_fn = nu
         mismatch = true;
         set_hydrating(false);
       }
-      var value = array[index4];
-      var key2 = get_key(value, index4);
+      var value = array[index3];
+      var key2 = get_key(value, index3);
       if (dev_fallback_default) {
-        var key_again = get_key(value, index4);
+        var key_again = get_key(value, index3);
         if (key2 !== key_again) {
-          each_key_volatile(String(index4), String(key2), String(key_again));
+          each_key_volatile(String(index3), String(key2), String(key_again));
         }
       }
       var item = first_run ? null : items.get(key2);
       if (item) {
         if (item.v) internal_set(item.v, value);
-        if (item.i) internal_set(item.i, index4);
+        if (item.i) internal_set(item.i, index3);
         if (defer) {
           batch.unskip_effect(item.e);
         }
@@ -5290,7 +4979,7 @@ function each(node, flags2, get_collection, get_key, render_fn, fallback_fn = nu
           first_run ? anchor : offscreen_anchor ??= create_text(),
           value,
           key2,
-          index4,
+          index3,
           render_fn,
           flags2,
           get_collection
@@ -5339,7 +5028,7 @@ function each(node, flags2, get_collection, get_key, render_fn, fallback_fn = nu
     }
     get2(each_array);
   });
-  var state3 = { effect: effect2, flags: flags2, items, pending: pending2, outrogroups: null, fallback: fallback2 };
+  var state2 = { effect: effect2, flags: flags2, items, pending: pending2, outrogroups: null, fallback: fallback2 };
   first_run = false;
   if (hydrating) {
     anchor = hydrate_node;
@@ -5351,13 +5040,13 @@ function skip_to_branch(effect2) {
   }
   return effect2;
 }
-function reconcile(state3, array, anchor, flags2, get_key) {
+function reconcile(state2, array, anchor, flags2, get_key) {
   var is_animated = (flags2 & EACH_IS_ANIMATED) !== 0;
   var length = array.length;
-  var items = state3.items;
-  var current = skip_to_branch(state3.effect.first);
+  var items = state2.items;
+  var current = skip_to_branch(state2.effect.first);
   var seen;
-  var prev3 = null;
+  var prev2 = null;
   var to_animate;
   var matched = [];
   var stashed = [];
@@ -5382,8 +5071,8 @@ function reconcile(state3, array, anchor, flags2, get_key) {
     key2 = get_key(value, i);
     effect2 = /** @type {EachItem} */
     items.get(key2).e;
-    if (state3.outrogroups !== null) {
-      for (const group of state3.outrogroups) {
+    if (state2.outrogroups !== null) {
+      for (const group of state2.outrogroups) {
         group.pending.delete(effect2);
         group.done.delete(effect2);
       }
@@ -5400,19 +5089,19 @@ function reconcile(state3, array, anchor, flags2, get_key) {
       if (effect2 === current) {
         move(effect2, null, anchor);
       } else {
-        var next4 = prev3 ? prev3.next : current;
-        if (effect2 === state3.effect.last) {
-          state3.effect.last = effect2.prev;
+        var next3 = prev2 ? prev2.next : current;
+        if (effect2 === state2.effect.last) {
+          state2.effect.last = effect2.prev;
         }
         if (effect2.prev) effect2.prev.next = effect2.next;
         if (effect2.next) effect2.next.prev = effect2.prev;
-        link(state3, prev3, effect2);
-        link(state3, effect2, next4);
-        move(effect2, next4, anchor);
-        prev3 = effect2;
+        link(state2, prev2, effect2);
+        link(state2, effect2, next3);
+        move(effect2, next3, anchor);
+        prev2 = effect2;
         matched = [];
         stashed = [];
-        current = skip_to_branch(prev3.next);
+        current = skip_to_branch(prev2.next);
         continue;
       }
     }
@@ -5420,31 +5109,31 @@ function reconcile(state3, array, anchor, flags2, get_key) {
       if (seen !== void 0 && seen.has(effect2)) {
         if (matched.length < stashed.length) {
           var start = stashed[0];
-          var j2;
-          prev3 = start.prev;
-          var a2 = matched[0];
+          var j;
+          prev2 = start.prev;
+          var a = matched[0];
           var b = matched[matched.length - 1];
-          for (j2 = 0; j2 < matched.length; j2 += 1) {
-            move(matched[j2], start, anchor);
+          for (j = 0; j < matched.length; j += 1) {
+            move(matched[j], start, anchor);
           }
-          for (j2 = 0; j2 < stashed.length; j2 += 1) {
-            seen.delete(stashed[j2]);
+          for (j = 0; j < stashed.length; j += 1) {
+            seen.delete(stashed[j]);
           }
-          link(state3, a2.prev, b.next);
-          link(state3, prev3, a2);
-          link(state3, b, start);
+          link(state2, a.prev, b.next);
+          link(state2, prev2, a);
+          link(state2, b, start);
           current = start;
-          prev3 = b;
+          prev2 = b;
           i -= 1;
           matched = [];
           stashed = [];
         } else {
           seen.delete(effect2);
           move(effect2, current, anchor);
-          link(state3, effect2.prev, effect2.next);
-          link(state3, effect2, prev3 === null ? state3.effect.first : prev3.next);
-          link(state3, prev3, effect2);
-          prev3 = effect2;
+          link(state2, effect2.prev, effect2.next);
+          link(state2, effect2, prev2 === null ? state2.effect.first : prev2.next);
+          link(state2, prev2, effect2);
+          prev2 = effect2;
         }
         continue;
       }
@@ -5462,18 +5151,18 @@ function reconcile(state3, array, anchor, flags2, get_key) {
     if ((effect2.f & EFFECT_OFFSCREEN) === 0) {
       matched.push(effect2);
     }
-    prev3 = effect2;
+    prev2 = effect2;
     current = skip_to_branch(effect2.next);
   }
-  if (state3.outrogroups !== null) {
-    for (const group of state3.outrogroups) {
+  if (state2.outrogroups !== null) {
+    for (const group of state2.outrogroups) {
       if (group.pending.size === 0) {
-        destroy_effects(state3, array_from(group.done));
-        state3.outrogroups?.delete(group);
+        destroy_effects(state2, array_from(group.done));
+        state2.outrogroups?.delete(group);
       }
     }
-    if (state3.outrogroups.size === 0) {
-      state3.outrogroups = null;
+    if (state2.outrogroups.size === 0) {
+      state2.outrogroups = null;
     }
   }
   if (current !== null || seen !== void 0) {
@@ -5486,7 +5175,7 @@ function reconcile(state3, array, anchor, flags2, get_key) {
       }
     }
     while (current !== null) {
-      if ((current.f & INERT) === 0 && current !== state3.fallback) {
+      if ((current.f & INERT) === 0 && current !== state2.fallback) {
         to_destroy.push(current);
       }
       current = skip_to_branch(current.next);
@@ -5502,7 +5191,7 @@ function reconcile(state3, array, anchor, flags2, get_key) {
           to_destroy[i].nodes?.a?.fix();
         }
       }
-      pause_effects(state3, to_destroy, controlled_anchor);
+      pause_effects(state2, to_destroy, controlled_anchor);
     }
   }
   if (is_animated) {
@@ -5514,32 +5203,32 @@ function reconcile(state3, array, anchor, flags2, get_key) {
     });
   }
 }
-function create_item(items, anchor, value, key2, index4, render_fn, flags2, get_collection) {
+function create_item(items, anchor, value, key2, index3, render_fn, flags2, get_collection) {
   var v = (flags2 & EACH_ITEM_REACTIVE) !== 0 ? (flags2 & EACH_ITEM_IMMUTABLE) === 0 ? mutable_source(value, false, false) : source(value) : null;
-  var i = (flags2 & EACH_INDEX_REACTIVE) !== 0 ? source(index4) : null;
+  var i = (flags2 & EACH_INDEX_REACTIVE) !== 0 ? source(index3) : null;
   if (dev_fallback_default && v) {
     v.trace = () => {
-      get_collection()[i?.v ?? index4];
+      get_collection()[i?.v ?? index3];
     };
   }
   return {
     v,
     i,
     e: branch(() => {
-      render_fn(anchor, v ?? value, i ?? index4, get_collection);
+      render_fn(anchor, v ?? value, i ?? index3, get_collection);
       return () => {
         items.delete(key2);
       };
     })
   };
 }
-function move(effect2, next4, anchor) {
+function move(effect2, next3, anchor) {
   if (!effect2.nodes) return;
   var node = effect2.nodes.start;
   var end2 = effect2.nodes.end;
-  var dest = next4 && (next4.f & EFFECT_OFFSCREEN) === 0 ? (
+  var dest = next3 && (next3.f & EFFECT_OFFSCREEN) === 0 ? (
     /** @type {EffectNodes} */
-    next4.nodes.start
+    next3.nodes.start
   ) : anchor;
   while (node !== null) {
     var next_node = (
@@ -5553,16 +5242,16 @@ function move(effect2, next4, anchor) {
     node = next_node;
   }
 }
-function link(state3, prev3, next4) {
-  if (prev3 === null) {
-    state3.effect.first = next4;
+function link(state2, prev2, next3) {
+  if (prev2 === null) {
+    state2.effect.first = next3;
   } else {
-    prev3.next = next4;
+    prev2.next = next3;
   }
-  if (next4 === null) {
-    state3.effect.last = prev3;
+  if (next3 === null) {
+    state2.effect.last = prev2;
   } else {
-    next4.prev = prev3;
+    next3.prev = prev2;
   }
 }
 function validate_each_keys(array, key_fn) {
@@ -5571,225 +5260,46 @@ function validate_each_keys(array, key_fn) {
   for (let i = 0; i < length; i++) {
     const key2 = key_fn(array[i], i);
     if (keys.has(key2)) {
-      const a2 = String(keys.get(key2));
+      const a = String(keys.get(key2));
       const b = String(i);
-      let k2 = String(key2);
-      if (k2.startsWith("[object ")) k2 = null;
-      each_key_duplicate(a2, b, k2);
+      let k = String(key2);
+      if (k.startsWith("[object ")) k = null;
+      each_key_duplicate(a, b, k);
     }
     keys.set(key2, i);
   }
 }
 
-// node_modules/svelte/src/internal/client/dom/blocks/snippet.js
-function snippet(node, get_snippet, ...args) {
-  var branches = new BranchManager(node);
-  block(() => {
-    const snippet2 = get_snippet() ?? null;
-    if (dev_fallback_default && snippet2 == null) {
-      invalid_snippet();
-    }
-    branches.ensure(snippet2, snippet2 && ((anchor) => snippet2(anchor, ...args)));
-  }, EFFECT_TRANSPARENT);
-}
-
-// node_modules/svelte/src/internal/client/dom/blocks/svelte-component.js
-function component(node, get_component, render_fn) {
-  var hydration_start_node;
-  if (hydrating) {
-    hydration_start_node = hydrate_node;
-    hydrate_next();
-  }
-  var branches = new BranchManager(node);
-  block(() => {
-    var component2 = get_component() ?? null;
-    if (hydrating) {
-      var data2 = read_hydration_instruction(
-        /** @type {TemplateNode} */
-        hydration_start_node
-      );
-      var server_had_component = data2 === HYDRATION_START;
-      var client_has_component = component2 !== null;
-      if (server_had_component !== client_has_component) {
-        var anchor = skip_nodes();
-        set_hydrate_node(anchor);
-        branches.anchor = anchor;
-        set_hydrating(false);
-        branches.ensure(component2, component2 && ((target) => render_fn(target, component2)));
-        set_hydrating(true);
-        return;
-      }
-    }
-    branches.ensure(component2, component2 && ((target) => render_fn(target, component2)));
-  }, EFFECT_TRANSPARENT);
-}
-
-// node_modules/svelte/src/internal/client/dom/elements/transitions.js
-var animation_effect_override = null;
-function set_animation_effect_override(v) {
-  animation_effect_override = v;
-}
-
-// node_modules/svelte/src/internal/client/dom/blocks/svelte-element.js
-function element(node, get_tag, is_svg, render_fn, get_namespace, location) {
-  let was_hydrating = hydrating;
-  if (hydrating) {
-    hydrate_next();
-  }
-  var filename = dev_fallback_default && location && component_context?.function[FILENAME];
-  var element2 = null;
-  if (hydrating && hydrate_node.nodeType === ELEMENT_NODE) {
-    element2 = /** @type {Element} */
-    hydrate_node;
-    hydrate_next();
-  }
-  var anchor = (
-    /** @type {TemplateNode} */
-    hydrating ? hydrate_node : node
-  );
-  var parent_effect = (
-    /** @type {Effect} */
-    active_effect
-  );
-  var branches = new BranchManager(anchor, false);
-  block(() => {
-    const next_tag = get_tag() || null;
-    var ns = get_namespace ? get_namespace() : is_svg || next_tag === "svg" ? NAMESPACE_SVG : void 0;
-    if (next_tag === null) {
-      branches.ensure(null, null);
-      set_should_intro(true);
-      return;
-    }
-    branches.ensure(next_tag, (anchor2) => {
-      if (next_tag) {
-        element2 = hydrating ? (
-          /** @type {Element} */
-          element2
-        ) : create_element(next_tag, ns);
-        if (dev_fallback_default && location) {
-          element2.__svelte_meta = {
-            parent: dev_stack,
-            loc: {
-              file: filename,
-              line: location[0],
-              column: location[1]
-            }
-          };
-        }
-        assign_nodes(element2, element2);
-        if (render_fn) {
-          var tmp_comment = null;
-          if (hydrating && is_raw_text_element(next_tag)) {
-            element2.append(tmp_comment = document.createComment(""));
-          }
-          var child_anchor = hydrating ? get_first_child(element2) : element2.appendChild(create_text());
-          if (hydrating) {
-            if (child_anchor === null) {
-              set_hydrating(false);
-            } else {
-              set_hydrate_node(child_anchor);
-            }
-          }
-          set_animation_effect_override(parent_effect);
-          render_fn(element2, child_anchor);
-          tmp_comment?.remove();
-          set_animation_effect_override(null);
-        }
-        active_effect.nodes.end = element2;
-        anchor2.before(element2);
-      }
-      if (hydrating) {
-        set_hydrate_node(anchor2);
-      }
-    });
-    set_should_intro(true);
-    return () => {
-      if (next_tag) {
-        set_should_intro(false);
-      }
-    };
-  }, EFFECT_TRANSPARENT);
-  teardown(() => {
-    set_should_intro(true);
-  });
-  if (was_hydrating) {
-    set_hydrating(true);
-    set_hydrate_node(anchor);
-  }
-}
-
-// node_modules/svelte/src/internal/client/dom/css.js
-function append_styles(anchor, css2) {
+// node_modules/svelte/src/internal/client/dom/elements/actions.js
+function action(dom, action2, get_value) {
   effect(() => {
-    var root71 = anchor.getRootNode();
-    var target = (
-      /** @type {ShadowRoot} */
-      root71.host ? (
-        /** @type {ShadowRoot} */
-        root71
-      ) : (
-        /** @type {Document} */
-        root71.head ?? /** @type {Document} */
-        root71.ownerDocument.head
-      )
-    );
-    if (!target.querySelector("#" + css2.hash)) {
-      const style = create_element("style");
-      style.id = css2.hash;
-      style.textContent = css2.code;
-      target.appendChild(style);
-      if (dev_fallback_default) {
-        register_style(css2.hash, style);
-      }
+    var payload = untrack(() => action2(dom, get_value?.()) || {});
+    if (get_value && payload?.update) {
+      var inited = false;
+      var prev2 = (
+        /** @type {any} */
+        {}
+      );
+      render_effect(() => {
+        var value = get_value();
+        deep_read_state(value);
+        if (inited && safe_not_equal(prev2, value)) {
+          prev2 = value;
+          payload.update(value);
+        }
+      });
+      inited = true;
+    }
+    if (payload?.destroy) {
+      return () => (
+        /** @type {Function} */
+        payload.destroy()
+      );
     }
   });
-}
-
-// node_modules/svelte/src/internal/client/dom/elements/attachments.js
-function attach(node, get_fn) {
-  var fn = void 0;
-  var e;
-  managed(() => {
-    if (fn !== (fn = get_fn())) {
-      if (e) {
-        destroy_effect(e);
-        e = null;
-      }
-      if (fn) {
-        e = branch(() => {
-          effect(() => (
-            /** @type {(node: Element) => void} */
-            fn(node)
-          ));
-        });
-      }
-    }
-  });
-}
-
-// node_modules/clsx/dist/clsx.mjs
-function r(e) {
-  var t, f, n2 = "";
-  if ("string" == typeof e || "number" == typeof e) n2 += e;
-  else if ("object" == typeof e) if (Array.isArray(e)) {
-    var o = e.length;
-    for (t = 0; t < o; t++) e[t] && (f = r(e[t])) && (n2 && (n2 += " "), n2 += f);
-  } else for (f in e) e[f] && (n2 && (n2 += " "), n2 += f);
-  return n2;
-}
-function clsx() {
-  for (var e, t, f = 0, n2 = "", o = arguments.length; f < o; f++) (e = arguments[f]) && (t = r(e)) && (n2 && (n2 += " "), n2 += t);
-  return n2;
 }
 
 // node_modules/svelte/src/internal/shared/attributes.js
-function clsx2(value) {
-  if (typeof value === "object") {
-    return clsx(value);
-  } else {
-    return value ?? "";
-  }
-}
 var whitespace = [..." 	\n\r\f\xA0\v\uFEFF"];
 function to_class(value, hash2, directives) {
   var classname = value == null ? "" : "" + value;
@@ -5802,13 +5312,13 @@ function to_class(value, hash2, directives) {
         classname = classname ? classname + " " + key2 : key2;
       } else if (classname.length) {
         var len = key2.length;
-        var a2 = 0;
-        while ((a2 = classname.indexOf(key2, a2)) >= 0) {
-          var b = a2 + len;
-          if ((a2 === 0 || whitespace.includes(classname[a2 - 1])) && (b === classname.length || whitespace.includes(classname[b]))) {
-            classname = (a2 === 0 ? "" : classname.substring(0, a2)) + classname.substring(b + 1);
+        var a = 0;
+        while ((a = classname.indexOf(key2, a)) >= 0) {
+          var b = a + len;
+          if ((a === 0 || whitespace.includes(classname[a - 1])) && (b === classname.length || whitespace.includes(classname[b]))) {
+            classname = (a === 0 ? "" : classname.substring(0, a)) + classname.substring(b + 1);
           } else {
-            a2 = b;
+            a = b;
           }
         }
       }
@@ -5816,7 +5326,7 @@ function to_class(value, hash2, directives) {
   }
   return classname === "" ? null : classname;
 }
-function append_styles2(styles, important = false) {
+function append_styles(styles, important = false) {
   var separator = important ? " !important;" : ";";
   var css2 = "";
   for (var key2 of Object.keys(styles)) {
@@ -5899,10 +5409,10 @@ function to_style(value, styles) {
       }
     }
     if (normal_styles) {
-      new_style += append_styles2(normal_styles);
+      new_style += append_styles(normal_styles);
     }
     if (important_styles) {
-      new_style += append_styles2(important_styles, true);
+      new_style += append_styles(important_styles, true);
     }
     new_style = new_style.trim();
     return new_style === "" ? null : new_style;
@@ -5912,11 +5422,11 @@ function to_style(value, styles) {
 
 // node_modules/svelte/src/internal/client/dom/elements/class.js
 function set_class(dom, is_html, value, hash2, prev_classes, next_classes) {
-  var prev3 = (
+  var prev2 = (
     /** @type {any} */
     dom[CLASS_CACHE]
   );
-  if (hydrating || prev3 !== value || prev3 === void 0) {
+  if (hydrating || prev2 !== value || prev2 === void 0) {
     var next_class_name = to_class(value, hash2, next_classes);
     if (!hydrating || next_class_name !== dom.getAttribute("class")) {
       if (next_class_name == null) {
@@ -5940,11 +5450,11 @@ function set_class(dom, is_html, value, hash2, prev_classes, next_classes) {
 }
 
 // node_modules/svelte/src/internal/client/dom/elements/style.js
-function update_styles(dom, prev3 = {}, next4, priority) {
-  for (var key2 in next4) {
-    var value = next4[key2];
-    if (prev3[key2] !== value) {
-      if (next4[key2] == null) {
+function update_styles(dom, prev2 = {}, next3, priority) {
+  for (var key2 in next3) {
+    var value = next3[key2];
+    if (prev2[key2] !== value) {
+      if (next3[key2] == null) {
         dom.style.removeProperty(key2);
       } else {
         dom.style.setProperty(key2, value, priority);
@@ -5953,11 +5463,11 @@ function update_styles(dom, prev3 = {}, next4, priority) {
   }
 }
 function set_style(dom, value, prev_styles, next_styles) {
-  var prev3 = (
+  var prev2 = (
     /** @type {any} */
     dom[STYLE_CACHE]
   );
-  if (hydrating || prev3 !== value) {
+  if (hydrating || prev2 !== value) {
     var next_style_attr = to_style(value, next_styles);
     if (!hydrating || next_style_attr !== dom.getAttribute("style")) {
       if (next_style_attr == null) {
@@ -6022,6 +5532,49 @@ function init_select(select2) {
     observer.disconnect();
   });
 }
+function bind_select_value(select2, get4, set2 = get4) {
+  var batches = /* @__PURE__ */ new WeakSet();
+  var mounting = true;
+  listen_to_event_and_reset_event(select2, "change", (is_reset) => {
+    var query = is_reset ? "[selected]" : ":checked";
+    var value;
+    if (select2.multiple) {
+      value = [].map.call(select2.querySelectorAll(query), get_option_value);
+    } else {
+      var selected_option = select2.querySelector(query) ?? // will fall back to first non-disabled option if no option is selected
+      select2.querySelector("option:not([disabled])");
+      value = selected_option && get_option_value(selected_option);
+    }
+    set2(value);
+    select2.__value = value;
+    if (current_batch !== null) {
+      batches.add(current_batch);
+    }
+  });
+  effect(() => {
+    var value = get4();
+    if (select2 === document.activeElement) {
+      var batch = (
+        /** @type {Batch} */
+        async_mode_flag ? previous_batch : current_batch
+      );
+      if (batches.has(batch)) {
+        return;
+      }
+    }
+    select_option(select2, value, mounting);
+    if (mounting && value === void 0) {
+      var selected_option = select2.querySelector(":checked");
+      if (selected_option !== null) {
+        value = get_option_value(selected_option);
+        set2(value);
+      }
+    }
+    select2.__value = value;
+    mounting = false;
+  });
+  init_select(select2);
+}
 function get_option_value(option) {
   if ("__value" in option) {
     return option.__value;
@@ -6036,9 +5589,6 @@ var STYLE = Symbol("style");
 var IS_CUSTOM_ELEMENT = Symbol("is custom element");
 var IS_HTML = Symbol("is html");
 var LINK_TAG = IS_XHTML ? "link" : "LINK";
-var INPUT_TAG = IS_XHTML ? "input" : "INPUT";
-var OPTION_TAG = IS_XHTML ? "option" : "OPTION";
-var SELECT_TAG = IS_XHTML ? "select" : "SELECT";
 function remove_input_defaults(input) {
   if (!hydrating) return;
   var already_removed = false;
@@ -6059,15 +5609,6 @@ function remove_input_defaults(input) {
   input[FORM_RESET_HANDLER] = remove_defaults;
   queue_micro_task(remove_defaults);
   add_form_reset_listener();
-}
-function set_selected(element2, selected) {
-  if (selected) {
-    if (!element2.hasAttribute("selected")) {
-      element2.setAttribute("selected", "");
-    }
-  } else {
-    element2.removeAttribute("selected");
-  }
 }
 function set_attribute2(element2, attribute, value, skip_warning) {
   var attributes2 = get_attributes(element2);
@@ -6091,208 +5632,6 @@ function set_attribute2(element2, attribute, value, skip_warning) {
   } else {
     element2.setAttribute(attribute, value);
   }
-}
-function set_attributes(element2, prev3, next4, css_hash, should_remove_defaults = false, skip_warning = false) {
-  if (hydrating && should_remove_defaults && element2.nodeName === INPUT_TAG) {
-    var input = (
-      /** @type {HTMLInputElement} */
-      element2
-    );
-    var attribute = input.type === "checkbox" ? "defaultChecked" : "defaultValue";
-    if (!(attribute in next4)) {
-      remove_input_defaults(input);
-    }
-  }
-  var attributes2 = get_attributes(element2);
-  var is_custom_element = attributes2[IS_CUSTOM_ELEMENT];
-  var preserve_attribute_case = !attributes2[IS_HTML];
-  let is_hydrating_custom_element = hydrating && is_custom_element;
-  if (is_hydrating_custom_element) {
-    set_hydrating(false);
-  }
-  var current = prev3 || {};
-  var is_option_element = element2.nodeName === OPTION_TAG;
-  for (var key2 in prev3) {
-    if (!(key2 in next4)) {
-      next4[key2] = null;
-    }
-  }
-  if (next4.class) {
-    next4.class = clsx2(next4.class);
-  } else if (css_hash || next4[CLASS]) {
-    next4.class = null;
-  }
-  if (next4[STYLE]) {
-    next4.style ??= null;
-  }
-  var setters = get_setters(element2);
-  if (element2.nodeName === INPUT_TAG && "type" in next4 && ("value" in next4 || "__value" in next4)) {
-    var type = next4.type;
-    if (type !== current.type || type === void 0 && element2.hasAttribute("type")) {
-      current.type = type;
-      set_attribute2(element2, "type", type, skip_warning);
-    }
-  }
-  for (const key3 in next4) {
-    let value = next4[key3];
-    if (is_option_element && key3 === "value" && value == null) {
-      element2.value = element2.__value = "";
-      current[key3] = value;
-      continue;
-    }
-    if (key3 === "class") {
-      var is_html = element2.namespaceURI === "http://www.w3.org/1999/xhtml";
-      set_class(element2, is_html, value, css_hash, prev3?.[CLASS], next4[CLASS]);
-      current[key3] = value;
-      current[CLASS] = next4[CLASS];
-      continue;
-    }
-    if (key3 === "style") {
-      set_style(element2, value, prev3?.[STYLE], next4[STYLE]);
-      current[key3] = value;
-      current[STYLE] = next4[STYLE];
-      continue;
-    }
-    var prev_value = current[key3];
-    if (value === prev_value && !(value === void 0 && element2.hasAttribute(key3))) {
-      continue;
-    }
-    current[key3] = value;
-    var prefix = key3[0] + key3[1];
-    if (prefix === "$$") continue;
-    if (prefix === "on") {
-      const opts = {};
-      const event_handle_key = "$$" + key3;
-      let event_name = key3.slice(2);
-      var is_delegated = can_delegate_event(event_name);
-      if (is_capture_event(event_name)) {
-        event_name = event_name.slice(0, -7);
-        opts.capture = true;
-      }
-      if (!is_delegated && prev_value) {
-        if (value != null) continue;
-        element2.removeEventListener(event_name, current[event_handle_key], opts);
-        current[event_handle_key] = null;
-      }
-      if (is_delegated) {
-        delegated(event_name, element2, value);
-        delegate([event_name]);
-      } else if (value != null) {
-        let handle = function(evt) {
-          current[key3].call(this, evt);
-        };
-        current[event_handle_key] = create_event(event_name, element2, handle, opts);
-      }
-    } else if (key3 === "style") {
-      set_attribute2(element2, key3, value);
-    } else if (key3 === "autofocus") {
-      autofocus(
-        /** @type {HTMLElement} */
-        element2,
-        Boolean(value)
-      );
-    } else if (!is_custom_element && (key3 === "__value" || key3 === "value" && value != null)) {
-      element2.value = element2.__value = value;
-    } else if (key3 === "selected" && is_option_element) {
-      set_selected(
-        /** @type {HTMLOptionElement} */
-        element2,
-        value
-      );
-    } else {
-      var name = key3;
-      if (!preserve_attribute_case) {
-        name = normalize_attribute(name);
-      }
-      var is_default = name === "defaultValue" || name === "defaultChecked";
-      if (value == null && !is_custom_element && !is_default) {
-        attributes2[key3] = null;
-        if (name === "value" || name === "checked") {
-          let input2 = (
-            /** @type {HTMLInputElement} */
-            element2
-          );
-          const use_default = prev3 === void 0;
-          if (name === "value") {
-            let previous = input2.defaultValue;
-            input2.removeAttribute(name);
-            input2.defaultValue = previous;
-            input2.value = input2.__value = use_default ? previous : null;
-          } else {
-            let previous = input2.defaultChecked;
-            input2.removeAttribute(name);
-            input2.defaultChecked = previous;
-            input2.checked = use_default ? previous : false;
-          }
-        } else {
-          element2.removeAttribute(key3);
-        }
-      } else if (is_default || setters.includes(name) && (is_custom_element || typeof value !== "string")) {
-        element2[name] = value;
-        if (name in attributes2) attributes2[name] = UNINITIALIZED;
-      } else if (typeof value !== "function") {
-        set_attribute2(element2, name, value, skip_warning);
-      }
-    }
-  }
-  if (is_hydrating_custom_element) {
-    set_hydrating(true);
-  }
-  return current;
-}
-function attribute_effect(element2, fn, sync = [], async2 = [], blockers = [], css_hash, should_remove_defaults = false, skip_warning = false) {
-  flatten(blockers, sync, async2, (values) => {
-    var prev3 = void 0;
-    var effects = {};
-    var is_select = element2.nodeName === SELECT_TAG;
-    var inited = false;
-    managed(() => {
-      var next4 = fn(...values.map(get2));
-      var current = set_attributes(
-        element2,
-        prev3,
-        next4,
-        css_hash,
-        should_remove_defaults,
-        skip_warning
-      );
-      if (inited && is_select && "value" in next4) {
-        select_option(
-          /** @type {HTMLSelectElement} */
-          element2,
-          next4.value
-        );
-      }
-      for (let symbol of Object.getOwnPropertySymbols(effects)) {
-        if (!next4[symbol]) destroy_effect(effects[symbol]);
-      }
-      for (let symbol of Object.getOwnPropertySymbols(next4)) {
-        var n2 = next4[symbol];
-        if (symbol.description === ATTACHMENT_KEY && (!prev3 || n2 !== prev3[symbol])) {
-          if (effects[symbol]) destroy_effect(effects[symbol]);
-          effects[symbol] = branch(() => attach(element2, () => n2));
-        }
-        current[symbol] = n2;
-      }
-      prev3 = current;
-    });
-    if (is_select) {
-      var select2 = (
-        /** @type {HTMLSelectElement} */
-        element2
-      );
-      effect(() => {
-        select_option(
-          select2,
-          /** @type {Record<string | symbol, any>} */
-          prev3.value,
-          true
-        );
-        init_select(select2);
-      });
-    }
-    inited = true;
-  });
 }
 function get_attributes(element2) {
   return (
@@ -6356,7 +5695,7 @@ function srcset_url_equal(element2, srcset) {
 }
 
 // node_modules/svelte/src/internal/client/dom/elements/bindings/input.js
-function bind_value(input, get6, set2 = get6) {
+function bind_value(input, get4, set2 = get4) {
   var batches = /* @__PURE__ */ new WeakSet();
   listen_to_event_and_reset_event(input, "input", async (is_reset) => {
     if (dev_fallback_default && input.type === "checkbox") {
@@ -6369,7 +5708,7 @@ function bind_value(input, get6, set2 = get6) {
       batches.add(current_batch);
     }
     await tick();
-    if (value !== (value = get6())) {
+    if (value !== (value = get4())) {
       var start = input.selectionStart;
       var end2 = input.selectionEnd;
       var length = input.value.length;
@@ -6391,7 +5730,7 @@ function bind_value(input, get6, set2 = get6) {
     // then use the updated value from the input instead.
     hydrating && input.defaultValue !== input.value || // If defaultValue is set, then value == defaultValue
     // TODO Svelte 6: remove input.value check and set to empty string?
-    untrack(get6) == null && input.value
+    untrack(get4) == null && input.value
   ) {
     set2(is_numberlike_input(input) ? to_number(input.value) : input.value);
     if (current_batch !== null) {
@@ -6402,7 +5741,7 @@ function bind_value(input, get6, set2 = get6) {
     if (dev_fallback_default && input.type === "checkbox") {
       bind_invalid_checkbox_value();
     }
-    var value = get6();
+    var value = get4();
     if (input === document.activeElement) {
       var batch = (
         /** @type {Batch} */
@@ -6430,169 +5769,8 @@ function is_numberlike_input(input) {
 function to_number(value) {
   return value === "" ? null : +value;
 }
-function bind_files(input, get6, set2 = get6) {
-  listen_to_event_and_reset_event(input, "change", () => {
-    set2(input.files);
-  });
-  if (
-    // If we are hydrating and the value has since changed,
-    // then use the updated value from the input instead.
-    hydrating && input.files
-  ) {
-    set2(input.files);
-  }
-  render_effect(() => {
-    input.files = get6();
-  });
-}
-
-// node_modules/svelte/src/internal/client/dom/elements/bindings/this.js
-function is_bound_this(bound_value, element_or_component) {
-  return bound_value === element_or_component || bound_value?.[STATE_SYMBOL] === element_or_component;
-}
-function bind_this(element_or_component = {}, update3, get_value, get_parts) {
-  var component_effect = (
-    /** @type {ComponentContext} */
-    component_context.r
-  );
-  var parent2 = (
-    /** @type {Effect} */
-    active_effect
-  );
-  effect(() => {
-    var old_parts;
-    var parts2;
-    render_effect(() => {
-      old_parts = parts2;
-      parts2 = get_parts?.() || [];
-      untrack(() => {
-        if (!is_bound_this(get_value(...parts2), element_or_component)) {
-          update3(element_or_component, ...parts2);
-          if (old_parts && is_bound_this(get_value(...old_parts), element_or_component)) {
-            update3(null, ...old_parts);
-          }
-        }
-      });
-    });
-    return () => {
-      let p2 = parent2;
-      while (p2 !== component_effect && p2.parent !== null && p2.parent.f & DESTROYING) {
-        p2 = p2.parent;
-      }
-      const teardown2 = () => {
-        if (parts2 && is_bound_this(get_value(...parts2), element_or_component)) {
-          update3(null, ...parts2);
-        }
-      };
-      const original_teardown = p2.teardown;
-      p2.teardown = () => {
-        teardown2();
-        original_teardown?.();
-      };
-    };
-  });
-  return element_or_component;
-}
 
 // node_modules/svelte/src/internal/client/reactivity/props.js
-var rest_props_handler = {
-  get(target, key2) {
-    if (target.exclude.has(key2)) return;
-    return target.props[key2];
-  },
-  set(target, key2) {
-    if (dev_fallback_default) {
-      props_rest_readonly(`${target.name}.${String(key2)}`);
-    }
-    return false;
-  },
-  getOwnPropertyDescriptor(target, key2) {
-    if (target.exclude.has(key2)) return;
-    if (key2 in target.props) {
-      return {
-        enumerable: true,
-        configurable: true,
-        value: target.props[key2]
-      };
-    }
-  },
-  has(target, key2) {
-    if (target.exclude.has(key2)) return false;
-    return key2 in target.props;
-  },
-  ownKeys(target) {
-    return Reflect.ownKeys(target.props).filter((key2) => !target.exclude.has(key2));
-  }
-};
-// @__NO_SIDE_EFFECTS__
-function rest_props(props, exclude, name) {
-  return new Proxy(
-    dev_fallback_default ? { props, exclude, name, other: {}, to_proxy: [] } : { props, exclude },
-    rest_props_handler
-  );
-}
-var spread_props_handler = {
-  get(target, key2) {
-    let i = target.props.length;
-    while (i--) {
-      let p2 = target.props[i];
-      if (is_function(p2)) p2 = p2();
-      if (typeof p2 === "object" && p2 !== null && key2 in p2) return p2[key2];
-    }
-  },
-  set(target, key2, value) {
-    let i = target.props.length;
-    while (i--) {
-      let p2 = target.props[i];
-      if (is_function(p2)) p2 = p2();
-      const desc = get_descriptor(p2, key2);
-      if (desc && desc.set) {
-        desc.set(value);
-        return true;
-      }
-    }
-    return false;
-  },
-  getOwnPropertyDescriptor(target, key2) {
-    let i = target.props.length;
-    while (i--) {
-      let p2 = target.props[i];
-      if (is_function(p2)) p2 = p2();
-      if (typeof p2 === "object" && p2 !== null && key2 in p2) {
-        const descriptor = get_descriptor(p2, key2);
-        if (descriptor && !descriptor.configurable) {
-          descriptor.configurable = true;
-        }
-        return descriptor;
-      }
-    }
-  },
-  has(target, key2) {
-    if (key2 === STATE_SYMBOL || key2 === LEGACY_PROPS) return false;
-    for (let p2 of target.props) {
-      if (is_function(p2)) p2 = p2();
-      if (p2 != null && key2 in p2) return true;
-    }
-    return false;
-  },
-  ownKeys(target) {
-    const keys = [];
-    for (let p2 of target.props) {
-      if (is_function(p2)) p2 = p2();
-      if (!p2) continue;
-      for (const key2 in p2) {
-        if (!keys.includes(key2)) keys.push(key2);
-      }
-      for (const key2 of Object.getOwnPropertySymbols(p2)) {
-        if (!keys.includes(key2)) keys.push(key2);
-      }
-    }
-    return keys;
-  }
-};
-function spread_props(...props) {
-  return new Proxy({ props }, spread_props_handler);
-}
 function prop(props, key2, flags2, fallback2) {
   var runes = !legacy_mode_flag || (flags2 & PROPS_IS_RUNES) !== 0;
   var bindable = (flags2 & PROPS_IS_BINDABLE) !== 0;
@@ -6789,8 +5967,8 @@ var Svelte4Component = class {
       });
     }
     this.#instance.$set = /** @param {Record<string, any>} next */
-    (next4) => {
-      Object.assign(props, next4);
+    (next3) => {
+      Object.assign(props, next3);
     };
     this.#instance.$destroy = () => {
       unmount(this.#instance);
@@ -7086,11 +6264,11 @@ function onMount(fn) {
   }
 }
 function init_update_callbacks(context) {
-  var l2 = (
+  var l = (
     /** @type {ComponentContextLegacy} */
     context.l
   );
-  return l2.u ??= { a: [], b: [], m: [] };
+  return l.u ??= { a: [], b: [], m: [] };
 }
 
 // node_modules/svelte/src/version.js
@@ -7102,7 +6280,7 @@ if (typeof window !== "undefined") {
 }
 
 // src/ui/Dashboard.svelte
-var import_obsidian5 = require("obsidian");
+var import_obsidian6 = require("obsidian");
 
 // src/audit-store.ts
 var import_obsidian2 = require("obsidian");
@@ -7129,10 +6307,10 @@ function createPool(limit) {
     });
   };
 }
-function headersToObject(h2) {
+function headersToObject(h) {
   const out = {};
-  h2.forEach((v, k2) => {
-    out[k2.toLowerCase()] = v;
+  h.forEach((v, k) => {
+    out[k.toLowerCase()] = v;
   });
   return out;
 }
@@ -7187,7 +6365,7 @@ function createLinkChecker(opts, pool) {
     const hit = cache.get(url);
     if (hit)
       return hit;
-    const p2 = pool(async () => {
+    const p = pool(async () => {
       let current = url;
       let chain = 0;
       try {
@@ -7224,8 +6402,8 @@ function createLinkChecker(opts, pool) {
         };
       }
     });
-    cache.set(url, p2);
-    return p2;
+    cache.set(url, p);
+    return p;
   };
 }
 async function fetchRobots(origin, opts) {
@@ -7382,8 +6560,8 @@ var Node2 = class {
   get previousSibling() {
     return this.prev;
   }
-  set previousSibling(prev3) {
-    this.prev = prev3;
+  set previousSibling(prev2) {
+    this.prev = prev2;
   }
   /**
    * Same as {@link next}.
@@ -7392,8 +6570,8 @@ var Node2 = class {
   get nextSibling() {
     return this.next;
   }
-  set nextSibling(next4) {
-    this.next = next4;
+  set nextSibling(next3) {
+    this.next = next3;
   }
   /**
    * Clone this node, and optionally its children.
@@ -7490,7 +6668,7 @@ var CDATA2 = class extends NodeWithChildren {
     return 4;
   }
 };
-var Document2 = class extends NodeWithChildren {
+var Document = class extends NodeWithChildren {
   constructor() {
     super(...arguments);
     this.type = ElementType.Root;
@@ -7585,7 +6763,7 @@ function cloneNode(node, recursive = false) {
     result = clone2;
   } else if (isDocument(node)) {
     const children2 = recursive ? cloneChildren(node.children) : [];
-    const clone2 = new Document2(children2);
+    const clone2 = new Document(children2);
     children2.forEach((child2) => child2.parent = clone2);
     if (node["x-mode"]) {
       clone2["x-mode"] = node["x-mode"];
@@ -7632,7 +6810,7 @@ var DomHandler = class {
    */
   constructor(callback, options, elementCB) {
     this.dom = [];
-    this.root = new Document2(this.dom);
+    this.root = new Document(this.dom);
     this.done = false;
     this.tagStack = [this.root];
     this.lastNode = null;
@@ -7655,7 +6833,7 @@ var DomHandler = class {
   // Resets the handler back to starting state
   onreset() {
     this.dom = [];
-    this.root = new Document2(this.dom);
+    this.root = new Document(this.dom);
     this.done = false;
     this.tagStack = [this.root];
     this.lastNode = null;
@@ -7899,28 +7077,28 @@ var EntityDecoder = class {
    * @param offset The offset at which the entity begins. Should be 0 if this is not the first call.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  write(str, offset3) {
+  write(str, offset) {
     switch (this.state) {
       case EntityDecoderState.EntityStart: {
-        if (str.charCodeAt(offset3) === CharCodes.NUM) {
+        if (str.charCodeAt(offset) === CharCodes.NUM) {
           this.state = EntityDecoderState.NumericStart;
           this.consumed += 1;
-          return this.stateNumericStart(str, offset3 + 1);
+          return this.stateNumericStart(str, offset + 1);
         }
         this.state = EntityDecoderState.NamedEntity;
-        return this.stateNamedEntity(str, offset3);
+        return this.stateNamedEntity(str, offset);
       }
       case EntityDecoderState.NumericStart: {
-        return this.stateNumericStart(str, offset3);
+        return this.stateNumericStart(str, offset);
       }
       case EntityDecoderState.NumericDecimal: {
-        return this.stateNumericDecimal(str, offset3);
+        return this.stateNumericDecimal(str, offset);
       }
       case EntityDecoderState.NumericHex: {
-        return this.stateNumericHex(str, offset3);
+        return this.stateNumericHex(str, offset);
       }
       case EntityDecoderState.NamedEntity: {
-        return this.stateNamedEntity(str, offset3);
+        return this.stateNamedEntity(str, offset);
       }
     }
   }
@@ -7933,17 +7111,17 @@ var EntityDecoder = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericStart(str, offset3) {
-    if (offset3 >= str.length) {
+  stateNumericStart(str, offset) {
+    if (offset >= str.length) {
       return -1;
     }
-    if ((str.charCodeAt(offset3) | TO_LOWER_BIT) === CharCodes.LOWER_X) {
+    if ((str.charCodeAt(offset) | TO_LOWER_BIT) === CharCodes.LOWER_X) {
       this.state = EntityDecoderState.NumericHex;
       this.consumed += 1;
-      return this.stateNumericHex(str, offset3 + 1);
+      return this.stateNumericHex(str, offset + 1);
     }
     this.state = EntityDecoderState.NumericDecimal;
-    return this.stateNumericDecimal(str, offset3);
+    return this.stateNumericDecimal(str, offset);
   }
   addToNumericResult(str, start, end2, base) {
     if (start !== end2) {
@@ -7961,18 +7139,18 @@ var EntityDecoder = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericHex(str, offset3) {
-    const startIdx = offset3;
-    while (offset3 < str.length) {
-      const char = str.charCodeAt(offset3);
+  stateNumericHex(str, offset) {
+    const startIdx = offset;
+    while (offset < str.length) {
+      const char = str.charCodeAt(offset);
       if (isNumber(char) || isHexadecimalCharacter(char)) {
-        offset3 += 1;
+        offset += 1;
       } else {
-        this.addToNumericResult(str, startIdx, offset3, 16);
+        this.addToNumericResult(str, startIdx, offset, 16);
         return this.emitNumericEntity(char, 3);
       }
     }
-    this.addToNumericResult(str, startIdx, offset3, 16);
+    this.addToNumericResult(str, startIdx, offset, 16);
     return -1;
   }
   /**
@@ -7984,18 +7162,18 @@ var EntityDecoder = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericDecimal(str, offset3) {
-    const startIdx = offset3;
-    while (offset3 < str.length) {
-      const char = str.charCodeAt(offset3);
+  stateNumericDecimal(str, offset) {
+    const startIdx = offset;
+    while (offset < str.length) {
+      const char = str.charCodeAt(offset);
       if (isNumber(char)) {
-        offset3 += 1;
+        offset += 1;
       } else {
-        this.addToNumericResult(str, startIdx, offset3, 10);
+        this.addToNumericResult(str, startIdx, offset, 10);
         return this.emitNumericEntity(char, 2);
       }
     }
-    this.addToNumericResult(str, startIdx, offset3, 10);
+    this.addToNumericResult(str, startIdx, offset, 10);
     return -1;
   }
   /**
@@ -8040,12 +7218,12 @@ var EntityDecoder = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNamedEntity(str, offset3) {
+  stateNamedEntity(str, offset) {
     const { decodeTree } = this;
     let current = decodeTree[this.treeIndex];
     let valueLength = (current & BinTrieFlags.VALUE_LENGTH) >> 14;
-    for (; offset3 < str.length; offset3++, this.excess++) {
-      const char = str.charCodeAt(offset3);
+    for (; offset < str.length; offset++, this.excess++) {
+      const char = str.charCodeAt(offset);
       this.treeIndex = determineBranch(decodeTree, current, this.treeIndex + Math.max(1, valueLength), char);
       if (this.treeIndex < 0) {
         return this.result === 0 || // If we are parsing an attribute
@@ -8133,21 +7311,21 @@ function getDecoder(decodeTree) {
   const decoder = new EntityDecoder(decodeTree, (str) => ret += fromCodePoint(str));
   return function decodeWithTrie(str, decodeMode) {
     let lastIndex = 0;
-    let offset3 = 0;
-    while ((offset3 = str.indexOf("&", offset3)) >= 0) {
-      ret += str.slice(lastIndex, offset3);
+    let offset = 0;
+    while ((offset = str.indexOf("&", offset)) >= 0) {
+      ret += str.slice(lastIndex, offset);
       decoder.startEntity(decodeMode);
       const len = decoder.write(
         str,
         // Skip the "&"
-        offset3 + 1
+        offset + 1
       );
       if (len < 0) {
-        lastIndex = offset3 + decoder.end();
+        lastIndex = offset + decoder.end();
         break;
       }
-      lastIndex = offset3 + len;
-      offset3 = len === 0 ? lastIndex + 1 : lastIndex;
+      lastIndex = offset + len;
+      offset = len === 0 ? lastIndex + 1 : lastIndex;
     }
     const result = ret + str.slice(lastIndex);
     ret = "";
@@ -8202,9 +7380,9 @@ var xmlCodeMap = /* @__PURE__ */ new Map([
 ]);
 var getCodePoint = (
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  String.prototype.codePointAt != null ? (str, index4) => str.codePointAt(index4) : (
+  String.prototype.codePointAt != null ? (str, index3) => str.codePointAt(index3) : (
     // http://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
-    (c, index4) => (c.charCodeAt(index4) & 64512) === 55296 ? (c.charCodeAt(index4) - 55296) * 1024 + c.charCodeAt(index4 + 1) - 56320 + 65536 : c.charCodeAt(index4)
+    (c, index3) => (c.charCodeAt(index3) & 64512) === 55296 ? (c.charCodeAt(index3) - 55296) * 1024 + c.charCodeAt(index3 + 1) - 56320 + 65536 : c.charCodeAt(index3)
   )
 );
 function encodeXML(str) {
@@ -8214,9 +7392,9 @@ function encodeXML(str) {
   while ((match = xmlReplacer.exec(str)) !== null) {
     const i = match.index;
     const char = str.charCodeAt(i);
-    const next4 = xmlCodeMap.get(char);
-    if (next4 !== void 0) {
-      ret += str.substring(lastIdx, i) + next4;
+    const next3 = xmlCodeMap.get(char);
+    if (next3 !== void 0) {
+      ret += str.substring(lastIdx, i) + next3;
       lastIdx = i + 1;
     } else {
       ret += `${str.substring(lastIdx, i)}&#x${getCodePoint(str, i).toString(16)};`;
@@ -8569,14 +7747,14 @@ function getSiblings(elem) {
   if (parent2 != null)
     return getChildren(parent2);
   const siblings2 = [elem];
-  let { prev: prev3, next: next4 } = elem;
-  while (prev3 != null) {
-    siblings2.unshift(prev3);
-    ({ prev: prev3 } = prev3);
+  let { prev: prev2, next: next3 } = elem;
+  while (prev2 != null) {
+    siblings2.unshift(prev2);
+    ({ prev: prev2 } = prev2);
   }
-  while (next4 != null) {
-    siblings2.push(next4);
-    ({ next: next4 } = next4);
+  while (next3 != null) {
+    siblings2.push(next3);
+    ({ next: next3 } = next3);
   }
   return siblings2;
 }
@@ -8591,16 +7769,16 @@ function getName(elem) {
   return elem.name;
 }
 function nextElementSibling(elem) {
-  let { next: next4 } = elem;
-  while (next4 !== null && !isTag2(next4))
-    ({ next: next4 } = next4);
-  return next4;
+  let { next: next3 } = elem;
+  while (next3 !== null && !isTag2(next3))
+    ({ next: next3 } = next3);
+  return next3;
 }
 function prevElementSibling(elem) {
-  let { prev: prev3 } = elem;
-  while (prev3 !== null && !isTag2(prev3))
-    ({ prev: prev3 } = prev3);
-  return prev3;
+  let { prev: prev2 } = elem;
+  while (prev2 !== null && !isTag2(prev2))
+    ({ prev: prev2 } = prev2);
+  return prev2;
 }
 
 // node_modules/domutils/lib/esm/manipulation.js
@@ -8621,13 +7799,13 @@ function removeElement(elem) {
   elem.parent = null;
 }
 function replaceElement(elem, replacement) {
-  const prev3 = replacement.prev = elem.prev;
-  if (prev3) {
-    prev3.next = replacement;
+  const prev2 = replacement.prev = elem.prev;
+  if (prev2) {
+    prev2.next = replacement;
   }
-  const next4 = replacement.next = elem.next;
-  if (next4) {
-    next4.prev = replacement;
+  const next3 = replacement.next = elem.next;
+  if (next3) {
+    next3.prev = replacement;
   }
   const parent2 = replacement.parent = elem.parent;
   if (parent2) {
@@ -8648,22 +7826,22 @@ function appendChild(parent2, child2) {
     child2.prev = null;
   }
 }
-function append2(elem, next4) {
-  removeElement(next4);
+function append2(elem, next3) {
+  removeElement(next3);
   const { parent: parent2 } = elem;
   const currNext = elem.next;
-  next4.next = currNext;
-  next4.prev = elem;
-  elem.next = next4;
-  next4.parent = parent2;
+  next3.next = currNext;
+  next3.prev = elem;
+  elem.next = next3;
+  next3.parent = parent2;
   if (currNext) {
-    currNext.prev = next4;
+    currNext.prev = next3;
     if (parent2) {
       const childs = parent2.children;
-      childs.splice(childs.lastIndexOf(currNext), 0, next4);
+      childs.splice(childs.lastIndexOf(currNext), 0, next3);
     }
   } else if (parent2) {
-    parent2.children.push(next4);
+    parent2.children.push(next3);
   }
 }
 function prependChild(parent2, child2) {
@@ -8678,20 +7856,20 @@ function prependChild(parent2, child2) {
     child2.next = null;
   }
 }
-function prepend(elem, prev3) {
-  removeElement(prev3);
+function prepend(elem, prev2) {
+  removeElement(prev2);
   const { parent: parent2 } = elem;
   if (parent2) {
     const childs = parent2.children;
-    childs.splice(childs.indexOf(elem), 0, prev3);
+    childs.splice(childs.indexOf(elem), 0, prev2);
   }
   if (elem.prev) {
-    elem.prev.next = prev3;
+    elem.prev.next = prev2;
   }
-  prev3.parent = parent2;
-  prev3.prev = elem.prev;
-  prev3.next = elem;
-  elem.prev = prev3;
+  prev2.parent = parent2;
+  prev2.prev = elem.prev;
+  prev2.next = elem;
+  elem.prev = prev2;
 }
 
 // node_modules/domutils/lib/esm/querying.js
@@ -8796,8 +7974,8 @@ function getAttribCheck(attrib, value) {
   }
   return (elem) => isTag2(elem) && elem.attribs[attrib] === value;
 }
-function combineFuncs(a2, b) {
-  return (elem) => a2(elem) || b(elem);
+function combineFuncs(a, b) {
+  return (elem) => a(elem) || b(elem);
 }
 function compileTest(options) {
   const funcs = Object.keys(options).map((key2) => {
@@ -8896,8 +8074,8 @@ function compareDocumentPosition(nodeA, nodeB) {
 }
 function uniqueSort(nodes) {
   nodes = nodes.filter((node, i, arr) => !arr.includes(node, i + 1));
-  nodes.sort((a2, b) => {
-    const relative = compareDocumentPosition(a2, b);
+  nodes.sort((a, b) => {
+    const relative = compareDocumentPosition(a, b);
     if (relative & DocumentPosition.PRECEDING) {
       return -1;
     } else if (relative & DocumentPosition.FOLLOWING) {
@@ -9105,10 +8283,10 @@ function contains(container, contained) {
   if (contained === container) {
     return false;
   }
-  let next4 = contained;
-  while (next4 && next4 !== next4.parent) {
-    next4 = next4.parent;
-    if (next4 === container) {
+  let next3 = contained;
+  while (next3 && next3 !== next3.parent) {
+    next3 = next3.parent;
+    if (next3 === container) {
       return true;
     }
   }
@@ -9269,9 +8447,9 @@ function decodeBase64(input) {
   );
   const evenLength = binary.length & ~1;
   const out = new Uint16Array(evenLength / 2);
-  for (let index4 = 0, outIndex = 0; index4 < evenLength; index4 += 2) {
-    const lo = binary.charCodeAt(index4);
-    const hi = binary.charCodeAt(index4 + 1);
+  for (let index3 = 0, outIndex = 0; index3 < evenLength; index3 += 2) {
+    const lo = binary.charCodeAt(index3);
+    const hi = binary.charCodeAt(index3 + 1);
     out[outIndex++] = lo | hi << 8;
   }
   return out;
@@ -9369,28 +8547,28 @@ var EntityDecoder2 = class {
    * @param offset The offset at which the entity begins. Should be 0 if this is not the first call.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  write(input, offset3) {
+  write(input, offset) {
     switch (this.state) {
       case EntityDecoderState2.EntityStart: {
-        if (input.charCodeAt(offset3) === CharCodes2.NUM) {
+        if (input.charCodeAt(offset) === CharCodes2.NUM) {
           this.state = EntityDecoderState2.NumericStart;
           this.consumed += 1;
-          return this.stateNumericStart(input, offset3 + 1);
+          return this.stateNumericStart(input, offset + 1);
         }
         this.state = EntityDecoderState2.NamedEntity;
-        return this.stateNamedEntity(input, offset3);
+        return this.stateNamedEntity(input, offset);
       }
       case EntityDecoderState2.NumericStart: {
-        return this.stateNumericStart(input, offset3);
+        return this.stateNumericStart(input, offset);
       }
       case EntityDecoderState2.NumericDecimal: {
-        return this.stateNumericDecimal(input, offset3);
+        return this.stateNumericDecimal(input, offset);
       }
       case EntityDecoderState2.NumericHex: {
-        return this.stateNumericHex(input, offset3);
+        return this.stateNumericHex(input, offset);
       }
       case EntityDecoderState2.NamedEntity: {
-        return this.stateNamedEntity(input, offset3);
+        return this.stateNamedEntity(input, offset);
       }
     }
   }
@@ -9403,17 +8581,17 @@ var EntityDecoder2 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericStart(input, offset3) {
-    if (offset3 >= input.length) {
+  stateNumericStart(input, offset) {
+    if (offset >= input.length) {
       return -1;
     }
-    if ((input.charCodeAt(offset3) | TO_LOWER_BIT2) === CharCodes2.LOWER_X) {
+    if ((input.charCodeAt(offset) | TO_LOWER_BIT2) === CharCodes2.LOWER_X) {
       this.state = EntityDecoderState2.NumericHex;
       this.consumed += 1;
-      return this.stateNumericHex(input, offset3 + 1);
+      return this.stateNumericHex(input, offset + 1);
     }
     this.state = EntityDecoderState2.NumericDecimal;
-    return this.stateNumericDecimal(input, offset3);
+    return this.stateNumericDecimal(input, offset);
   }
   /**
    * Parses a hexadecimal numeric entity.
@@ -9424,14 +8602,14 @@ var EntityDecoder2 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericHex(input, offset3) {
-    while (offset3 < input.length) {
-      const char = input.charCodeAt(offset3);
+  stateNumericHex(input, offset) {
+    while (offset < input.length) {
+      const char = input.charCodeAt(offset);
       if (isNumber2(char) || isHexadecimalCharacter2(char)) {
         const digit = char <= CharCodes2.NINE ? char - CharCodes2.ZERO : (char | TO_LOWER_BIT2) - CharCodes2.LOWER_A + 10;
         this.result = this.result * 16 + digit;
         this.consumed++;
-        offset3++;
+        offset++;
       } else {
         return this.emitNumericEntity(char, 3);
       }
@@ -9447,13 +8625,13 @@ var EntityDecoder2 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericDecimal(input, offset3) {
-    while (offset3 < input.length) {
-      const char = input.charCodeAt(offset3);
+  stateNumericDecimal(input, offset) {
+    while (offset < input.length) {
+      const char = input.charCodeAt(offset);
       if (isNumber2(char)) {
         this.result = this.result * 10 + (char - CharCodes2.ZERO);
         this.consumed++;
-        offset3++;
+        offset++;
       } else {
         return this.emitNumericEntity(char, 2);
       }
@@ -9502,34 +8680,34 @@ var EntityDecoder2 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNamedEntity(input, offset3) {
+  stateNamedEntity(input, offset) {
     const { decodeTree } = this;
     let current = decodeTree[this.treeIndex];
     let valueLength = (current & BinTrieFlags2.VALUE_LENGTH) >> 14;
-    while (offset3 < input.length) {
+    while (offset < input.length) {
       if (valueLength === 0 && (current & BinTrieFlags2.FLAG13) !== 0) {
         const runLength = (current & BinTrieFlags2.BRANCH_LENGTH) >> 7;
         if (this.runConsumed === 0) {
           const firstChar = current & BinTrieFlags2.JUMP_TABLE;
-          if (input.charCodeAt(offset3) !== firstChar) {
+          if (input.charCodeAt(offset) !== firstChar) {
             return this.result === 0 ? 0 : this.emitNotTerminatedNamedEntity();
           }
-          offset3++;
+          offset++;
           this.excess++;
           this.runConsumed++;
         }
         while (this.runConsumed < runLength) {
-          if (offset3 >= input.length) {
+          if (offset >= input.length) {
             return -1;
           }
           const charIndexInPacked = this.runConsumed - 1;
           const packedWord = decodeTree[this.treeIndex + 1 + (charIndexInPacked >> 1)];
           const expectedChar = charIndexInPacked % 2 === 0 ? packedWord & 255 : packedWord >> 8 & 255;
-          if (input.charCodeAt(offset3) !== expectedChar) {
+          if (input.charCodeAt(offset) !== expectedChar) {
             this.runConsumed = 0;
             return this.result === 0 ? 0 : this.emitNotTerminatedNamedEntity();
           }
-          offset3++;
+          offset++;
           this.excess++;
           this.runConsumed++;
         }
@@ -9538,9 +8716,9 @@ var EntityDecoder2 = class {
         current = decodeTree[this.treeIndex];
         valueLength = (current & BinTrieFlags2.VALUE_LENGTH) >> 14;
       }
-      if (offset3 >= input.length)
+      if (offset >= input.length)
         break;
-      const char = input.charCodeAt(offset3);
+      const char = input.charCodeAt(offset);
       if (char === CharCodes2.SEMI && valueLength !== 0 && (current & BinTrieFlags2.FLAG13) !== 0) {
         return this.emitNamedEntityData(this.treeIndex, valueLength, this.consumed + this.excess);
       }
@@ -9563,7 +8741,7 @@ var EntityDecoder2 = class {
           this.excess = 0;
         }
       }
-      offset3++;
+      offset++;
       this.excess++;
     }
     return -1;
@@ -9936,10 +9114,10 @@ var Tokenizer = class {
   isTagStartChar(c) {
     return this.xmlMode ? !isEndOfTagSection(c) : isASCIIAlpha(c);
   }
-  startSpecial(sequence, offset3) {
+  startSpecial(sequence, offset) {
     this.isSpecial = true;
     this.currentSequence = sequence;
-    this.sequenceIndex = offset3;
+    this.sequenceIndex = offset;
     this.state = State.SpecialStartSequence;
   }
   stateBeforeTagName(c) {
@@ -10573,9 +9751,9 @@ var Parser = class {
     if (!this.isVoidElement(name)) {
       const pos = this.stack.indexOf(name);
       if (pos !== -1) {
-        for (let index4 = 0; index4 <= pos; index4++) {
+        for (let index3 = 0; index3 <= pos; index3++) {
           const element2 = this.stack.shift();
-          (_b = (_a5 = this.cbs).onclosetag) === null || _b === void 0 ? void 0 : _b.call(_a5, element2, index4 !== pos);
+          (_b = (_a5 = this.cbs).onclosetag) === null || _b === void 0 ? void 0 : _b.call(_a5, element2, index3 !== pos);
         }
       } else if (this.htmlMode && name === "p") {
         this.emitOpenTag("p");
@@ -10632,8 +9810,8 @@ var Parser = class {
     this.attribvalue = "";
   }
   getInstructionName(value) {
-    const index4 = value.search(reNameEnd);
-    let name = index4 < 0 ? value : value.substr(0, index4);
+    const index3 = value.search(reNameEnd);
+    let name = index3 < 0 ? value : value.substr(0, index3);
     if (this.lowerCaseTagNames) {
       name = name.toLowerCase();
     }
@@ -10660,18 +9838,18 @@ var Parser = class {
     this.startIndex = endIndex + 1;
   }
   /** @internal */
-  oncomment(start, endIndex, offset3) {
+  oncomment(start, endIndex, offset) {
     var _a5, _b, _c, _d;
     this.endIndex = endIndex;
-    (_b = (_a5 = this.cbs).oncomment) === null || _b === void 0 ? void 0 : _b.call(_a5, this.getSlice(start, endIndex - offset3));
+    (_b = (_a5 = this.cbs).oncomment) === null || _b === void 0 ? void 0 : _b.call(_a5, this.getSlice(start, endIndex - offset));
     (_d = (_c = this.cbs).oncommentend) === null || _d === void 0 ? void 0 : _d.call(_c);
     this.startIndex = endIndex + 1;
   }
   /** @internal */
-  oncdata(start, endIndex, offset3) {
+  oncdata(start, endIndex, offset) {
     var _a5, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     this.endIndex = endIndex;
-    const value = this.getSlice(start, endIndex - offset3);
+    const value = this.getSlice(start, endIndex - offset);
     if (!this.htmlMode || this.options.recognizeCDATA) {
       (_b = (_a5 = this.cbs).oncdatastart) === null || _b === void 0 ? void 0 : _b.call(_a5);
       (_d = (_c = this.cbs).ontext) === null || _d === void 0 ? void 0 : _d.call(_c, value);
@@ -10687,8 +9865,8 @@ var Parser = class {
     var _a5, _b;
     if (this.cbs.onclosetag) {
       this.endIndex = this.startIndex;
-      for (let index4 = 0; index4 < this.stack.length; index4++) {
-        this.cbs.onclosetag(this.stack[index4], true);
+      for (let index3 = 0; index3 < this.stack.length; index3++) {
+        this.cbs.onclosetag(this.stack[index3], true);
       }
     }
     (_b = (_a5 = this.cbs).onend) === null || _b === void 0 ? void 0 : _b.call(_a5);
@@ -11131,8 +10309,8 @@ function addClass(value) {
     const className = getAttr(el, "class", false);
     if (className) {
       let setClass = ` ${className} `;
-      for (const cn2 of classNames) {
-        const appendClass = `${cn2} `;
+      for (const cn of classNames) {
+        const appendClass = `${cn} `;
         if (!setClass.includes(` ${appendClass}`))
           setClass += appendClass;
       }
@@ -11162,12 +10340,12 @@ function removeClass(name) {
     } else {
       const elClasses = splitNames(el.attribs["class"]);
       let changed = false;
-      for (let j2 = 0; j2 < numClasses; j2++) {
-        const index4 = elClasses.indexOf(classes[j2]);
-        if (index4 !== -1) {
-          elClasses.splice(index4, 1);
+      for (let j = 0; j < numClasses; j++) {
+        const index3 = elClasses.indexOf(classes[j]);
+        if (index3 !== -1) {
+          elClasses.splice(index3, 1);
           changed = true;
-          j2--;
+          j--;
         }
       }
       if (changed) {
@@ -11188,19 +10366,19 @@ function toggleClass(value, stateVal) {
     return this;
   const classNames = value.split(rspace);
   const numClasses = classNames.length;
-  const state3 = typeof stateVal === "boolean" ? stateVal ? 1 : -1 : 0;
+  const state2 = typeof stateVal === "boolean" ? stateVal ? 1 : -1 : 0;
   const numElements = this.length;
   for (let i = 0; i < numElements; i++) {
     const el = this[i];
     if (!isTag2(el))
       continue;
     const elementClasses = splitNames(el.attribs["class"]);
-    for (let j2 = 0; j2 < numClasses; j2++) {
-      const index4 = elementClasses.indexOf(classNames[j2]);
-      if (state3 >= 0 && index4 === -1) {
-        elementClasses.push(classNames[j2]);
-      } else if (state3 <= 0 && index4 !== -1) {
-        elementClasses.splice(index4, 1);
+    for (let j = 0; j < numClasses; j++) {
+      const index3 = elementClasses.indexOf(classNames[j]);
+      if (state2 >= 0 && index3 === -1) {
+        elementClasses.push(classNames[j]);
+      } else if (state2 <= 0 && index3 !== -1) {
+        elementClasses.splice(index3, 1);
       }
     }
     el.attribs["class"] = elementClasses.join(" ");
@@ -11335,17 +10513,17 @@ function parse(selector) {
 }
 function parseSelector(subselects2, selector, selectorIndex) {
   let tokens = [];
-  function getName2(offset3) {
-    const match = selector.slice(selectorIndex + offset3).match(reName);
+  function getName2(offset) {
+    const match = selector.slice(selectorIndex + offset).match(reName);
     if (!match) {
       throw new Error(`Expected name, found ${selector.slice(selectorIndex)}`);
     }
     const [name] = match;
-    selectorIndex += offset3 + name.length;
+    selectorIndex += offset + name.length;
     return unescapeCSS(name);
   }
-  function stripWhitespace(offset3) {
-    selectorIndex += offset3;
+  function stripWhitespace(offset) {
+    selectorIndex += offset;
     while (selectorIndex < selector.length && isWhitespace2(selector.charCodeAt(selectorIndex))) {
       selectorIndex++;
     }
@@ -11647,12 +10825,12 @@ function sortByProcedure(arr) {
     const procNew = procs[i];
     if (procNew < 0)
       continue;
-    for (let j2 = i - 1; j2 >= 0 && procNew < procs[j2]; j2--) {
-      const token = arr[j2 + 1];
-      arr[j2 + 1] = arr[j2];
-      arr[j2] = token;
-      procs[j2 + 1] = procs[j2];
-      procs[j2] = procNew;
+    for (let j = i - 1; j >= 0 && procNew < procs[j]; j--) {
+      const token = arr[j + 1];
+      arr[j + 1] = arr[j];
+      arr[j] = token;
+      procs[j + 1] = procs[j];
+      procs[j] = procNew;
     }
   }
 }
@@ -11742,7 +10920,7 @@ function shouldIgnoreCase(selector, options) {
   return typeof selector.ignoreCase === "boolean" ? selector.ignoreCase : selector.ignoreCase === "quirks" ? !!options.quirksMode : !options.xmlMode && caseInsensitiveAttributes.has(selector.name);
 }
 var attributeRules = {
-  equals(next4, data2, options) {
+  equals(next3, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
     let { value } = data2;
@@ -11750,12 +10928,12 @@ var attributeRules = {
       value = value.toLowerCase();
       return (elem) => {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return attr3 != null && attr3.length === value.length && attr3.toLowerCase() === value && next4(elem);
+        return attr3 != null && attr3.length === value.length && attr3.toLowerCase() === value && next3(elem);
       };
     }
-    return (elem) => adapter2.getAttributeValue(elem, name) === value && next4(elem);
+    return (elem) => adapter2.getAttributeValue(elem, name) === value && next3(elem);
   },
-  hyphen(next4, data2, options) {
+  hyphen(next3, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
     let { value } = data2;
@@ -11764,15 +10942,15 @@ var attributeRules = {
       value = value.toLowerCase();
       return function hyphenIC(elem) {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return attr3 != null && (attr3.length === len || attr3.charAt(len) === "-") && attr3.substr(0, len).toLowerCase() === value && next4(elem);
+        return attr3 != null && (attr3.length === len || attr3.charAt(len) === "-") && attr3.substr(0, len).toLowerCase() === value && next3(elem);
       };
     }
     return function hyphen(elem) {
       const attr3 = adapter2.getAttributeValue(elem, name);
-      return attr3 != null && (attr3.length === len || attr3.charAt(len) === "-") && attr3.substr(0, len) === value && next4(elem);
+      return attr3 != null && (attr3.length === len || attr3.charAt(len) === "-") && attr3.substr(0, len) === value && next3(elem);
     };
   },
-  element(next4, data2, options) {
+  element(next3, data2, options) {
     const { adapter: adapter2 } = options;
     const { name, value } = data2;
     if (/\s/.test(value)) {
@@ -11781,13 +10959,13 @@ var attributeRules = {
     const regex = new RegExp(`(?:^|\\s)${escapeRegex(value)}(?:$|\\s)`, shouldIgnoreCase(data2, options) ? "i" : "");
     return function element2(elem) {
       const attr3 = adapter2.getAttributeValue(elem, name);
-      return attr3 != null && attr3.length >= value.length && regex.test(attr3) && next4(elem);
+      return attr3 != null && attr3.length >= value.length && regex.test(attr3) && next3(elem);
     };
   },
-  exists(next4, { name }, { adapter: adapter2 }) {
-    return (elem) => adapter2.hasAttrib(elem, name) && next4(elem);
+  exists(next3, { name }, { adapter: adapter2 }) {
+    return (elem) => adapter2.hasAttrib(elem, name) && next3(elem);
   },
-  start(next4, data2, options) {
+  start(next3, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
     let { value } = data2;
@@ -11799,15 +10977,15 @@ var attributeRules = {
       value = value.toLowerCase();
       return (elem) => {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return attr3 != null && attr3.length >= len && attr3.substr(0, len).toLowerCase() === value && next4(elem);
+        return attr3 != null && attr3.length >= len && attr3.substr(0, len).toLowerCase() === value && next3(elem);
       };
     }
     return (elem) => {
       var _a5;
-      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.startsWith(value)) && next4(elem);
+      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.startsWith(value)) && next3(elem);
     };
   },
-  end(next4, data2, options) {
+  end(next3, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
     let { value } = data2;
@@ -11819,15 +10997,15 @@ var attributeRules = {
       value = value.toLowerCase();
       return (elem) => {
         var _a5;
-        return ((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.substr(len).toLowerCase()) === value && next4(elem);
+        return ((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.substr(len).toLowerCase()) === value && next3(elem);
       };
     }
     return (elem) => {
       var _a5;
-      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.endsWith(value)) && next4(elem);
+      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.endsWith(value)) && next3(elem);
     };
   },
-  any(next4, data2, options) {
+  any(next3, data2, options) {
     const { adapter: adapter2 } = options;
     const { name, value } = data2;
     if (value === "") {
@@ -11837,28 +11015,28 @@ var attributeRules = {
       const regex = new RegExp(escapeRegex(value), "i");
       return function anyIC(elem) {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return attr3 != null && attr3.length >= value.length && regex.test(attr3) && next4(elem);
+        return attr3 != null && attr3.length >= value.length && regex.test(attr3) && next3(elem);
       };
     }
     return (elem) => {
       var _a5;
-      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.includes(value)) && next4(elem);
+      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.includes(value)) && next3(elem);
     };
   },
-  not(next4, data2, options) {
+  not(next3, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
     let { value } = data2;
     if (value === "") {
-      return (elem) => !!adapter2.getAttributeValue(elem, name) && next4(elem);
+      return (elem) => !!adapter2.getAttributeValue(elem, name) && next3(elem);
     } else if (shouldIgnoreCase(data2, options)) {
       value = value.toLowerCase();
       return (elem) => {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return (attr3 == null || attr3.length !== value.length || attr3.toLowerCase() !== value) && next4(elem);
+        return (attr3 == null || attr3.length !== value.length || attr3.toLowerCase() !== value) && next3(elem);
       };
     }
-    return (elem) => adapter2.getAttributeValue(elem, name) !== value && next4(elem);
+    return (elem) => adapter2.getAttributeValue(elem, name) !== value && next3(elem);
   }
 };
 
@@ -11874,12 +11052,12 @@ function parse2(formula) {
     return [2, 1];
   }
   let idx = 0;
-  let a2 = 0;
+  let a = 0;
   let sign = readSign();
   let number = readNumber();
   if (idx < formula.length && formula.charAt(idx) === "n") {
     idx++;
-    a2 = sign * (number !== null && number !== void 0 ? number : 1);
+    a = sign * (number !== null && number !== void 0 ? number : 1);
     skipWhitespace();
     if (idx < formula.length) {
       sign = readSign();
@@ -11892,7 +11070,7 @@ function parse2(formula) {
   if (number === null || idx < formula.length) {
     throw new Error(`n-th rule couldn't be parsed ('${formula}')`);
   }
-  return [a2, sign * number];
+  return [a, sign * number];
   function readSign() {
     if (formula.charAt(idx) === "-") {
       idx++;
@@ -11922,19 +11100,19 @@ function parse2(formula) {
 // node_modules/nth-check/lib/esm/compile.js
 var import_boolbase2 = __toESM(require_boolbase(), 1);
 function compile(parsed) {
-  const a2 = parsed[0];
+  const a = parsed[0];
   const b = parsed[1] - 1;
-  if (b < 0 && a2 <= 0)
+  if (b < 0 && a <= 0)
     return import_boolbase2.default.falseFunc;
-  if (a2 === -1)
-    return (index4) => index4 <= b;
-  if (a2 === 0)
-    return (index4) => index4 === b;
-  if (a2 === 1)
-    return b < 0 ? import_boolbase2.default.trueFunc : (index4) => index4 >= b;
-  const absA = Math.abs(a2);
+  if (a === -1)
+    return (index3) => index3 <= b;
+  if (a === 0)
+    return (index3) => index3 === b;
+  if (a === 1)
+    return b < 0 ? import_boolbase2.default.trueFunc : (index3) => index3 >= b;
+  const absA = Math.abs(a);
   const bMod = (b % absA + absA) % absA;
-  return a2 > 1 ? (index4) => index4 >= b && index4 % absA === bMod : (index4) => index4 <= b && index4 % absA === bMod;
+  return a > 1 ? (index3) => index3 >= b && index3 % absA === bMod : (index3) => index3 <= b && index3 % absA === bMod;
 }
 
 // node_modules/nth-check/lib/esm/index.js
@@ -11944,31 +11122,31 @@ function nthCheck(formula) {
 
 // node_modules/css-select/lib/esm/pseudo-selectors/filters.js
 var import_boolbase3 = __toESM(require_boolbase(), 1);
-function getChildFunc(next4, adapter2) {
+function getChildFunc(next3, adapter2) {
   return (elem) => {
     const parent2 = adapter2.getParent(elem);
-    return parent2 != null && adapter2.isTag(parent2) && next4(elem);
+    return parent2 != null && adapter2.isTag(parent2) && next3(elem);
   };
 }
 var filters = {
-  contains(next4, text4, { adapter: adapter2 }) {
-    return function contains3(elem) {
-      return next4(elem) && adapter2.getText(elem).includes(text4);
+  contains(next3, text4, { adapter: adapter2 }) {
+    return function contains2(elem) {
+      return next3(elem) && adapter2.getText(elem).includes(text4);
     };
   },
-  icontains(next4, text4, { adapter: adapter2 }) {
+  icontains(next3, text4, { adapter: adapter2 }) {
     const itext = text4.toLowerCase();
     return function icontains(elem) {
-      return next4(elem) && adapter2.getText(elem).toLowerCase().includes(itext);
+      return next3(elem) && adapter2.getText(elem).toLowerCase().includes(itext);
     };
   },
   // Location specific methods
-  "nth-child"(next4, rule, { adapter: adapter2, equals: equals3 }) {
+  "nth-child"(next3, rule, { adapter: adapter2, equals: equals3 }) {
     const func = nthCheck(rule);
     if (func === import_boolbase3.default.falseFunc)
       return import_boolbase3.default.falseFunc;
     if (func === import_boolbase3.default.trueFunc)
-      return getChildFunc(next4, adapter2);
+      return getChildFunc(next3, adapter2);
     return function nthChild(elem) {
       const siblings2 = adapter2.getSiblings(elem);
       let pos = 0;
@@ -11979,15 +11157,15 @@ var filters = {
           pos++;
         }
       }
-      return func(pos) && next4(elem);
+      return func(pos) && next3(elem);
     };
   },
-  "nth-last-child"(next4, rule, { adapter: adapter2, equals: equals3 }) {
+  "nth-last-child"(next3, rule, { adapter: adapter2, equals: equals3 }) {
     const func = nthCheck(rule);
     if (func === import_boolbase3.default.falseFunc)
       return import_boolbase3.default.falseFunc;
     if (func === import_boolbase3.default.trueFunc)
-      return getChildFunc(next4, adapter2);
+      return getChildFunc(next3, adapter2);
     return function nthLastChild(elem) {
       const siblings2 = adapter2.getSiblings(elem);
       let pos = 0;
@@ -11998,15 +11176,15 @@ var filters = {
           pos++;
         }
       }
-      return func(pos) && next4(elem);
+      return func(pos) && next3(elem);
     };
   },
-  "nth-of-type"(next4, rule, { adapter: adapter2, equals: equals3 }) {
+  "nth-of-type"(next3, rule, { adapter: adapter2, equals: equals3 }) {
     const func = nthCheck(rule);
     if (func === import_boolbase3.default.falseFunc)
       return import_boolbase3.default.falseFunc;
     if (func === import_boolbase3.default.trueFunc)
-      return getChildFunc(next4, adapter2);
+      return getChildFunc(next3, adapter2);
     return function nthOfType(elem) {
       const siblings2 = adapter2.getSiblings(elem);
       let pos = 0;
@@ -12018,15 +11196,15 @@ var filters = {
           pos++;
         }
       }
-      return func(pos) && next4(elem);
+      return func(pos) && next3(elem);
     };
   },
-  "nth-last-of-type"(next4, rule, { adapter: adapter2, equals: equals3 }) {
+  "nth-last-of-type"(next3, rule, { adapter: adapter2, equals: equals3 }) {
     const func = nthCheck(rule);
     if (func === import_boolbase3.default.falseFunc)
       return import_boolbase3.default.falseFunc;
     if (func === import_boolbase3.default.trueFunc)
-      return getChildFunc(next4, adapter2);
+      return getChildFunc(next3, adapter2);
     return function nthLastOfType(elem) {
       const siblings2 = adapter2.getSiblings(elem);
       let pos = 0;
@@ -12038,38 +11216,38 @@ var filters = {
           pos++;
         }
       }
-      return func(pos) && next4(elem);
+      return func(pos) && next3(elem);
     };
   },
   // TODO determine the actual root element
-  root(next4, _rule, { adapter: adapter2 }) {
+  root(next3, _rule, { adapter: adapter2 }) {
     return (elem) => {
       const parent2 = adapter2.getParent(elem);
-      return (parent2 == null || !adapter2.isTag(parent2)) && next4(elem);
+      return (parent2 == null || !adapter2.isTag(parent2)) && next3(elem);
     };
   },
-  scope(next4, rule, options, context) {
+  scope(next3, rule, options, context) {
     const { equals: equals3 } = options;
     if (!context || context.length === 0) {
-      return filters["root"](next4, rule, options);
+      return filters["root"](next3, rule, options);
     }
     if (context.length === 1) {
-      return (elem) => equals3(context[0], elem) && next4(elem);
+      return (elem) => equals3(context[0], elem) && next3(elem);
     }
-    return (elem) => context.includes(elem) && next4(elem);
+    return (elem) => context.includes(elem) && next3(elem);
   },
   hover: dynamicStatePseudo("isHovered"),
   visited: dynamicStatePseudo("isVisited"),
   active: dynamicStatePseudo("isActive")
 };
 function dynamicStatePseudo(name) {
-  return function dynamicPseudo(next4, _rule, { adapter: adapter2 }) {
+  return function dynamicPseudo(next3, _rule, { adapter: adapter2 }) {
     const func = adapter2[name];
     if (typeof func !== "function") {
       return import_boolbase3.default.falseFunc;
     }
     return function active(elem) {
-      return func(elem) && next4(elem);
+      return func(elem) && next3(elem);
     };
   };
 }
@@ -12179,10 +11357,10 @@ var aliases = {
 // node_modules/css-select/lib/esm/pseudo-selectors/subselects.js
 var import_boolbase4 = __toESM(require_boolbase(), 1);
 var PLACEHOLDER_ELEMENT = {};
-function ensureIsTag(next4, adapter2) {
-  if (next4 === import_boolbase4.default.falseFunc)
+function ensureIsTag(next3, adapter2) {
+  if (next3 === import_boolbase4.default.falseFunc)
     return import_boolbase4.default.falseFunc;
-  return (elem) => adapter2.isTag(elem) && next4(elem);
+  return (elem) => adapter2.isTag(elem) && next3(elem);
 }
 function getNextSiblings(elem, adapter2) {
   const siblings2 = adapter2.getSiblings(elem);
@@ -12205,9 +11383,9 @@ function copyOptions(options) {
     equals: options.equals
   };
 }
-var is2 = (next4, token, options, context, compileToken2) => {
+var is2 = (next3, token, options, context, compileToken2) => {
   const func = compileToken2(token, copyOptions(options), context);
-  return func === import_boolbase4.default.trueFunc ? next4 : func === import_boolbase4.default.falseFunc ? import_boolbase4.default.falseFunc : (elem) => func(elem) && next4(elem);
+  return func === import_boolbase4.default.trueFunc ? next3 : func === import_boolbase4.default.falseFunc ? import_boolbase4.default.falseFunc : (elem) => func(elem) && next3(elem);
 };
 var subselects = {
   is: is2,
@@ -12216,11 +11394,11 @@ var subselects = {
    */
   matches: is2,
   where: is2,
-  not(next4, token, options, context, compileToken2) {
+  not(next3, token, options, context, compileToken2) {
     const func = compileToken2(token, copyOptions(options), context);
-    return func === import_boolbase4.default.falseFunc ? next4 : func === import_boolbase4.default.trueFunc ? import_boolbase4.default.falseFunc : (elem) => !func(elem) && next4(elem);
+    return func === import_boolbase4.default.falseFunc ? next3 : func === import_boolbase4.default.trueFunc ? import_boolbase4.default.falseFunc : (elem) => !func(elem) && next3(elem);
   },
-  has(next4, subselect, options, _context, compileToken2) {
+  has(next3, subselect, options, _context, compileToken2) {
     const { adapter: adapter2 } = options;
     const opts = copyOptions(options);
     opts.relativeSelector = true;
@@ -12235,7 +11413,7 @@ var subselects = {
     if (context && compiled !== import_boolbase4.default.trueFunc) {
       const { shouldTestNextSiblings = false } = compiled;
       return (elem) => {
-        if (!next4(elem))
+        if (!next3(elem))
           return false;
         context[0] = elem;
         const childs = adapter2.getChildren(elem);
@@ -12243,19 +11421,19 @@ var subselects = {
         return adapter2.existsOne(hasElement, nextElements);
       };
     }
-    return (elem) => next4(elem) && adapter2.existsOne(hasElement, adapter2.getChildren(elem));
+    return (elem) => next3(elem) && adapter2.existsOne(hasElement, adapter2.getChildren(elem));
   }
 };
 
 // node_modules/css-select/lib/esm/pseudo-selectors/index.js
-function compilePseudoSelector(next4, selector, options, context, compileToken2) {
+function compilePseudoSelector(next3, selector, options, context, compileToken2) {
   var _a5;
   const { name, data: data2 } = selector;
   if (Array.isArray(data2)) {
     if (!(name in subselects)) {
       throw new Error(`Unknown pseudo-class :${name}(${data2})`);
     }
-    return subselects[name](next4, data2, options, context, compileToken2);
+    return subselects[name](next3, data2, options, context, compileToken2);
   }
   const userPseudo = (_a5 = options.pseudos) === null || _a5 === void 0 ? void 0 : _a5[name];
   const stringPseudo = typeof userPseudo === "string" ? userPseudo : aliases[name];
@@ -12264,19 +11442,19 @@ function compilePseudoSelector(next4, selector, options, context, compileToken2)
       throw new Error(`Pseudo ${name} doesn't have any arguments`);
     }
     const alias = parse(stringPseudo);
-    return subselects["is"](next4, alias, options, context, compileToken2);
+    return subselects["is"](next3, alias, options, context, compileToken2);
   }
   if (typeof userPseudo === "function") {
     verifyPseudoArgs(userPseudo, name, data2, 1);
-    return (elem) => userPseudo(elem, data2) && next4(elem);
+    return (elem) => userPseudo(elem, data2) && next3(elem);
   }
   if (name in filters) {
-    return filters[name](next4, data2, options, context);
+    return filters[name](next3, data2, options, context);
   }
   if (name in pseudos) {
     const pseudo = pseudos[name];
     verifyPseudoArgs(pseudo, name, data2, 2);
-    return (elem) => pseudo(elem, options, data2) && next4(elem);
+    return (elem) => pseudo(elem, options, data2) && next3(elem);
   }
   throw new Error(`Unknown pseudo-class :${name}`);
 }
@@ -12289,7 +11467,7 @@ function getElementParent(node, adapter2) {
   }
   return null;
 }
-function compileGeneralSelector(next4, selector, options, context, compileToken2) {
+function compileGeneralSelector(next3, selector, options, context, compileToken2) {
   const { adapter: adapter2, equals: equals3 } = options;
   switch (selector.type) {
     case SelectorType.PseudoElement: {
@@ -12305,10 +11483,10 @@ function compileGeneralSelector(next4, selector, options, context, compileToken2
       if (!options.xmlMode || options.lowerCaseAttributeNames) {
         selector.name = selector.name.toLowerCase();
       }
-      return attributeRules[selector.action](next4, selector, options);
+      return attributeRules[selector.action](next3, selector, options);
     }
     case SelectorType.Pseudo: {
-      return compilePseudoSelector(next4, selector, options, context, compileToken2);
+      return compilePseudoSelector(next3, selector, options, context, compileToken2);
     }
     // Tags
     case SelectorType.Tag: {
@@ -12320,7 +11498,7 @@ function compileGeneralSelector(next4, selector, options, context, compileToken2
         name = name.toLowerCase();
       }
       return function tag2(elem) {
-        return adapter2.getName(elem) === name && next4(elem);
+        return adapter2.getName(elem) === name && next3(elem);
       };
     }
     // Traversal
@@ -12329,7 +11507,7 @@ function compileGeneralSelector(next4, selector, options, context, compileToken2
         return function descendant(elem) {
           let current = elem;
           while (current = getElementParent(current, adapter2)) {
-            if (next4(current)) {
+            if (next3(current)) {
               return true;
             }
           }
@@ -12341,7 +11519,7 @@ function compileGeneralSelector(next4, selector, options, context, compileToken2
         let current = elem;
         while (current = getElementParent(current, adapter2)) {
           if (!isFalseCache.has(current)) {
-            if (adapter2.isTag(current) && next4(current)) {
+            if (adapter2.isTag(current) && next3(current)) {
               return true;
             }
             isFalseCache.add(current);
@@ -12354,7 +11532,7 @@ function compileGeneralSelector(next4, selector, options, context, compileToken2
       return function flexibleDescendant(elem) {
         let current = elem;
         do {
-          if (next4(current))
+          if (next3(current))
             return true;
         } while (current = getElementParent(current, adapter2));
         return false;
@@ -12362,13 +11540,13 @@ function compileGeneralSelector(next4, selector, options, context, compileToken2
     }
     case SelectorType.Parent: {
       return function parent2(elem) {
-        return adapter2.getChildren(elem).some((elem2) => adapter2.isTag(elem2) && next4(elem2));
+        return adapter2.getChildren(elem).some((elem2) => adapter2.isTag(elem2) && next3(elem2));
       };
     }
     case SelectorType.Child: {
       return function child2(elem) {
         const parent2 = adapter2.getParent(elem);
-        return parent2 != null && adapter2.isTag(parent2) && next4(parent2);
+        return parent2 != null && adapter2.isTag(parent2) && next3(parent2);
       };
     }
     case SelectorType.Sibling: {
@@ -12378,7 +11556,7 @@ function compileGeneralSelector(next4, selector, options, context, compileToken2
           const currentSibling = siblings2[i];
           if (equals3(elem, currentSibling))
             break;
-          if (adapter2.isTag(currentSibling) && next4(currentSibling)) {
+          if (adapter2.isTag(currentSibling) && next3(currentSibling)) {
             return true;
           }
         }
@@ -12389,7 +11567,7 @@ function compileGeneralSelector(next4, selector, options, context, compileToken2
       if (adapter2.prevElementSibling) {
         return function adjacent(elem) {
           const previous = adapter2.prevElementSibling(elem);
-          return previous != null && next4(previous);
+          return previous != null && next3(previous);
         };
       }
       return function adjacent(elem) {
@@ -12403,22 +11581,22 @@ function compileGeneralSelector(next4, selector, options, context, compileToken2
             lastElement = currentSibling;
           }
         }
-        return !!lastElement && next4(lastElement);
+        return !!lastElement && next3(lastElement);
       };
     }
     case SelectorType.Universal: {
       if (selector.namespace != null && selector.namespace !== "*") {
         throw new Error("Namespaced universal selectors are not yet supported by css-select");
       }
-      return next4;
+      return next3;
     }
   }
 }
 
 // node_modules/css-select/lib/esm/compile.js
 function compile2(selector, options, context) {
-  const next4 = compileUnsafe(selector, options, context);
-  return ensureIsTag(next4, options.adapter);
+  const next3 = compileUnsafe(selector, options, context);
+  return ensureIsTag(next3, options.adapter);
 }
 function compileUnsafe(selector, options, context) {
   const token = typeof selector === "string" ? parse(selector) : selector;
@@ -12482,20 +11660,20 @@ function compileRules(rules, options, context) {
   var _a5;
   return rules.reduce((previous, rule) => previous === import_boolbase5.default.falseFunc ? import_boolbase5.default.falseFunc : compileGeneralSelector(previous, rule, options, context, compileToken), (_a5 = options.rootFunc) !== null && _a5 !== void 0 ? _a5 : import_boolbase5.default.trueFunc);
 }
-function reduceRules(a2, b) {
-  if (b === import_boolbase5.default.falseFunc || a2 === import_boolbase5.default.trueFunc) {
-    return a2;
+function reduceRules(a, b) {
+  if (b === import_boolbase5.default.falseFunc || a === import_boolbase5.default.trueFunc) {
+    return a;
   }
-  if (a2 === import_boolbase5.default.falseFunc || b === import_boolbase5.default.trueFunc) {
+  if (a === import_boolbase5.default.falseFunc || b === import_boolbase5.default.trueFunc) {
     return b;
   }
   return function combine(elem) {
-    return a2(elem) || b(elem);
+    return a(elem) || b(elem);
   };
 }
 
 // node_modules/css-select/lib/esm/index.js
-var defaultEquals = (a2, b) => a2 === b;
+var defaultEquals = (a, b) => a === b;
 var defaultOptions = {
   adapter: esm_exports2,
   equals: defaultEquals
@@ -12693,21 +11871,21 @@ function filterParsed(selector, elements, options) {
 function filterBySelector(selector, elements, options) {
   var _a5;
   if (selector.some(isTraversal)) {
-    const root71 = (_a5 = options.root) !== null && _a5 !== void 0 ? _a5 : getDocumentRoot(elements[0]);
+    const root6 = (_a5 = options.root) !== null && _a5 !== void 0 ? _a5 : getDocumentRoot(elements[0]);
     const opts = { ...options, context: elements, relativeSelector: false };
     selector.push(SCOPE_PSEUDO);
-    return findFilterElements(root71, selector, opts, true, elements.length);
+    return findFilterElements(root6, selector, opts, true, elements.length);
   }
   return findFilterElements(elements, selector, options, false, elements.length);
 }
-function select(selector, root71, options = {}, limit = Infinity) {
+function select(selector, root6, options = {}, limit = Infinity) {
   if (typeof selector === "function") {
-    return find2(root71, selector);
+    return find2(root6, selector);
   }
   const [plain, filtered] = groupSelectors(parse(selector));
-  const results = filtered.map((sel) => findFilterElements(root71, sel, options, true, limit));
+  const results = filtered.map((sel) => findFilterElements(root6, sel, options, true, limit));
   if (plain.length) {
-    results.push(findElements(root71, plain, options, limit));
+    results.push(findElements(root6, plain, options, limit));
   }
   if (results.length === 0) {
     return [];
@@ -12715,9 +11893,9 @@ function select(selector, root71, options = {}, limit = Infinity) {
   if (results.length === 1) {
     return results[0];
   }
-  return uniqueSort(results.reduce((a2, b) => [...a2, ...b]));
+  return uniqueSort(results.reduce((a, b) => [...a, ...b]));
 }
-function findFilterElements(root71, selector, options, queryForSelector, totalLimit) {
+function findFilterElements(root6, selector, options, queryForSelector, totalLimit) {
   const filterIndex = selector.findIndex(isFilter);
   const sub = selector.slice(0, filterIndex);
   const filter4 = selector[filterIndex];
@@ -12725,7 +11903,7 @@ function findFilterElements(root71, selector, options, queryForSelector, totalLi
   const limit = getLimit(filter4.name, filter4.data, partLimit);
   if (limit === 0)
     return [];
-  const elemsNoLimit = sub.length === 0 && !Array.isArray(root71) ? getChildren(root71).filter(isTag2) : sub.length === 0 ? (Array.isArray(root71) ? root71 : [root71]).filter(isTag2) : queryForSelector || sub.some(isTraversal) ? findElements(root71, [sub], options, limit) : filterElements(root71, [sub], options);
+  const elemsNoLimit = sub.length === 0 && !Array.isArray(root6) ? getChildren(root6).filter(isTag2) : sub.length === 0 ? (Array.isArray(root6) ? root6 : [root6]).filter(isTag2) : queryForSelector || sub.some(isTraversal) ? findElements(root6, [sub], options, limit) : filterElements(root6, [sub], options);
   const elems = elemsNoLimit.slice(0, limit);
   let result = filterByPosition(filter4.name, elems, filter4.data, options);
   if (result.length === 0 || selector.length === filterIndex + 1) {
@@ -12762,12 +11940,12 @@ function findFilterElements(root71, selector, options, queryForSelector, totalLi
     filterElements(result, [remainingSelector], options)
   );
 }
-function findElements(root71, sel, options, limit) {
-  const query = _compileToken(sel, options, root71);
-  return find2(root71, query, limit);
+function findElements(root6, sel, options, limit) {
+  const query = _compileToken(sel, options, root6);
+  return find2(root6, query, limit);
 }
-function find2(root71, query, limit = Infinity) {
-  const elems = prepareContext(root71, esm_exports2, query.shouldTestNextSiblings);
+function find2(root6, query, limit = Infinity) {
+  const elems = prepareContext(root6, esm_exports2, query.shouldTestNextSiblings);
   return find((node) => isTag2(node) && query(node), elems, true, limit);
 }
 function filterElements(elements, sel, options) {
@@ -12842,22 +12020,22 @@ var _singleMatcher = _getMatcher((fn, elems) => {
   return ret;
 });
 function _matchUntil(nextElem, ...postFns) {
-  let matches2 = null;
+  let matches = null;
   const innerMatcher = _getMatcher((nextElem2, elems) => {
     const matched = [];
     domEach(elems, (elem) => {
-      for (let next4; next4 = nextElem2(elem); elem = next4) {
-        if (matches2 === null || matches2 === void 0 ? void 0 : matches2(next4, matched.length))
+      for (let next3; next3 = nextElem2(elem); elem = next3) {
+        if (matches === null || matches === void 0 ? void 0 : matches(next3, matched.length))
           break;
-        matched.push(next4);
+        matched.push(next3);
       }
     });
     return matched;
   })(nextElem, ...postFns);
   return function(selector, filterSelector) {
-    matches2 = typeof selector === "string" ? (elem) => is3(elem, selector, this.options) : selector ? getFilterFn(selector) : null;
+    matches = typeof selector === "string" ? (elem) => is3(elem, selector, this.options) : selector ? getFilterFn(selector) : null;
     const ret = innerMatcher.call(this, filterSelector);
-    matches2 = null;
+    matches = null;
     return ret;
   };
 }
@@ -12972,8 +12150,8 @@ function filter3(match) {
   var _a5;
   return this._make(filterArray(this.toArray(), match, this.options.xmlMode, (_a5 = this._root) === null || _a5 === void 0 ? void 0 : _a5[0]));
 }
-function filterArray(nodes, match, xmlMode, root71) {
-  return typeof match === "string" ? filter2(match, nodes, { xmlMode, root: root71 }) : nodes.filter(getFilterFn(match));
+function filterArray(nodes, match, xmlMode, root6) {
+  return typeof match === "string" ? filter2(match, nodes, { xmlMode, root: root6 }) : nodes.filter(getFilterFn(match));
 }
 function is4(selector) {
   const nodes = this.toArray();
@@ -12982,8 +12160,8 @@ function is4(selector) {
 function not(match) {
   let nodes = this.toArray();
   if (typeof match === "string") {
-    const matches2 = new Set(filter2(match, nodes, this.options));
-    nodes = nodes.filter((el) => !matches2.has(el));
+    const matches = new Set(filter2(match, nodes, this.options));
+    nodes = nodes.filter((el) => !matches.has(el));
   } else {
     const filterFn = getFilterFn(match);
     nodes = nodes.filter((el, i) => !filterFn(el, i));
@@ -13078,20 +12256,20 @@ __export(manipulation_exports, {
 
 // node_modules/cheerio/dist/browser/parse.js
 function getParse(parser) {
-  return function parse6(content, options, isDocument3, context) {
+  return function parse6(content, options, isDocument2, context) {
     if (typeof Buffer !== "undefined" && Buffer.isBuffer(content)) {
       content = content.toString();
     }
     if (typeof content === "string") {
-      return parser(content, options, isDocument3, context);
+      return parser(content, options, isDocument2, context);
     }
     const doc = content;
     if (!Array.isArray(doc) && isDocument(doc)) {
       return doc;
     }
-    const root71 = new Document2([]);
-    update2(doc, root71);
-    return root71;
+    const root6 = new Document([]);
+    update2(doc, root6);
+    return root6;
   };
 }
 function update2(newChilds, parent2) {
@@ -13166,8 +12344,8 @@ function uniqueSplice(array, spliceIdx, spliceCount, newElems, parent2) {
     spliceCount,
     ...newElems
   ];
-  const prev3 = spliceIdx === 0 ? null : array[spliceIdx - 1];
-  const next4 = spliceIdx + spliceCount >= array.length ? null : array[spliceIdx + spliceCount];
+  const prev2 = spliceIdx === 0 ? null : array[spliceIdx - 1];
+  const next3 = spliceIdx + spliceCount >= array.length ? null : array[spliceIdx + spliceCount];
   for (let idx = 0; idx < newElems.length; ++idx) {
     const node = newElems[idx];
     const oldParent = node.parent;
@@ -13188,14 +12366,14 @@ function uniqueSplice(array, spliceIdx, spliceCount, newElems, parent2) {
     if (node.next) {
       node.next.prev = (_b = node.prev) !== null && _b !== void 0 ? _b : null;
     }
-    node.prev = idx === 0 ? prev3 : newElems[idx - 1];
-    node.next = idx === newElems.length - 1 ? next4 : newElems[idx + 1];
+    node.prev = idx === 0 ? prev2 : newElems[idx - 1];
+    node.next = idx === newElems.length - 1 ? next3 : newElems[idx + 1];
   }
-  if (prev3) {
-    prev3.next = newElems[0];
+  if (prev2) {
+    prev2.next = newElems[0];
   }
-  if (next4) {
-    next4.prev = newElems[newElems.length - 1];
+  if (next3) {
+    next3.prev = newElems[newElems.length - 1];
   }
   return array.splice(...spliceArgs);
 }
@@ -13226,14 +12404,14 @@ function _wrap(insert) {
       if (!wrapperDom || !hasChildren(wrapperDom))
         continue;
       let elInsertLocation = wrapperDom;
-      let j2 = 0;
-      while (j2 < elInsertLocation.children.length) {
-        const child2 = elInsertLocation.children[j2];
+      let j = 0;
+      while (j < elInsertLocation.children.length) {
+        const child2 = elInsertLocation.children[j];
         if (isTag2(child2)) {
           elInsertLocation = child2;
-          j2 = 0;
+          j = 0;
         } else {
-          j2++;
+          j++;
         }
       }
       insert(el, elInsertLocation, [wrapperDom]);
@@ -13246,9 +12424,9 @@ var wrap = _wrap((el, elInsertLocation, wrapperDom) => {
   if (!parent2)
     return;
   const siblings2 = parent2.children;
-  const index4 = siblings2.indexOf(el);
+  const index3 = siblings2.indexOf(el);
   update2([el], elInsertLocation);
-  uniqueSplice(siblings2, index4, 0, wrapperDom, parent2);
+  uniqueSplice(siblings2, index3, 0, wrapperDom, parent2);
 });
 var wrapInner = _wrap((el, elInsertLocation, wrapperDom) => {
   if (!hasChildren(el))
@@ -13272,14 +12450,14 @@ function wrapAll(wrapper) {
         elInsertLocation = wrap2[i];
       }
     }
-    let j2 = 0;
-    while (elInsertLocation && j2 < elInsertLocation.children.length) {
-      const child2 = elInsertLocation.children[j2];
+    let j = 0;
+    while (elInsertLocation && j < elInsertLocation.children.length) {
+      const child2 = elInsertLocation.children[j];
       if (child2.type === esm_exports.Tag) {
         elInsertLocation = child2;
-        j2 = 0;
+        j = 0;
       } else {
-        j2++;
+        j++;
       }
     }
     if (elInsertLocation)
@@ -13294,12 +12472,12 @@ function after(...elems) {
       return;
     }
     const siblings2 = el.parent.children;
-    const index4 = siblings2.indexOf(el);
-    if (index4 === -1)
+    const index3 = siblings2.indexOf(el);
+    if (index3 === -1)
       return;
     const domSrc = typeof elems[0] === "function" ? elems[0].call(el, i, this._render(el.children)) : elems;
     const dom = this._makeDomArray(domSrc, i < lastIdx);
-    uniqueSplice(siblings2, index4 + 1, 0, dom, el.parent);
+    uniqueSplice(siblings2, index3 + 1, 0, dom, el.parent);
   });
 }
 function insertAfter(target) {
@@ -13315,10 +12493,10 @@ function insertAfter(target) {
       continue;
     }
     const siblings2 = parent2.children;
-    const index4 = siblings2.indexOf(el);
-    if (index4 === -1)
+    const index3 = siblings2.indexOf(el);
+    if (index3 === -1)
       continue;
-    uniqueSplice(siblings2, index4 + 1, 0, clonedSelf, parent2);
+    uniqueSplice(siblings2, index3 + 1, 0, clonedSelf, parent2);
     clones.push(...clonedSelf);
   }
   return this._make(clones);
@@ -13330,12 +12508,12 @@ function before(...elems) {
       return;
     }
     const siblings2 = el.parent.children;
-    const index4 = siblings2.indexOf(el);
-    if (index4 === -1)
+    const index3 = siblings2.indexOf(el);
+    if (index3 === -1)
       return;
     const domSrc = typeof elems[0] === "function" ? elems[0].call(el, i, this._render(el.children)) : elems;
     const dom = this._makeDomArray(domSrc, i < lastIdx);
-    uniqueSplice(siblings2, index4, 0, dom, el.parent);
+    uniqueSplice(siblings2, index3, 0, dom, el.parent);
   });
 }
 function insertBefore(target) {
@@ -13349,10 +12527,10 @@ function insertBefore(target) {
       return;
     }
     const siblings2 = parent2.children;
-    const index4 = siblings2.indexOf(el);
-    if (index4 === -1)
+    const index3 = siblings2.indexOf(el);
+    if (index3 === -1)
       return;
-    uniqueSplice(siblings2, index4, 0, clonedSelf, parent2);
+    uniqueSplice(siblings2, index3, 0, clonedSelf, parent2);
     clones.push(...clonedSelf);
   });
   return this._make(clones);
@@ -13375,8 +12553,8 @@ function replaceWith(content) {
     const cont = typeof content === "function" ? content.call(el, i, el) : content;
     const dom = this._makeDomArray(cont);
     update2(dom, null);
-    const index4 = siblings2.indexOf(el);
-    uniqueSplice(siblings2, index4, 1, dom, parent2);
+    const index3 = siblings2.indexOf(el);
+    uniqueSplice(siblings2, index3, 1, dom, parent2);
     if (!dom.includes(el)) {
       el.parent = el.prev = el.next = null;
     }
@@ -13431,9 +12609,9 @@ function text3(str) {
 }
 function clone() {
   const clone2 = Array.prototype.map.call(this.get(), (el) => cloneNode(el, true));
-  const root71 = new Document2(clone2);
+  const root6 = new Document(clone2);
   for (const node of clone2) {
-    node.parent = root71;
+    node.parent = root6;
   }
   return this._make(clone2);
 }
@@ -13470,8 +12648,8 @@ function setCss(el, prop3, value, idx) {
   } else if (typeof prop3 === "object") {
     const keys = Object.keys(prop3);
     for (let i = 0; i < keys.length; i++) {
-      const k2 = keys[i];
-      setCss(el, k2, prop3[k2], i);
+      const k = keys[i];
+      setCss(el, k, prop3[k], i);
     }
   }
 }
@@ -13503,15 +12681,15 @@ function parse3(styles) {
   const obj = {};
   let key2;
   for (const str of styles.split(";")) {
-    const n2 = str.indexOf(":");
-    if (n2 < 1 || n2 === str.length - 1) {
+    const n = str.indexOf(":");
+    if (n < 1 || n === str.length - 1) {
       const trimmed = str.trimEnd();
       if (trimmed.length > 0 && key2 !== void 0) {
         obj[key2] += `;${trimmed}`;
       }
     } else {
-      key2 = str.slice(0, n2).trim();
-      obj[key2] = str.slice(n2 + 1).trim();
+      key2 = str.slice(0, n).trim();
+      obj[key2] = str.slice(n + 1).trim();
     }
   }
   return obj;
@@ -13602,10 +12780,10 @@ var Cheerio = class {
    * @param root - Sets the root node.
    * @param options - Options for the instance.
    */
-  constructor(elements, root71, options) {
+  constructor(elements, root6, options) {
     this.length = 0;
     this.options = options;
-    this._root = root71;
+    this._root = root6;
     if (elements) {
       for (let idx = 0; idx < elements.length; idx++) {
         this[idx] = elements[idx];
@@ -13621,31 +12799,31 @@ Object.assign(Cheerio.prototype, attributes_exports, traversing_exports, manipul
 
 // node_modules/cheerio/dist/browser/load.js
 function getLoad(parse6, render4) {
-  return function load2(content, options, isDocument3 = true) {
+  return function load2(content, options, isDocument2 = true) {
     if (content == null) {
       throw new Error("cheerio.load() expects a string");
     }
     const internalOpts = flattenOptions(options);
-    const initialRoot = parse6(content, internalOpts, isDocument3, null);
+    const initialRoot = parse6(content, internalOpts, isDocument2, null);
     class LoadedCheerio extends Cheerio {
       _make(selector, context) {
         const cheerio = initialize(selector, context);
         cheerio.prevObject = this;
         return cheerio;
       }
-      _parse(content2, options2, isDocument4, context) {
-        return parse6(content2, options2, isDocument4, context);
+      _parse(content2, options2, isDocument3, context) {
+        return parse6(content2, options2, isDocument3, context);
       }
       _render(dom) {
         return render4(dom, this.options);
       }
     }
-    function initialize(selector, context, root71 = initialRoot, opts) {
+    function initialize(selector, context, root6 = initialRoot, opts) {
       if (selector && isCheerio(selector))
         return selector;
       const options2 = flattenOptions(opts, internalOpts);
-      const r2 = typeof root71 === "string" ? [parse6(root71, options2, false, null)] : "length" in root71 ? root71 : [root71];
-      const rootInstance = isCheerio(r2) ? r2 : new LoadedCheerio(r2, null, options2);
+      const r = typeof root6 === "string" ? [parse6(root6, options2, false, null)] : "length" in root6 ? root6 : [root6];
+      const rootInstance = isCheerio(r) ? r : new LoadedCheerio(r, null, options2);
       rootInstance._root = rootInstance;
       if (!selector) {
         return new LoadedCheerio(void 0, rootInstance, options2);
@@ -13894,9 +13072,9 @@ var Preprocessor = class {
     return this.droppedBufferSize + this.pos;
   }
   getError(code, cpOffset) {
-    const { line, col, offset: offset3 } = this;
+    const { line, col, offset } = this;
     const startCol = col + cpOffset;
-    const startOffset = offset3 + cpOffset;
+    const startOffset = offset + cpOffset;
     return {
       code,
       startLine: line,
@@ -13974,8 +13152,8 @@ var Preprocessor = class {
     }
     return true;
   }
-  peek(offset3) {
-    const pos = this.pos + offset3;
+  peek(offset) {
+    const pos = this.pos + offset;
     if (pos >= this.html.length) {
       this.endOfChunkHit = !this.lastChunkWritten;
       return CODE_POINTS.EOF;
@@ -14199,28 +13377,28 @@ var EntityDecoder3 = class {
    * @param offset The offset at which the entity begins. Should be 0 if this is not the first call.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  write(input, offset3) {
+  write(input, offset) {
     switch (this.state) {
       case EntityDecoderState3.EntityStart: {
-        if (input.charCodeAt(offset3) === CharCodes4.NUM) {
+        if (input.charCodeAt(offset) === CharCodes4.NUM) {
           this.state = EntityDecoderState3.NumericStart;
           this.consumed += 1;
-          return this.stateNumericStart(input, offset3 + 1);
+          return this.stateNumericStart(input, offset + 1);
         }
         this.state = EntityDecoderState3.NamedEntity;
-        return this.stateNamedEntity(input, offset3);
+        return this.stateNamedEntity(input, offset);
       }
       case EntityDecoderState3.NumericStart: {
-        return this.stateNumericStart(input, offset3);
+        return this.stateNumericStart(input, offset);
       }
       case EntityDecoderState3.NumericDecimal: {
-        return this.stateNumericDecimal(input, offset3);
+        return this.stateNumericDecimal(input, offset);
       }
       case EntityDecoderState3.NumericHex: {
-        return this.stateNumericHex(input, offset3);
+        return this.stateNumericHex(input, offset);
       }
       case EntityDecoderState3.NamedEntity: {
-        return this.stateNamedEntity(input, offset3);
+        return this.stateNamedEntity(input, offset);
       }
     }
   }
@@ -14233,17 +13411,17 @@ var EntityDecoder3 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericStart(input, offset3) {
-    if (offset3 >= input.length) {
+  stateNumericStart(input, offset) {
+    if (offset >= input.length) {
       return -1;
     }
-    if ((input.charCodeAt(offset3) | TO_LOWER_BIT3) === CharCodes4.LOWER_X) {
+    if ((input.charCodeAt(offset) | TO_LOWER_BIT3) === CharCodes4.LOWER_X) {
       this.state = EntityDecoderState3.NumericHex;
       this.consumed += 1;
-      return this.stateNumericHex(input, offset3 + 1);
+      return this.stateNumericHex(input, offset + 1);
     }
     this.state = EntityDecoderState3.NumericDecimal;
-    return this.stateNumericDecimal(input, offset3);
+    return this.stateNumericDecimal(input, offset);
   }
   addToNumericResult(input, start, end2, base) {
     if (start !== end2) {
@@ -14261,18 +13439,18 @@ var EntityDecoder3 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericHex(input, offset3) {
-    const startIndex = offset3;
-    while (offset3 < input.length) {
-      const char = input.charCodeAt(offset3);
+  stateNumericHex(input, offset) {
+    const startIndex = offset;
+    while (offset < input.length) {
+      const char = input.charCodeAt(offset);
       if (isNumber3(char) || isHexadecimalCharacter3(char)) {
-        offset3 += 1;
+        offset += 1;
       } else {
-        this.addToNumericResult(input, startIndex, offset3, 16);
+        this.addToNumericResult(input, startIndex, offset, 16);
         return this.emitNumericEntity(char, 3);
       }
     }
-    this.addToNumericResult(input, startIndex, offset3, 16);
+    this.addToNumericResult(input, startIndex, offset, 16);
     return -1;
   }
   /**
@@ -14284,18 +13462,18 @@ var EntityDecoder3 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNumericDecimal(input, offset3) {
-    const startIndex = offset3;
-    while (offset3 < input.length) {
-      const char = input.charCodeAt(offset3);
+  stateNumericDecimal(input, offset) {
+    const startIndex = offset;
+    while (offset < input.length) {
+      const char = input.charCodeAt(offset);
       if (isNumber3(char)) {
-        offset3 += 1;
+        offset += 1;
       } else {
-        this.addToNumericResult(input, startIndex, offset3, 10);
+        this.addToNumericResult(input, startIndex, offset, 10);
         return this.emitNumericEntity(char, 2);
       }
     }
-    this.addToNumericResult(input, startIndex, offset3, 10);
+    this.addToNumericResult(input, startIndex, offset, 10);
     return -1;
   }
   /**
@@ -14340,12 +13518,12 @@ var EntityDecoder3 = class {
    * @param offset The current offset.
    * @returns The number of characters that were consumed, or -1 if the entity is incomplete.
    */
-  stateNamedEntity(input, offset3) {
+  stateNamedEntity(input, offset) {
     const { decodeTree } = this;
     let current = decodeTree[this.treeIndex];
     let valueLength = (current & BinTrieFlags3.VALUE_LENGTH) >> 14;
-    for (; offset3 < input.length; offset3++, this.excess++) {
-      const char = input.charCodeAt(offset3);
+    for (; offset < input.length; offset++, this.excess++) {
+      const char = input.charCodeAt(offset);
       this.treeIndex = determineBranch3(decodeTree, current, this.treeIndex + Math.max(1, valueLength), char);
       if (this.treeIndex < 0) {
         return this.result === 0 || // If we are parsing an attribute
@@ -15144,14 +14322,14 @@ var Tokenizer2 = class {
     (_b = (_a5 = this.handler).onParseError) === null || _b === void 0 ? void 0 : _b.call(_a5, this.preprocessor.getError(code, cpOffset));
   }
   // NOTE: `offset` may never run across line boundaries.
-  getCurrentLocation(offset3) {
+  getCurrentLocation(offset) {
     if (!this.options.sourceCodeLocationInfo) {
       return null;
     }
     return {
       startLine: this.preprocessor.line,
-      startCol: this.preprocessor.col - offset3,
-      startOffset: this.preprocessor.offset - offset3,
+      startCol: this.preprocessor.col - offset,
+      startOffset: this.preprocessor.offset - offset,
       endLine: -1,
       endCol: -1,
       endOffset: -1
@@ -15250,11 +14428,11 @@ var Tokenizer2 = class {
       location: this.getCurrentLocation(2)
     };
   }
-  _createCommentToken(offset3) {
+  _createCommentToken(offset) {
     this.currentToken = {
       type: TokenType.COMMENT,
       data: "",
-      location: this.getCurrentLocation(offset3)
+      location: this.getCurrentLocation(offset)
     };
   }
   _createDoctypeToken(initialName) {
@@ -18124,9 +17302,9 @@ var defaultTreeAdapter = {
   },
   adoptAttributes(recipient, attrs) {
     const recipientAttrsMap = new Set(recipient.attrs.map((attr3) => attr3.name));
-    for (let j2 = 0; j2 < attrs.length; j2++) {
-      if (!recipientAttrsMap.has(attrs[j2].name)) {
-        recipient.attrs.push(attrs[j2]);
+    for (let j = 0; j < attrs.length; j++) {
+      if (!recipientAttrsMap.has(attrs[j].name)) {
+        recipient.attrs.push(attrs[j]);
       }
     }
   },
@@ -19623,214 +18801,214 @@ var Parser2 = class {
     }
   }
 };
-function aaObtainFormattingElementEntry(p2, token) {
-  let formattingElementEntry = p2.activeFormattingElements.getElementEntryInScopeWithTagName(token.tagName);
+function aaObtainFormattingElementEntry(p, token) {
+  let formattingElementEntry = p.activeFormattingElements.getElementEntryInScopeWithTagName(token.tagName);
   if (formattingElementEntry) {
-    if (!p2.openElements.contains(formattingElementEntry.element)) {
-      p2.activeFormattingElements.removeEntry(formattingElementEntry);
+    if (!p.openElements.contains(formattingElementEntry.element)) {
+      p.activeFormattingElements.removeEntry(formattingElementEntry);
       formattingElementEntry = null;
-    } else if (!p2.openElements.hasInScope(token.tagID)) {
+    } else if (!p.openElements.hasInScope(token.tagID)) {
       formattingElementEntry = null;
     }
   } else {
-    genericEndTagInBody(p2, token);
+    genericEndTagInBody(p, token);
   }
   return formattingElementEntry;
 }
-function aaObtainFurthestBlock(p2, formattingElementEntry) {
+function aaObtainFurthestBlock(p, formattingElementEntry) {
   let furthestBlock = null;
-  let idx = p2.openElements.stackTop;
+  let idx = p.openElements.stackTop;
   for (; idx >= 0; idx--) {
-    const element2 = p2.openElements.items[idx];
+    const element2 = p.openElements.items[idx];
     if (element2 === formattingElementEntry.element) {
       break;
     }
-    if (p2._isSpecialElement(element2, p2.openElements.tagIDs[idx])) {
+    if (p._isSpecialElement(element2, p.openElements.tagIDs[idx])) {
       furthestBlock = element2;
     }
   }
   if (!furthestBlock) {
-    p2.openElements.shortenToLength(Math.max(idx, 0));
-    p2.activeFormattingElements.removeEntry(formattingElementEntry);
+    p.openElements.shortenToLength(Math.max(idx, 0));
+    p.activeFormattingElements.removeEntry(formattingElementEntry);
   }
   return furthestBlock;
 }
-function aaInnerLoop(p2, furthestBlock, formattingElement) {
+function aaInnerLoop(p, furthestBlock, formattingElement) {
   let lastElement = furthestBlock;
-  let nextElement = p2.openElements.getCommonAncestor(furthestBlock);
+  let nextElement = p.openElements.getCommonAncestor(furthestBlock);
   for (let i = 0, element2 = nextElement; element2 !== formattingElement; i++, element2 = nextElement) {
-    nextElement = p2.openElements.getCommonAncestor(element2);
-    const elementEntry = p2.activeFormattingElements.getElementEntry(element2);
+    nextElement = p.openElements.getCommonAncestor(element2);
+    const elementEntry = p.activeFormattingElements.getElementEntry(element2);
     const counterOverflow = elementEntry && i >= AA_INNER_LOOP_ITER;
     const shouldRemoveFromOpenElements = !elementEntry || counterOverflow;
     if (shouldRemoveFromOpenElements) {
       if (counterOverflow) {
-        p2.activeFormattingElements.removeEntry(elementEntry);
+        p.activeFormattingElements.removeEntry(elementEntry);
       }
-      p2.openElements.remove(element2);
+      p.openElements.remove(element2);
     } else {
-      element2 = aaRecreateElementFromEntry(p2, elementEntry);
+      element2 = aaRecreateElementFromEntry(p, elementEntry);
       if (lastElement === furthestBlock) {
-        p2.activeFormattingElements.bookmark = elementEntry;
+        p.activeFormattingElements.bookmark = elementEntry;
       }
-      p2.treeAdapter.detachNode(lastElement);
-      p2.treeAdapter.appendChild(element2, lastElement);
+      p.treeAdapter.detachNode(lastElement);
+      p.treeAdapter.appendChild(element2, lastElement);
       lastElement = element2;
     }
   }
   return lastElement;
 }
-function aaRecreateElementFromEntry(p2, elementEntry) {
-  const ns = p2.treeAdapter.getNamespaceURI(elementEntry.element);
-  const newElement = p2.treeAdapter.createElement(elementEntry.token.tagName, ns, elementEntry.token.attrs);
-  p2.openElements.replace(elementEntry.element, newElement);
+function aaRecreateElementFromEntry(p, elementEntry) {
+  const ns = p.treeAdapter.getNamespaceURI(elementEntry.element);
+  const newElement = p.treeAdapter.createElement(elementEntry.token.tagName, ns, elementEntry.token.attrs);
+  p.openElements.replace(elementEntry.element, newElement);
   elementEntry.element = newElement;
   return newElement;
 }
-function aaInsertLastNodeInCommonAncestor(p2, commonAncestor, lastElement) {
-  const tn = p2.treeAdapter.getTagName(commonAncestor);
+function aaInsertLastNodeInCommonAncestor(p, commonAncestor, lastElement) {
+  const tn = p.treeAdapter.getTagName(commonAncestor);
   const tid = getTagID(tn);
-  if (p2._isElementCausesFosterParenting(tid)) {
-    p2._fosterParentElement(lastElement);
+  if (p._isElementCausesFosterParenting(tid)) {
+    p._fosterParentElement(lastElement);
   } else {
-    const ns = p2.treeAdapter.getNamespaceURI(commonAncestor);
+    const ns = p.treeAdapter.getNamespaceURI(commonAncestor);
     if (tid === TAG_ID.TEMPLATE && ns === NS.HTML) {
-      commonAncestor = p2.treeAdapter.getTemplateContent(commonAncestor);
+      commonAncestor = p.treeAdapter.getTemplateContent(commonAncestor);
     }
-    p2.treeAdapter.appendChild(commonAncestor, lastElement);
+    p.treeAdapter.appendChild(commonAncestor, lastElement);
   }
 }
-function aaReplaceFormattingElement(p2, furthestBlock, formattingElementEntry) {
-  const ns = p2.treeAdapter.getNamespaceURI(formattingElementEntry.element);
+function aaReplaceFormattingElement(p, furthestBlock, formattingElementEntry) {
+  const ns = p.treeAdapter.getNamespaceURI(formattingElementEntry.element);
   const { token } = formattingElementEntry;
-  const newElement = p2.treeAdapter.createElement(token.tagName, ns, token.attrs);
-  p2._adoptNodes(furthestBlock, newElement);
-  p2.treeAdapter.appendChild(furthestBlock, newElement);
-  p2.activeFormattingElements.insertElementAfterBookmark(newElement, token);
-  p2.activeFormattingElements.removeEntry(formattingElementEntry);
-  p2.openElements.remove(formattingElementEntry.element);
-  p2.openElements.insertAfter(furthestBlock, newElement, token.tagID);
+  const newElement = p.treeAdapter.createElement(token.tagName, ns, token.attrs);
+  p._adoptNodes(furthestBlock, newElement);
+  p.treeAdapter.appendChild(furthestBlock, newElement);
+  p.activeFormattingElements.insertElementAfterBookmark(newElement, token);
+  p.activeFormattingElements.removeEntry(formattingElementEntry);
+  p.openElements.remove(formattingElementEntry.element);
+  p.openElements.insertAfter(furthestBlock, newElement, token.tagID);
 }
-function callAdoptionAgency(p2, token) {
+function callAdoptionAgency(p, token) {
   for (let i = 0; i < AA_OUTER_LOOP_ITER; i++) {
-    const formattingElementEntry = aaObtainFormattingElementEntry(p2, token);
+    const formattingElementEntry = aaObtainFormattingElementEntry(p, token);
     if (!formattingElementEntry) {
       break;
     }
-    const furthestBlock = aaObtainFurthestBlock(p2, formattingElementEntry);
+    const furthestBlock = aaObtainFurthestBlock(p, formattingElementEntry);
     if (!furthestBlock) {
       break;
     }
-    p2.activeFormattingElements.bookmark = formattingElementEntry;
-    const lastElement = aaInnerLoop(p2, furthestBlock, formattingElementEntry.element);
-    const commonAncestor = p2.openElements.getCommonAncestor(formattingElementEntry.element);
-    p2.treeAdapter.detachNode(lastElement);
+    p.activeFormattingElements.bookmark = formattingElementEntry;
+    const lastElement = aaInnerLoop(p, furthestBlock, formattingElementEntry.element);
+    const commonAncestor = p.openElements.getCommonAncestor(formattingElementEntry.element);
+    p.treeAdapter.detachNode(lastElement);
     if (commonAncestor)
-      aaInsertLastNodeInCommonAncestor(p2, commonAncestor, lastElement);
-    aaReplaceFormattingElement(p2, furthestBlock, formattingElementEntry);
+      aaInsertLastNodeInCommonAncestor(p, commonAncestor, lastElement);
+    aaReplaceFormattingElement(p, furthestBlock, formattingElementEntry);
   }
 }
-function appendComment(p2, token) {
-  p2._appendCommentNode(token, p2.openElements.currentTmplContentOrNode);
+function appendComment(p, token) {
+  p._appendCommentNode(token, p.openElements.currentTmplContentOrNode);
 }
-function appendCommentToRootHtmlElement(p2, token) {
-  p2._appendCommentNode(token, p2.openElements.items[0]);
+function appendCommentToRootHtmlElement(p, token) {
+  p._appendCommentNode(token, p.openElements.items[0]);
 }
-function appendCommentToDocument(p2, token) {
-  p2._appendCommentNode(token, p2.document);
+function appendCommentToDocument(p, token) {
+  p._appendCommentNode(token, p.document);
 }
-function stopParsing(p2, token) {
-  p2.stopped = true;
+function stopParsing(p, token) {
+  p.stopped = true;
   if (token.location) {
-    const target = p2.fragmentContext ? 0 : 2;
-    for (let i = p2.openElements.stackTop; i >= target; i--) {
-      p2._setEndLocation(p2.openElements.items[i], token);
+    const target = p.fragmentContext ? 0 : 2;
+    for (let i = p.openElements.stackTop; i >= target; i--) {
+      p._setEndLocation(p.openElements.items[i], token);
     }
-    if (!p2.fragmentContext && p2.openElements.stackTop >= 0) {
-      const htmlElement = p2.openElements.items[0];
-      const htmlLocation = p2.treeAdapter.getNodeSourceCodeLocation(htmlElement);
+    if (!p.fragmentContext && p.openElements.stackTop >= 0) {
+      const htmlElement = p.openElements.items[0];
+      const htmlLocation = p.treeAdapter.getNodeSourceCodeLocation(htmlElement);
       if (htmlLocation && !htmlLocation.endTag) {
-        p2._setEndLocation(htmlElement, token);
-        if (p2.openElements.stackTop >= 1) {
-          const bodyElement = p2.openElements.items[1];
-          const bodyLocation = p2.treeAdapter.getNodeSourceCodeLocation(bodyElement);
+        p._setEndLocation(htmlElement, token);
+        if (p.openElements.stackTop >= 1) {
+          const bodyElement = p.openElements.items[1];
+          const bodyLocation = p.treeAdapter.getNodeSourceCodeLocation(bodyElement);
           if (bodyLocation && !bodyLocation.endTag) {
-            p2._setEndLocation(bodyElement, token);
+            p._setEndLocation(bodyElement, token);
           }
         }
       }
     }
   }
 }
-function doctypeInInitialMode(p2, token) {
-  p2._setDocumentType(token);
+function doctypeInInitialMode(p, token) {
+  p._setDocumentType(token);
   const mode = token.forceQuirks ? DOCUMENT_MODE.QUIRKS : getDocumentMode(token);
   if (!isConforming(token)) {
-    p2._err(token, ERR.nonConformingDoctype);
+    p._err(token, ERR.nonConformingDoctype);
   }
-  p2.treeAdapter.setDocumentMode(p2.document, mode);
-  p2.insertionMode = InsertionMode.BEFORE_HTML;
+  p.treeAdapter.setDocumentMode(p.document, mode);
+  p.insertionMode = InsertionMode.BEFORE_HTML;
 }
-function tokenInInitialMode(p2, token) {
-  p2._err(token, ERR.missingDoctype, true);
-  p2.treeAdapter.setDocumentMode(p2.document, DOCUMENT_MODE.QUIRKS);
-  p2.insertionMode = InsertionMode.BEFORE_HTML;
-  p2._processToken(token);
+function tokenInInitialMode(p, token) {
+  p._err(token, ERR.missingDoctype, true);
+  p.treeAdapter.setDocumentMode(p.document, DOCUMENT_MODE.QUIRKS);
+  p.insertionMode = InsertionMode.BEFORE_HTML;
+  p._processToken(token);
 }
-function startTagBeforeHtml(p2, token) {
+function startTagBeforeHtml(p, token) {
   if (token.tagID === TAG_ID.HTML) {
-    p2._insertElement(token, NS.HTML);
-    p2.insertionMode = InsertionMode.BEFORE_HEAD;
+    p._insertElement(token, NS.HTML);
+    p.insertionMode = InsertionMode.BEFORE_HEAD;
   } else {
-    tokenBeforeHtml(p2, token);
+    tokenBeforeHtml(p, token);
   }
 }
-function endTagBeforeHtml(p2, token) {
+function endTagBeforeHtml(p, token) {
   const tn = token.tagID;
   if (tn === TAG_ID.HTML || tn === TAG_ID.HEAD || tn === TAG_ID.BODY || tn === TAG_ID.BR) {
-    tokenBeforeHtml(p2, token);
+    tokenBeforeHtml(p, token);
   }
 }
-function tokenBeforeHtml(p2, token) {
-  p2._insertFakeRootElement();
-  p2.insertionMode = InsertionMode.BEFORE_HEAD;
-  p2._processToken(token);
+function tokenBeforeHtml(p, token) {
+  p._insertFakeRootElement();
+  p.insertionMode = InsertionMode.BEFORE_HEAD;
+  p._processToken(token);
 }
-function startTagBeforeHead(p2, token) {
+function startTagBeforeHead(p, token) {
   switch (token.tagID) {
     case TAG_ID.HTML: {
-      startTagInBody(p2, token);
+      startTagInBody(p, token);
       break;
     }
     case TAG_ID.HEAD: {
-      p2._insertElement(token, NS.HTML);
-      p2.headElement = p2.openElements.current;
-      p2.insertionMode = InsertionMode.IN_HEAD;
+      p._insertElement(token, NS.HTML);
+      p.headElement = p.openElements.current;
+      p.insertionMode = InsertionMode.IN_HEAD;
       break;
     }
     default: {
-      tokenBeforeHead(p2, token);
+      tokenBeforeHead(p, token);
     }
   }
 }
-function endTagBeforeHead(p2, token) {
+function endTagBeforeHead(p, token) {
   const tn = token.tagID;
   if (tn === TAG_ID.HEAD || tn === TAG_ID.BODY || tn === TAG_ID.HTML || tn === TAG_ID.BR) {
-    tokenBeforeHead(p2, token);
+    tokenBeforeHead(p, token);
   } else {
-    p2._err(token, ERR.endTagWithoutMatchingOpenElement);
+    p._err(token, ERR.endTagWithoutMatchingOpenElement);
   }
 }
-function tokenBeforeHead(p2, token) {
-  p2._insertFakeElement(TAG_NAMES.HEAD, TAG_ID.HEAD);
-  p2.headElement = p2.openElements.current;
-  p2.insertionMode = InsertionMode.IN_HEAD;
-  p2._processToken(token);
+function tokenBeforeHead(p, token) {
+  p._insertFakeElement(TAG_NAMES.HEAD, TAG_ID.HEAD);
+  p.headElement = p.openElements.current;
+  p.insertionMode = InsertionMode.IN_HEAD;
+  p._processToken(token);
 }
-function startTagInHead(p2, token) {
+function startTagInHead(p, token) {
   switch (token.tagID) {
     case TAG_ID.HTML: {
-      startTagInBody(p2, token);
+      startTagInBody(p, token);
       break;
     }
     case TAG_ID.BASE:
@@ -19838,94 +19016,94 @@ function startTagInHead(p2, token) {
     case TAG_ID.BGSOUND:
     case TAG_ID.LINK:
     case TAG_ID.META: {
-      p2._appendElement(token, NS.HTML);
+      p._appendElement(token, NS.HTML);
       token.ackSelfClosing = true;
       break;
     }
     case TAG_ID.TITLE: {
-      p2._switchToTextParsing(token, TokenizerMode.RCDATA);
+      p._switchToTextParsing(token, TokenizerMode.RCDATA);
       break;
     }
     case TAG_ID.NOSCRIPT: {
-      if (p2.options.scriptingEnabled) {
-        p2._switchToTextParsing(token, TokenizerMode.RAWTEXT);
+      if (p.options.scriptingEnabled) {
+        p._switchToTextParsing(token, TokenizerMode.RAWTEXT);
       } else {
-        p2._insertElement(token, NS.HTML);
-        p2.insertionMode = InsertionMode.IN_HEAD_NO_SCRIPT;
+        p._insertElement(token, NS.HTML);
+        p.insertionMode = InsertionMode.IN_HEAD_NO_SCRIPT;
       }
       break;
     }
     case TAG_ID.NOFRAMES:
     case TAG_ID.STYLE: {
-      p2._switchToTextParsing(token, TokenizerMode.RAWTEXT);
+      p._switchToTextParsing(token, TokenizerMode.RAWTEXT);
       break;
     }
     case TAG_ID.SCRIPT: {
-      p2._switchToTextParsing(token, TokenizerMode.SCRIPT_DATA);
+      p._switchToTextParsing(token, TokenizerMode.SCRIPT_DATA);
       break;
     }
     case TAG_ID.TEMPLATE: {
-      p2._insertTemplate(token);
-      p2.activeFormattingElements.insertMarker();
-      p2.framesetOk = false;
-      p2.insertionMode = InsertionMode.IN_TEMPLATE;
-      p2.tmplInsertionModeStack.unshift(InsertionMode.IN_TEMPLATE);
+      p._insertTemplate(token);
+      p.activeFormattingElements.insertMarker();
+      p.framesetOk = false;
+      p.insertionMode = InsertionMode.IN_TEMPLATE;
+      p.tmplInsertionModeStack.unshift(InsertionMode.IN_TEMPLATE);
       break;
     }
     case TAG_ID.HEAD: {
-      p2._err(token, ERR.misplacedStartTagForHeadElement);
+      p._err(token, ERR.misplacedStartTagForHeadElement);
       break;
     }
     default: {
-      tokenInHead(p2, token);
+      tokenInHead(p, token);
     }
   }
 }
-function endTagInHead(p2, token) {
+function endTagInHead(p, token) {
   switch (token.tagID) {
     case TAG_ID.HEAD: {
-      p2.openElements.pop();
-      p2.insertionMode = InsertionMode.AFTER_HEAD;
+      p.openElements.pop();
+      p.insertionMode = InsertionMode.AFTER_HEAD;
       break;
     }
     case TAG_ID.BODY:
     case TAG_ID.BR:
     case TAG_ID.HTML: {
-      tokenInHead(p2, token);
+      tokenInHead(p, token);
       break;
     }
     case TAG_ID.TEMPLATE: {
-      templateEndTagInHead(p2, token);
+      templateEndTagInHead(p, token);
       break;
     }
     default: {
-      p2._err(token, ERR.endTagWithoutMatchingOpenElement);
+      p._err(token, ERR.endTagWithoutMatchingOpenElement);
     }
   }
 }
-function templateEndTagInHead(p2, token) {
-  if (p2.openElements.tmplCount > 0) {
-    p2.openElements.generateImpliedEndTagsThoroughly();
-    if (p2.openElements.currentTagId !== TAG_ID.TEMPLATE) {
-      p2._err(token, ERR.closingOfElementWithOpenChildElements);
+function templateEndTagInHead(p, token) {
+  if (p.openElements.tmplCount > 0) {
+    p.openElements.generateImpliedEndTagsThoroughly();
+    if (p.openElements.currentTagId !== TAG_ID.TEMPLATE) {
+      p._err(token, ERR.closingOfElementWithOpenChildElements);
     }
-    p2.openElements.popUntilTagNamePopped(TAG_ID.TEMPLATE);
-    p2.activeFormattingElements.clearToLastMarker();
-    p2.tmplInsertionModeStack.shift();
-    p2._resetInsertionMode();
+    p.openElements.popUntilTagNamePopped(TAG_ID.TEMPLATE);
+    p.activeFormattingElements.clearToLastMarker();
+    p.tmplInsertionModeStack.shift();
+    p._resetInsertionMode();
   } else {
-    p2._err(token, ERR.endTagWithoutMatchingOpenElement);
+    p._err(token, ERR.endTagWithoutMatchingOpenElement);
   }
 }
-function tokenInHead(p2, token) {
-  p2.openElements.pop();
-  p2.insertionMode = InsertionMode.AFTER_HEAD;
-  p2._processToken(token);
+function tokenInHead(p, token) {
+  p.openElements.pop();
+  p.insertionMode = InsertionMode.AFTER_HEAD;
+  p._processToken(token);
 }
-function startTagInHeadNoScript(p2, token) {
+function startTagInHeadNoScript(p, token) {
   switch (token.tagID) {
     case TAG_ID.HTML: {
-      startTagInBody(p2, token);
+      startTagInBody(p, token);
       break;
     }
     case TAG_ID.BASEFONT:
@@ -19935,56 +19113,56 @@ function startTagInHeadNoScript(p2, token) {
     case TAG_ID.META:
     case TAG_ID.NOFRAMES:
     case TAG_ID.STYLE: {
-      startTagInHead(p2, token);
+      startTagInHead(p, token);
       break;
     }
     case TAG_ID.NOSCRIPT: {
-      p2._err(token, ERR.nestedNoscriptInHead);
+      p._err(token, ERR.nestedNoscriptInHead);
       break;
     }
     default: {
-      tokenInHeadNoScript(p2, token);
+      tokenInHeadNoScript(p, token);
     }
   }
 }
-function endTagInHeadNoScript(p2, token) {
+function endTagInHeadNoScript(p, token) {
   switch (token.tagID) {
     case TAG_ID.NOSCRIPT: {
-      p2.openElements.pop();
-      p2.insertionMode = InsertionMode.IN_HEAD;
+      p.openElements.pop();
+      p.insertionMode = InsertionMode.IN_HEAD;
       break;
     }
     case TAG_ID.BR: {
-      tokenInHeadNoScript(p2, token);
+      tokenInHeadNoScript(p, token);
       break;
     }
     default: {
-      p2._err(token, ERR.endTagWithoutMatchingOpenElement);
+      p._err(token, ERR.endTagWithoutMatchingOpenElement);
     }
   }
 }
-function tokenInHeadNoScript(p2, token) {
+function tokenInHeadNoScript(p, token) {
   const errCode = token.type === TokenType.EOF ? ERR.openElementsLeftAfterEof : ERR.disallowedContentInNoscriptInHead;
-  p2._err(token, errCode);
-  p2.openElements.pop();
-  p2.insertionMode = InsertionMode.IN_HEAD;
-  p2._processToken(token);
+  p._err(token, errCode);
+  p.openElements.pop();
+  p.insertionMode = InsertionMode.IN_HEAD;
+  p._processToken(token);
 }
-function startTagAfterHead(p2, token) {
+function startTagAfterHead(p, token) {
   switch (token.tagID) {
     case TAG_ID.HTML: {
-      startTagInBody(p2, token);
+      startTagInBody(p, token);
       break;
     }
     case TAG_ID.BODY: {
-      p2._insertElement(token, NS.HTML);
-      p2.framesetOk = false;
-      p2.insertionMode = InsertionMode.IN_BODY;
+      p._insertElement(token, NS.HTML);
+      p.framesetOk = false;
+      p.insertionMode = InsertionMode.IN_BODY;
       break;
     }
     case TAG_ID.FRAMESET: {
-      p2._insertElement(token, NS.HTML);
-      p2.insertionMode = InsertionMode.IN_FRAMESET;
+      p._insertElement(token, NS.HTML);
+      p.insertionMode = InsertionMode.IN_FRAMESET;
       break;
     }
     case TAG_ID.BASE:
@@ -19997,321 +19175,321 @@ function startTagAfterHead(p2, token) {
     case TAG_ID.STYLE:
     case TAG_ID.TEMPLATE:
     case TAG_ID.TITLE: {
-      p2._err(token, ERR.abandonedHeadElementChild);
-      p2.openElements.push(p2.headElement, TAG_ID.HEAD);
-      startTagInHead(p2, token);
-      p2.openElements.remove(p2.headElement);
+      p._err(token, ERR.abandonedHeadElementChild);
+      p.openElements.push(p.headElement, TAG_ID.HEAD);
+      startTagInHead(p, token);
+      p.openElements.remove(p.headElement);
       break;
     }
     case TAG_ID.HEAD: {
-      p2._err(token, ERR.misplacedStartTagForHeadElement);
+      p._err(token, ERR.misplacedStartTagForHeadElement);
       break;
     }
     default: {
-      tokenAfterHead(p2, token);
+      tokenAfterHead(p, token);
     }
   }
 }
-function endTagAfterHead(p2, token) {
+function endTagAfterHead(p, token) {
   switch (token.tagID) {
     case TAG_ID.BODY:
     case TAG_ID.HTML:
     case TAG_ID.BR: {
-      tokenAfterHead(p2, token);
+      tokenAfterHead(p, token);
       break;
     }
     case TAG_ID.TEMPLATE: {
-      templateEndTagInHead(p2, token);
+      templateEndTagInHead(p, token);
       break;
     }
     default: {
-      p2._err(token, ERR.endTagWithoutMatchingOpenElement);
+      p._err(token, ERR.endTagWithoutMatchingOpenElement);
     }
   }
 }
-function tokenAfterHead(p2, token) {
-  p2._insertFakeElement(TAG_NAMES.BODY, TAG_ID.BODY);
-  p2.insertionMode = InsertionMode.IN_BODY;
-  modeInBody(p2, token);
+function tokenAfterHead(p, token) {
+  p._insertFakeElement(TAG_NAMES.BODY, TAG_ID.BODY);
+  p.insertionMode = InsertionMode.IN_BODY;
+  modeInBody(p, token);
 }
-function modeInBody(p2, token) {
+function modeInBody(p, token) {
   switch (token.type) {
     case TokenType.CHARACTER: {
-      characterInBody(p2, token);
+      characterInBody(p, token);
       break;
     }
     case TokenType.WHITESPACE_CHARACTER: {
-      whitespaceCharacterInBody(p2, token);
+      whitespaceCharacterInBody(p, token);
       break;
     }
     case TokenType.COMMENT: {
-      appendComment(p2, token);
+      appendComment(p, token);
       break;
     }
     case TokenType.START_TAG: {
-      startTagInBody(p2, token);
+      startTagInBody(p, token);
       break;
     }
     case TokenType.END_TAG: {
-      endTagInBody(p2, token);
+      endTagInBody(p, token);
       break;
     }
     case TokenType.EOF: {
-      eofInBody(p2, token);
+      eofInBody(p, token);
       break;
     }
     default:
   }
 }
-function whitespaceCharacterInBody(p2, token) {
-  p2._reconstructActiveFormattingElements();
-  p2._insertCharacters(token);
+function whitespaceCharacterInBody(p, token) {
+  p._reconstructActiveFormattingElements();
+  p._insertCharacters(token);
 }
-function characterInBody(p2, token) {
-  p2._reconstructActiveFormattingElements();
-  p2._insertCharacters(token);
-  p2.framesetOk = false;
+function characterInBody(p, token) {
+  p._reconstructActiveFormattingElements();
+  p._insertCharacters(token);
+  p.framesetOk = false;
 }
-function htmlStartTagInBody(p2, token) {
-  if (p2.openElements.tmplCount === 0) {
-    p2.treeAdapter.adoptAttributes(p2.openElements.items[0], token.attrs);
+function htmlStartTagInBody(p, token) {
+  if (p.openElements.tmplCount === 0) {
+    p.treeAdapter.adoptAttributes(p.openElements.items[0], token.attrs);
   }
 }
-function bodyStartTagInBody(p2, token) {
-  const bodyElement = p2.openElements.tryPeekProperlyNestedBodyElement();
-  if (bodyElement && p2.openElements.tmplCount === 0) {
-    p2.framesetOk = false;
-    p2.treeAdapter.adoptAttributes(bodyElement, token.attrs);
+function bodyStartTagInBody(p, token) {
+  const bodyElement = p.openElements.tryPeekProperlyNestedBodyElement();
+  if (bodyElement && p.openElements.tmplCount === 0) {
+    p.framesetOk = false;
+    p.treeAdapter.adoptAttributes(bodyElement, token.attrs);
   }
 }
-function framesetStartTagInBody(p2, token) {
-  const bodyElement = p2.openElements.tryPeekProperlyNestedBodyElement();
-  if (p2.framesetOk && bodyElement) {
-    p2.treeAdapter.detachNode(bodyElement);
-    p2.openElements.popAllUpToHtmlElement();
-    p2._insertElement(token, NS.HTML);
-    p2.insertionMode = InsertionMode.IN_FRAMESET;
+function framesetStartTagInBody(p, token) {
+  const bodyElement = p.openElements.tryPeekProperlyNestedBodyElement();
+  if (p.framesetOk && bodyElement) {
+    p.treeAdapter.detachNode(bodyElement);
+    p.openElements.popAllUpToHtmlElement();
+    p._insertElement(token, NS.HTML);
+    p.insertionMode = InsertionMode.IN_FRAMESET;
   }
 }
-function addressStartTagInBody(p2, token) {
-  if (p2.openElements.hasInButtonScope(TAG_ID.P)) {
-    p2._closePElement();
+function addressStartTagInBody(p, token) {
+  if (p.openElements.hasInButtonScope(TAG_ID.P)) {
+    p._closePElement();
   }
-  p2._insertElement(token, NS.HTML);
+  p._insertElement(token, NS.HTML);
 }
-function numberedHeaderStartTagInBody(p2, token) {
-  if (p2.openElements.hasInButtonScope(TAG_ID.P)) {
-    p2._closePElement();
+function numberedHeaderStartTagInBody(p, token) {
+  if (p.openElements.hasInButtonScope(TAG_ID.P)) {
+    p._closePElement();
   }
-  if (p2.openElements.currentTagId !== void 0 && NUMBERED_HEADERS.has(p2.openElements.currentTagId)) {
-    p2.openElements.pop();
+  if (p.openElements.currentTagId !== void 0 && NUMBERED_HEADERS.has(p.openElements.currentTagId)) {
+    p.openElements.pop();
   }
-  p2._insertElement(token, NS.HTML);
+  p._insertElement(token, NS.HTML);
 }
-function preStartTagInBody(p2, token) {
-  if (p2.openElements.hasInButtonScope(TAG_ID.P)) {
-    p2._closePElement();
+function preStartTagInBody(p, token) {
+  if (p.openElements.hasInButtonScope(TAG_ID.P)) {
+    p._closePElement();
   }
-  p2._insertElement(token, NS.HTML);
-  p2.skipNextNewLine = true;
-  p2.framesetOk = false;
+  p._insertElement(token, NS.HTML);
+  p.skipNextNewLine = true;
+  p.framesetOk = false;
 }
-function formStartTagInBody(p2, token) {
-  const inTemplate = p2.openElements.tmplCount > 0;
-  if (!p2.formElement || inTemplate) {
-    if (p2.openElements.hasInButtonScope(TAG_ID.P)) {
-      p2._closePElement();
+function formStartTagInBody(p, token) {
+  const inTemplate = p.openElements.tmplCount > 0;
+  if (!p.formElement || inTemplate) {
+    if (p.openElements.hasInButtonScope(TAG_ID.P)) {
+      p._closePElement();
     }
-    p2._insertElement(token, NS.HTML);
+    p._insertElement(token, NS.HTML);
     if (!inTemplate) {
-      p2.formElement = p2.openElements.current;
+      p.formElement = p.openElements.current;
     }
   }
 }
-function listItemStartTagInBody(p2, token) {
-  p2.framesetOk = false;
+function listItemStartTagInBody(p, token) {
+  p.framesetOk = false;
   const tn = token.tagID;
-  for (let i = p2.openElements.stackTop; i >= 0; i--) {
-    const elementId = p2.openElements.tagIDs[i];
+  for (let i = p.openElements.stackTop; i >= 0; i--) {
+    const elementId = p.openElements.tagIDs[i];
     if (tn === TAG_ID.LI && elementId === TAG_ID.LI || (tn === TAG_ID.DD || tn === TAG_ID.DT) && (elementId === TAG_ID.DD || elementId === TAG_ID.DT)) {
-      p2.openElements.generateImpliedEndTagsWithExclusion(elementId);
-      p2.openElements.popUntilTagNamePopped(elementId);
+      p.openElements.generateImpliedEndTagsWithExclusion(elementId);
+      p.openElements.popUntilTagNamePopped(elementId);
       break;
     }
-    if (elementId !== TAG_ID.ADDRESS && elementId !== TAG_ID.DIV && elementId !== TAG_ID.P && p2._isSpecialElement(p2.openElements.items[i], elementId)) {
+    if (elementId !== TAG_ID.ADDRESS && elementId !== TAG_ID.DIV && elementId !== TAG_ID.P && p._isSpecialElement(p.openElements.items[i], elementId)) {
       break;
     }
   }
-  if (p2.openElements.hasInButtonScope(TAG_ID.P)) {
-    p2._closePElement();
+  if (p.openElements.hasInButtonScope(TAG_ID.P)) {
+    p._closePElement();
   }
-  p2._insertElement(token, NS.HTML);
+  p._insertElement(token, NS.HTML);
 }
-function plaintextStartTagInBody(p2, token) {
-  if (p2.openElements.hasInButtonScope(TAG_ID.P)) {
-    p2._closePElement();
+function plaintextStartTagInBody(p, token) {
+  if (p.openElements.hasInButtonScope(TAG_ID.P)) {
+    p._closePElement();
   }
-  p2._insertElement(token, NS.HTML);
-  p2.tokenizer.state = TokenizerMode.PLAINTEXT;
+  p._insertElement(token, NS.HTML);
+  p.tokenizer.state = TokenizerMode.PLAINTEXT;
 }
-function buttonStartTagInBody(p2, token) {
-  if (p2.openElements.hasInScope(TAG_ID.BUTTON)) {
-    p2.openElements.generateImpliedEndTags();
-    p2.openElements.popUntilTagNamePopped(TAG_ID.BUTTON);
+function buttonStartTagInBody(p, token) {
+  if (p.openElements.hasInScope(TAG_ID.BUTTON)) {
+    p.openElements.generateImpliedEndTags();
+    p.openElements.popUntilTagNamePopped(TAG_ID.BUTTON);
   }
-  p2._reconstructActiveFormattingElements();
-  p2._insertElement(token, NS.HTML);
-  p2.framesetOk = false;
+  p._reconstructActiveFormattingElements();
+  p._insertElement(token, NS.HTML);
+  p.framesetOk = false;
 }
-function aStartTagInBody(p2, token) {
-  const activeElementEntry = p2.activeFormattingElements.getElementEntryInScopeWithTagName(TAG_NAMES.A);
+function aStartTagInBody(p, token) {
+  const activeElementEntry = p.activeFormattingElements.getElementEntryInScopeWithTagName(TAG_NAMES.A);
   if (activeElementEntry) {
-    callAdoptionAgency(p2, token);
-    p2.openElements.remove(activeElementEntry.element);
-    p2.activeFormattingElements.removeEntry(activeElementEntry);
+    callAdoptionAgency(p, token);
+    p.openElements.remove(activeElementEntry.element);
+    p.activeFormattingElements.removeEntry(activeElementEntry);
   }
-  p2._reconstructActiveFormattingElements();
-  p2._insertElement(token, NS.HTML);
-  p2.activeFormattingElements.pushElement(p2.openElements.current, token);
+  p._reconstructActiveFormattingElements();
+  p._insertElement(token, NS.HTML);
+  p.activeFormattingElements.pushElement(p.openElements.current, token);
 }
-function bStartTagInBody(p2, token) {
-  p2._reconstructActiveFormattingElements();
-  p2._insertElement(token, NS.HTML);
-  p2.activeFormattingElements.pushElement(p2.openElements.current, token);
+function bStartTagInBody(p, token) {
+  p._reconstructActiveFormattingElements();
+  p._insertElement(token, NS.HTML);
+  p.activeFormattingElements.pushElement(p.openElements.current, token);
 }
-function nobrStartTagInBody(p2, token) {
-  p2._reconstructActiveFormattingElements();
-  if (p2.openElements.hasInScope(TAG_ID.NOBR)) {
-    callAdoptionAgency(p2, token);
-    p2._reconstructActiveFormattingElements();
+function nobrStartTagInBody(p, token) {
+  p._reconstructActiveFormattingElements();
+  if (p.openElements.hasInScope(TAG_ID.NOBR)) {
+    callAdoptionAgency(p, token);
+    p._reconstructActiveFormattingElements();
   }
-  p2._insertElement(token, NS.HTML);
-  p2.activeFormattingElements.pushElement(p2.openElements.current, token);
+  p._insertElement(token, NS.HTML);
+  p.activeFormattingElements.pushElement(p.openElements.current, token);
 }
-function appletStartTagInBody(p2, token) {
-  p2._reconstructActiveFormattingElements();
-  p2._insertElement(token, NS.HTML);
-  p2.activeFormattingElements.insertMarker();
-  p2.framesetOk = false;
+function appletStartTagInBody(p, token) {
+  p._reconstructActiveFormattingElements();
+  p._insertElement(token, NS.HTML);
+  p.activeFormattingElements.insertMarker();
+  p.framesetOk = false;
 }
-function tableStartTagInBody(p2, token) {
-  if (p2.treeAdapter.getDocumentMode(p2.document) !== DOCUMENT_MODE.QUIRKS && p2.openElements.hasInButtonScope(TAG_ID.P)) {
-    p2._closePElement();
+function tableStartTagInBody(p, token) {
+  if (p.treeAdapter.getDocumentMode(p.document) !== DOCUMENT_MODE.QUIRKS && p.openElements.hasInButtonScope(TAG_ID.P)) {
+    p._closePElement();
   }
-  p2._insertElement(token, NS.HTML);
-  p2.framesetOk = false;
-  p2.insertionMode = InsertionMode.IN_TABLE;
+  p._insertElement(token, NS.HTML);
+  p.framesetOk = false;
+  p.insertionMode = InsertionMode.IN_TABLE;
 }
-function areaStartTagInBody(p2, token) {
-  p2._reconstructActiveFormattingElements();
-  p2._appendElement(token, NS.HTML);
-  p2.framesetOk = false;
+function areaStartTagInBody(p, token) {
+  p._reconstructActiveFormattingElements();
+  p._appendElement(token, NS.HTML);
+  p.framesetOk = false;
   token.ackSelfClosing = true;
 }
 function isHiddenInput(token) {
   const inputType = getTokenAttr(token, ATTRS.TYPE);
   return inputType != null && inputType.toLowerCase() === HIDDEN_INPUT_TYPE;
 }
-function inputStartTagInBody(p2, token) {
-  p2._reconstructActiveFormattingElements();
-  p2._appendElement(token, NS.HTML);
+function inputStartTagInBody(p, token) {
+  p._reconstructActiveFormattingElements();
+  p._appendElement(token, NS.HTML);
   if (!isHiddenInput(token)) {
-    p2.framesetOk = false;
+    p.framesetOk = false;
   }
   token.ackSelfClosing = true;
 }
-function paramStartTagInBody(p2, token) {
-  p2._appendElement(token, NS.HTML);
+function paramStartTagInBody(p, token) {
+  p._appendElement(token, NS.HTML);
   token.ackSelfClosing = true;
 }
-function hrStartTagInBody(p2, token) {
-  if (p2.openElements.hasInButtonScope(TAG_ID.P)) {
-    p2._closePElement();
+function hrStartTagInBody(p, token) {
+  if (p.openElements.hasInButtonScope(TAG_ID.P)) {
+    p._closePElement();
   }
-  p2._appendElement(token, NS.HTML);
-  p2.framesetOk = false;
+  p._appendElement(token, NS.HTML);
+  p.framesetOk = false;
   token.ackSelfClosing = true;
 }
-function imageStartTagInBody(p2, token) {
+function imageStartTagInBody(p, token) {
   token.tagName = TAG_NAMES.IMG;
   token.tagID = TAG_ID.IMG;
-  areaStartTagInBody(p2, token);
+  areaStartTagInBody(p, token);
 }
-function textareaStartTagInBody(p2, token) {
-  p2._insertElement(token, NS.HTML);
-  p2.skipNextNewLine = true;
-  p2.tokenizer.state = TokenizerMode.RCDATA;
-  p2.originalInsertionMode = p2.insertionMode;
-  p2.framesetOk = false;
-  p2.insertionMode = InsertionMode.TEXT;
+function textareaStartTagInBody(p, token) {
+  p._insertElement(token, NS.HTML);
+  p.skipNextNewLine = true;
+  p.tokenizer.state = TokenizerMode.RCDATA;
+  p.originalInsertionMode = p.insertionMode;
+  p.framesetOk = false;
+  p.insertionMode = InsertionMode.TEXT;
 }
-function xmpStartTagInBody(p2, token) {
-  if (p2.openElements.hasInButtonScope(TAG_ID.P)) {
-    p2._closePElement();
+function xmpStartTagInBody(p, token) {
+  if (p.openElements.hasInButtonScope(TAG_ID.P)) {
+    p._closePElement();
   }
-  p2._reconstructActiveFormattingElements();
-  p2.framesetOk = false;
-  p2._switchToTextParsing(token, TokenizerMode.RAWTEXT);
+  p._reconstructActiveFormattingElements();
+  p.framesetOk = false;
+  p._switchToTextParsing(token, TokenizerMode.RAWTEXT);
 }
-function iframeStartTagInBody(p2, token) {
-  p2.framesetOk = false;
-  p2._switchToTextParsing(token, TokenizerMode.RAWTEXT);
+function iframeStartTagInBody(p, token) {
+  p.framesetOk = false;
+  p._switchToTextParsing(token, TokenizerMode.RAWTEXT);
 }
-function rawTextStartTagInBody(p2, token) {
-  p2._switchToTextParsing(token, TokenizerMode.RAWTEXT);
+function rawTextStartTagInBody(p, token) {
+  p._switchToTextParsing(token, TokenizerMode.RAWTEXT);
 }
-function selectStartTagInBody(p2, token) {
-  p2._reconstructActiveFormattingElements();
-  p2._insertElement(token, NS.HTML);
-  p2.framesetOk = false;
-  p2.insertionMode = p2.insertionMode === InsertionMode.IN_TABLE || p2.insertionMode === InsertionMode.IN_CAPTION || p2.insertionMode === InsertionMode.IN_TABLE_BODY || p2.insertionMode === InsertionMode.IN_ROW || p2.insertionMode === InsertionMode.IN_CELL ? InsertionMode.IN_SELECT_IN_TABLE : InsertionMode.IN_SELECT;
+function selectStartTagInBody(p, token) {
+  p._reconstructActiveFormattingElements();
+  p._insertElement(token, NS.HTML);
+  p.framesetOk = false;
+  p.insertionMode = p.insertionMode === InsertionMode.IN_TABLE || p.insertionMode === InsertionMode.IN_CAPTION || p.insertionMode === InsertionMode.IN_TABLE_BODY || p.insertionMode === InsertionMode.IN_ROW || p.insertionMode === InsertionMode.IN_CELL ? InsertionMode.IN_SELECT_IN_TABLE : InsertionMode.IN_SELECT;
 }
-function optgroupStartTagInBody(p2, token) {
-  if (p2.openElements.currentTagId === TAG_ID.OPTION) {
-    p2.openElements.pop();
+function optgroupStartTagInBody(p, token) {
+  if (p.openElements.currentTagId === TAG_ID.OPTION) {
+    p.openElements.pop();
   }
-  p2._reconstructActiveFormattingElements();
-  p2._insertElement(token, NS.HTML);
+  p._reconstructActiveFormattingElements();
+  p._insertElement(token, NS.HTML);
 }
-function rbStartTagInBody(p2, token) {
-  if (p2.openElements.hasInScope(TAG_ID.RUBY)) {
-    p2.openElements.generateImpliedEndTags();
+function rbStartTagInBody(p, token) {
+  if (p.openElements.hasInScope(TAG_ID.RUBY)) {
+    p.openElements.generateImpliedEndTags();
   }
-  p2._insertElement(token, NS.HTML);
+  p._insertElement(token, NS.HTML);
 }
-function rtStartTagInBody(p2, token) {
-  if (p2.openElements.hasInScope(TAG_ID.RUBY)) {
-    p2.openElements.generateImpliedEndTagsWithExclusion(TAG_ID.RTC);
+function rtStartTagInBody(p, token) {
+  if (p.openElements.hasInScope(TAG_ID.RUBY)) {
+    p.openElements.generateImpliedEndTagsWithExclusion(TAG_ID.RTC);
   }
-  p2._insertElement(token, NS.HTML);
+  p._insertElement(token, NS.HTML);
 }
-function mathStartTagInBody(p2, token) {
-  p2._reconstructActiveFormattingElements();
+function mathStartTagInBody(p, token) {
+  p._reconstructActiveFormattingElements();
   adjustTokenMathMLAttrs(token);
   adjustTokenXMLAttrs(token);
   if (token.selfClosing) {
-    p2._appendElement(token, NS.MATHML);
+    p._appendElement(token, NS.MATHML);
   } else {
-    p2._insertElement(token, NS.MATHML);
+    p._insertElement(token, NS.MATHML);
   }
   token.ackSelfClosing = true;
 }
-function svgStartTagInBody(p2, token) {
-  p2._reconstructActiveFormattingElements();
+function svgStartTagInBody(p, token) {
+  p._reconstructActiveFormattingElements();
   adjustTokenSVGAttrs(token);
   adjustTokenXMLAttrs(token);
   if (token.selfClosing) {
-    p2._appendElement(token, NS.SVG);
+    p._appendElement(token, NS.SVG);
   } else {
-    p2._insertElement(token, NS.SVG);
+    p._insertElement(token, NS.SVG);
   }
   token.ackSelfClosing = true;
 }
-function genericStartTagInBody(p2, token) {
-  p2._reconstructActiveFormattingElements();
-  p2._insertElement(token, NS.HTML);
+function genericStartTagInBody(p, token) {
+  p._reconstructActiveFormattingElements();
+  p._insertElement(token, NS.HTML);
 }
-function startTagInBody(p2, token) {
+function startTagInBody(p, token) {
   switch (token.tagID) {
     case TAG_ID.I:
     case TAG_ID.S:
@@ -20325,11 +19503,11 @@ function startTagInBody(p2, token) {
     case TAG_ID.SMALL:
     case TAG_ID.STRIKE:
     case TAG_ID.STRONG: {
-      bStartTagInBody(p2, token);
+      bStartTagInBody(p, token);
       break;
     }
     case TAG_ID.A: {
-      aStartTagInBody(p2, token);
+      aStartTagInBody(p, token);
       break;
     }
     case TAG_ID.H1:
@@ -20338,7 +19516,7 @@ function startTagInBody(p2, token) {
     case TAG_ID.H4:
     case TAG_ID.H5:
     case TAG_ID.H6: {
-      numberedHeaderStartTagInBody(p2, token);
+      numberedHeaderStartTagInBody(p, token);
       break;
     }
     case TAG_ID.P:
@@ -20366,13 +19544,13 @@ function startTagInBody(p2, token) {
     case TAG_ID.FIELDSET:
     case TAG_ID.BLOCKQUOTE:
     case TAG_ID.FIGCAPTION: {
-      addressStartTagInBody(p2, token);
+      addressStartTagInBody(p, token);
       break;
     }
     case TAG_ID.LI:
     case TAG_ID.DD:
     case TAG_ID.DT: {
-      listItemStartTagInBody(p2, token);
+      listItemStartTagInBody(p, token);
       break;
     }
     case TAG_ID.BR:
@@ -20381,38 +19559,38 @@ function startTagInBody(p2, token) {
     case TAG_ID.AREA:
     case TAG_ID.EMBED:
     case TAG_ID.KEYGEN: {
-      areaStartTagInBody(p2, token);
+      areaStartTagInBody(p, token);
       break;
     }
     case TAG_ID.HR: {
-      hrStartTagInBody(p2, token);
+      hrStartTagInBody(p, token);
       break;
     }
     case TAG_ID.RB:
     case TAG_ID.RTC: {
-      rbStartTagInBody(p2, token);
+      rbStartTagInBody(p, token);
       break;
     }
     case TAG_ID.RT:
     case TAG_ID.RP: {
-      rtStartTagInBody(p2, token);
+      rtStartTagInBody(p, token);
       break;
     }
     case TAG_ID.PRE:
     case TAG_ID.LISTING: {
-      preStartTagInBody(p2, token);
+      preStartTagInBody(p, token);
       break;
     }
     case TAG_ID.XMP: {
-      xmpStartTagInBody(p2, token);
+      xmpStartTagInBody(p, token);
       break;
     }
     case TAG_ID.SVG: {
-      svgStartTagInBody(p2, token);
+      svgStartTagInBody(p, token);
       break;
     }
     case TAG_ID.HTML: {
-      htmlStartTagInBody(p2, token);
+      htmlStartTagInBody(p, token);
       break;
     }
     case TAG_ID.BASE:
@@ -20424,89 +19602,89 @@ function startTagInBody(p2, token) {
     case TAG_ID.BGSOUND:
     case TAG_ID.BASEFONT:
     case TAG_ID.TEMPLATE: {
-      startTagInHead(p2, token);
+      startTagInHead(p, token);
       break;
     }
     case TAG_ID.BODY: {
-      bodyStartTagInBody(p2, token);
+      bodyStartTagInBody(p, token);
       break;
     }
     case TAG_ID.FORM: {
-      formStartTagInBody(p2, token);
+      formStartTagInBody(p, token);
       break;
     }
     case TAG_ID.NOBR: {
-      nobrStartTagInBody(p2, token);
+      nobrStartTagInBody(p, token);
       break;
     }
     case TAG_ID.MATH: {
-      mathStartTagInBody(p2, token);
+      mathStartTagInBody(p, token);
       break;
     }
     case TAG_ID.TABLE: {
-      tableStartTagInBody(p2, token);
+      tableStartTagInBody(p, token);
       break;
     }
     case TAG_ID.INPUT: {
-      inputStartTagInBody(p2, token);
+      inputStartTagInBody(p, token);
       break;
     }
     case TAG_ID.PARAM:
     case TAG_ID.TRACK:
     case TAG_ID.SOURCE: {
-      paramStartTagInBody(p2, token);
+      paramStartTagInBody(p, token);
       break;
     }
     case TAG_ID.IMAGE: {
-      imageStartTagInBody(p2, token);
+      imageStartTagInBody(p, token);
       break;
     }
     case TAG_ID.BUTTON: {
-      buttonStartTagInBody(p2, token);
+      buttonStartTagInBody(p, token);
       break;
     }
     case TAG_ID.APPLET:
     case TAG_ID.OBJECT:
     case TAG_ID.MARQUEE: {
-      appletStartTagInBody(p2, token);
+      appletStartTagInBody(p, token);
       break;
     }
     case TAG_ID.IFRAME: {
-      iframeStartTagInBody(p2, token);
+      iframeStartTagInBody(p, token);
       break;
     }
     case TAG_ID.SELECT: {
-      selectStartTagInBody(p2, token);
+      selectStartTagInBody(p, token);
       break;
     }
     case TAG_ID.OPTION:
     case TAG_ID.OPTGROUP: {
-      optgroupStartTagInBody(p2, token);
+      optgroupStartTagInBody(p, token);
       break;
     }
     case TAG_ID.NOEMBED:
     case TAG_ID.NOFRAMES: {
-      rawTextStartTagInBody(p2, token);
+      rawTextStartTagInBody(p, token);
       break;
     }
     case TAG_ID.FRAMESET: {
-      framesetStartTagInBody(p2, token);
+      framesetStartTagInBody(p, token);
       break;
     }
     case TAG_ID.TEXTAREA: {
-      textareaStartTagInBody(p2, token);
+      textareaStartTagInBody(p, token);
       break;
     }
     case TAG_ID.NOSCRIPT: {
-      if (p2.options.scriptingEnabled) {
-        rawTextStartTagInBody(p2, token);
+      if (p.options.scriptingEnabled) {
+        rawTextStartTagInBody(p, token);
       } else {
-        genericStartTagInBody(p2, token);
+        genericStartTagInBody(p, token);
       }
       break;
     }
     case TAG_ID.PLAINTEXT: {
-      plaintextStartTagInBody(p2, token);
+      plaintextStartTagInBody(p, token);
       break;
     }
     case TAG_ID.COL:
@@ -20523,106 +19701,106 @@ function startTagInBody(p2, token) {
       break;
     }
     default: {
-      genericStartTagInBody(p2, token);
+      genericStartTagInBody(p, token);
     }
   }
 }
-function bodyEndTagInBody(p2, token) {
-  if (p2.openElements.hasInScope(TAG_ID.BODY)) {
-    p2.insertionMode = InsertionMode.AFTER_BODY;
-    if (p2.options.sourceCodeLocationInfo) {
-      const bodyElement = p2.openElements.tryPeekProperlyNestedBodyElement();
+function bodyEndTagInBody(p, token) {
+  if (p.openElements.hasInScope(TAG_ID.BODY)) {
+    p.insertionMode = InsertionMode.AFTER_BODY;
+    if (p.options.sourceCodeLocationInfo) {
+      const bodyElement = p.openElements.tryPeekProperlyNestedBodyElement();
       if (bodyElement) {
-        p2._setEndLocation(bodyElement, token);
+        p._setEndLocation(bodyElement, token);
       }
     }
   }
 }
-function htmlEndTagInBody(p2, token) {
-  if (p2.openElements.hasInScope(TAG_ID.BODY)) {
-    p2.insertionMode = InsertionMode.AFTER_BODY;
-    endTagAfterBody(p2, token);
+function htmlEndTagInBody(p, token) {
+  if (p.openElements.hasInScope(TAG_ID.BODY)) {
+    p.insertionMode = InsertionMode.AFTER_BODY;
+    endTagAfterBody(p, token);
   }
 }
-function addressEndTagInBody(p2, token) {
+function addressEndTagInBody(p, token) {
   const tn = token.tagID;
-  if (p2.openElements.hasInScope(tn)) {
-    p2.openElements.generateImpliedEndTags();
-    p2.openElements.popUntilTagNamePopped(tn);
+  if (p.openElements.hasInScope(tn)) {
+    p.openElements.generateImpliedEndTags();
+    p.openElements.popUntilTagNamePopped(tn);
   }
 }
-function formEndTagInBody(p2) {
-  const inTemplate = p2.openElements.tmplCount > 0;
-  const { formElement } = p2;
+function formEndTagInBody(p) {
+  const inTemplate = p.openElements.tmplCount > 0;
+  const { formElement } = p;
   if (!inTemplate) {
-    p2.formElement = null;
+    p.formElement = null;
   }
-  if ((formElement || inTemplate) && p2.openElements.hasInScope(TAG_ID.FORM)) {
-    p2.openElements.generateImpliedEndTags();
+  if ((formElement || inTemplate) && p.openElements.hasInScope(TAG_ID.FORM)) {
+    p.openElements.generateImpliedEndTags();
     if (inTemplate) {
-      p2.openElements.popUntilTagNamePopped(TAG_ID.FORM);
+      p.openElements.popUntilTagNamePopped(TAG_ID.FORM);
     } else if (formElement) {
-      p2.openElements.remove(formElement);
+      p.openElements.remove(formElement);
     }
   }
 }
-function pEndTagInBody(p2) {
-  if (!p2.openElements.hasInButtonScope(TAG_ID.P)) {
-    p2._insertFakeElement(TAG_NAMES.P, TAG_ID.P);
+function pEndTagInBody(p) {
+  if (!p.openElements.hasInButtonScope(TAG_ID.P)) {
+    p._insertFakeElement(TAG_NAMES.P, TAG_ID.P);
   }
-  p2._closePElement();
+  p._closePElement();
 }
-function liEndTagInBody(p2) {
-  if (p2.openElements.hasInListItemScope(TAG_ID.LI)) {
-    p2.openElements.generateImpliedEndTagsWithExclusion(TAG_ID.LI);
-    p2.openElements.popUntilTagNamePopped(TAG_ID.LI);
+function liEndTagInBody(p) {
+  if (p.openElements.hasInListItemScope(TAG_ID.LI)) {
+    p.openElements.generateImpliedEndTagsWithExclusion(TAG_ID.LI);
+    p.openElements.popUntilTagNamePopped(TAG_ID.LI);
   }
 }
-function ddEndTagInBody(p2, token) {
+function ddEndTagInBody(p, token) {
   const tn = token.tagID;
-  if (p2.openElements.hasInScope(tn)) {
-    p2.openElements.generateImpliedEndTagsWithExclusion(tn);
-    p2.openElements.popUntilTagNamePopped(tn);
+  if (p.openElements.hasInScope(tn)) {
+    p.openElements.generateImpliedEndTagsWithExclusion(tn);
+    p.openElements.popUntilTagNamePopped(tn);
   }
 }
-function numberedHeaderEndTagInBody(p2) {
-  if (p2.openElements.hasNumberedHeaderInScope()) {
-    p2.openElements.generateImpliedEndTags();
-    p2.openElements.popUntilNumberedHeaderPopped();
+function numberedHeaderEndTagInBody(p) {
+  if (p.openElements.hasNumberedHeaderInScope()) {
+    p.openElements.generateImpliedEndTags();
+    p.openElements.popUntilNumberedHeaderPopped();
   }
 }
-function appletEndTagInBody(p2, token) {
+function appletEndTagInBody(p, token) {
   const tn = token.tagID;
-  if (p2.openElements.hasInScope(tn)) {
-    p2.openElements.generateImpliedEndTags();
-    p2.openElements.popUntilTagNamePopped(tn);
-    p2.activeFormattingElements.clearToLastMarker();
+  if (p.openElements.hasInScope(tn)) {
+    p.openElements.generateImpliedEndTags();
+    p.openElements.popUntilTagNamePopped(tn);
+    p.activeFormattingElements.clearToLastMarker();
   }
 }
-function brEndTagInBody(p2) {
-  p2._reconstructActiveFormattingElements();
-  p2._insertFakeElement(TAG_NAMES.BR, TAG_ID.BR);
-  p2.openElements.pop();
-  p2.framesetOk = false;
+function brEndTagInBody(p) {
+  p._reconstructActiveFormattingElements();
+  p._insertFakeElement(TAG_NAMES.BR, TAG_ID.BR);
+  p.openElements.pop();
+  p.framesetOk = false;
 }
-function genericEndTagInBody(p2, token) {
+function genericEndTagInBody(p, token) {
   const tn = token.tagName;
   const tid = token.tagID;
-  for (let i = p2.openElements.stackTop; i > 0; i--) {
-    const element2 = p2.openElements.items[i];
-    const elementId = p2.openElements.tagIDs[i];
-    if (tid === elementId && (tid !== TAG_ID.UNKNOWN || p2.treeAdapter.getTagName(element2) === tn)) {
-      p2.openElements.generateImpliedEndTagsWithExclusion(tid);
-      if (p2.openElements.stackTop >= i)
-        p2.openElements.shortenToLength(i);
+  for (let i = p.openElements.stackTop; i > 0; i--) {
+    const element2 = p.openElements.items[i];
+    const elementId = p.openElements.tagIDs[i];
+    if (tid === elementId && (tid !== TAG_ID.UNKNOWN || p.treeAdapter.getTagName(element2) === tn)) {
+      p.openElements.generateImpliedEndTagsWithExclusion(tid);
+      if (p.openElements.stackTop >= i)
+        p.openElements.shortenToLength(i);
       break;
     }
-    if (p2._isSpecialElement(element2, elementId)) {
+    if (p._isSpecialElement(element2, elementId)) {
       break;
     }
   }
 }
-function endTagInBody(p2, token) {
+function endTagInBody(p, token) {
   switch (token.tagID) {
     case TAG_ID.A:
     case TAG_ID.B:
@@ -20638,11 +19816,11 @@ function endTagInBody(p2, token) {
     case TAG_ID.SMALL:
     case TAG_ID.STRIKE:
     case TAG_ID.STRONG: {
-      callAdoptionAgency(p2, token);
+      callAdoptionAgency(p, token);
       break;
     }
     case TAG_ID.P: {
-      pEndTagInBody(p2);
+      pEndTagInBody(p);
       break;
     }
     case TAG_ID.DL:
@@ -20672,16 +19850,16 @@ function endTagInBody(p2, token) {
     case TAG_ID.FIELDSET:
     case TAG_ID.BLOCKQUOTE:
     case TAG_ID.FIGCAPTION: {
-      addressEndTagInBody(p2, token);
+      addressEndTagInBody(p, token);
       break;
     }
     case TAG_ID.LI: {
-      liEndTagInBody(p2);
+      liEndTagInBody(p);
       break;
     }
     case TAG_ID.DD:
     case TAG_ID.DT: {
-      ddEndTagInBody(p2, token);
+      ddEndTagInBody(p, token);
       break;
     }
     case TAG_ID.H1:
@@ -20690,191 +19868,191 @@ function endTagInBody(p2, token) {
     case TAG_ID.H4:
     case TAG_ID.H5:
     case TAG_ID.H6: {
-      numberedHeaderEndTagInBody(p2);
+      numberedHeaderEndTagInBody(p);
       break;
     }
     case TAG_ID.BR: {
-      brEndTagInBody(p2);
+      brEndTagInBody(p);
       break;
     }
     case TAG_ID.BODY: {
-      bodyEndTagInBody(p2, token);
+      bodyEndTagInBody(p, token);
       break;
     }
     case TAG_ID.HTML: {
-      htmlEndTagInBody(p2, token);
+      htmlEndTagInBody(p, token);
       break;
     }
     case TAG_ID.FORM: {
-      formEndTagInBody(p2);
+      formEndTagInBody(p);
       break;
     }
     case TAG_ID.APPLET:
     case TAG_ID.OBJECT:
     case TAG_ID.MARQUEE: {
-      appletEndTagInBody(p2, token);
+      appletEndTagInBody(p, token);
       break;
     }
     case TAG_ID.TEMPLATE: {
-      templateEndTagInHead(p2, token);
+      templateEndTagInHead(p, token);
       break;
     }
     default: {
-      genericEndTagInBody(p2, token);
+      genericEndTagInBody(p, token);
     }
   }
 }
-function eofInBody(p2, token) {
-  if (p2.tmplInsertionModeStack.length > 0) {
-    eofInTemplate(p2, token);
+function eofInBody(p, token) {
+  if (p.tmplInsertionModeStack.length > 0) {
+    eofInTemplate(p, token);
   } else {
-    stopParsing(p2, token);
+    stopParsing(p, token);
   }
 }
-function endTagInText(p2, token) {
+function endTagInText(p, token) {
   var _a5;
   if (token.tagID === TAG_ID.SCRIPT) {
-    (_a5 = p2.scriptHandler) === null || _a5 === void 0 ? void 0 : _a5.call(p2, p2.openElements.current);
+    (_a5 = p.scriptHandler) === null || _a5 === void 0 ? void 0 : _a5.call(p, p.openElements.current);
   }
-  p2.openElements.pop();
-  p2.insertionMode = p2.originalInsertionMode;
+  p.openElements.pop();
+  p.insertionMode = p.originalInsertionMode;
 }
-function eofInText(p2, token) {
-  p2._err(token, ERR.eofInElementThatCanContainOnlyText);
-  p2.openElements.pop();
-  p2.insertionMode = p2.originalInsertionMode;
-  p2.onEof(token);
+function eofInText(p, token) {
+  p._err(token, ERR.eofInElementThatCanContainOnlyText);
+  p.openElements.pop();
+  p.insertionMode = p.originalInsertionMode;
+  p.onEof(token);
 }
-function characterInTable(p2, token) {
-  if (p2.openElements.currentTagId !== void 0 && TABLE_STRUCTURE_TAGS.has(p2.openElements.currentTagId)) {
-    p2.pendingCharacterTokens.length = 0;
-    p2.hasNonWhitespacePendingCharacterToken = false;
-    p2.originalInsertionMode = p2.insertionMode;
-    p2.insertionMode = InsertionMode.IN_TABLE_TEXT;
+function characterInTable(p, token) {
+  if (p.openElements.currentTagId !== void 0 && TABLE_STRUCTURE_TAGS.has(p.openElements.currentTagId)) {
+    p.pendingCharacterTokens.length = 0;
+    p.hasNonWhitespacePendingCharacterToken = false;
+    p.originalInsertionMode = p.insertionMode;
+    p.insertionMode = InsertionMode.IN_TABLE_TEXT;
     switch (token.type) {
       case TokenType.CHARACTER: {
-        characterInTableText(p2, token);
+        characterInTableText(p, token);
         break;
       }
       case TokenType.WHITESPACE_CHARACTER: {
-        whitespaceCharacterInTableText(p2, token);
+        whitespaceCharacterInTableText(p, token);
         break;
       }
     }
   } else {
-    tokenInTable(p2, token);
+    tokenInTable(p, token);
   }
 }
-function captionStartTagInTable(p2, token) {
-  p2.openElements.clearBackToTableContext();
-  p2.activeFormattingElements.insertMarker();
-  p2._insertElement(token, NS.HTML);
-  p2.insertionMode = InsertionMode.IN_CAPTION;
+function captionStartTagInTable(p, token) {
+  p.openElements.clearBackToTableContext();
+  p.activeFormattingElements.insertMarker();
+  p._insertElement(token, NS.HTML);
+  p.insertionMode = InsertionMode.IN_CAPTION;
 }
-function colgroupStartTagInTable(p2, token) {
-  p2.openElements.clearBackToTableContext();
-  p2._insertElement(token, NS.HTML);
-  p2.insertionMode = InsertionMode.IN_COLUMN_GROUP;
+function colgroupStartTagInTable(p, token) {
+  p.openElements.clearBackToTableContext();
+  p._insertElement(token, NS.HTML);
+  p.insertionMode = InsertionMode.IN_COLUMN_GROUP;
 }
-function colStartTagInTable(p2, token) {
-  p2.openElements.clearBackToTableContext();
-  p2._insertFakeElement(TAG_NAMES.COLGROUP, TAG_ID.COLGROUP);
-  p2.insertionMode = InsertionMode.IN_COLUMN_GROUP;
-  startTagInColumnGroup(p2, token);
+function colStartTagInTable(p, token) {
+  p.openElements.clearBackToTableContext();
+  p._insertFakeElement(TAG_NAMES.COLGROUP, TAG_ID.COLGROUP);
+  p.insertionMode = InsertionMode.IN_COLUMN_GROUP;
+  startTagInColumnGroup(p, token);
 }
-function tbodyStartTagInTable(p2, token) {
-  p2.openElements.clearBackToTableContext();
-  p2._insertElement(token, NS.HTML);
-  p2.insertionMode = InsertionMode.IN_TABLE_BODY;
+function tbodyStartTagInTable(p, token) {
+  p.openElements.clearBackToTableContext();
+  p._insertElement(token, NS.HTML);
+  p.insertionMode = InsertionMode.IN_TABLE_BODY;
 }
-function tdStartTagInTable(p2, token) {
-  p2.openElements.clearBackToTableContext();
-  p2._insertFakeElement(TAG_NAMES.TBODY, TAG_ID.TBODY);
-  p2.insertionMode = InsertionMode.IN_TABLE_BODY;
-  startTagInTableBody(p2, token);
+function tdStartTagInTable(p, token) {
+  p.openElements.clearBackToTableContext();
+  p._insertFakeElement(TAG_NAMES.TBODY, TAG_ID.TBODY);
+  p.insertionMode = InsertionMode.IN_TABLE_BODY;
+  startTagInTableBody(p, token);
 }
-function tableStartTagInTable(p2, token) {
-  if (p2.openElements.hasInTableScope(TAG_ID.TABLE)) {
-    p2.openElements.popUntilTagNamePopped(TAG_ID.TABLE);
-    p2._resetInsertionMode();
-    p2._processStartTag(token);
+function tableStartTagInTable(p, token) {
+  if (p.openElements.hasInTableScope(TAG_ID.TABLE)) {
+    p.openElements.popUntilTagNamePopped(TAG_ID.TABLE);
+    p._resetInsertionMode();
+    p._processStartTag(token);
   }
 }
-function inputStartTagInTable(p2, token) {
+function inputStartTagInTable(p, token) {
   if (isHiddenInput(token)) {
-    p2._appendElement(token, NS.HTML);
+    p._appendElement(token, NS.HTML);
   } else {
-    tokenInTable(p2, token);
+    tokenInTable(p, token);
   }
   token.ackSelfClosing = true;
 }
-function formStartTagInTable(p2, token) {
-  if (!p2.formElement && p2.openElements.tmplCount === 0) {
-    p2._insertElement(token, NS.HTML);
-    p2.formElement = p2.openElements.current;
-    p2.openElements.pop();
+function formStartTagInTable(p, token) {
+  if (!p.formElement && p.openElements.tmplCount === 0) {
+    p._insertElement(token, NS.HTML);
+    p.formElement = p.openElements.current;
+    p.openElements.pop();
   }
 }
-function startTagInTable(p2, token) {
+function startTagInTable(p, token) {
   switch (token.tagID) {
     case TAG_ID.TD:
     case TAG_ID.TH:
     case TAG_ID.TR: {
-      tdStartTagInTable(p2, token);
+      tdStartTagInTable(p, token);
       break;
     }
     case TAG_ID.STYLE:
     case TAG_ID.SCRIPT:
     case TAG_ID.TEMPLATE: {
-      startTagInHead(p2, token);
+      startTagInHead(p, token);
       break;
     }
     case TAG_ID.COL: {
-      colStartTagInTable(p2, token);
+      colStartTagInTable(p, token);
       break;
     }
     case TAG_ID.FORM: {
-      formStartTagInTable(p2, token);
+      formStartTagInTable(p, token);
       break;
     }
     case TAG_ID.TABLE: {
-      tableStartTagInTable(p2, token);
+      tableStartTagInTable(p, token);
       break;
     }
     case TAG_ID.TBODY:
     case TAG_ID.TFOOT:
     case TAG_ID.THEAD: {
-      tbodyStartTagInTable(p2, token);
+      tbodyStartTagInTable(p, token);
       break;
     }
     case TAG_ID.INPUT: {
-      inputStartTagInTable(p2, token);
+      inputStartTagInTable(p, token);
       break;
     }
     case TAG_ID.CAPTION: {
-      captionStartTagInTable(p2, token);
+      captionStartTagInTable(p, token);
       break;
     }
     case TAG_ID.COLGROUP: {
-      colgroupStartTagInTable(p2, token);
+      colgroupStartTagInTable(p, token);
       break;
     }
     default: {
-      tokenInTable(p2, token);
+      tokenInTable(p, token);
     }
   }
 }
-function endTagInTable(p2, token) {
+function endTagInTable(p, token) {
   switch (token.tagID) {
     case TAG_ID.TABLE: {
-      if (p2.openElements.hasInTableScope(TAG_ID.TABLE)) {
-        p2.openElements.popUntilTagNamePopped(TAG_ID.TABLE);
-        p2._resetInsertionMode();
+      if (p.openElements.hasInTableScope(TAG_ID.TABLE)) {
+        p.openElements.popUntilTagNamePopped(TAG_ID.TABLE);
+        p._resetInsertionMode();
       }
       break;
     }
     case TAG_ID.TEMPLATE: {
-      templateEndTagInHead(p2, token);
+      templateEndTagInHead(p, token);
       break;
     }
     case TAG_ID.BODY:
@@ -20891,64 +20069,64 @@ function endTagInTable(p2, token) {
       break;
     }
     default: {
-      tokenInTable(p2, token);
+      tokenInTable(p, token);
     }
   }
 }
-function tokenInTable(p2, token) {
-  const savedFosterParentingState = p2.fosterParentingEnabled;
-  p2.fosterParentingEnabled = true;
-  modeInBody(p2, token);
-  p2.fosterParentingEnabled = savedFosterParentingState;
+function tokenInTable(p, token) {
+  const savedFosterParentingState = p.fosterParentingEnabled;
+  p.fosterParentingEnabled = true;
+  modeInBody(p, token);
+  p.fosterParentingEnabled = savedFosterParentingState;
 }
-function whitespaceCharacterInTableText(p2, token) {
-  p2.pendingCharacterTokens.push(token);
+function whitespaceCharacterInTableText(p, token) {
+  p.pendingCharacterTokens.push(token);
 }
-function characterInTableText(p2, token) {
-  p2.pendingCharacterTokens.push(token);
-  p2.hasNonWhitespacePendingCharacterToken = true;
+function characterInTableText(p, token) {
+  p.pendingCharacterTokens.push(token);
+  p.hasNonWhitespacePendingCharacterToken = true;
 }
-function tokenInTableText(p2, token) {
+function tokenInTableText(p, token) {
   let i = 0;
-  if (p2.hasNonWhitespacePendingCharacterToken) {
-    for (; i < p2.pendingCharacterTokens.length; i++) {
-      tokenInTable(p2, p2.pendingCharacterTokens[i]);
+  if (p.hasNonWhitespacePendingCharacterToken) {
+    for (; i < p.pendingCharacterTokens.length; i++) {
+      tokenInTable(p, p.pendingCharacterTokens[i]);
     }
   } else {
-    for (; i < p2.pendingCharacterTokens.length; i++) {
-      p2._insertCharacters(p2.pendingCharacterTokens[i]);
+    for (; i < p.pendingCharacterTokens.length; i++) {
+      p._insertCharacters(p.pendingCharacterTokens[i]);
     }
   }
-  p2.insertionMode = p2.originalInsertionMode;
-  p2._processToken(token);
+  p.insertionMode = p.originalInsertionMode;
+  p._processToken(token);
 }
 var TABLE_VOID_ELEMENTS = /* @__PURE__ */ new Set([TAG_ID.CAPTION, TAG_ID.COL, TAG_ID.COLGROUP, TAG_ID.TBODY, TAG_ID.TD, TAG_ID.TFOOT, TAG_ID.TH, TAG_ID.THEAD, TAG_ID.TR]);
-function startTagInCaption(p2, token) {
+function startTagInCaption(p, token) {
   const tn = token.tagID;
   if (TABLE_VOID_ELEMENTS.has(tn)) {
-    if (p2.openElements.hasInTableScope(TAG_ID.CAPTION)) {
-      p2.openElements.generateImpliedEndTags();
-      p2.openElements.popUntilTagNamePopped(TAG_ID.CAPTION);
-      p2.activeFormattingElements.clearToLastMarker();
-      p2.insertionMode = InsertionMode.IN_TABLE;
-      startTagInTable(p2, token);
+    if (p.openElements.hasInTableScope(TAG_ID.CAPTION)) {
+      p.openElements.generateImpliedEndTags();
+      p.openElements.popUntilTagNamePopped(TAG_ID.CAPTION);
+      p.activeFormattingElements.clearToLastMarker();
+      p.insertionMode = InsertionMode.IN_TABLE;
+      startTagInTable(p, token);
     }
   } else {
-    startTagInBody(p2, token);
+    startTagInBody(p, token);
   }
 }
-function endTagInCaption(p2, token) {
+function endTagInCaption(p, token) {
   const tn = token.tagID;
   switch (tn) {
     case TAG_ID.CAPTION:
     case TAG_ID.TABLE: {
-      if (p2.openElements.hasInTableScope(TAG_ID.CAPTION)) {
-        p2.openElements.generateImpliedEndTags();
-        p2.openElements.popUntilTagNamePopped(TAG_ID.CAPTION);
-        p2.activeFormattingElements.clearToLastMarker();
-        p2.insertionMode = InsertionMode.IN_TABLE;
+      if (p.openElements.hasInTableScope(TAG_ID.CAPTION)) {
+        p.openElements.generateImpliedEndTags();
+        p.openElements.popUntilTagNamePopped(TAG_ID.CAPTION);
+        p.activeFormattingElements.clearToLastMarker();
+        p.insertionMode = InsertionMode.IN_TABLE;
         if (tn === TAG_ID.TABLE) {
-          endTagInTable(p2, token);
+          endTagInTable(p, token);
         }
       }
       break;
@@ -20966,72 +20144,72 @@ function endTagInCaption(p2, token) {
       break;
     }
     default: {
-      endTagInBody(p2, token);
+      endTagInBody(p, token);
     }
   }
 }
-function startTagInColumnGroup(p2, token) {
+function startTagInColumnGroup(p, token) {
   switch (token.tagID) {
     case TAG_ID.HTML: {
-      startTagInBody(p2, token);
+      startTagInBody(p, token);
       break;
     }
     case TAG_ID.COL: {
-      p2._appendElement(token, NS.HTML);
+      p._appendElement(token, NS.HTML);
       token.ackSelfClosing = true;
       break;
     }
     case TAG_ID.TEMPLATE: {
-      startTagInHead(p2, token);
+      startTagInHead(p, token);
       break;
     }
     default: {
-      tokenInColumnGroup(p2, token);
+      tokenInColumnGroup(p, token);
     }
   }
 }
-function endTagInColumnGroup(p2, token) {
+function endTagInColumnGroup(p, token) {
   switch (token.tagID) {
     case TAG_ID.COLGROUP: {
-      if (p2.openElements.currentTagId === TAG_ID.COLGROUP) {
-        p2.openElements.pop();
-        p2.insertionMode = InsertionMode.IN_TABLE;
+      if (p.openElements.currentTagId === TAG_ID.COLGROUP) {
+        p.openElements.pop();
+        p.insertionMode = InsertionMode.IN_TABLE;
       }
       break;
     }
     case TAG_ID.TEMPLATE: {
-      templateEndTagInHead(p2, token);
+      templateEndTagInHead(p, token);
       break;
     }
     case TAG_ID.COL: {
       break;
     }
     default: {
-      tokenInColumnGroup(p2, token);
+      tokenInColumnGroup(p, token);
     }
   }
 }
-function tokenInColumnGroup(p2, token) {
-  if (p2.openElements.currentTagId === TAG_ID.COLGROUP) {
-    p2.openElements.pop();
-    p2.insertionMode = InsertionMode.IN_TABLE;
-    p2._processToken(token);
+function tokenInColumnGroup(p, token) {
+  if (p.openElements.currentTagId === TAG_ID.COLGROUP) {
+    p.openElements.pop();
+    p.insertionMode = InsertionMode.IN_TABLE;
+    p._processToken(token);
   }
 }
-function startTagInTableBody(p2, token) {
+function startTagInTableBody(p, token) {
   switch (token.tagID) {
     case TAG_ID.TR: {
-      p2.openElements.clearBackToTableBodyContext();
-      p2._insertElement(token, NS.HTML);
-      p2.insertionMode = InsertionMode.IN_ROW;
+      p.openElements.clearBackToTableBodyContext();
+      p._insertElement(token, NS.HTML);
+      p.insertionMode = InsertionMode.IN_ROW;
       break;
     }
     case TAG_ID.TH:
     case TAG_ID.TD: {
-      p2.openElements.clearBackToTableBodyContext();
-      p2._insertFakeElement(TAG_NAMES.TR, TAG_ID.TR);
-      p2.insertionMode = InsertionMode.IN_ROW;
-      startTagInRow(p2, token);
+      p.openElements.clearBackToTableBodyContext();
+      p._insertFakeElement(TAG_NAMES.TR, TAG_ID.TR);
+      p.insertionMode = InsertionMode.IN_ROW;
+      startTagInRow(p, token);
       break;
     }
     case TAG_ID.CAPTION:
@@ -21040,38 +20218,38 @@ function startTagInTableBody(p2, token) {
     case TAG_ID.TBODY:
     case TAG_ID.TFOOT:
     case TAG_ID.THEAD: {
-      if (p2.openElements.hasTableBodyContextInTableScope()) {
-        p2.openElements.clearBackToTableBodyContext();
-        p2.openElements.pop();
-        p2.insertionMode = InsertionMode.IN_TABLE;
-        startTagInTable(p2, token);
+      if (p.openElements.hasTableBodyContextInTableScope()) {
+        p.openElements.clearBackToTableBodyContext();
+        p.openElements.pop();
+        p.insertionMode = InsertionMode.IN_TABLE;
+        startTagInTable(p, token);
       }
       break;
     }
     default: {
-      startTagInTable(p2, token);
+      startTagInTable(p, token);
     }
   }
 }
-function endTagInTableBody(p2, token) {
+function endTagInTableBody(p, token) {
   const tn = token.tagID;
   switch (token.tagID) {
     case TAG_ID.TBODY:
     case TAG_ID.TFOOT:
     case TAG_ID.THEAD: {
-      if (p2.openElements.hasInTableScope(tn)) {
-        p2.openElements.clearBackToTableBodyContext();
-        p2.openElements.pop();
-        p2.insertionMode = InsertionMode.IN_TABLE;
+      if (p.openElements.hasInTableScope(tn)) {
+        p.openElements.clearBackToTableBodyContext();
+        p.openElements.pop();
+        p.insertionMode = InsertionMode.IN_TABLE;
       }
       break;
     }
     case TAG_ID.TABLE: {
-      if (p2.openElements.hasTableBodyContextInTableScope()) {
-        p2.openElements.clearBackToTableBodyContext();
-        p2.openElements.pop();
-        p2.insertionMode = InsertionMode.IN_TABLE;
-        endTagInTable(p2, token);
+      if (p.openElements.hasTableBodyContextInTableScope()) {
+        p.openElements.clearBackToTableBodyContext();
+        p.openElements.pop();
+        p.insertionMode = InsertionMode.IN_TABLE;
+        endTagInTable(p, token);
       }
       break;
     }
@@ -21086,18 +20264,18 @@ function endTagInTableBody(p2, token) {
       break;
     }
     default: {
-      endTagInTable(p2, token);
+      endTagInTable(p, token);
     }
   }
 }
-function startTagInRow(p2, token) {
+function startTagInRow(p, token) {
   switch (token.tagID) {
     case TAG_ID.TH:
     case TAG_ID.TD: {
-      p2.openElements.clearBackToTableRowContext();
-      p2._insertElement(token, NS.HTML);
-      p2.insertionMode = InsertionMode.IN_CELL;
-      p2.activeFormattingElements.insertMarker();
+      p.openElements.clearBackToTableRowContext();
+      p._insertElement(token, NS.HTML);
+      p.insertionMode = InsertionMode.IN_CELL;
+      p.activeFormattingElements.insertMarker();
       break;
     }
     case TAG_ID.CAPTION:
@@ -21107,46 +20285,46 @@ function startTagInRow(p2, token) {
     case TAG_ID.TFOOT:
     case TAG_ID.THEAD:
     case TAG_ID.TR: {
-      if (p2.openElements.hasInTableScope(TAG_ID.TR)) {
-        p2.openElements.clearBackToTableRowContext();
-        p2.openElements.pop();
-        p2.insertionMode = InsertionMode.IN_TABLE_BODY;
-        startTagInTableBody(p2, token);
+      if (p.openElements.hasInTableScope(TAG_ID.TR)) {
+        p.openElements.clearBackToTableRowContext();
+        p.openElements.pop();
+        p.insertionMode = InsertionMode.IN_TABLE_BODY;
+        startTagInTableBody(p, token);
       }
       break;
     }
     default: {
-      startTagInTable(p2, token);
+      startTagInTable(p, token);
     }
   }
 }
-function endTagInRow(p2, token) {
+function endTagInRow(p, token) {
   switch (token.tagID) {
     case TAG_ID.TR: {
-      if (p2.openElements.hasInTableScope(TAG_ID.TR)) {
-        p2.openElements.clearBackToTableRowContext();
-        p2.openElements.pop();
-        p2.insertionMode = InsertionMode.IN_TABLE_BODY;
+      if (p.openElements.hasInTableScope(TAG_ID.TR)) {
+        p.openElements.clearBackToTableRowContext();
+        p.openElements.pop();
+        p.insertionMode = InsertionMode.IN_TABLE_BODY;
       }
       break;
     }
     case TAG_ID.TABLE: {
-      if (p2.openElements.hasInTableScope(TAG_ID.TR)) {
-        p2.openElements.clearBackToTableRowContext();
-        p2.openElements.pop();
-        p2.insertionMode = InsertionMode.IN_TABLE_BODY;
-        endTagInTableBody(p2, token);
+      if (p.openElements.hasInTableScope(TAG_ID.TR)) {
+        p.openElements.clearBackToTableRowContext();
+        p.openElements.pop();
+        p.insertionMode = InsertionMode.IN_TABLE_BODY;
+        endTagInTableBody(p, token);
       }
       break;
     }
     case TAG_ID.TBODY:
     case TAG_ID.TFOOT:
     case TAG_ID.THEAD: {
-      if (p2.openElements.hasInTableScope(token.tagID) || p2.openElements.hasInTableScope(TAG_ID.TR)) {
-        p2.openElements.clearBackToTableRowContext();
-        p2.openElements.pop();
-        p2.insertionMode = InsertionMode.IN_TABLE_BODY;
-        endTagInTableBody(p2, token);
+      if (p.openElements.hasInTableScope(token.tagID) || p.openElements.hasInTableScope(TAG_ID.TR)) {
+        p.openElements.clearBackToTableRowContext();
+        p.openElements.pop();
+        p.insertionMode = InsertionMode.IN_TABLE_BODY;
+        endTagInTableBody(p, token);
       }
       break;
     }
@@ -21160,31 +20338,31 @@ function endTagInRow(p2, token) {
       break;
     }
     default: {
-      endTagInTable(p2, token);
+      endTagInTable(p, token);
     }
   }
 }
-function startTagInCell(p2, token) {
+function startTagInCell(p, token) {
   const tn = token.tagID;
   if (TABLE_VOID_ELEMENTS.has(tn)) {
-    if (p2.openElements.hasInTableScope(TAG_ID.TD) || p2.openElements.hasInTableScope(TAG_ID.TH)) {
-      p2._closeTableCell();
-      startTagInRow(p2, token);
+    if (p.openElements.hasInTableScope(TAG_ID.TD) || p.openElements.hasInTableScope(TAG_ID.TH)) {
+      p._closeTableCell();
+      startTagInRow(p, token);
     }
   } else {
-    startTagInBody(p2, token);
+    startTagInBody(p, token);
   }
 }
-function endTagInCell(p2, token) {
+function endTagInCell(p, token) {
   const tn = token.tagID;
   switch (tn) {
     case TAG_ID.TD:
     case TAG_ID.TH: {
-      if (p2.openElements.hasInTableScope(tn)) {
-        p2.openElements.generateImpliedEndTags();
-        p2.openElements.popUntilTagNamePopped(tn);
-        p2.activeFormattingElements.clearToLastMarker();
-        p2.insertionMode = InsertionMode.IN_ROW;
+      if (p.openElements.hasInTableScope(tn)) {
+        p.openElements.generateImpliedEndTags();
+        p.openElements.popUntilTagNamePopped(tn);
+        p.activeFormattingElements.clearToLastMarker();
+        p.insertionMode = InsertionMode.IN_ROW;
       }
       break;
     }
@@ -21193,9 +20371,9 @@ function endTagInCell(p2, token) {
     case TAG_ID.TFOOT:
     case TAG_ID.THEAD:
     case TAG_ID.TR: {
-      if (p2.openElements.hasInTableScope(tn)) {
-        p2._closeTableCell();
-        endTagInRow(p2, token);
+      if (p.openElements.hasInTableScope(tn)) {
+        p._closeTableCell();
+        endTagInRow(p, token);
       }
       break;
     }
@@ -21207,41 +20385,41 @@ function endTagInCell(p2, token) {
       break;
     }
     default: {
-      endTagInBody(p2, token);
+      endTagInBody(p, token);
     }
   }
 }
-function startTagInSelect(p2, token) {
+function startTagInSelect(p, token) {
   switch (token.tagID) {
     case TAG_ID.HTML: {
-      startTagInBody(p2, token);
+      startTagInBody(p, token);
       break;
     }
     case TAG_ID.OPTION: {
-      if (p2.openElements.currentTagId === TAG_ID.OPTION) {
-        p2.openElements.pop();
+      if (p.openElements.currentTagId === TAG_ID.OPTION) {
+        p.openElements.pop();
       }
-      p2._insertElement(token, NS.HTML);
+      p._insertElement(token, NS.HTML);
       break;
     }
     case TAG_ID.OPTGROUP: {
-      if (p2.openElements.currentTagId === TAG_ID.OPTION) {
-        p2.openElements.pop();
+      if (p.openElements.currentTagId === TAG_ID.OPTION) {
+        p.openElements.pop();
       }
-      if (p2.openElements.currentTagId === TAG_ID.OPTGROUP) {
-        p2.openElements.pop();
+      if (p.openElements.currentTagId === TAG_ID.OPTGROUP) {
+        p.openElements.pop();
       }
-      p2._insertElement(token, NS.HTML);
+      p._insertElement(token, NS.HTML);
       break;
     }
     case TAG_ID.HR: {
-      if (p2.openElements.currentTagId === TAG_ID.OPTION) {
-        p2.openElements.pop();
+      if (p.openElements.currentTagId === TAG_ID.OPTION) {
+        p.openElements.pop();
       }
-      if (p2.openElements.currentTagId === TAG_ID.OPTGROUP) {
-        p2.openElements.pop();
+      if (p.openElements.currentTagId === TAG_ID.OPTGROUP) {
+        p.openElements.pop();
       }
-      p2._appendElement(token, NS.HTML);
+      p._appendElement(token, NS.HTML);
       token.ackSelfClosing = true;
       break;
     }
@@ -21249,77 +20427,77 @@ function startTagInSelect(p2, token) {
     case TAG_ID.KEYGEN:
     case TAG_ID.TEXTAREA:
     case TAG_ID.SELECT: {
-      if (p2.openElements.hasInSelectScope(TAG_ID.SELECT)) {
-        p2.openElements.popUntilTagNamePopped(TAG_ID.SELECT);
-        p2._resetInsertionMode();
+      if (p.openElements.hasInSelectScope(TAG_ID.SELECT)) {
+        p.openElements.popUntilTagNamePopped(TAG_ID.SELECT);
+        p._resetInsertionMode();
         if (token.tagID !== TAG_ID.SELECT) {
-          p2._processStartTag(token);
+          p._processStartTag(token);
         }
       }
       break;
     }
     case TAG_ID.SCRIPT:
     case TAG_ID.TEMPLATE: {
-      startTagInHead(p2, token);
+      startTagInHead(p, token);
       break;
     }
     default:
   }
 }
-function endTagInSelect(p2, token) {
+function endTagInSelect(p, token) {
   switch (token.tagID) {
     case TAG_ID.OPTGROUP: {
-      if (p2.openElements.stackTop > 0 && p2.openElements.currentTagId === TAG_ID.OPTION && p2.openElements.tagIDs[p2.openElements.stackTop - 1] === TAG_ID.OPTGROUP) {
-        p2.openElements.pop();
+      if (p.openElements.stackTop > 0 && p.openElements.currentTagId === TAG_ID.OPTION && p.openElements.tagIDs[p.openElements.stackTop - 1] === TAG_ID.OPTGROUP) {
+        p.openElements.pop();
       }
-      if (p2.openElements.currentTagId === TAG_ID.OPTGROUP) {
-        p2.openElements.pop();
+      if (p.openElements.currentTagId === TAG_ID.OPTGROUP) {
+        p.openElements.pop();
       }
       break;
     }
     case TAG_ID.OPTION: {
-      if (p2.openElements.currentTagId === TAG_ID.OPTION) {
-        p2.openElements.pop();
+      if (p.openElements.currentTagId === TAG_ID.OPTION) {
+        p.openElements.pop();
       }
       break;
     }
     case TAG_ID.SELECT: {
-      if (p2.openElements.hasInSelectScope(TAG_ID.SELECT)) {
-        p2.openElements.popUntilTagNamePopped(TAG_ID.SELECT);
-        p2._resetInsertionMode();
+      if (p.openElements.hasInSelectScope(TAG_ID.SELECT)) {
+        p.openElements.popUntilTagNamePopped(TAG_ID.SELECT);
+        p._resetInsertionMode();
       }
       break;
     }
     case TAG_ID.TEMPLATE: {
-      templateEndTagInHead(p2, token);
+      templateEndTagInHead(p, token);
       break;
     }
     default:
   }
 }
-function startTagInSelectInTable(p2, token) {
+function startTagInSelectInTable(p, token) {
   const tn = token.tagID;
   if (tn === TAG_ID.CAPTION || tn === TAG_ID.TABLE || tn === TAG_ID.TBODY || tn === TAG_ID.TFOOT || tn === TAG_ID.THEAD || tn === TAG_ID.TR || tn === TAG_ID.TD || tn === TAG_ID.TH) {
-    p2.openElements.popUntilTagNamePopped(TAG_ID.SELECT);
-    p2._resetInsertionMode();
-    p2._processStartTag(token);
+    p.openElements.popUntilTagNamePopped(TAG_ID.SELECT);
+    p._resetInsertionMode();
+    p._processStartTag(token);
   } else {
-    startTagInSelect(p2, token);
+    startTagInSelect(p, token);
   }
 }
-function endTagInSelectInTable(p2, token) {
+function endTagInSelectInTable(p, token) {
   const tn = token.tagID;
   if (tn === TAG_ID.CAPTION || tn === TAG_ID.TABLE || tn === TAG_ID.TBODY || tn === TAG_ID.TFOOT || tn === TAG_ID.THEAD || tn === TAG_ID.TR || tn === TAG_ID.TD || tn === TAG_ID.TH) {
-    if (p2.openElements.hasInTableScope(tn)) {
-      p2.openElements.popUntilTagNamePopped(TAG_ID.SELECT);
-      p2._resetInsertionMode();
-      p2.onEndTag(token);
+    if (p.openElements.hasInTableScope(tn)) {
+      p.openElements.popUntilTagNamePopped(TAG_ID.SELECT);
+      p._resetInsertionMode();
+      p.onEndTag(token);
     }
   } else {
-    endTagInSelect(p2, token);
+    endTagInSelect(p, token);
   }
 }
-function startTagInTemplate(p2, token) {
+function startTagInTemplate(p, token) {
   switch (token.tagID) {
     // First, handle tags that can start without a mode change
     case TAG_ID.BASE:
@@ -21332,7 +20510,7 @@ function startTagInTemplate(p2, token) {
     case TAG_ID.STYLE:
     case TAG_ID.TEMPLATE:
     case TAG_ID.TITLE: {
-      startTagInHead(p2, token);
+      startTagInHead(p, token);
       break;
     }
     // Re-process the token in the appropriate mode
@@ -21341,173 +20519,173 @@ function startTagInTemplate(p2, token) {
     case TAG_ID.TBODY:
     case TAG_ID.TFOOT:
     case TAG_ID.THEAD: {
-      p2.tmplInsertionModeStack[0] = InsertionMode.IN_TABLE;
-      p2.insertionMode = InsertionMode.IN_TABLE;
-      startTagInTable(p2, token);
+      p.tmplInsertionModeStack[0] = InsertionMode.IN_TABLE;
+      p.insertionMode = InsertionMode.IN_TABLE;
+      startTagInTable(p, token);
       break;
     }
     case TAG_ID.COL: {
-      p2.tmplInsertionModeStack[0] = InsertionMode.IN_COLUMN_GROUP;
-      p2.insertionMode = InsertionMode.IN_COLUMN_GROUP;
-      startTagInColumnGroup(p2, token);
+      p.tmplInsertionModeStack[0] = InsertionMode.IN_COLUMN_GROUP;
+      p.insertionMode = InsertionMode.IN_COLUMN_GROUP;
+      startTagInColumnGroup(p, token);
       break;
     }
     case TAG_ID.TR: {
-      p2.tmplInsertionModeStack[0] = InsertionMode.IN_TABLE_BODY;
-      p2.insertionMode = InsertionMode.IN_TABLE_BODY;
-      startTagInTableBody(p2, token);
+      p.tmplInsertionModeStack[0] = InsertionMode.IN_TABLE_BODY;
+      p.insertionMode = InsertionMode.IN_TABLE_BODY;
+      startTagInTableBody(p, token);
       break;
     }
     case TAG_ID.TD:
     case TAG_ID.TH: {
-      p2.tmplInsertionModeStack[0] = InsertionMode.IN_ROW;
-      p2.insertionMode = InsertionMode.IN_ROW;
-      startTagInRow(p2, token);
+      p.tmplInsertionModeStack[0] = InsertionMode.IN_ROW;
+      p.insertionMode = InsertionMode.IN_ROW;
+      startTagInRow(p, token);
       break;
     }
     default: {
-      p2.tmplInsertionModeStack[0] = InsertionMode.IN_BODY;
-      p2.insertionMode = InsertionMode.IN_BODY;
-      startTagInBody(p2, token);
+      p.tmplInsertionModeStack[0] = InsertionMode.IN_BODY;
+      p.insertionMode = InsertionMode.IN_BODY;
+      startTagInBody(p, token);
     }
   }
 }
-function endTagInTemplate(p2, token) {
+function endTagInTemplate(p, token) {
   if (token.tagID === TAG_ID.TEMPLATE) {
-    templateEndTagInHead(p2, token);
+    templateEndTagInHead(p, token);
   }
 }
-function eofInTemplate(p2, token) {
-  if (p2.openElements.tmplCount > 0) {
-    p2.openElements.popUntilTagNamePopped(TAG_ID.TEMPLATE);
-    p2.activeFormattingElements.clearToLastMarker();
-    p2.tmplInsertionModeStack.shift();
-    p2._resetInsertionMode();
-    p2.onEof(token);
+function eofInTemplate(p, token) {
+  if (p.openElements.tmplCount > 0) {
+    p.openElements.popUntilTagNamePopped(TAG_ID.TEMPLATE);
+    p.activeFormattingElements.clearToLastMarker();
+    p.tmplInsertionModeStack.shift();
+    p._resetInsertionMode();
+    p.onEof(token);
   } else {
-    stopParsing(p2, token);
+    stopParsing(p, token);
   }
 }
-function startTagAfterBody(p2, token) {
+function startTagAfterBody(p, token) {
   if (token.tagID === TAG_ID.HTML) {
-    startTagInBody(p2, token);
+    startTagInBody(p, token);
   } else {
-    tokenAfterBody(p2, token);
+    tokenAfterBody(p, token);
   }
 }
-function endTagAfterBody(p2, token) {
+function endTagAfterBody(p, token) {
   var _a5;
   if (token.tagID === TAG_ID.HTML) {
-    if (!p2.fragmentContext) {
-      p2.insertionMode = InsertionMode.AFTER_AFTER_BODY;
+    if (!p.fragmentContext) {
+      p.insertionMode = InsertionMode.AFTER_AFTER_BODY;
     }
-    if (p2.options.sourceCodeLocationInfo && p2.openElements.tagIDs[0] === TAG_ID.HTML) {
-      p2._setEndLocation(p2.openElements.items[0], token);
-      const bodyElement = p2.openElements.items[1];
-      if (bodyElement && !((_a5 = p2.treeAdapter.getNodeSourceCodeLocation(bodyElement)) === null || _a5 === void 0 ? void 0 : _a5.endTag)) {
-        p2._setEndLocation(bodyElement, token);
+    if (p.options.sourceCodeLocationInfo && p.openElements.tagIDs[0] === TAG_ID.HTML) {
+      p._setEndLocation(p.openElements.items[0], token);
+      const bodyElement = p.openElements.items[1];
+      if (bodyElement && !((_a5 = p.treeAdapter.getNodeSourceCodeLocation(bodyElement)) === null || _a5 === void 0 ? void 0 : _a5.endTag)) {
+        p._setEndLocation(bodyElement, token);
       }
     }
   } else {
-    tokenAfterBody(p2, token);
+    tokenAfterBody(p, token);
   }
 }
-function tokenAfterBody(p2, token) {
-  p2.insertionMode = InsertionMode.IN_BODY;
-  modeInBody(p2, token);
+function tokenAfterBody(p, token) {
+  p.insertionMode = InsertionMode.IN_BODY;
+  modeInBody(p, token);
 }
-function startTagInFrameset(p2, token) {
+function startTagInFrameset(p, token) {
   switch (token.tagID) {
     case TAG_ID.HTML: {
-      startTagInBody(p2, token);
+      startTagInBody(p, token);
       break;
     }
     case TAG_ID.FRAMESET: {
-      p2._insertElement(token, NS.HTML);
+      p._insertElement(token, NS.HTML);
       break;
     }
     case TAG_ID.FRAME: {
-      p2._appendElement(token, NS.HTML);
+      p._appendElement(token, NS.HTML);
       token.ackSelfClosing = true;
       break;
     }
     case TAG_ID.NOFRAMES: {
-      startTagInHead(p2, token);
+      startTagInHead(p, token);
       break;
     }
     default:
   }
 }
-function endTagInFrameset(p2, token) {
-  if (token.tagID === TAG_ID.FRAMESET && !p2.openElements.isRootHtmlElementCurrent()) {
-    p2.openElements.pop();
-    if (!p2.fragmentContext && p2.openElements.currentTagId !== TAG_ID.FRAMESET) {
-      p2.insertionMode = InsertionMode.AFTER_FRAMESET;
+function endTagInFrameset(p, token) {
+  if (token.tagID === TAG_ID.FRAMESET && !p.openElements.isRootHtmlElementCurrent()) {
+    p.openElements.pop();
+    if (!p.fragmentContext && p.openElements.currentTagId !== TAG_ID.FRAMESET) {
+      p.insertionMode = InsertionMode.AFTER_FRAMESET;
     }
   }
 }
-function startTagAfterFrameset(p2, token) {
+function startTagAfterFrameset(p, token) {
   switch (token.tagID) {
     case TAG_ID.HTML: {
-      startTagInBody(p2, token);
+      startTagInBody(p, token);
       break;
     }
     case TAG_ID.NOFRAMES: {
-      startTagInHead(p2, token);
+      startTagInHead(p, token);
       break;
     }
     default:
   }
 }
-function endTagAfterFrameset(p2, token) {
+function endTagAfterFrameset(p, token) {
   if (token.tagID === TAG_ID.HTML) {
-    p2.insertionMode = InsertionMode.AFTER_AFTER_FRAMESET;
+    p.insertionMode = InsertionMode.AFTER_AFTER_FRAMESET;
   }
 }
-function startTagAfterAfterBody(p2, token) {
+function startTagAfterAfterBody(p, token) {
   if (token.tagID === TAG_ID.HTML) {
-    startTagInBody(p2, token);
+    startTagInBody(p, token);
   } else {
-    tokenAfterAfterBody(p2, token);
+    tokenAfterAfterBody(p, token);
   }
 }
-function tokenAfterAfterBody(p2, token) {
-  p2.insertionMode = InsertionMode.IN_BODY;
-  modeInBody(p2, token);
+function tokenAfterAfterBody(p, token) {
+  p.insertionMode = InsertionMode.IN_BODY;
+  modeInBody(p, token);
 }
-function startTagAfterAfterFrameset(p2, token) {
+function startTagAfterAfterFrameset(p, token) {
   switch (token.tagID) {
     case TAG_ID.HTML: {
-      startTagInBody(p2, token);
+      startTagInBody(p, token);
       break;
     }
     case TAG_ID.NOFRAMES: {
-      startTagInHead(p2, token);
+      startTagInHead(p, token);
       break;
     }
     default:
   }
 }
-function nullCharacterInForeignContent(p2, token) {
+function nullCharacterInForeignContent(p, token) {
   token.chars = REPLACEMENT_CHARACTER;
-  p2._insertCharacters(token);
+  p._insertCharacters(token);
 }
-function characterInForeignContent(p2, token) {
-  p2._insertCharacters(token);
-  p2.framesetOk = false;
+function characterInForeignContent(p, token) {
+  p._insertCharacters(token);
+  p.framesetOk = false;
 }
-function popUntilHtmlOrIntegrationPoint(p2) {
-  while (p2.treeAdapter.getNamespaceURI(p2.openElements.current) !== NS.HTML && p2.openElements.currentTagId !== void 0 && !p2._isIntegrationPoint(p2.openElements.currentTagId, p2.openElements.current)) {
-    p2.openElements.pop();
+function popUntilHtmlOrIntegrationPoint(p) {
+  while (p.treeAdapter.getNamespaceURI(p.openElements.current) !== NS.HTML && p.openElements.currentTagId !== void 0 && !p._isIntegrationPoint(p.openElements.currentTagId, p.openElements.current)) {
+    p.openElements.pop();
   }
 }
-function startTagInForeignContent(p2, token) {
+function startTagInForeignContent(p, token) {
   if (causesExit(token)) {
-    popUntilHtmlOrIntegrationPoint(p2);
-    p2._startTagOutsideForeignContent(token);
+    popUntilHtmlOrIntegrationPoint(p);
+    p._startTagOutsideForeignContent(token);
   } else {
-    const current = p2._getAdjustedCurrentElement();
-    const currentNs = p2.treeAdapter.getNamespaceURI(current);
+    const current = p._getAdjustedCurrentElement();
+    const currentNs = p.treeAdapter.getNamespaceURI(current);
     if (currentNs === NS.MATHML) {
       adjustTokenMathMLAttrs(token);
     } else if (currentNs === NS.SVG) {
@@ -21516,29 +20694,29 @@ function startTagInForeignContent(p2, token) {
     }
     adjustTokenXMLAttrs(token);
     if (token.selfClosing) {
-      p2._appendElement(token, currentNs);
+      p._appendElement(token, currentNs);
     } else {
-      p2._insertElement(token, currentNs);
+      p._insertElement(token, currentNs);
     }
     token.ackSelfClosing = true;
   }
 }
-function endTagInForeignContent(p2, token) {
+function endTagInForeignContent(p, token) {
   if (token.tagID === TAG_ID.P || token.tagID === TAG_ID.BR) {
-    popUntilHtmlOrIntegrationPoint(p2);
-    p2._endTagOutsideForeignContent(token);
+    popUntilHtmlOrIntegrationPoint(p);
+    p._endTagOutsideForeignContent(token);
     return;
   }
-  for (let i = p2.openElements.stackTop; i > 0; i--) {
-    const element2 = p2.openElements.items[i];
-    if (p2.treeAdapter.getNamespaceURI(element2) === NS.HTML) {
-      p2._endTagOutsideForeignContent(token);
+  for (let i = p.openElements.stackTop; i > 0; i--) {
+    const element2 = p.openElements.items[i];
+    if (p.treeAdapter.getNamespaceURI(element2) === NS.HTML) {
+      p._endTagOutsideForeignContent(token);
       break;
     }
-    const tagName = p2.treeAdapter.getTagName(element2);
+    const tagName = p.treeAdapter.getTagName(element2);
     if (tagName.toLowerCase() === token.tagName) {
       token.tagName = tagName;
-      p2.openElements.shortenToLength(i);
+      p.openElements.shortenToLength(i);
       break;
     }
   }
@@ -21547,9 +20725,9 @@ function endTagInForeignContent(p2, token) {
 // node_modules/parse5/node_modules/entities/dist/esm/escape.js
 var getCodePoint2 = (
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  String.prototype.codePointAt == null ? (c, index4) => (c.charCodeAt(index4) & 64512) === 55296 ? (c.charCodeAt(index4) - 55296) * 1024 + c.charCodeAt(index4 + 1) - 56320 + 65536 : c.charCodeAt(index4) : (
+  String.prototype.codePointAt == null ? (c, index3) => (c.charCodeAt(index3) & 64512) === 55296 ? (c.charCodeAt(index3) - 55296) * 1024 + c.charCodeAt(index3 + 1) - 56320 + 65536 : c.charCodeAt(index3) : (
     // http://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
-    (input, index4) => input.codePointAt(index4)
+    (input, index3) => input.codePointAt(index3)
   )
 );
 function getEscaper2(regex, map2) {
@@ -21726,12 +20904,12 @@ var adapter = {
   isTextNode: isText,
   //Node construction
   createDocument() {
-    const node = new Document2([]);
+    const node = new Document([]);
     node["x-mode"] = html_exports.DOCUMENT_MODE.NO_QUIRKS;
     return node;
   },
   createDocumentFragment() {
-    return new Document2([]);
+    return new Document([]);
   },
   createElement(tagName, namespaceURI, attrs) {
     const attribs = /* @__PURE__ */ Object.create(null);
@@ -21757,20 +20935,20 @@ var adapter = {
   },
   //Tree mutation
   appendChild(parentNode, newNode) {
-    const prev3 = parentNode.children[parentNode.children.length - 1];
-    if (prev3) {
-      prev3.next = newNode;
-      newNode.prev = prev3;
+    const prev2 = parentNode.children[parentNode.children.length - 1];
+    if (prev2) {
+      prev2.next = newNode;
+      newNode.prev = prev2;
     }
     parentNode.children.push(newNode);
     newNode.parent = parentNode;
   },
   insertBefore(parentNode, newNode, referenceNode) {
     const insertionIdx = parentNode.children.indexOf(referenceNode);
-    const { prev: prev3 } = referenceNode;
-    if (prev3) {
-      prev3.next = newNode;
-      newNode.prev = prev3;
+    const { prev: prev2 } = referenceNode;
+    if (prev2) {
+      prev2.next = newNode;
+      newNode.prev = prev2;
     }
     referenceNode.prev = newNode;
     newNode.next = referenceNode;
@@ -21805,14 +20983,14 @@ var adapter = {
   detachNode(node) {
     if (node.parent) {
       const idx = node.parent.children.indexOf(node);
-      const { prev: prev3, next: next4 } = node;
+      const { prev: prev2, next: next3 } = node;
       node.prev = null;
       node.next = null;
-      if (prev3) {
-        prev3.next = next4;
+      if (prev2) {
+        prev2.next = next3;
       }
-      if (next4) {
-        next4.prev = prev3;
+      if (next3) {
+        next3.prev = prev2;
       }
       node.parent.children.splice(idx, 1);
       node.parent = null;
@@ -21908,33 +21086,33 @@ var adapter = {
 };
 
 // node_modules/cheerio/dist/browser/parsers/parse5-adapter.js
-function parseWithParse5(content, options, isDocument3, context) {
+function parseWithParse5(content, options, isDocument2, context) {
   var _a5;
   (_a5 = options.treeAdapter) !== null && _a5 !== void 0 ? _a5 : options.treeAdapter = adapter;
   if (options.scriptingEnabled !== false) {
     options.scriptingEnabled = true;
   }
-  return isDocument3 ? parse4(content, options) : parseFragment(context, content, options);
+  return isDocument2 ? parse4(content, options) : parseFragment(context, content, options);
 }
 var renderOpts = { treeAdapter: adapter };
 function renderWithParse5(dom) {
   const nodes = "length" in dom ? dom : [dom];
-  for (let index4 = 0; index4 < nodes.length; index4 += 1) {
-    const node = nodes[index4];
+  for (let index3 = 0; index3 < nodes.length; index3 += 1) {
+    const node = nodes[index3];
     if (isDocument(node)) {
-      Array.prototype.splice.call(nodes, index4, 1, ...node.children);
+      Array.prototype.splice.call(nodes, index3, 1, ...node.children);
     }
   }
   let result = "";
-  for (let index4 = 0; index4 < nodes.length; index4 += 1) {
-    const node = nodes[index4];
+  for (let index3 = 0; index3 < nodes.length; index3 += 1) {
+    const node = nodes[index3];
     result += serializeOuter(node, renderOpts);
   }
   return result;
 }
 
 // node_modules/cheerio/dist/browser/load-parse.js
-var parse5 = getParse((content, options, isDocument3, context) => options._useHtmlParser2 ? parseDocument(content, options) : parseWithParse5(content, options, isDocument3, context));
+var parse5 = getParse((content, options, isDocument2, context) => options._useHtmlParser2 ? parseDocument(content, options) : parseWithParse5(content, options, isDocument2, context));
 var load = getLoad(parse5, (dom, options) => options._useHtmlParser2 ? esm_default(dom, options) : renderWithParse5(dom));
 
 // node_modules/safi-studio-scanner/dist/context.js
@@ -22029,10 +21207,10 @@ async function crawl(startUrl, opts, pool) {
       for (const link2 of ctx.links) {
         if (!link2.internal || !link2.absUrl)
           continue;
-        const n2 = normalize(link2.absUrl);
-        if (seen.has(n2))
+        const n = normalize(link2.absUrl);
+        if (seen.has(n))
           continue;
-        seen.add(n2);
+        seen.add(n);
         frontier.push({ url: link2.absUrl, depth: depth + 1 });
       }
     }
@@ -22071,7 +21249,7 @@ async function analyzePage(browser, AxeBuilder, url, opts) {
     const metrics = await page.evaluate(() => {
       const nav = performance.getEntriesByType("navigation")[0];
       const res = performance.getEntriesByType("resource");
-      const transfer = res.reduce((s, r2) => s + (r2.transferSize || 0), 0) + (nav?.transferSize || 0);
+      const transfer = res.reduce((s, r) => s + (r.transferSize || 0), 0) + (nav?.transferSize || 0);
       const cwv = window.__cwv;
       return {
         ttfbMs: nav ? Math.round(nav.responseStart) : 0,
@@ -22096,7 +21274,7 @@ async function analyzePage(browser, AxeBuilder, url, opts) {
         nodes: v.nodes.length,
         sample: v.nodes[0]?.html
       }));
-      axePasses = results.passes.map((p2) => ({ id: p2.id, help: p2.help }));
+      axePasses = results.passes.map((p) => ({ id: p.id, help: p.help }));
     } catch {
     }
     return { ok: true, axe, axePasses, metrics };
@@ -22147,18 +21325,18 @@ function accessibilityFrom(res) {
   const axe = [];
   const axePasses = [];
   for (const ref of refs) {
-    const a2 = audits[ref.id];
-    if (!a2 || a2.scoreDisplayMode === "notApplicable" || a2.scoreDisplayMode === "manual")
+    const a = audits[ref.id];
+    if (!a || a.scoreDisplayMode === "notApplicable" || a.scoreDisplayMode === "manual")
       continue;
-    const help = a2.title ?? ref.id;
-    if (a2.score === 1) {
+    const help = a.title ?? ref.id;
+    if (a.score === 1) {
       axePasses.push({ id: `accessibility/${ref.id}`, help });
-    } else if (a2.score === 0) {
+    } else if (a.score === 0) {
       axe.push({
         id: ref.id,
         impact: "serious",
         help,
-        description: a2.description ?? help,
+        description: a.description ?? help,
         helpUrl: "",
         nodes: 1
       });
@@ -22211,14 +21389,14 @@ async function runPage(page, site, rules, checkUrl) {
     } catch (err) {
       results = [{ status: "warn", message: `Rule errored: ${err.message}` }];
     }
-    for (const r2 of results) {
+    for (const r of results) {
       findings.push({
-        ...r2,
-        ruleId: r2.ruleId ?? rule.id,
+        ...r,
+        ruleId: r.ruleId ?? rule.id,
         category: rule.category,
-        severity: r2.severity ?? rule.severity,
-        title: r2.title ?? rule.title,
-        fix: r2.fix ?? rule.fix
+        severity: r.severity ?? rule.severity,
+        title: r.title ?? rule.title,
+        fix: r.fix ?? rule.fix
       });
     }
   }
@@ -22241,7 +21419,7 @@ function scoreFindings(findings) {
   return Math.round(earned / possible * 100);
 }
 function aggregate(startUrl, generatedAt, pages) {
-  const all = pages.flatMap((p2) => p2.findings);
+  const all = pages.flatMap((p) => p.findings);
   const byCat = /* @__PURE__ */ new Map();
   for (const f of all) {
     if (!byCat.has(f.category))
@@ -22254,7 +21432,7 @@ function aggregate(startUrl, generatedAt, pages) {
     pass: fs.filter((f) => f.status === "pass").length,
     fail: fs.filter((f) => f.status === "fail").length,
     warn: fs.filter((f) => f.status === "warn").length
-  })).sort((a2, b) => a2.category.localeCompare(b.category));
+  })).sort((a, b) => a.category.localeCompare(b.category));
   return {
     startUrl,
     generatedAt,
@@ -22269,9 +21447,9 @@ var WARN_FACTOR = 0.55;
 function computeOverall(pages) {
   const total = pages.length || 1;
   const byRule = /* @__PURE__ */ new Map();
-  for (const p2 of pages) {
+  for (const p of pages) {
     const worst = /* @__PURE__ */ new Map();
-    for (const f of p2.findings) {
+    for (const f of p.findings) {
       if (f.status === "pass" || f.status === "info")
         continue;
       const cur = worst.get(f.ruleId);
@@ -22292,9 +21470,9 @@ function computeOverall(pages) {
     }
   }
   let penalty = 0;
-  for (const r2 of byRule.values()) {
-    const w = OVERALL_WEIGHT[r2.severity];
-    penalty += w * (r2.fail / total) + w * WARN_FACTOR * (r2.warn / total);
+  for (const r of byRule.values()) {
+    const w = OVERALL_WEIGHT[r.severity];
+    penalty += w * (r.fail / total) + w * WARN_FACTOR * (r.warn / total);
   }
   return Math.max(0, Math.round(100 - penalty));
 }
@@ -22368,9 +21546,9 @@ var coreSeoRules = [
     severity: "warning",
     fix: "Use exactly one <h1> as the page's main heading. Demote the extras to <h2> or below.",
     run({ page }) {
-      const n2 = page.$("h1").length;
+      const n = page.$("h1").length;
       return [
-        n2 === 1 ? { status: "pass", message: "Exactly one H1" } : { status: "fail", message: `Found ${n2} H1 tags` }
+        n === 1 ? { status: "pass", message: "Exactly one H1" } : { status: "fail", message: `Found ${n} H1 tags` }
       ];
     }
   },
@@ -22425,9 +21603,9 @@ var coreSeoRules = [
     severity: "error",
     fix: "Remove noindex from the robots meta tag if this page should appear in search.",
     run({ page }) {
-      const r2 = (page.$('meta[name="robots"]').attr("content") || "").toLowerCase();
+      const r = (page.$('meta[name="robots"]').attr("content") || "").toLowerCase();
       return [
-        r2.includes("noindex") ? { status: "fail", message: "Robots meta has noindex", evidence: r2 } : { status: "pass", message: "No noindex in robots meta" }
+        r.includes("noindex") ? { status: "fail", message: "Robots meta has noindex", evidence: r } : { status: "pass", message: "No noindex in robots meta" }
       ];
     }
   },
@@ -22438,7 +21616,7 @@ var coreSeoRules = [
     severity: "info",
     fix: "Add og:title, og:description, and og:image meta tags so the page previews well when shared.",
     run({ page }) {
-      const missing = ["og:title", "og:description", "og:image"].filter((p2) => !page.$(`meta[property="${p2}"]`).attr("content"));
+      const missing = ["og:title", "og:description", "og:image"].filter((p) => !page.$(`meta[property="${p}"]`).attr("content"));
       return [
         missing.length === 0 ? { status: "pass", message: "og:title, og:description, og:image present" } : { status: "warn", message: `Missing Open Graph tags: ${missing.join(", ")}` }
       ];
@@ -22459,11 +21637,11 @@ var contentRules = [
       page.$("h1,h2,h3,h4,h5,h6").each((_, el) => {
         levels.push(Number(el.tagName[1]));
       });
-      let prev3 = 0;
-      for (const l2 of levels) {
-        if (prev3 && l2 > prev3 + 1)
-          return [{ status: "warn", message: `Heading jumps from H${prev3} to H${l2}` }];
-        prev3 = l2;
+      let prev2 = 0;
+      for (const l of levels) {
+        if (prev2 && l > prev2 + 1)
+          return [{ status: "warn", message: `Heading jumps from H${prev2} to H${l}` }];
+        prev2 = l;
       }
       return [{ status: "pass", message: "No skipped heading levels" }];
     }
@@ -22513,10 +21691,10 @@ var contentRules = [
       for (const w of words)
         counts.set(w, (counts.get(w) || 0) + 1);
       let top = "", topN = 0;
-      for (const [w, n2] of counts)
-        if (n2 > topN) {
+      for (const [w, n] of counts)
+        if (n > topN) {
           top = w;
-          topN = n2;
+          topN = n;
         }
       const density = topN / words.length;
       return [
@@ -22564,10 +21742,10 @@ var linksRules = [
     fix: "Fix or remove the linked internal URLs that return errors.",
     async run({ page, checkUrl }) {
       const targets = [
-        ...new Set(page.links.filter((l2) => l2.internal && l2.absUrl).map((l2) => l2.absUrl))
+        ...new Set(page.links.filter((l) => l.internal && l.absUrl).map((l) => l.absUrl))
       ];
       const checked = await Promise.all(targets.map(async (u) => ({ u, s: await checkUrl(u) })));
-      const broken = checked.filter((r2) => r2.s.status >= 400 || r2.s.status === 0);
+      const broken = checked.filter((r) => r.s.status >= 400 || r.s.status === 0);
       if (broken.length === 0)
         return [{ status: "pass", message: `All ${targets.length} internal links OK` }];
       return broken.map((b) => ({
@@ -22585,10 +21763,10 @@ var linksRules = [
     fix: "Update or remove external links that no longer resolve.",
     async run({ page, checkUrl }) {
       const targets = [
-        ...new Set(page.links.filter((l2) => !l2.internal && l2.absUrl.startsWith("http")).map((l2) => l2.absUrl))
+        ...new Set(page.links.filter((l) => !l.internal && l.absUrl.startsWith("http")).map((l) => l.absUrl))
       ];
       const checked = await Promise.all(targets.map(async (u) => ({ u, s: await checkUrl(u) })));
-      const broken = checked.filter((r2) => r2.s.status >= 400 || r2.s.status === 0);
+      const broken = checked.filter((r) => r.s.status >= 400 || r.s.status === 0);
       if (broken.length === 0)
         return [{ status: "pass", message: `All ${targets.length} external links OK` }];
       return broken.map((b) => ({
@@ -22618,7 +21796,7 @@ var linksRules = [
     fix: "Replace generic anchors like 'click here' with text that describes the destination.",
     run({ page }) {
       const weak = /^(click here|read more|here|learn more|more|link|this)$/i;
-      const bad = page.links.filter((l2) => weak.test(l2.text.trim()));
+      const bad = page.links.filter((l) => weak.test(l.text.trim()));
       return [
         bad.length === 0 ? { status: "pass", message: "No generic anchor text" } : {
           status: "warn",
@@ -22635,7 +21813,7 @@ var linksRules = [
     severity: "info",
     fix: 'Add rel="noopener" (and noreferrer) to external links, especially those opening new tabs.',
     run({ page }) {
-      const missing = page.links.filter((l2) => !l2.internal && l2.absUrl.startsWith("http") && !l2.rel.includes("noopener") && !l2.rel.includes("noreferrer"));
+      const missing = page.links.filter((l) => !l.internal && l.absUrl.startsWith("http") && !l.rel.includes("noopener") && !l.rel.includes("noreferrer"));
       return [
         missing.length === 0 ? { status: "pass", message: "External links have safe rel attributes" } : { status: "warn", message: `${missing.length} external link(s) missing rel=noopener` }
       ];
@@ -22807,7 +21985,7 @@ var structuredDataRules = [
     run({ page }) {
       if (!/"@type"\s*:\s*"(Article|NewsArticle|BlogPosting)"/.test(page.html))
         return [{ status: "pass", message: "No article schema" }];
-      const missing = ["headline", "image", "datePublished", "author"].filter((k2) => !new RegExp(`"${k2}"\\s*:`).test(page.html));
+      const missing = ["headline", "image", "datePublished", "author"].filter((k) => !new RegExp(`"${k}"\\s*:`).test(page.html));
       return [
         missing.length === 0 ? { status: "pass", message: "Article schema has the required fields" } : { status: "warn", message: `Article schema missing: ${missing.join(", ")}` }
       ];
@@ -22834,9 +22012,9 @@ var structuredDataRules = [
     severity: "info",
     fix: "Add JSON-LD structured data describing the page, e.g. Article, Product, or Organization.",
     run({ page }) {
-      const n2 = page.$('script[type="application/ld+json"]').length;
+      const n = page.$('script[type="application/ld+json"]').length;
       return [
-        n2 > 0 ? { status: "pass", message: `${n2} JSON-LD block(s)` } : { status: "warn", message: "No JSON-LD structured data" }
+        n > 0 ? { status: "pass", message: `${n} JSON-LD block(s)` } : { status: "warn", message: "No JSON-LD structured data" }
       ];
     }
   },
@@ -22945,9 +22123,9 @@ var securityRules = [
     severity: "info",
     fix: "Remove the X-Powered-By header. It discloses your stack and helps attackers.",
     run({ page }) {
-      const p2 = page.headers["x-powered-by"];
+      const p = page.headers["x-powered-by"];
       return [
-        p2 ? { status: "warn", message: `X-Powered-By exposed: ${p2}`, evidence: p2 } : { status: "pass", message: "No X-Powered-By header" }
+        p ? { status: "warn", message: `X-Powered-By exposed: ${p}`, evidence: p } : { status: "pass", message: "No X-Powered-By header" }
       ];
     }
   },
@@ -23066,7 +22244,7 @@ var securityRules = [
     run({ page }) {
       if (!page.finalUrl.startsWith("https://"))
         return [{ status: "pass", message: "Not HTTPS, mixed content N/A" }];
-      const urls = [...page.links.map((l2) => l2.absUrl), ...page.images.map((i) => i.absUrl)];
+      const urls = [...page.links.map((l) => l.absUrl), ...page.images.map((i) => i.absUrl)];
       const insecure = urls.filter((u) => u.startsWith("http://"));
       return [
         insecure.length === 0 ? { status: "pass", message: "No mixed content" } : { status: "fail", message: `${insecure.length} insecure http resource(s) on HTTPS page` }
@@ -23257,10 +22435,10 @@ var urlStructureRules = [
       const { url } = parts(page.url);
       if (!url)
         return [{ status: "warn", message: "Could not parse URL" }];
-      const n2 = [...url.searchParams.keys()].length;
-      if (n2 <= 2)
-        return [{ status: "pass", message: `${n2} query parameter(s)` }];
-      return [{ status: "warn", message: `${n2} query parameters`, evidence: url.search }];
+      const n = [...url.searchParams.keys()].length;
+      if (n <= 2)
+        return [{ status: "pass", message: `${n} query parameter(s)` }];
+      return [{ status: "warn", message: `${n} query parameters`, evidence: url.search }];
     }
   },
   {
@@ -23365,7 +22543,7 @@ var socialMediaRules = [
     severity: "info",
     fix: "Link to your social profiles so visitors and search engines can connect your brand accounts.",
     run({ page }) {
-      const has2 = page.links.some((l2) => SOCIAL_HOSTS.test(l2.absUrl));
+      const has2 = page.links.some((l) => SOCIAL_HOSTS.test(l.absUrl));
       return [
         has2 ? { status: "pass", message: "Links to social profiles found" } : { status: "info", message: "No social profile links found" }
       ];
@@ -23382,9 +22560,9 @@ var internationalizationRules = [
     severity: "info",
     fix: "If the site serves more than one language or region, add hreflang link alternates so Google serves the right version.",
     run({ page }) {
-      const n2 = page.$('link[rel="alternate"][hreflang]').length;
+      const n = page.$('link[rel="alternate"][hreflang]').length;
       return [
-        n2 > 0 ? { status: "pass", message: `${n2} hreflang alternate(s)` } : { status: "info", message: "No hreflang alternates (fine for a single-language site)" }
+        n > 0 ? { status: "pass", message: `${n} hreflang alternate(s)` } : { status: "info", message: "No hreflang alternates (fine for a single-language site)" }
       ];
     }
   },
@@ -23419,7 +22597,7 @@ var internationalizationRules = [
 
 // node_modules/safi-studio-scanner/dist/rules/legal.js
 function linkMatches(links, re) {
-  return links.some((l2) => re.test(l2.text) || re.test(l2.href));
+  return links.some((l) => re.test(l.text) || re.test(l.href));
 }
 var legalRules = [
   {
@@ -23540,7 +22718,7 @@ var eeatRules = [
     severity: "info",
     fix: "Cite authoritative external sources. Outbound links to reputable sites support your claims.",
     run({ page }) {
-      const external = page.links.filter((l2) => !l2.internal && l2.absUrl.startsWith("http")).length;
+      const external = page.links.filter((l) => !l.internal && l.absUrl.startsWith("http")).length;
       return [
         external > 0 ? { status: "pass", message: `${external} outbound link(s)` } : { status: "info", message: "No outbound citations" }
       ];
@@ -23553,7 +22731,7 @@ var eeatRules = [
     severity: "info",
     fix: "Link to an about page that explains who is behind the site. It is a core trust signal.",
     run({ page }) {
-      const has2 = page.links.some((l2) => /about/i.test(l2.text) || /\/about/i.test(l2.href));
+      const has2 = page.links.some((l) => /about/i.test(l.text) || /\/about/i.test(l.href));
       return [
         has2 ? { status: "pass", message: "About page link found" } : { status: "info", message: "No about page link found" }
       ];
@@ -23593,10 +22771,10 @@ var accessibilityRules = [
           fix: `See ${v.helpUrl}`
         };
       });
-      const passes = data2.axePasses.map((p2) => ({
+      const passes = data2.axePasses.map((p) => ({
         status: "pass",
-        ruleId: `accessibility/${p2.id}`,
-        title: p2.help,
+        ruleId: `accessibility/${p.id}`,
+        title: p.help,
         severity: "warning",
         message: "Passed"
       }));
@@ -23643,9 +22821,9 @@ var performanceRules = [
     severity: "info",
     fix: "Combine stylesheets. Many separate CSS files add round trips. Aim for a handful.",
     run({ page }) {
-      const n2 = page.$('link[rel="stylesheet"]').length;
+      const n = page.$('link[rel="stylesheet"]').length;
       return [
-        n2 <= 5 ? { status: "pass", message: `${n2} stylesheet(s)` } : { status: "warn", message: `${n2} stylesheets` }
+        n <= 5 ? { status: "pass", message: `${n} stylesheet(s)` } : { status: "warn", message: `${n} stylesheets` }
       ];
     }
   },
@@ -23833,9 +23011,9 @@ var allRules = [
 function selectRules(rules, only, skip) {
   let out = rules;
   if (only?.length)
-    out = out.filter((r2) => only.includes(r2.category));
+    out = out.filter((r) => only.includes(r.category));
   if (skip?.length)
-    out = out.filter((r2) => !skip.includes(r2.category));
+    out = out.filter((r) => !skip.includes(r.category));
   return out;
 }
 
@@ -23860,16 +23038,16 @@ async function audit(startUrl, options = {}) {
   const site = { origin, startUrl, robots, sitemap };
   const pages = await crawl(startUrl, opts, pool);
   if (opts.browser) {
-    const rendered = await renderPages(pages.map((p2) => p2.finalUrl), opts);
-    for (const p2 of pages)
-      p2.browser = rendered.get(p2.finalUrl);
+    const rendered = await renderPages(pages.map((p) => p.finalUrl), opts);
+    for (const p of pages)
+      p.browser = rendered.get(p.finalUrl);
   } else if (opts.psiKey) {
-    const psi = await pageSpeedInsights(pages.map((p2) => p2.finalUrl), opts);
-    for (const p2 of pages)
-      p2.browser = psi.get(p2.finalUrl);
+    const psi = await pageSpeedInsights(pages.map((p) => p.finalUrl), opts);
+    for (const p of pages)
+      p.browser = psi.get(p.finalUrl);
   }
   const rules = selectRules(allRules, opts.only, opts.skip);
-  const reports = await Promise.all(pages.map((p2) => runPage(p2, site, rules, checkUrl)));
+  const reports = await Promise.all(pages.map((p) => runPage(p, site, rules, checkUrl)));
   return aggregate(startUrl, (/* @__PURE__ */ new Date()).toISOString(), reports);
 }
 
@@ -23881,18 +23059,18 @@ function render3(report, format) {
     return renderMarkdown(report);
   return renderHtml(report);
 }
-function renderMarkdown(r2) {
+function renderMarkdown(r) {
   const lines = [];
-  lines.push(`# Audit report for ${r2.startUrl}`, "");
-  lines.push(`Overall score: ${r2.score}/100`, "");
-  lines.push(`Pages scanned: ${r2.pagesScanned}`, `Generated: ${r2.generatedAt}`, "");
+  lines.push(`# Audit report for ${r.startUrl}`, "");
+  lines.push(`Overall score: ${r.score}/100`, "");
+  lines.push(`Pages scanned: ${r.pagesScanned}`, `Generated: ${r.generatedAt}`, "");
   lines.push("## Category scores", "", "| Category | Score | Pass | Fail | Warn |", "| --- | --- | --- | --- | --- |");
-  for (const c of r2.categories)
+  for (const c of r.categories)
     lines.push(`| ${c.category} | ${c.score} | ${c.pass} | ${c.fail} | ${c.warn} |`);
   lines.push("");
-  for (const p2 of r2.pages) {
-    lines.push(`## ${p2.url} (score ${p2.score}/100)`, "");
-    const notable = p2.findings.filter((f) => f.status !== "pass");
+  for (const p of r.pages) {
+    lines.push(`## ${p.url} (score ${p.score}/100)`, "");
+    const notable = p.findings.filter((f) => f.status !== "pass");
     if (notable.length === 0) {
       lines.push("No issues found.", "");
       continue;
@@ -23942,18 +23120,18 @@ var CAT_ORDER = [
   "performance"
 ];
 var STATUS_RANK = { fail: 0, warn: 1, info: 2, pass: 3 };
-function buildGroups(r2) {
+function buildGroups(r) {
   const byRule = /* @__PURE__ */ new Map();
-  for (const p2 of r2.pages) {
-    for (const f of p2.findings) {
+  for (const p of r.pages) {
+    for (const f of p.findings) {
       let g = byRule.get(f.ruleId);
       if (!g) {
         g = { title: f.title, category: f.category, fix: f.fix, pages: /* @__PURE__ */ new Map() };
         byRule.set(f.ruleId, g);
       }
-      if (!g.pages.has(p2.url))
-        g.pages.set(p2.url, []);
-      g.pages.get(p2.url).push({ status: f.status, message: f.message, evidence: f.evidence });
+      if (!g.pages.has(p.url))
+        g.pages.set(p.url, []);
+      g.pages.get(p.url).push({ status: f.status, message: f.message, evidence: f.evidence });
     }
   }
   const byCat = /* @__PURE__ */ new Map();
@@ -23977,19 +23155,19 @@ function buildGroups(r2) {
     byCat.get(g.category).push(group);
   }
   for (const groups of byCat.values())
-    groups.sort((a2, b) => STATUS_RANK[a2.status] - STATUS_RANK[b.status] || a2.title.localeCompare(b.title));
+    groups.sort((a, b) => STATUS_RANK[a.status] - STATUS_RANK[b.status] || a.title.localeCompare(b.title));
   return byCat;
 }
-function renderHtml(r2) {
-  const byCat = buildGroups(r2);
+function renderHtml(r) {
+  const byCat = buildGroups(r);
   const catOrder = [
     ...CAT_ORDER.filter((c) => byCat.has(c)),
     ...[...byCat.keys()].filter((c) => !CAT_ORDER.includes(c)).sort()
   ];
-  const scoreByCat = new Map(r2.categories.map((c) => [c.category, c.score]));
+  const scoreByCat = new Map(r.categories.map((c) => [c.category, c.score]));
   const sections = catOrder.map((cat) => {
     const groups = byCat.get(cat);
-    const rows = groups.map((g, i) => renderRow(g, i + 1, r2.pagesScanned)).join("\n");
+    const rows = groups.map((g, i) => renderRow(g, i + 1, r.pagesScanned)).join("\n");
     return `<section class="cat">
   <div class="kicker">${esc(CAT_NAMES[cat] || cat)}</div>
   <div class="cat-score"><span class="num">${scoreByCat.get(cat) ?? 100}</span><span class="slash">/100</span></div>
@@ -24003,7 +23181,7 @@ ${rows}
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Audit report for ${esc(r2.startUrl)}</title>
+<title>Audit report for ${esc(r.startUrl)}</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap');
 :root {
@@ -24083,14 +23261,14 @@ footer a:hover { color:var(--clay); }
 </div>
 <header>
   <h1>Audit report</h1>
-  <a class="url" href="${esc(r2.startUrl)}">${esc(r2.startUrl)}</a>
-  <div class="score"><span>${r2.score}</span><span class="slash">/100</span></div>
-  <div class="meta">${r2.pagesScanned} page(s) scanned &middot; ${esc(r2.generatedAt)}</div>
+  <a class="url" href="${esc(r.startUrl)}">${esc(r.startUrl)}</a>
+  <div class="score"><span>${r.score}</span><span class="slash">/100</span></div>
+  <div class="meta">${r.pagesScanned} page(s) scanned &middot; ${esc(r.generatedAt)}</div>
 </header>
 ${sections}
 <footer>
   <a href="https://abdulkadersafi.com">abdulkadersafi.com</a>
-  <span>${r2.pagesScanned} page(s)</span>
+  <span>${r.pagesScanned} page(s)</span>
 </footer>
 <script>
 (function () {
@@ -24111,8 +23289,8 @@ ${sections}
 </body>
 </html>`;
 }
-function renderRow(g, n2, totalPages) {
-  const num = String(n2).padStart(2, "0");
+function renderRow(g, n, totalPages) {
+  const num = String(n).padStart(2, "0");
   const cls = `s-${g.status}`;
   let meta;
   let body;
@@ -24122,11 +23300,11 @@ function renderRow(g, n2, totalPages) {
   } else {
     meta = `${g.affected.length} of ${totalPages} page(s)`;
     const issueMessages = [
-      ...new Set(g.affected.flatMap((p2) => p2.issues.map((i) => i.message)))
+      ...new Set(g.affected.flatMap((p) => p.issues.map((i) => i.message)))
     ];
-    const pages = g.affected.map((p2) => {
-      const msgs = p2.issues.map((i) => `<span class="msg">${esc(i.message)}${i.evidence ? ` <code>${esc(i.evidence)}</code>` : ""}</span>`).join("");
-      return `<li><a href="${esc(p2.url)}">${esc(p2.url)}</a>${msgs}</li>`;
+    const pages = g.affected.map((p) => {
+      const msgs = p.issues.map((i) => `<span class="msg">${esc(i.message)}${i.evidence ? ` <code>${esc(i.evidence)}</code>` : ""}</span>`).join("");
+      return `<li><a href="${esc(p.url)}">${esc(p.url)}</a>${msgs}</li>`;
     }).join("\n");
     body = `<div class="rb">
   <span class="lbl">The issue</span>
@@ -24201,9 +23379,9 @@ function auditFileName(report) {
 
 // src/audit-store.ts
 async function ensureFolder(app, path) {
-  const p2 = (0, import_obsidian2.normalizePath)(path);
-  if (!app.vault.getAbstractFileByPath(p2)) {
-    await app.vault.createFolder(p2).catch(() => {
+  const p = (0, import_obsidian2.normalizePath)(path);
+  if (!app.vault.getAbstractFileByPath(p)) {
+    await app.vault.createFolder(p).catch(() => {
     });
   }
 }
@@ -24223,7 +23401,7 @@ function listAudits(app, settings) {
       pages: typeof fm.pages === "number" ? fm.pages : 0
     });
   }
-  items.sort((a2, b) => a2.date < b.date ? 1 : -1);
+  items.sort((a, b) => a.date < b.date ? 1 : -1);
   return items;
 }
 async function readAudit(app, file) {
@@ -24248,15 +23426,15 @@ async function openInObsidian(app, file) {
 var import_obsidian3 = require("obsidian");
 var ShimHeaders = class {
   map = {};
-  constructor(h2) {
-    for (const k2 in h2) this.map[k2.toLowerCase()] = h2[k2];
+  constructor(h) {
+    for (const k in h) this.map[k.toLowerCase()] = h[k];
   }
   get(name) {
     const v = this.map[name.toLowerCase()];
     return v === void 0 ? null : v;
   }
   forEach(cb) {
-    for (const k2 in this.map) cb(this.map[k2], k2);
+    for (const k in this.map) cb(this.map[k], k);
   }
 };
 var ShimResponse = class {
@@ -24283,7 +23461,7 @@ async function shimFetch(input, init2 = {}) {
   const url = typeof input === "string" ? input : input.toString();
   let headers = {};
   if (init2.headers instanceof Headers) {
-    init2.headers.forEach((v, k2) => headers[k2] = v);
+    init2.headers.forEach((v, k) => headers[k] = v);
   } else if (init2.headers) {
     headers = { ...init2.headers };
   }
@@ -24317,8 +23495,8 @@ async function withObsidianFetch(fn) {
 
 // src/audit-runner.ts
 function resolvePages(value, fallback2) {
-  const n2 = value && value > 0 ? Math.floor(value) : fallback2;
-  return Math.max(n2, 1);
+  const n = value && value > 0 ? Math.floor(value) : fallback2;
+  return Math.max(n, 1);
 }
 async function runAudit(opts, settings) {
   const options = {
@@ -24332,7 +23510,7 @@ async function runAudit(opts, settings) {
 }
 
 // src/ui/ReportView.svelte
-var import_obsidian4 = require("obsidian");
+var import_obsidian5 = require("obsidian");
 
 // src/ui/helpers.ts
 function hostOf(url) {
@@ -24365,10 +23543,10 @@ function gradeVariant(score) {
   return "destructive";
 }
 function statusDot(status) {
-  if (status === "fail") return "bg-red-500";
-  if (status === "warn") return "bg-amber-500";
-  if (status === "info") return "bg-sky-500";
-  return "bg-emerald-500";
+  if (status === "fail") return "ssa-dot-fail";
+  if (status === "warn") return "ssa-dot-warn";
+  if (status === "info") return "ssa-dot-info";
+  return "ssa-dot-pass";
 }
 function statusTotals(report) {
   const t = { pass: 0, warn: 0, fail: 0, info: 0, total: 0 };
@@ -24407,15435 +23585,36 @@ function buildIssues(report) {
     }
   }
   return [...map2.values()].sort(
-    (a2, b) => RANK[b.status] - RANK[a2.status] || b.pages.length - a2.pages.length
+    (a, b) => RANK[b.status] - RANK[a.status] || b.pages.length - a.pages.length
   );
 }
 function pct(part, whole) {
   return whole === 0 ? 0 : Math.round(part / whole * 100);
 }
 
-// node_modules/tailwind-merge/dist/bundle-mjs.mjs
-var concatArrays = (array1, array2) => {
-  const combinedArray = new Array(array1.length + array2.length);
-  for (let i = 0; i < array1.length; i++) {
-    combinedArray[i] = array1[i];
-  }
-  for (let i = 0; i < array2.length; i++) {
-    combinedArray[array1.length + i] = array2[i];
-  }
-  return combinedArray;
-};
-var createClassValidatorObject = (classGroupId, validator) => ({
-  classGroupId,
-  validator
-});
-var createClassPartObject = (nextPart = /* @__PURE__ */ new Map(), validators = null, classGroupId) => ({
-  nextPart,
-  validators,
-  classGroupId
-});
-var CLASS_PART_SEPARATOR = "-";
-var EMPTY_CONFLICTS = [];
-var ARBITRARY_PROPERTY_PREFIX = "arbitrary..";
-var createClassGroupUtils = (config) => {
-  const classMap = createClassMap(config);
-  const {
-    conflictingClassGroups,
-    conflictingClassGroupModifiers
-  } = config;
-  const getClassGroupId = (className) => {
-    if (className.startsWith("[") && className.endsWith("]")) {
-      return getGroupIdForArbitraryProperty(className);
-    }
-    const classParts = className.split(CLASS_PART_SEPARATOR);
-    const startIndex = classParts[0] === "" && classParts.length > 1 ? 1 : 0;
-    return getGroupRecursive(classParts, startIndex, classMap);
-  };
-  const getConflictingClassGroupIds = (classGroupId, hasPostfixModifier) => {
-    if (hasPostfixModifier) {
-      const modifierConflicts = conflictingClassGroupModifiers[classGroupId];
-      const baseConflicts = conflictingClassGroups[classGroupId];
-      if (modifierConflicts) {
-        if (baseConflicts) {
-          return concatArrays(baseConflicts, modifierConflicts);
-        }
-        return modifierConflicts;
-      }
-      return baseConflicts || EMPTY_CONFLICTS;
-    }
-    return conflictingClassGroups[classGroupId] || EMPTY_CONFLICTS;
-  };
+// src/ui/icon.ts
+var import_obsidian4 = require("obsidian");
+function icon(node, name) {
+  (0, import_obsidian4.setIcon)(node, name);
   return {
-    getClassGroupId,
-    getConflictingClassGroupIds
-  };
-};
-var getGroupRecursive = (classParts, startIndex, classPartObject) => {
-  const classPathsLength = classParts.length - startIndex;
-  if (classPathsLength === 0) {
-    return classPartObject.classGroupId;
-  }
-  const currentClassPart = classParts[startIndex];
-  const nextClassPartObject = classPartObject.nextPart.get(currentClassPart);
-  if (nextClassPartObject) {
-    const result = getGroupRecursive(classParts, startIndex + 1, nextClassPartObject);
-    if (result) return result;
-  }
-  const validators = classPartObject.validators;
-  if (validators === null) {
-    return void 0;
-  }
-  const classRest = startIndex === 0 ? classParts.join(CLASS_PART_SEPARATOR) : classParts.slice(startIndex).join(CLASS_PART_SEPARATOR);
-  const validatorsLength = validators.length;
-  for (let i = 0; i < validatorsLength; i++) {
-    const validatorObj = validators[i];
-    if (validatorObj.validator(classRest)) {
-      return validatorObj.classGroupId;
-    }
-  }
-  return void 0;
-};
-var getGroupIdForArbitraryProperty = (className) => className.slice(1, -1).indexOf(":") === -1 ? void 0 : (() => {
-  const content = className.slice(1, -1);
-  const colonIndex = content.indexOf(":");
-  const property = content.slice(0, colonIndex);
-  return property ? ARBITRARY_PROPERTY_PREFIX + property : void 0;
-})();
-var createClassMap = (config) => {
-  const {
-    theme,
-    classGroups
-  } = config;
-  return processClassGroups(classGroups, theme);
-};
-var processClassGroups = (classGroups, theme) => {
-  const classMap = createClassPartObject();
-  for (const classGroupId in classGroups) {
-    const group = classGroups[classGroupId];
-    processClassesRecursively(group, classMap, classGroupId, theme);
-  }
-  return classMap;
-};
-var processClassesRecursively = (classGroup, classPartObject, classGroupId, theme) => {
-  const len = classGroup.length;
-  for (let i = 0; i < len; i++) {
-    const classDefinition = classGroup[i];
-    processClassDefinition(classDefinition, classPartObject, classGroupId, theme);
-  }
-};
-var processClassDefinition = (classDefinition, classPartObject, classGroupId, theme) => {
-  if (typeof classDefinition === "string") {
-    processStringDefinition(classDefinition, classPartObject, classGroupId);
-    return;
-  }
-  if (typeof classDefinition === "function") {
-    processFunctionDefinition(classDefinition, classPartObject, classGroupId, theme);
-    return;
-  }
-  processObjectDefinition(classDefinition, classPartObject, classGroupId, theme);
-};
-var processStringDefinition = (classDefinition, classPartObject, classGroupId) => {
-  const classPartObjectToEdit = classDefinition === "" ? classPartObject : getPart(classPartObject, classDefinition);
-  classPartObjectToEdit.classGroupId = classGroupId;
-};
-var processFunctionDefinition = (classDefinition, classPartObject, classGroupId, theme) => {
-  if (isThemeGetter(classDefinition)) {
-    processClassesRecursively(classDefinition(theme), classPartObject, classGroupId, theme);
-    return;
-  }
-  if (classPartObject.validators === null) {
-    classPartObject.validators = [];
-  }
-  classPartObject.validators.push(createClassValidatorObject(classGroupId, classDefinition));
-};
-var processObjectDefinition = (classDefinition, classPartObject, classGroupId, theme) => {
-  const entries = Object.entries(classDefinition);
-  const len = entries.length;
-  for (let i = 0; i < len; i++) {
-    const [key2, value] = entries[i];
-    processClassesRecursively(value, getPart(classPartObject, key2), classGroupId, theme);
-  }
-};
-var getPart = (classPartObject, path) => {
-  let current = classPartObject;
-  const parts2 = path.split(CLASS_PART_SEPARATOR);
-  const len = parts2.length;
-  for (let i = 0; i < len; i++) {
-    const part = parts2[i];
-    let next4 = current.nextPart.get(part);
-    if (!next4) {
-      next4 = createClassPartObject();
-      current.nextPart.set(part, next4);
-    }
-    current = next4;
-  }
-  return current;
-};
-var isThemeGetter = (func) => "isThemeGetter" in func && func.isThemeGetter === true;
-var createLruCache = (maxCacheSize) => {
-  if (maxCacheSize < 1) {
-    return {
-      get: () => void 0,
-      set: () => {
-      }
-    };
-  }
-  let cacheSize = 0;
-  let cache = /* @__PURE__ */ Object.create(null);
-  let previousCache = /* @__PURE__ */ Object.create(null);
-  const update3 = (key2, value) => {
-    cache[key2] = value;
-    cacheSize++;
-    if (cacheSize > maxCacheSize) {
-      cacheSize = 0;
-      previousCache = cache;
-      cache = /* @__PURE__ */ Object.create(null);
-    }
-  };
-  return {
-    get(key2) {
-      let value = cache[key2];
-      if (value !== void 0) {
-        return value;
-      }
-      if ((value = previousCache[key2]) !== void 0) {
-        update3(key2, value);
-        return value;
-      }
-    },
-    set(key2, value) {
-      if (key2 in cache) {
-        cache[key2] = value;
-      } else {
-        update3(key2, value);
-      }
-    }
-  };
-};
-var IMPORTANT_MODIFIER = "!";
-var MODIFIER_SEPARATOR = ":";
-var EMPTY_MODIFIERS = [];
-var createResultObject = (modifiers, hasImportantModifier, baseClassName, maybePostfixModifierPosition, isExternal) => ({
-  modifiers,
-  hasImportantModifier,
-  baseClassName,
-  maybePostfixModifierPosition,
-  isExternal
-});
-var createParseClassName = (config) => {
-  const {
-    prefix,
-    experimentalParseClassName
-  } = config;
-  let parseClassName = (className) => {
-    const modifiers = [];
-    let bracketDepth = 0;
-    let parenDepth = 0;
-    let modifierStart = 0;
-    let postfixModifierPosition;
-    const len = className.length;
-    for (let index4 = 0; index4 < len; index4++) {
-      const currentCharacter = className[index4];
-      if (bracketDepth === 0 && parenDepth === 0) {
-        if (currentCharacter === MODIFIER_SEPARATOR) {
-          modifiers.push(className.slice(modifierStart, index4));
-          modifierStart = index4 + 1;
-          continue;
-        }
-        if (currentCharacter === "/") {
-          postfixModifierPosition = index4;
-          continue;
-        }
-      }
-      if (currentCharacter === "[") bracketDepth++;
-      else if (currentCharacter === "]") bracketDepth--;
-      else if (currentCharacter === "(") parenDepth++;
-      else if (currentCharacter === ")") parenDepth--;
-    }
-    const baseClassNameWithImportantModifier = modifiers.length === 0 ? className : className.slice(modifierStart);
-    let baseClassName = baseClassNameWithImportantModifier;
-    let hasImportantModifier = false;
-    if (baseClassNameWithImportantModifier.endsWith(IMPORTANT_MODIFIER)) {
-      baseClassName = baseClassNameWithImportantModifier.slice(0, -1);
-      hasImportantModifier = true;
-    } else if (
-      /**
-       * In Tailwind CSS v3 the important modifier was at the start of the base class name. This is still supported for legacy reasons.
-       * @see https://github.com/dcastil/tailwind-merge/issues/513#issuecomment-2614029864
-       */
-      baseClassNameWithImportantModifier.startsWith(IMPORTANT_MODIFIER)
-    ) {
-      baseClassName = baseClassNameWithImportantModifier.slice(1);
-      hasImportantModifier = true;
-    }
-    const maybePostfixModifierPosition = postfixModifierPosition && postfixModifierPosition > modifierStart ? postfixModifierPosition - modifierStart : void 0;
-    return createResultObject(modifiers, hasImportantModifier, baseClassName, maybePostfixModifierPosition);
-  };
-  if (prefix) {
-    const fullPrefix = prefix + MODIFIER_SEPARATOR;
-    const parseClassNameOriginal = parseClassName;
-    parseClassName = (className) => className.startsWith(fullPrefix) ? parseClassNameOriginal(className.slice(fullPrefix.length)) : createResultObject(EMPTY_MODIFIERS, false, className, void 0, true);
-  }
-  if (experimentalParseClassName) {
-    const parseClassNameOriginal = parseClassName;
-    parseClassName = (className) => experimentalParseClassName({
-      className,
-      parseClassName: parseClassNameOriginal
-    });
-  }
-  return parseClassName;
-};
-var createSortModifiers = (config) => {
-  const modifierWeights = /* @__PURE__ */ new Map();
-  config.orderSensitiveModifiers.forEach((mod, index4) => {
-    modifierWeights.set(mod, 1e6 + index4);
-  });
-  return (modifiers) => {
-    const result = [];
-    let currentSegment = [];
-    for (let i = 0; i < modifiers.length; i++) {
-      const modifier = modifiers[i];
-      const isArbitrary = modifier[0] === "[";
-      const isOrderSensitive = modifierWeights.has(modifier);
-      if (isArbitrary || isOrderSensitive) {
-        if (currentSegment.length > 0) {
-          currentSegment.sort();
-          result.push(...currentSegment);
-          currentSegment = [];
-        }
-        result.push(modifier);
-      } else {
-        currentSegment.push(modifier);
-      }
-    }
-    if (currentSegment.length > 0) {
-      currentSegment.sort();
-      result.push(...currentSegment);
-    }
-    return result;
-  };
-};
-var createConfigUtils = (config) => ({
-  cache: createLruCache(config.cacheSize),
-  parseClassName: createParseClassName(config),
-  sortModifiers: createSortModifiers(config),
-  postfixLookupClassGroupIds: createPostfixLookupClassGroupIds(config),
-  ...createClassGroupUtils(config)
-});
-var createPostfixLookupClassGroupIds = (config) => {
-  const lookup = /* @__PURE__ */ Object.create(null);
-  const classGroupIds = config.postfixLookupClassGroups;
-  if (classGroupIds) {
-    for (let i = 0; i < classGroupIds.length; i++) {
-      lookup[classGroupIds[i]] = true;
-    }
-  }
-  return lookup;
-};
-var SPLIT_CLASSES_REGEX = /\s+/;
-var mergeClassList = (classList, configUtils) => {
-  const {
-    parseClassName,
-    getClassGroupId,
-    getConflictingClassGroupIds,
-    sortModifiers,
-    postfixLookupClassGroupIds
-  } = configUtils;
-  const classGroupsInConflict = [];
-  const classNames = classList.trim().split(SPLIT_CLASSES_REGEX);
-  let result = "";
-  for (let index4 = classNames.length - 1; index4 >= 0; index4 -= 1) {
-    const originalClassName = classNames[index4];
-    const {
-      isExternal,
-      modifiers,
-      hasImportantModifier,
-      baseClassName,
-      maybePostfixModifierPosition
-    } = parseClassName(originalClassName);
-    if (isExternal) {
-      result = originalClassName + (result.length > 0 ? " " + result : result);
-      continue;
-    }
-    let hasPostfixModifier = !!maybePostfixModifierPosition;
-    let classGroupId;
-    if (hasPostfixModifier) {
-      const baseClassNameWithoutPostfix = baseClassName.substring(0, maybePostfixModifierPosition);
-      classGroupId = getClassGroupId(baseClassNameWithoutPostfix);
-      const classGroupIdWithPostfix = classGroupId && postfixLookupClassGroupIds[classGroupId] ? getClassGroupId(baseClassName) : void 0;
-      if (classGroupIdWithPostfix && classGroupIdWithPostfix !== classGroupId) {
-        classGroupId = classGroupIdWithPostfix;
-        hasPostfixModifier = false;
-      }
-    } else {
-      classGroupId = getClassGroupId(baseClassName);
-    }
-    if (!classGroupId) {
-      if (!hasPostfixModifier) {
-        result = originalClassName + (result.length > 0 ? " " + result : result);
-        continue;
-      }
-      classGroupId = getClassGroupId(baseClassName);
-      if (!classGroupId) {
-        result = originalClassName + (result.length > 0 ? " " + result : result);
-        continue;
-      }
-      hasPostfixModifier = false;
-    }
-    const variantModifier = modifiers.length === 0 ? "" : modifiers.length === 1 ? modifiers[0] : sortModifiers(modifiers).join(":");
-    const modifierId = hasImportantModifier ? variantModifier + IMPORTANT_MODIFIER : variantModifier;
-    const classId = modifierId + classGroupId;
-    if (classGroupsInConflict.indexOf(classId) > -1) {
-      continue;
-    }
-    classGroupsInConflict.push(classId);
-    const conflictGroups = getConflictingClassGroupIds(classGroupId, hasPostfixModifier);
-    for (let i = 0; i < conflictGroups.length; ++i) {
-      const group = conflictGroups[i];
-      classGroupsInConflict.push(modifierId + group);
-    }
-    result = originalClassName + (result.length > 0 ? " " + result : result);
-  }
-  return result;
-};
-var twJoin = (...classLists) => {
-  let index4 = 0;
-  let argument;
-  let resolvedValue;
-  let string = "";
-  while (index4 < classLists.length) {
-    if (argument = classLists[index4++]) {
-      if (resolvedValue = toValue(argument)) {
-        string && (string += " ");
-        string += resolvedValue;
-      }
-    }
-  }
-  return string;
-};
-var toValue = (mix) => {
-  if (typeof mix === "string") {
-    return mix;
-  }
-  let resolvedValue;
-  let string = "";
-  for (let k2 = 0; k2 < mix.length; k2++) {
-    if (mix[k2]) {
-      if (resolvedValue = toValue(mix[k2])) {
-        string && (string += " ");
-        string += resolvedValue;
-      }
-    }
-  }
-  return string;
-};
-var createTailwindMerge = (createConfigFirst, ...createConfigRest) => {
-  let configUtils;
-  let cacheGet;
-  let cacheSet;
-  let functionToCall;
-  const initTailwindMerge = (classList) => {
-    const config = createConfigRest.reduce((previousConfig, createConfigCurrent) => createConfigCurrent(previousConfig), createConfigFirst());
-    configUtils = createConfigUtils(config);
-    cacheGet = configUtils.cache.get;
-    cacheSet = configUtils.cache.set;
-    functionToCall = tailwindMerge;
-    return tailwindMerge(classList);
-  };
-  const tailwindMerge = (classList) => {
-    const cachedResult = cacheGet(classList);
-    if (cachedResult) {
-      return cachedResult;
-    }
-    const result = mergeClassList(classList, configUtils);
-    cacheSet(classList, result);
-    return result;
-  };
-  functionToCall = initTailwindMerge;
-  return (...args) => functionToCall(twJoin(...args));
-};
-var fallbackThemeArr = [];
-var fromTheme = (key2) => {
-  const themeGetter = (theme) => theme[key2] || fallbackThemeArr;
-  themeGetter.isThemeGetter = true;
-  return themeGetter;
-};
-var arbitraryValueRegex = /^\[(?:(\w[\w-]*):)?(.+)\]$/i;
-var arbitraryVariableRegex = /^\((?:(\w[\w-]*):)?(.+)\)$/i;
-var fractionRegex = /^\d+(?:\.\d+)?\/\d+(?:\.\d+)?$/;
-var tshirtUnitRegex = /^(\d+(\.\d+)?)?(xs|sm|md|lg|xl)$/;
-var lengthUnitRegex = /\d+(%|px|r?em|[sdl]?v([hwib]|min|max)|pt|pc|in|cm|mm|cap|ch|ex|r?lh|cq(w|h|i|b|min|max))|\b(calc|min|max|clamp)\(.+\)|^0$/;
-var colorFunctionRegex = /^(rgba?|hsla?|hwb|(ok)?(lab|lch)|color-mix)\(.+\)$/;
-var shadowRegex = /^(inset_)?-?((\d+)?\.?(\d+)[a-z]+|0)_-?((\d+)?\.?(\d+)[a-z]+|0)/;
-var imageRegex = /^(url|image|image-set|cross-fade|element|(repeating-)?(linear|radial|conic)-gradient)\(.+\)$/;
-var isFraction = (value) => fractionRegex.test(value);
-var isNumber4 = (value) => !!value && !Number.isNaN(Number(value));
-var isInteger = (value) => !!value && Number.isInteger(Number(value));
-var isPercent = (value) => value.endsWith("%") && isNumber4(value.slice(0, -1));
-var isTshirtSize = (value) => tshirtUnitRegex.test(value);
-var isAny = () => true;
-var isLengthOnly = (value) => (
-  // `colorFunctionRegex` check is necessary because color functions can have percentages in them which which would be incorrectly classified as lengths.
-  // For example, `hsl(0 0% 0%)` would be classified as a length without this check.
-  // I could also use lookbehind assertion in `lengthUnitRegex` but that isn't supported widely enough.
-  lengthUnitRegex.test(value) && !colorFunctionRegex.test(value)
-);
-var isNever = () => false;
-var isShadow = (value) => shadowRegex.test(value);
-var isImage = (value) => imageRegex.test(value);
-var isAnyNonArbitrary = (value) => !isArbitraryValue(value) && !isArbitraryVariable(value);
-var isNamedContainerQuery = (value) => value.startsWith("@container") && (value[10] === "/" && value[11] !== void 0 || value[11] === "s" && value[16] !== void 0 && value.startsWith("-size/", 10) || value[11] === "n" && value[18] !== void 0 && value.startsWith("-normal/", 10));
-var isArbitrarySize = (value) => getIsArbitraryValue(value, isLabelSize, isNever);
-var isArbitraryValue = (value) => arbitraryValueRegex.test(value);
-var isArbitraryLength = (value) => getIsArbitraryValue(value, isLabelLength, isLengthOnly);
-var isArbitraryNumber = (value) => getIsArbitraryValue(value, isLabelNumber, isNumber4);
-var isArbitraryWeight = (value) => getIsArbitraryValue(value, isLabelWeight, isAny);
-var isArbitraryFamilyName = (value) => getIsArbitraryValue(value, isLabelFamilyName, isNever);
-var isArbitraryPosition = (value) => getIsArbitraryValue(value, isLabelPosition, isNever);
-var isArbitraryImage = (value) => getIsArbitraryValue(value, isLabelImage, isImage);
-var isArbitraryShadow = (value) => getIsArbitraryValue(value, isLabelShadow, isShadow);
-var isArbitraryVariable = (value) => arbitraryVariableRegex.test(value);
-var isArbitraryVariableLength = (value) => getIsArbitraryVariable(value, isLabelLength);
-var isArbitraryVariableFamilyName = (value) => getIsArbitraryVariable(value, isLabelFamilyName);
-var isArbitraryVariablePosition = (value) => getIsArbitraryVariable(value, isLabelPosition);
-var isArbitraryVariableSize = (value) => getIsArbitraryVariable(value, isLabelSize);
-var isArbitraryVariableImage = (value) => getIsArbitraryVariable(value, isLabelImage);
-var isArbitraryVariableShadow = (value) => getIsArbitraryVariable(value, isLabelShadow, true);
-var isArbitraryVariableWeight = (value) => getIsArbitraryVariable(value, isLabelWeight, true);
-var getIsArbitraryValue = (value, testLabel, testValue) => {
-  const result = arbitraryValueRegex.exec(value);
-  if (result) {
-    if (result[1]) {
-      return testLabel(result[1]);
-    }
-    return testValue(result[2]);
-  }
-  return false;
-};
-var getIsArbitraryVariable = (value, testLabel, shouldMatchNoLabel = false) => {
-  const result = arbitraryVariableRegex.exec(value);
-  if (result) {
-    if (result[1]) {
-      return testLabel(result[1]);
-    }
-    return shouldMatchNoLabel;
-  }
-  return false;
-};
-var isLabelPosition = (label2) => label2 === "position" || label2 === "percentage";
-var isLabelImage = (label2) => label2 === "image" || label2 === "url";
-var isLabelSize = (label2) => label2 === "length" || label2 === "size" || label2 === "bg-size";
-var isLabelLength = (label2) => label2 === "length";
-var isLabelNumber = (label2) => label2 === "number";
-var isLabelFamilyName = (label2) => label2 === "family-name";
-var isLabelWeight = (label2) => label2 === "number" || label2 === "weight";
-var isLabelShadow = (label2) => label2 === "shadow";
-var getDefaultConfig = () => {
-  const themeColor = fromTheme("color");
-  const themeFont = fromTheme("font");
-  const themeText = fromTheme("text");
-  const themeFontWeight = fromTheme("font-weight");
-  const themeTracking = fromTheme("tracking");
-  const themeLeading = fromTheme("leading");
-  const themeBreakpoint = fromTheme("breakpoint");
-  const themeContainer = fromTheme("container");
-  const themeSpacing = fromTheme("spacing");
-  const themeRadius = fromTheme("radius");
-  const themeShadow = fromTheme("shadow");
-  const themeInsetShadow = fromTheme("inset-shadow");
-  const themeTextShadow = fromTheme("text-shadow");
-  const themeDropShadow = fromTheme("drop-shadow");
-  const themeBlur = fromTheme("blur");
-  const themePerspective = fromTheme("perspective");
-  const themeAspect = fromTheme("aspect");
-  const themeEase = fromTheme("ease");
-  const themeAnimate = fromTheme("animate");
-  const scaleBreak = () => ["auto", "avoid", "all", "avoid-page", "page", "left", "right", "column"];
-  const scalePosition = () => [
-    "center",
-    "top",
-    "bottom",
-    "left",
-    "right",
-    "top-left",
-    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
-    "left-top",
-    "top-right",
-    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
-    "right-top",
-    "bottom-right",
-    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
-    "right-bottom",
-    "bottom-left",
-    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
-    "left-bottom"
-  ];
-  const scalePositionWithArbitrary = () => [...scalePosition(), isArbitraryVariable, isArbitraryValue];
-  const scaleOverflow = () => ["auto", "hidden", "clip", "visible", "scroll"];
-  const scaleOverscroll = () => ["auto", "contain", "none"];
-  const scaleUnambiguousSpacing = () => [isArbitraryVariable, isArbitraryValue, themeSpacing];
-  const scaleInset = () => [isFraction, "full", "auto", ...scaleUnambiguousSpacing()];
-  const scaleGridTemplateColsRows = () => [isInteger, "none", "subgrid", isArbitraryVariable, isArbitraryValue];
-  const scaleGridColRowStartAndEnd = () => ["auto", {
-    span: ["full", isInteger, isArbitraryVariable, isArbitraryValue]
-  }, isInteger, isArbitraryVariable, isArbitraryValue];
-  const scaleGridColRowStartOrEnd = () => [isInteger, "auto", isArbitraryVariable, isArbitraryValue];
-  const scaleGridAutoColsRows = () => ["auto", "min", "max", "fr", isArbitraryVariable, isArbitraryValue];
-  const scaleAlignPrimaryAxis = () => ["start", "end", "center", "between", "around", "evenly", "stretch", "baseline", "center-safe", "end-safe"];
-  const scaleAlignSecondaryAxis = () => ["start", "end", "center", "stretch", "center-safe", "end-safe"];
-  const scaleMargin = () => ["auto", ...scaleUnambiguousSpacing()];
-  const scaleSizing = () => [isFraction, "auto", "full", "dvw", "dvh", "lvw", "lvh", "svw", "svh", "min", "max", "fit", ...scaleUnambiguousSpacing()];
-  const scaleSizingInline = () => [isFraction, "screen", "full", "dvw", "lvw", "svw", "min", "max", "fit", ...scaleUnambiguousSpacing()];
-  const scaleSizingBlock = () => [isFraction, "screen", "full", "lh", "dvh", "lvh", "svh", "min", "max", "fit", ...scaleUnambiguousSpacing()];
-  const scaleColor = () => [themeColor, isArbitraryVariable, isArbitraryValue];
-  const scaleBgPosition = () => [...scalePosition(), isArbitraryVariablePosition, isArbitraryPosition, {
-    position: [isArbitraryVariable, isArbitraryValue]
-  }];
-  const scaleBgRepeat = () => ["no-repeat", {
-    repeat: ["", "x", "y", "space", "round"]
-  }];
-  const scaleBgSize = () => ["auto", "cover", "contain", isArbitraryVariableSize, isArbitrarySize, {
-    size: [isArbitraryVariable, isArbitraryValue]
-  }];
-  const scaleGradientStopPosition = () => [isPercent, isArbitraryVariableLength, isArbitraryLength];
-  const scaleRadius = () => [
-    // Deprecated since Tailwind CSS v4.0.0
-    "",
-    "none",
-    "full",
-    themeRadius,
-    isArbitraryVariable,
-    isArbitraryValue
-  ];
-  const scaleBorderWidth = () => ["", isNumber4, isArbitraryVariableLength, isArbitraryLength];
-  const scaleLineStyle = () => ["solid", "dashed", "dotted", "double"];
-  const scaleBlendMode = () => ["normal", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity"];
-  const scaleMaskImagePosition = () => [isNumber4, isPercent, isArbitraryVariablePosition, isArbitraryPosition];
-  const scaleBlur = () => [
-    // Deprecated since Tailwind CSS v4.0.0
-    "",
-    "none",
-    themeBlur,
-    isArbitraryVariable,
-    isArbitraryValue
-  ];
-  const scaleRotate = () => ["none", isNumber4, isArbitraryVariable, isArbitraryValue];
-  const scaleScale = () => ["none", isNumber4, isArbitraryVariable, isArbitraryValue];
-  const scaleSkew = () => [isNumber4, isArbitraryVariable, isArbitraryValue];
-  const scaleTranslate = () => [isFraction, "full", ...scaleUnambiguousSpacing()];
-  return {
-    cacheSize: 500,
-    theme: {
-      animate: ["spin", "ping", "pulse", "bounce"],
-      aspect: ["video"],
-      blur: [isTshirtSize],
-      breakpoint: [isTshirtSize],
-      color: [isAny],
-      container: [isTshirtSize],
-      "drop-shadow": [isTshirtSize],
-      ease: ["in", "out", "in-out"],
-      font: [isAnyNonArbitrary],
-      "font-weight": ["thin", "extralight", "light", "normal", "medium", "semibold", "bold", "extrabold", "black"],
-      "inset-shadow": [isTshirtSize],
-      leading: ["none", "tight", "snug", "normal", "relaxed", "loose"],
-      perspective: ["dramatic", "near", "normal", "midrange", "distant", "none"],
-      radius: [isTshirtSize],
-      shadow: [isTshirtSize],
-      spacing: ["px", isNumber4],
-      text: [isTshirtSize],
-      "text-shadow": [isTshirtSize],
-      tracking: ["tighter", "tight", "normal", "wide", "wider", "widest"]
-    },
-    classGroups: {
-      // --------------
-      // --- Layout ---
-      // --------------
-      /**
-       * Aspect Ratio
-       * @see https://tailwindcss.com/docs/aspect-ratio
-       */
-      aspect: [{
-        aspect: ["auto", "square", isFraction, isArbitraryValue, isArbitraryVariable, themeAspect]
-      }],
-      /**
-       * Container
-       * @see https://tailwindcss.com/docs/container
-       * @deprecated since Tailwind CSS v4.0.0
-       */
-      container: ["container"],
-      /**
-       * Container Type
-       * @see https://tailwindcss.com/docs/responsive-design#container-queries
-       */
-      "container-type": [{
-        "@container": ["", "normal", "size", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Container Name
-       * @see https://tailwindcss.com/docs/responsive-design#named-containers
-       */
-      "container-named": [isNamedContainerQuery],
-      /**
-       * Columns
-       * @see https://tailwindcss.com/docs/columns
-       */
-      columns: [{
-        columns: [isNumber4, isArbitraryValue, isArbitraryVariable, themeContainer]
-      }],
-      /**
-       * Break After
-       * @see https://tailwindcss.com/docs/break-after
-       */
-      "break-after": [{
-        "break-after": scaleBreak()
-      }],
-      /**
-       * Break Before
-       * @see https://tailwindcss.com/docs/break-before
-       */
-      "break-before": [{
-        "break-before": scaleBreak()
-      }],
-      /**
-       * Break Inside
-       * @see https://tailwindcss.com/docs/break-inside
-       */
-      "break-inside": [{
-        "break-inside": ["auto", "avoid", "avoid-page", "avoid-column"]
-      }],
-      /**
-       * Box Decoration Break
-       * @see https://tailwindcss.com/docs/box-decoration-break
-       */
-      "box-decoration": [{
-        "box-decoration": ["slice", "clone"]
-      }],
-      /**
-       * Box Sizing
-       * @see https://tailwindcss.com/docs/box-sizing
-       */
-      box: [{
-        box: ["border", "content"]
-      }],
-      /**
-       * Display
-       * @see https://tailwindcss.com/docs/display
-       */
-      display: ["block", "inline-block", "inline", "flex", "inline-flex", "table", "inline-table", "table-caption", "table-cell", "table-column", "table-column-group", "table-footer-group", "table-header-group", "table-row-group", "table-row", "flow-root", "grid", "inline-grid", "contents", "list-item", "hidden"],
-      /**
-       * Screen Reader Only
-       * @see https://tailwindcss.com/docs/display#screen-reader-only
-       */
-      sr: ["sr-only", "not-sr-only"],
-      /**
-       * Floats
-       * @see https://tailwindcss.com/docs/float
-       */
-      float: [{
-        float: ["right", "left", "none", "start", "end"]
-      }],
-      /**
-       * Clear
-       * @see https://tailwindcss.com/docs/clear
-       */
-      clear: [{
-        clear: ["left", "right", "both", "none", "start", "end"]
-      }],
-      /**
-       * Isolation
-       * @see https://tailwindcss.com/docs/isolation
-       */
-      isolation: ["isolate", "isolation-auto"],
-      /**
-       * Object Fit
-       * @see https://tailwindcss.com/docs/object-fit
-       */
-      "object-fit": [{
-        object: ["contain", "cover", "fill", "none", "scale-down"]
-      }],
-      /**
-       * Object Position
-       * @see https://tailwindcss.com/docs/object-position
-       */
-      "object-position": [{
-        object: scalePositionWithArbitrary()
-      }],
-      /**
-       * Overflow
-       * @see https://tailwindcss.com/docs/overflow
-       */
-      overflow: [{
-        overflow: scaleOverflow()
-      }],
-      /**
-       * Overflow X
-       * @see https://tailwindcss.com/docs/overflow
-       */
-      "overflow-x": [{
-        "overflow-x": scaleOverflow()
-      }],
-      /**
-       * Overflow Y
-       * @see https://tailwindcss.com/docs/overflow
-       */
-      "overflow-y": [{
-        "overflow-y": scaleOverflow()
-      }],
-      /**
-       * Overscroll Behavior
-       * @see https://tailwindcss.com/docs/overscroll-behavior
-       */
-      overscroll: [{
-        overscroll: scaleOverscroll()
-      }],
-      /**
-       * Overscroll Behavior X
-       * @see https://tailwindcss.com/docs/overscroll-behavior
-       */
-      "overscroll-x": [{
-        "overscroll-x": scaleOverscroll()
-      }],
-      /**
-       * Overscroll Behavior Y
-       * @see https://tailwindcss.com/docs/overscroll-behavior
-       */
-      "overscroll-y": [{
-        "overscroll-y": scaleOverscroll()
-      }],
-      /**
-       * Position
-       * @see https://tailwindcss.com/docs/position
-       */
-      position: ["static", "fixed", "absolute", "relative", "sticky"],
-      /**
-       * Inset
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      inset: [{
-        inset: scaleInset()
-      }],
-      /**
-       * Inset Inline
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      "inset-x": [{
-        "inset-x": scaleInset()
-      }],
-      /**
-       * Inset Block
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      "inset-y": [{
-        "inset-y": scaleInset()
-      }],
-      /**
-       * Inset Inline Start
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       * @todo class group will be renamed to `inset-s` in next major release
-       */
-      start: [{
-        "inset-s": scaleInset(),
-        /**
-         * @deprecated since Tailwind CSS v4.2.0 in favor of `inset-s-*` utilities.
-         * @see https://github.com/tailwindlabs/tailwindcss/pull/19613
-         */
-        start: scaleInset()
-      }],
-      /**
-       * Inset Inline End
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       * @todo class group will be renamed to `inset-e` in next major release
-       */
-      end: [{
-        "inset-e": scaleInset(),
-        /**
-         * @deprecated since Tailwind CSS v4.2.0 in favor of `inset-e-*` utilities.
-         * @see https://github.com/tailwindlabs/tailwindcss/pull/19613
-         */
-        end: scaleInset()
-      }],
-      /**
-       * Inset Block Start
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      "inset-bs": [{
-        "inset-bs": scaleInset()
-      }],
-      /**
-       * Inset Block End
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      "inset-be": [{
-        "inset-be": scaleInset()
-      }],
-      /**
-       * Top
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      top: [{
-        top: scaleInset()
-      }],
-      /**
-       * Right
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      right: [{
-        right: scaleInset()
-      }],
-      /**
-       * Bottom
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      bottom: [{
-        bottom: scaleInset()
-      }],
-      /**
-       * Left
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      left: [{
-        left: scaleInset()
-      }],
-      /**
-       * Visibility
-       * @see https://tailwindcss.com/docs/visibility
-       */
-      visibility: ["visible", "invisible", "collapse"],
-      /**
-       * Z-Index
-       * @see https://tailwindcss.com/docs/z-index
-       */
-      z: [{
-        z: [isInteger, "auto", isArbitraryVariable, isArbitraryValue]
-      }],
-      // ------------------------
-      // --- Flexbox and Grid ---
-      // ------------------------
-      /**
-       * Flex Basis
-       * @see https://tailwindcss.com/docs/flex-basis
-       */
-      basis: [{
-        basis: [isFraction, "full", "auto", themeContainer, ...scaleUnambiguousSpacing()]
-      }],
-      /**
-       * Flex Direction
-       * @see https://tailwindcss.com/docs/flex-direction
-       */
-      "flex-direction": [{
-        flex: ["row", "row-reverse", "col", "col-reverse"]
-      }],
-      /**
-       * Flex Wrap
-       * @see https://tailwindcss.com/docs/flex-wrap
-       */
-      "flex-wrap": [{
-        flex: ["nowrap", "wrap", "wrap-reverse"]
-      }],
-      /**
-       * Flex
-       * @see https://tailwindcss.com/docs/flex
-       */
-      flex: [{
-        flex: [isNumber4, isFraction, "auto", "initial", "none", isArbitraryValue]
-      }],
-      /**
-       * Flex Grow
-       * @see https://tailwindcss.com/docs/flex-grow
-       */
-      grow: [{
-        grow: ["", isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Flex Shrink
-       * @see https://tailwindcss.com/docs/flex-shrink
-       */
-      shrink: [{
-        shrink: ["", isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Order
-       * @see https://tailwindcss.com/docs/order
-       */
-      order: [{
-        order: [isInteger, "first", "last", "none", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Grid Template Columns
-       * @see https://tailwindcss.com/docs/grid-template-columns
-       */
-      "grid-cols": [{
-        "grid-cols": scaleGridTemplateColsRows()
-      }],
-      /**
-       * Grid Column Start / End
-       * @see https://tailwindcss.com/docs/grid-column
-       */
-      "col-start-end": [{
-        col: scaleGridColRowStartAndEnd()
-      }],
-      /**
-       * Grid Column Start
-       * @see https://tailwindcss.com/docs/grid-column
-       */
-      "col-start": [{
-        "col-start": scaleGridColRowStartOrEnd()
-      }],
-      /**
-       * Grid Column End
-       * @see https://tailwindcss.com/docs/grid-column
-       */
-      "col-end": [{
-        "col-end": scaleGridColRowStartOrEnd()
-      }],
-      /**
-       * Grid Template Rows
-       * @see https://tailwindcss.com/docs/grid-template-rows
-       */
-      "grid-rows": [{
-        "grid-rows": scaleGridTemplateColsRows()
-      }],
-      /**
-       * Grid Row Start / End
-       * @see https://tailwindcss.com/docs/grid-row
-       */
-      "row-start-end": [{
-        row: scaleGridColRowStartAndEnd()
-      }],
-      /**
-       * Grid Row Start
-       * @see https://tailwindcss.com/docs/grid-row
-       */
-      "row-start": [{
-        "row-start": scaleGridColRowStartOrEnd()
-      }],
-      /**
-       * Grid Row End
-       * @see https://tailwindcss.com/docs/grid-row
-       */
-      "row-end": [{
-        "row-end": scaleGridColRowStartOrEnd()
-      }],
-      /**
-       * Grid Auto Flow
-       * @see https://tailwindcss.com/docs/grid-auto-flow
-       */
-      "grid-flow": [{
-        "grid-flow": ["row", "col", "dense", "row-dense", "col-dense"]
-      }],
-      /**
-       * Grid Auto Columns
-       * @see https://tailwindcss.com/docs/grid-auto-columns
-       */
-      "auto-cols": [{
-        "auto-cols": scaleGridAutoColsRows()
-      }],
-      /**
-       * Grid Auto Rows
-       * @see https://tailwindcss.com/docs/grid-auto-rows
-       */
-      "auto-rows": [{
-        "auto-rows": scaleGridAutoColsRows()
-      }],
-      /**
-       * Gap
-       * @see https://tailwindcss.com/docs/gap
-       */
-      gap: [{
-        gap: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Gap X
-       * @see https://tailwindcss.com/docs/gap
-       */
-      "gap-x": [{
-        "gap-x": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Gap Y
-       * @see https://tailwindcss.com/docs/gap
-       */
-      "gap-y": [{
-        "gap-y": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Justify Content
-       * @see https://tailwindcss.com/docs/justify-content
-       */
-      "justify-content": [{
-        justify: [...scaleAlignPrimaryAxis(), "normal"]
-      }],
-      /**
-       * Justify Items
-       * @see https://tailwindcss.com/docs/justify-items
-       */
-      "justify-items": [{
-        "justify-items": [...scaleAlignSecondaryAxis(), "normal"]
-      }],
-      /**
-       * Justify Self
-       * @see https://tailwindcss.com/docs/justify-self
-       */
-      "justify-self": [{
-        "justify-self": ["auto", ...scaleAlignSecondaryAxis()]
-      }],
-      /**
-       * Align Content
-       * @see https://tailwindcss.com/docs/align-content
-       */
-      "align-content": [{
-        content: ["normal", ...scaleAlignPrimaryAxis()]
-      }],
-      /**
-       * Align Items
-       * @see https://tailwindcss.com/docs/align-items
-       */
-      "align-items": [{
-        items: [...scaleAlignSecondaryAxis(), {
-          baseline: ["", "last"]
-        }]
-      }],
-      /**
-       * Align Self
-       * @see https://tailwindcss.com/docs/align-self
-       */
-      "align-self": [{
-        self: ["auto", ...scaleAlignSecondaryAxis(), {
-          baseline: ["", "last"]
-        }]
-      }],
-      /**
-       * Place Content
-       * @see https://tailwindcss.com/docs/place-content
-       */
-      "place-content": [{
-        "place-content": scaleAlignPrimaryAxis()
-      }],
-      /**
-       * Place Items
-       * @see https://tailwindcss.com/docs/place-items
-       */
-      "place-items": [{
-        "place-items": [...scaleAlignSecondaryAxis(), "baseline"]
-      }],
-      /**
-       * Place Self
-       * @see https://tailwindcss.com/docs/place-self
-       */
-      "place-self": [{
-        "place-self": ["auto", ...scaleAlignSecondaryAxis()]
-      }],
-      // Spacing
-      /**
-       * Padding
-       * @see https://tailwindcss.com/docs/padding
-       */
-      p: [{
-        p: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Inline
-       * @see https://tailwindcss.com/docs/padding
-       */
-      px: [{
-        px: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Block
-       * @see https://tailwindcss.com/docs/padding
-       */
-      py: [{
-        py: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Inline Start
-       * @see https://tailwindcss.com/docs/padding
-       */
-      ps: [{
-        ps: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Inline End
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pe: [{
-        pe: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Block Start
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pbs: [{
-        pbs: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Block End
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pbe: [{
-        pbe: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Top
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pt: [{
-        pt: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Right
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pr: [{
-        pr: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Bottom
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pb: [{
-        pb: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Left
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pl: [{
-        pl: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Margin
-       * @see https://tailwindcss.com/docs/margin
-       */
-      m: [{
-        m: scaleMargin()
-      }],
-      /**
-       * Margin Inline
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mx: [{
-        mx: scaleMargin()
-      }],
-      /**
-       * Margin Block
-       * @see https://tailwindcss.com/docs/margin
-       */
-      my: [{
-        my: scaleMargin()
-      }],
-      /**
-       * Margin Inline Start
-       * @see https://tailwindcss.com/docs/margin
-       */
-      ms: [{
-        ms: scaleMargin()
-      }],
-      /**
-       * Margin Inline End
-       * @see https://tailwindcss.com/docs/margin
-       */
-      me: [{
-        me: scaleMargin()
-      }],
-      /**
-       * Margin Block Start
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mbs: [{
-        mbs: scaleMargin()
-      }],
-      /**
-       * Margin Block End
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mbe: [{
-        mbe: scaleMargin()
-      }],
-      /**
-       * Margin Top
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mt: [{
-        mt: scaleMargin()
-      }],
-      /**
-       * Margin Right
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mr: [{
-        mr: scaleMargin()
-      }],
-      /**
-       * Margin Bottom
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mb: [{
-        mb: scaleMargin()
-      }],
-      /**
-       * Margin Left
-       * @see https://tailwindcss.com/docs/margin
-       */
-      ml: [{
-        ml: scaleMargin()
-      }],
-      /**
-       * Space Between X
-       * @see https://tailwindcss.com/docs/margin#adding-space-between-children
-       */
-      "space-x": [{
-        "space-x": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Space Between X Reverse
-       * @see https://tailwindcss.com/docs/margin#adding-space-between-children
-       */
-      "space-x-reverse": ["space-x-reverse"],
-      /**
-       * Space Between Y
-       * @see https://tailwindcss.com/docs/margin#adding-space-between-children
-       */
-      "space-y": [{
-        "space-y": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Space Between Y Reverse
-       * @see https://tailwindcss.com/docs/margin#adding-space-between-children
-       */
-      "space-y-reverse": ["space-y-reverse"],
-      // --------------
-      // --- Sizing ---
-      // --------------
-      /**
-       * Size
-       * @see https://tailwindcss.com/docs/width#setting-both-width-and-height
-       */
-      size: [{
-        size: scaleSizing()
-      }],
-      /**
-       * Inline Size
-       * @see https://tailwindcss.com/docs/width
-       */
-      "inline-size": [{
-        inline: ["auto", ...scaleSizingInline()]
-      }],
-      /**
-       * Min-Inline Size
-       * @see https://tailwindcss.com/docs/min-width
-       */
-      "min-inline-size": [{
-        "min-inline": ["auto", ...scaleSizingInline()]
-      }],
-      /**
-       * Max-Inline Size
-       * @see https://tailwindcss.com/docs/max-width
-       */
-      "max-inline-size": [{
-        "max-inline": ["none", ...scaleSizingInline()]
-      }],
-      /**
-       * Block Size
-       * @see https://tailwindcss.com/docs/height
-       */
-      "block-size": [{
-        block: ["auto", ...scaleSizingBlock()]
-      }],
-      /**
-       * Min-Block Size
-       * @see https://tailwindcss.com/docs/min-height
-       */
-      "min-block-size": [{
-        "min-block": ["auto", ...scaleSizingBlock()]
-      }],
-      /**
-       * Max-Block Size
-       * @see https://tailwindcss.com/docs/max-height
-       */
-      "max-block-size": [{
-        "max-block": ["none", ...scaleSizingBlock()]
-      }],
-      /**
-       * Width
-       * @see https://tailwindcss.com/docs/width
-       */
-      w: [{
-        w: [themeContainer, "screen", ...scaleSizing()]
-      }],
-      /**
-       * Min-Width
-       * @see https://tailwindcss.com/docs/min-width
-       */
-      "min-w": [{
-        "min-w": [
-          themeContainer,
-          "screen",
-          /** Deprecated. @see https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757 */
-          "none",
-          ...scaleSizing()
-        ]
-      }],
-      /**
-       * Max-Width
-       * @see https://tailwindcss.com/docs/max-width
-       */
-      "max-w": [{
-        "max-w": [
-          themeContainer,
-          "screen",
-          "none",
-          /** Deprecated since Tailwind CSS v4.0.0. @see https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757 */
-          "prose",
-          /** Deprecated since Tailwind CSS v4.0.0. @see https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757 */
-          {
-            screen: [themeBreakpoint]
-          },
-          ...scaleSizing()
-        ]
-      }],
-      /**
-       * Height
-       * @see https://tailwindcss.com/docs/height
-       */
-      h: [{
-        h: ["screen", "lh", ...scaleSizing()]
-      }],
-      /**
-       * Min-Height
-       * @see https://tailwindcss.com/docs/min-height
-       */
-      "min-h": [{
-        "min-h": ["screen", "lh", "none", ...scaleSizing()]
-      }],
-      /**
-       * Max-Height
-       * @see https://tailwindcss.com/docs/max-height
-       */
-      "max-h": [{
-        "max-h": ["screen", "lh", ...scaleSizing()]
-      }],
-      // ------------------
-      // --- Typography ---
-      // ------------------
-      /**
-       * Font Size
-       * @see https://tailwindcss.com/docs/font-size
-       */
-      "font-size": [{
-        text: ["base", themeText, isArbitraryVariableLength, isArbitraryLength]
-      }],
-      /**
-       * Font Smoothing
-       * @see https://tailwindcss.com/docs/font-smoothing
-       */
-      "font-smoothing": ["antialiased", "subpixel-antialiased"],
-      /**
-       * Font Style
-       * @see https://tailwindcss.com/docs/font-style
-       */
-      "font-style": ["italic", "not-italic"],
-      /**
-       * Font Weight
-       * @see https://tailwindcss.com/docs/font-weight
-       */
-      "font-weight": [{
-        font: [themeFontWeight, isArbitraryVariableWeight, isArbitraryWeight]
-      }],
-      /**
-       * Font Stretch
-       * @see https://tailwindcss.com/docs/font-stretch
-       */
-      "font-stretch": [{
-        "font-stretch": ["ultra-condensed", "extra-condensed", "condensed", "semi-condensed", "normal", "semi-expanded", "expanded", "extra-expanded", "ultra-expanded", isPercent, isArbitraryValue]
-      }],
-      /**
-       * Font Family
-       * @see https://tailwindcss.com/docs/font-family
-       */
-      "font-family": [{
-        font: [isArbitraryVariableFamilyName, isArbitraryFamilyName, themeFont]
-      }],
-      /**
-       * Font Feature Settings
-       * @see https://tailwindcss.com/docs/font-feature-settings
-       */
-      "font-features": [{
-        "font-features": [isArbitraryValue]
-      }],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-normal": ["normal-nums"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-ordinal": ["ordinal"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-slashed-zero": ["slashed-zero"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-figure": ["lining-nums", "oldstyle-nums"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-spacing": ["proportional-nums", "tabular-nums"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-fraction": ["diagonal-fractions", "stacked-fractions"],
-      /**
-       * Letter Spacing
-       * @see https://tailwindcss.com/docs/letter-spacing
-       */
-      tracking: [{
-        tracking: [themeTracking, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Line Clamp
-       * @see https://tailwindcss.com/docs/line-clamp
-       */
-      "line-clamp": [{
-        "line-clamp": [isNumber4, "none", isArbitraryVariable, isArbitraryNumber]
-      }],
-      /**
-       * Line Height
-       * @see https://tailwindcss.com/docs/line-height
-       */
-      leading: [{
-        leading: [
-          /** Deprecated since Tailwind CSS v4.0.0. @see https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757 */
-          themeLeading,
-          ...scaleUnambiguousSpacing()
-        ]
-      }],
-      /**
-       * List Style Image
-       * @see https://tailwindcss.com/docs/list-style-image
-       */
-      "list-image": [{
-        "list-image": ["none", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * List Style Position
-       * @see https://tailwindcss.com/docs/list-style-position
-       */
-      "list-style-position": [{
-        list: ["inside", "outside"]
-      }],
-      /**
-       * List Style Type
-       * @see https://tailwindcss.com/docs/list-style-type
-       */
-      "list-style-type": [{
-        list: ["disc", "decimal", "none", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Text Alignment
-       * @see https://tailwindcss.com/docs/text-align
-       */
-      "text-alignment": [{
-        text: ["left", "center", "right", "justify", "start", "end"]
-      }],
-      /**
-       * Placeholder Color
-       * @deprecated since Tailwind CSS v3.0.0
-       * @see https://v3.tailwindcss.com/docs/placeholder-color
-       */
-      "placeholder-color": [{
-        placeholder: scaleColor()
-      }],
-      /**
-       * Text Color
-       * @see https://tailwindcss.com/docs/text-color
-       */
-      "text-color": [{
-        text: scaleColor()
-      }],
-      /**
-       * Text Decoration
-       * @see https://tailwindcss.com/docs/text-decoration
-       */
-      "text-decoration": ["underline", "overline", "line-through", "no-underline"],
-      /**
-       * Text Decoration Style
-       * @see https://tailwindcss.com/docs/text-decoration-style
-       */
-      "text-decoration-style": [{
-        decoration: [...scaleLineStyle(), "wavy"]
-      }],
-      /**
-       * Text Decoration Thickness
-       * @see https://tailwindcss.com/docs/text-decoration-thickness
-       */
-      "text-decoration-thickness": [{
-        decoration: [isNumber4, "from-font", "auto", isArbitraryVariable, isArbitraryLength]
-      }],
-      /**
-       * Text Decoration Color
-       * @see https://tailwindcss.com/docs/text-decoration-color
-       */
-      "text-decoration-color": [{
-        decoration: scaleColor()
-      }],
-      /**
-       * Text Underline Offset
-       * @see https://tailwindcss.com/docs/text-underline-offset
-       */
-      "underline-offset": [{
-        "underline-offset": [isNumber4, "auto", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Text Transform
-       * @see https://tailwindcss.com/docs/text-transform
-       */
-      "text-transform": ["uppercase", "lowercase", "capitalize", "normal-case"],
-      /**
-       * Text Overflow
-       * @see https://tailwindcss.com/docs/text-overflow
-       */
-      "text-overflow": ["truncate", "text-ellipsis", "text-clip"],
-      /**
-       * Text Wrap
-       * @see https://tailwindcss.com/docs/text-wrap
-       */
-      "text-wrap": [{
-        text: ["wrap", "nowrap", "balance", "pretty"]
-      }],
-      /**
-       * Text Indent
-       * @see https://tailwindcss.com/docs/text-indent
-       */
-      indent: [{
-        indent: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Tab Size
-       * @see https://tailwindcss.com/docs/tab-size
-       */
-      "tab-size": [{
-        tab: [isInteger, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Vertical Alignment
-       * @see https://tailwindcss.com/docs/vertical-align
-       */
-      "vertical-align": [{
-        align: ["baseline", "top", "middle", "bottom", "text-top", "text-bottom", "sub", "super", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Whitespace
-       * @see https://tailwindcss.com/docs/whitespace
-       */
-      whitespace: [{
-        whitespace: ["normal", "nowrap", "pre", "pre-line", "pre-wrap", "break-spaces"]
-      }],
-      /**
-       * Word Break
-       * @see https://tailwindcss.com/docs/word-break
-       */
-      break: [{
-        break: ["normal", "words", "all", "keep"]
-      }],
-      /**
-       * Overflow Wrap
-       * @see https://tailwindcss.com/docs/overflow-wrap
-       */
-      wrap: [{
-        wrap: ["break-word", "anywhere", "normal"]
-      }],
-      /**
-       * Hyphens
-       * @see https://tailwindcss.com/docs/hyphens
-       */
-      hyphens: [{
-        hyphens: ["none", "manual", "auto"]
-      }],
-      /**
-       * Content
-       * @see https://tailwindcss.com/docs/content
-       */
-      content: [{
-        content: ["none", isArbitraryVariable, isArbitraryValue]
-      }],
-      // -------------------
-      // --- Backgrounds ---
-      // -------------------
-      /**
-       * Background Attachment
-       * @see https://tailwindcss.com/docs/background-attachment
-       */
-      "bg-attachment": [{
-        bg: ["fixed", "local", "scroll"]
-      }],
-      /**
-       * Background Clip
-       * @see https://tailwindcss.com/docs/background-clip
-       */
-      "bg-clip": [{
-        "bg-clip": ["border", "padding", "content", "text"]
-      }],
-      /**
-       * Background Origin
-       * @see https://tailwindcss.com/docs/background-origin
-       */
-      "bg-origin": [{
-        "bg-origin": ["border", "padding", "content"]
-      }],
-      /**
-       * Background Position
-       * @see https://tailwindcss.com/docs/background-position
-       */
-      "bg-position": [{
-        bg: scaleBgPosition()
-      }],
-      /**
-       * Background Repeat
-       * @see https://tailwindcss.com/docs/background-repeat
-       */
-      "bg-repeat": [{
-        bg: scaleBgRepeat()
-      }],
-      /**
-       * Background Size
-       * @see https://tailwindcss.com/docs/background-size
-       */
-      "bg-size": [{
-        bg: scaleBgSize()
-      }],
-      /**
-       * Background Image
-       * @see https://tailwindcss.com/docs/background-image
-       */
-      "bg-image": [{
-        bg: ["none", {
-          linear: [{
-            to: ["t", "tr", "r", "br", "b", "bl", "l", "tl"]
-          }, isInteger, isArbitraryVariable, isArbitraryValue],
-          radial: ["", isArbitraryVariable, isArbitraryValue],
-          conic: [isInteger, isArbitraryVariable, isArbitraryValue]
-        }, isArbitraryVariableImage, isArbitraryImage]
-      }],
-      /**
-       * Background Color
-       * @see https://tailwindcss.com/docs/background-color
-       */
-      "bg-color": [{
-        bg: scaleColor()
-      }],
-      /**
-       * Gradient Color Stops From Position
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-from-pos": [{
-        from: scaleGradientStopPosition()
-      }],
-      /**
-       * Gradient Color Stops Via Position
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-via-pos": [{
-        via: scaleGradientStopPosition()
-      }],
-      /**
-       * Gradient Color Stops To Position
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-to-pos": [{
-        to: scaleGradientStopPosition()
-      }],
-      /**
-       * Gradient Color Stops From
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-from": [{
-        from: scaleColor()
-      }],
-      /**
-       * Gradient Color Stops Via
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-via": [{
-        via: scaleColor()
-      }],
-      /**
-       * Gradient Color Stops To
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-to": [{
-        to: scaleColor()
-      }],
-      // ---------------
-      // --- Borders ---
-      // ---------------
-      /**
-       * Border Radius
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      rounded: [{
-        rounded: scaleRadius()
-      }],
-      /**
-       * Border Radius Start
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-s": [{
-        "rounded-s": scaleRadius()
-      }],
-      /**
-       * Border Radius End
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-e": [{
-        "rounded-e": scaleRadius()
-      }],
-      /**
-       * Border Radius Top
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-t": [{
-        "rounded-t": scaleRadius()
-      }],
-      /**
-       * Border Radius Right
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-r": [{
-        "rounded-r": scaleRadius()
-      }],
-      /**
-       * Border Radius Bottom
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-b": [{
-        "rounded-b": scaleRadius()
-      }],
-      /**
-       * Border Radius Left
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-l": [{
-        "rounded-l": scaleRadius()
-      }],
-      /**
-       * Border Radius Start Start
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-ss": [{
-        "rounded-ss": scaleRadius()
-      }],
-      /**
-       * Border Radius Start End
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-se": [{
-        "rounded-se": scaleRadius()
-      }],
-      /**
-       * Border Radius End End
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-ee": [{
-        "rounded-ee": scaleRadius()
-      }],
-      /**
-       * Border Radius End Start
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-es": [{
-        "rounded-es": scaleRadius()
-      }],
-      /**
-       * Border Radius Top Left
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-tl": [{
-        "rounded-tl": scaleRadius()
-      }],
-      /**
-       * Border Radius Top Right
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-tr": [{
-        "rounded-tr": scaleRadius()
-      }],
-      /**
-       * Border Radius Bottom Right
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-br": [{
-        "rounded-br": scaleRadius()
-      }],
-      /**
-       * Border Radius Bottom Left
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-bl": [{
-        "rounded-bl": scaleRadius()
-      }],
-      /**
-       * Border Width
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w": [{
-        border: scaleBorderWidth()
-      }],
-      /**
-       * Border Width Inline
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-x": [{
-        "border-x": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Block
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-y": [{
-        "border-y": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Inline Start
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-s": [{
-        "border-s": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Inline End
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-e": [{
-        "border-e": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Block Start
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-bs": [{
-        "border-bs": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Block End
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-be": [{
-        "border-be": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Top
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-t": [{
-        "border-t": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Right
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-r": [{
-        "border-r": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Bottom
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-b": [{
-        "border-b": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Left
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-l": [{
-        "border-l": scaleBorderWidth()
-      }],
-      /**
-       * Divide Width X
-       * @see https://tailwindcss.com/docs/border-width#between-children
-       */
-      "divide-x": [{
-        "divide-x": scaleBorderWidth()
-      }],
-      /**
-       * Divide Width X Reverse
-       * @see https://tailwindcss.com/docs/border-width#between-children
-       */
-      "divide-x-reverse": ["divide-x-reverse"],
-      /**
-       * Divide Width Y
-       * @see https://tailwindcss.com/docs/border-width#between-children
-       */
-      "divide-y": [{
-        "divide-y": scaleBorderWidth()
-      }],
-      /**
-       * Divide Width Y Reverse
-       * @see https://tailwindcss.com/docs/border-width#between-children
-       */
-      "divide-y-reverse": ["divide-y-reverse"],
-      /**
-       * Border Style
-       * @see https://tailwindcss.com/docs/border-style
-       */
-      "border-style": [{
-        border: [...scaleLineStyle(), "hidden", "none"]
-      }],
-      /**
-       * Divide Style
-       * @see https://tailwindcss.com/docs/border-style#setting-the-divider-style
-       */
-      "divide-style": [{
-        divide: [...scaleLineStyle(), "hidden", "none"]
-      }],
-      /**
-       * Border Color
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color": [{
-        border: scaleColor()
-      }],
-      /**
-       * Border Color Inline
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-x": [{
-        "border-x": scaleColor()
-      }],
-      /**
-       * Border Color Block
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-y": [{
-        "border-y": scaleColor()
-      }],
-      /**
-       * Border Color Inline Start
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-s": [{
-        "border-s": scaleColor()
-      }],
-      /**
-       * Border Color Inline End
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-e": [{
-        "border-e": scaleColor()
-      }],
-      /**
-       * Border Color Block Start
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-bs": [{
-        "border-bs": scaleColor()
-      }],
-      /**
-       * Border Color Block End
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-be": [{
-        "border-be": scaleColor()
-      }],
-      /**
-       * Border Color Top
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-t": [{
-        "border-t": scaleColor()
-      }],
-      /**
-       * Border Color Right
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-r": [{
-        "border-r": scaleColor()
-      }],
-      /**
-       * Border Color Bottom
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-b": [{
-        "border-b": scaleColor()
-      }],
-      /**
-       * Border Color Left
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-l": [{
-        "border-l": scaleColor()
-      }],
-      /**
-       * Divide Color
-       * @see https://tailwindcss.com/docs/divide-color
-       */
-      "divide-color": [{
-        divide: scaleColor()
-      }],
-      /**
-       * Outline Style
-       * @see https://tailwindcss.com/docs/outline-style
-       */
-      "outline-style": [{
-        outline: [...scaleLineStyle(), "none", "hidden"]
-      }],
-      /**
-       * Outline Offset
-       * @see https://tailwindcss.com/docs/outline-offset
-       */
-      "outline-offset": [{
-        "outline-offset": [isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Outline Width
-       * @see https://tailwindcss.com/docs/outline-width
-       */
-      "outline-w": [{
-        outline: ["", isNumber4, isArbitraryVariableLength, isArbitraryLength]
-      }],
-      /**
-       * Outline Color
-       * @see https://tailwindcss.com/docs/outline-color
-       */
-      "outline-color": [{
-        outline: scaleColor()
-      }],
-      // ---------------
-      // --- Effects ---
-      // ---------------
-      /**
-       * Box Shadow
-       * @see https://tailwindcss.com/docs/box-shadow
-       */
-      shadow: [{
-        shadow: [
-          // Deprecated since Tailwind CSS v4.0.0
-          "",
-          "none",
-          themeShadow,
-          isArbitraryVariableShadow,
-          isArbitraryShadow
-        ]
-      }],
-      /**
-       * Box Shadow Color
-       * @see https://tailwindcss.com/docs/box-shadow#setting-the-shadow-color
-       */
-      "shadow-color": [{
-        shadow: scaleColor()
-      }],
-      /**
-       * Inset Box Shadow
-       * @see https://tailwindcss.com/docs/box-shadow#adding-an-inset-shadow
-       */
-      "inset-shadow": [{
-        "inset-shadow": ["none", themeInsetShadow, isArbitraryVariableShadow, isArbitraryShadow]
-      }],
-      /**
-       * Inset Box Shadow Color
-       * @see https://tailwindcss.com/docs/box-shadow#setting-the-inset-shadow-color
-       */
-      "inset-shadow-color": [{
-        "inset-shadow": scaleColor()
-      }],
-      /**
-       * Ring Width
-       * @see https://tailwindcss.com/docs/box-shadow#adding-a-ring
-       */
-      "ring-w": [{
-        ring: scaleBorderWidth()
-      }],
-      /**
-       * Ring Width Inset
-       * @see https://v3.tailwindcss.com/docs/ring-width#inset-rings
-       * @deprecated since Tailwind CSS v4.0.0
-       * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
-       */
-      "ring-w-inset": ["ring-inset"],
-      /**
-       * Ring Color
-       * @see https://tailwindcss.com/docs/box-shadow#setting-the-ring-color
-       */
-      "ring-color": [{
-        ring: scaleColor()
-      }],
-      /**
-       * Ring Offset Width
-       * @see https://v3.tailwindcss.com/docs/ring-offset-width
-       * @deprecated since Tailwind CSS v4.0.0
-       * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
-       */
-      "ring-offset-w": [{
-        "ring-offset": [isNumber4, isArbitraryLength]
-      }],
-      /**
-       * Ring Offset Color
-       * @see https://v3.tailwindcss.com/docs/ring-offset-color
-       * @deprecated since Tailwind CSS v4.0.0
-       * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
-       */
-      "ring-offset-color": [{
-        "ring-offset": scaleColor()
-      }],
-      /**
-       * Inset Ring Width
-       * @see https://tailwindcss.com/docs/box-shadow#adding-an-inset-ring
-       */
-      "inset-ring-w": [{
-        "inset-ring": scaleBorderWidth()
-      }],
-      /**
-       * Inset Ring Color
-       * @see https://tailwindcss.com/docs/box-shadow#setting-the-inset-ring-color
-       */
-      "inset-ring-color": [{
-        "inset-ring": scaleColor()
-      }],
-      /**
-       * Text Shadow
-       * @see https://tailwindcss.com/docs/text-shadow
-       */
-      "text-shadow": [{
-        "text-shadow": ["none", themeTextShadow, isArbitraryVariableShadow, isArbitraryShadow]
-      }],
-      /**
-       * Text Shadow Color
-       * @see https://tailwindcss.com/docs/text-shadow#setting-the-shadow-color
-       */
-      "text-shadow-color": [{
-        "text-shadow": scaleColor()
-      }],
-      /**
-       * Opacity
-       * @see https://tailwindcss.com/docs/opacity
-       */
-      opacity: [{
-        opacity: [isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Mix Blend Mode
-       * @see https://tailwindcss.com/docs/mix-blend-mode
-       */
-      "mix-blend": [{
-        "mix-blend": [...scaleBlendMode(), "plus-darker", "plus-lighter"]
-      }],
-      /**
-       * Background Blend Mode
-       * @see https://tailwindcss.com/docs/background-blend-mode
-       */
-      "bg-blend": [{
-        "bg-blend": scaleBlendMode()
-      }],
-      /**
-       * Mask Clip
-       * @see https://tailwindcss.com/docs/mask-clip
-       */
-      "mask-clip": [{
-        "mask-clip": ["border", "padding", "content", "fill", "stroke", "view"]
-      }, "mask-no-clip"],
-      /**
-       * Mask Composite
-       * @see https://tailwindcss.com/docs/mask-composite
-       */
-      "mask-composite": [{
-        mask: ["add", "subtract", "intersect", "exclude"]
-      }],
-      /**
-       * Mask Image
-       * @see https://tailwindcss.com/docs/mask-image
-       */
-      "mask-image-linear-pos": [{
-        "mask-linear": [isNumber4]
-      }],
-      "mask-image-linear-from-pos": [{
-        "mask-linear-from": scaleMaskImagePosition()
-      }],
-      "mask-image-linear-to-pos": [{
-        "mask-linear-to": scaleMaskImagePosition()
-      }],
-      "mask-image-linear-from-color": [{
-        "mask-linear-from": scaleColor()
-      }],
-      "mask-image-linear-to-color": [{
-        "mask-linear-to": scaleColor()
-      }],
-      "mask-image-t-from-pos": [{
-        "mask-t-from": scaleMaskImagePosition()
-      }],
-      "mask-image-t-to-pos": [{
-        "mask-t-to": scaleMaskImagePosition()
-      }],
-      "mask-image-t-from-color": [{
-        "mask-t-from": scaleColor()
-      }],
-      "mask-image-t-to-color": [{
-        "mask-t-to": scaleColor()
-      }],
-      "mask-image-r-from-pos": [{
-        "mask-r-from": scaleMaskImagePosition()
-      }],
-      "mask-image-r-to-pos": [{
-        "mask-r-to": scaleMaskImagePosition()
-      }],
-      "mask-image-r-from-color": [{
-        "mask-r-from": scaleColor()
-      }],
-      "mask-image-r-to-color": [{
-        "mask-r-to": scaleColor()
-      }],
-      "mask-image-b-from-pos": [{
-        "mask-b-from": scaleMaskImagePosition()
-      }],
-      "mask-image-b-to-pos": [{
-        "mask-b-to": scaleMaskImagePosition()
-      }],
-      "mask-image-b-from-color": [{
-        "mask-b-from": scaleColor()
-      }],
-      "mask-image-b-to-color": [{
-        "mask-b-to": scaleColor()
-      }],
-      "mask-image-l-from-pos": [{
-        "mask-l-from": scaleMaskImagePosition()
-      }],
-      "mask-image-l-to-pos": [{
-        "mask-l-to": scaleMaskImagePosition()
-      }],
-      "mask-image-l-from-color": [{
-        "mask-l-from": scaleColor()
-      }],
-      "mask-image-l-to-color": [{
-        "mask-l-to": scaleColor()
-      }],
-      "mask-image-x-from-pos": [{
-        "mask-x-from": scaleMaskImagePosition()
-      }],
-      "mask-image-x-to-pos": [{
-        "mask-x-to": scaleMaskImagePosition()
-      }],
-      "mask-image-x-from-color": [{
-        "mask-x-from": scaleColor()
-      }],
-      "mask-image-x-to-color": [{
-        "mask-x-to": scaleColor()
-      }],
-      "mask-image-y-from-pos": [{
-        "mask-y-from": scaleMaskImagePosition()
-      }],
-      "mask-image-y-to-pos": [{
-        "mask-y-to": scaleMaskImagePosition()
-      }],
-      "mask-image-y-from-color": [{
-        "mask-y-from": scaleColor()
-      }],
-      "mask-image-y-to-color": [{
-        "mask-y-to": scaleColor()
-      }],
-      "mask-image-radial": [{
-        "mask-radial": [isArbitraryVariable, isArbitraryValue]
-      }],
-      "mask-image-radial-from-pos": [{
-        "mask-radial-from": scaleMaskImagePosition()
-      }],
-      "mask-image-radial-to-pos": [{
-        "mask-radial-to": scaleMaskImagePosition()
-      }],
-      "mask-image-radial-from-color": [{
-        "mask-radial-from": scaleColor()
-      }],
-      "mask-image-radial-to-color": [{
-        "mask-radial-to": scaleColor()
-      }],
-      "mask-image-radial-shape": [{
-        "mask-radial": ["circle", "ellipse"]
-      }],
-      "mask-image-radial-size": [{
-        "mask-radial": [{
-          closest: ["side", "corner"],
-          farthest: ["side", "corner"]
-        }]
-      }],
-      "mask-image-radial-pos": [{
-        "mask-radial-at": scalePosition()
-      }],
-      "mask-image-conic-pos": [{
-        "mask-conic": [isNumber4]
-      }],
-      "mask-image-conic-from-pos": [{
-        "mask-conic-from": scaleMaskImagePosition()
-      }],
-      "mask-image-conic-to-pos": [{
-        "mask-conic-to": scaleMaskImagePosition()
-      }],
-      "mask-image-conic-from-color": [{
-        "mask-conic-from": scaleColor()
-      }],
-      "mask-image-conic-to-color": [{
-        "mask-conic-to": scaleColor()
-      }],
-      /**
-       * Mask Mode
-       * @see https://tailwindcss.com/docs/mask-mode
-       */
-      "mask-mode": [{
-        mask: ["alpha", "luminance", "match"]
-      }],
-      /**
-       * Mask Origin
-       * @see https://tailwindcss.com/docs/mask-origin
-       */
-      "mask-origin": [{
-        "mask-origin": ["border", "padding", "content", "fill", "stroke", "view"]
-      }],
-      /**
-       * Mask Position
-       * @see https://tailwindcss.com/docs/mask-position
-       */
-      "mask-position": [{
-        mask: scaleBgPosition()
-      }],
-      /**
-       * Mask Repeat
-       * @see https://tailwindcss.com/docs/mask-repeat
-       */
-      "mask-repeat": [{
-        mask: scaleBgRepeat()
-      }],
-      /**
-       * Mask Size
-       * @see https://tailwindcss.com/docs/mask-size
-       */
-      "mask-size": [{
-        mask: scaleBgSize()
-      }],
-      /**
-       * Mask Type
-       * @see https://tailwindcss.com/docs/mask-type
-       */
-      "mask-type": [{
-        "mask-type": ["alpha", "luminance"]
-      }],
-      /**
-       * Mask Image
-       * @see https://tailwindcss.com/docs/mask-image
-       */
-      "mask-image": [{
-        mask: ["none", isArbitraryVariable, isArbitraryValue]
-      }],
-      // ---------------
-      // --- Filters ---
-      // ---------------
-      /**
-       * Filter
-       * @see https://tailwindcss.com/docs/filter
-       */
-      filter: [{
-        filter: [
-          // Deprecated since Tailwind CSS v3.0.0
-          "",
-          "none",
-          isArbitraryVariable,
-          isArbitraryValue
-        ]
-      }],
-      /**
-       * Blur
-       * @see https://tailwindcss.com/docs/blur
-       */
-      blur: [{
-        blur: scaleBlur()
-      }],
-      /**
-       * Brightness
-       * @see https://tailwindcss.com/docs/brightness
-       */
-      brightness: [{
-        brightness: [isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Contrast
-       * @see https://tailwindcss.com/docs/contrast
-       */
-      contrast: [{
-        contrast: [isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Drop Shadow
-       * @see https://tailwindcss.com/docs/drop-shadow
-       */
-      "drop-shadow": [{
-        "drop-shadow": [
-          // Deprecated since Tailwind CSS v4.0.0
-          "",
-          "none",
-          themeDropShadow,
-          isArbitraryVariableShadow,
-          isArbitraryShadow
-        ]
-      }],
-      /**
-       * Drop Shadow Color
-       * @see https://tailwindcss.com/docs/filter-drop-shadow#setting-the-shadow-color
-       */
-      "drop-shadow-color": [{
-        "drop-shadow": scaleColor()
-      }],
-      /**
-       * Grayscale
-       * @see https://tailwindcss.com/docs/grayscale
-       */
-      grayscale: [{
-        grayscale: ["", isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Hue Rotate
-       * @see https://tailwindcss.com/docs/hue-rotate
-       */
-      "hue-rotate": [{
-        "hue-rotate": [isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Invert
-       * @see https://tailwindcss.com/docs/invert
-       */
-      invert: [{
-        invert: ["", isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Saturate
-       * @see https://tailwindcss.com/docs/saturate
-       */
-      saturate: [{
-        saturate: [isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Sepia
-       * @see https://tailwindcss.com/docs/sepia
-       */
-      sepia: [{
-        sepia: ["", isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Filter
-       * @see https://tailwindcss.com/docs/backdrop-filter
-       */
-      "backdrop-filter": [{
-        "backdrop-filter": [
-          // Deprecated since Tailwind CSS v3.0.0
-          "",
-          "none",
-          isArbitraryVariable,
-          isArbitraryValue
-        ]
-      }],
-      /**
-       * Backdrop Blur
-       * @see https://tailwindcss.com/docs/backdrop-blur
-       */
-      "backdrop-blur": [{
-        "backdrop-blur": scaleBlur()
-      }],
-      /**
-       * Backdrop Brightness
-       * @see https://tailwindcss.com/docs/backdrop-brightness
-       */
-      "backdrop-brightness": [{
-        "backdrop-brightness": [isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Contrast
-       * @see https://tailwindcss.com/docs/backdrop-contrast
-       */
-      "backdrop-contrast": [{
-        "backdrop-contrast": [isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Grayscale
-       * @see https://tailwindcss.com/docs/backdrop-grayscale
-       */
-      "backdrop-grayscale": [{
-        "backdrop-grayscale": ["", isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Hue Rotate
-       * @see https://tailwindcss.com/docs/backdrop-hue-rotate
-       */
-      "backdrop-hue-rotate": [{
-        "backdrop-hue-rotate": [isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Invert
-       * @see https://tailwindcss.com/docs/backdrop-invert
-       */
-      "backdrop-invert": [{
-        "backdrop-invert": ["", isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Opacity
-       * @see https://tailwindcss.com/docs/backdrop-opacity
-       */
-      "backdrop-opacity": [{
-        "backdrop-opacity": [isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Saturate
-       * @see https://tailwindcss.com/docs/backdrop-saturate
-       */
-      "backdrop-saturate": [{
-        "backdrop-saturate": [isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Sepia
-       * @see https://tailwindcss.com/docs/backdrop-sepia
-       */
-      "backdrop-sepia": [{
-        "backdrop-sepia": ["", isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      // --------------
-      // --- Tables ---
-      // --------------
-      /**
-       * Border Collapse
-       * @see https://tailwindcss.com/docs/border-collapse
-       */
-      "border-collapse": [{
-        border: ["collapse", "separate"]
-      }],
-      /**
-       * Border Spacing
-       * @see https://tailwindcss.com/docs/border-spacing
-       */
-      "border-spacing": [{
-        "border-spacing": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Border Spacing X
-       * @see https://tailwindcss.com/docs/border-spacing
-       */
-      "border-spacing-x": [{
-        "border-spacing-x": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Border Spacing Y
-       * @see https://tailwindcss.com/docs/border-spacing
-       */
-      "border-spacing-y": [{
-        "border-spacing-y": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Table Layout
-       * @see https://tailwindcss.com/docs/table-layout
-       */
-      "table-layout": [{
-        table: ["auto", "fixed"]
-      }],
-      /**
-       * Caption Side
-       * @see https://tailwindcss.com/docs/caption-side
-       */
-      caption: [{
-        caption: ["top", "bottom"]
-      }],
-      // ---------------------------------
-      // --- Transitions and Animation ---
-      // ---------------------------------
-      /**
-       * Transition Property
-       * @see https://tailwindcss.com/docs/transition-property
-       */
-      transition: [{
-        transition: ["", "all", "colors", "opacity", "shadow", "transform", "none", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Transition Behavior
-       * @see https://tailwindcss.com/docs/transition-behavior
-       */
-      "transition-behavior": [{
-        transition: ["normal", "discrete"]
-      }],
-      /**
-       * Transition Duration
-       * @see https://tailwindcss.com/docs/transition-duration
-       */
-      duration: [{
-        duration: [isNumber4, "initial", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Transition Timing Function
-       * @see https://tailwindcss.com/docs/transition-timing-function
-       */
-      ease: [{
-        ease: ["linear", "initial", themeEase, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Transition Delay
-       * @see https://tailwindcss.com/docs/transition-delay
-       */
-      delay: [{
-        delay: [isNumber4, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Animation
-       * @see https://tailwindcss.com/docs/animation
-       */
-      animate: [{
-        animate: ["none", themeAnimate, isArbitraryVariable, isArbitraryValue]
-      }],
-      // ------------------
-      // --- Transforms ---
-      // ------------------
-      /**
-       * Backface Visibility
-       * @see https://tailwindcss.com/docs/backface-visibility
-       */
-      backface: [{
-        backface: ["hidden", "visible"]
-      }],
-      /**
-       * Perspective
-       * @see https://tailwindcss.com/docs/perspective
-       */
-      perspective: [{
-        perspective: [themePerspective, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Perspective Origin
-       * @see https://tailwindcss.com/docs/perspective-origin
-       */
-      "perspective-origin": [{
-        "perspective-origin": scalePositionWithArbitrary()
-      }],
-      /**
-       * Rotate
-       * @see https://tailwindcss.com/docs/rotate
-       */
-      rotate: [{
-        rotate: scaleRotate()
-      }],
-      /**
-       * Rotate X
-       * @see https://tailwindcss.com/docs/rotate
-       */
-      "rotate-x": [{
-        "rotate-x": scaleRotate()
-      }],
-      /**
-       * Rotate Y
-       * @see https://tailwindcss.com/docs/rotate
-       */
-      "rotate-y": [{
-        "rotate-y": scaleRotate()
-      }],
-      /**
-       * Rotate Z
-       * @see https://tailwindcss.com/docs/rotate
-       */
-      "rotate-z": [{
-        "rotate-z": scaleRotate()
-      }],
-      /**
-       * Scale
-       * @see https://tailwindcss.com/docs/scale
-       */
-      scale: [{
-        scale: scaleScale()
-      }],
-      /**
-       * Scale X
-       * @see https://tailwindcss.com/docs/scale
-       */
-      "scale-x": [{
-        "scale-x": scaleScale()
-      }],
-      /**
-       * Scale Y
-       * @see https://tailwindcss.com/docs/scale
-       */
-      "scale-y": [{
-        "scale-y": scaleScale()
-      }],
-      /**
-       * Scale Z
-       * @see https://tailwindcss.com/docs/scale
-       */
-      "scale-z": [{
-        "scale-z": scaleScale()
-      }],
-      /**
-       * Scale 3D
-       * @see https://tailwindcss.com/docs/scale
-       */
-      "scale-3d": ["scale-3d"],
-      /**
-       * Skew
-       * @see https://tailwindcss.com/docs/skew
-       */
-      skew: [{
-        skew: scaleSkew()
-      }],
-      /**
-       * Skew X
-       * @see https://tailwindcss.com/docs/skew
-       */
-      "skew-x": [{
-        "skew-x": scaleSkew()
-      }],
-      /**
-       * Skew Y
-       * @see https://tailwindcss.com/docs/skew
-       */
-      "skew-y": [{
-        "skew-y": scaleSkew()
-      }],
-      /**
-       * Transform
-       * @see https://tailwindcss.com/docs/transform
-       */
-      transform: [{
-        transform: [isArbitraryVariable, isArbitraryValue, "", "none", "gpu", "cpu"]
-      }],
-      /**
-       * Transform Origin
-       * @see https://tailwindcss.com/docs/transform-origin
-       */
-      "transform-origin": [{
-        origin: scalePositionWithArbitrary()
-      }],
-      /**
-       * Transform Style
-       * @see https://tailwindcss.com/docs/transform-style
-       */
-      "transform-style": [{
-        transform: ["3d", "flat"]
-      }],
-      /**
-       * Translate
-       * @see https://tailwindcss.com/docs/translate
-       */
-      translate: [{
-        translate: scaleTranslate()
-      }],
-      /**
-       * Translate X
-       * @see https://tailwindcss.com/docs/translate
-       */
-      "translate-x": [{
-        "translate-x": scaleTranslate()
-      }],
-      /**
-       * Translate Y
-       * @see https://tailwindcss.com/docs/translate
-       */
-      "translate-y": [{
-        "translate-y": scaleTranslate()
-      }],
-      /**
-       * Translate Z
-       * @see https://tailwindcss.com/docs/translate
-       */
-      "translate-z": [{
-        "translate-z": scaleTranslate()
-      }],
-      /**
-       * Translate None
-       * @see https://tailwindcss.com/docs/translate
-       */
-      "translate-none": ["translate-none"],
-      /**
-       * Zoom
-       * @see https://tailwindcss.com/docs/zoom
-       */
-      zoom: [{
-        zoom: [isInteger, isArbitraryVariable, isArbitraryValue]
-      }],
-      // ---------------------
-      // --- Interactivity ---
-      // ---------------------
-      /**
-       * Accent Color
-       * @see https://tailwindcss.com/docs/accent-color
-       */
-      accent: [{
-        accent: scaleColor()
-      }],
-      /**
-       * Appearance
-       * @see https://tailwindcss.com/docs/appearance
-       */
-      appearance: [{
-        appearance: ["none", "auto"]
-      }],
-      /**
-       * Caret Color
-       * @see https://tailwindcss.com/docs/just-in-time-mode#caret-color-utilities
-       */
-      "caret-color": [{
-        caret: scaleColor()
-      }],
-      /**
-       * Color Scheme
-       * @see https://tailwindcss.com/docs/color-scheme
-       */
-      "color-scheme": [{
-        scheme: ["normal", "dark", "light", "light-dark", "only-dark", "only-light"]
-      }],
-      /**
-       * Cursor
-       * @see https://tailwindcss.com/docs/cursor
-       */
-      cursor: [{
-        cursor: ["auto", "default", "pointer", "wait", "text", "move", "help", "not-allowed", "none", "context-menu", "progress", "cell", "crosshair", "vertical-text", "alias", "copy", "no-drop", "grab", "grabbing", "all-scroll", "col-resize", "row-resize", "n-resize", "e-resize", "s-resize", "w-resize", "ne-resize", "nw-resize", "se-resize", "sw-resize", "ew-resize", "ns-resize", "nesw-resize", "nwse-resize", "zoom-in", "zoom-out", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Field Sizing
-       * @see https://tailwindcss.com/docs/field-sizing
-       */
-      "field-sizing": [{
-        "field-sizing": ["fixed", "content"]
-      }],
-      /**
-       * Pointer Events
-       * @see https://tailwindcss.com/docs/pointer-events
-       */
-      "pointer-events": [{
-        "pointer-events": ["auto", "none"]
-      }],
-      /**
-       * Resize
-       * @see https://tailwindcss.com/docs/resize
-       */
-      resize: [{
-        resize: ["none", "", "y", "x"]
-      }],
-      /**
-       * Scroll Behavior
-       * @see https://tailwindcss.com/docs/scroll-behavior
-       */
-      "scroll-behavior": [{
-        scroll: ["auto", "smooth"]
-      }],
-      /**
-       * Scrollbar Thumb Color
-       * @see https://tailwindcss.com/docs/scrollbar-color
-       */
-      "scrollbar-thumb-color": [{
-        "scrollbar-thumb": scaleColor()
-      }],
-      /**
-       * Scrollbar Track Color
-       * @see https://tailwindcss.com/docs/scrollbar-color
-       */
-      "scrollbar-track-color": [{
-        "scrollbar-track": scaleColor()
-      }],
-      /**
-       * Scrollbar Gutter
-       * @see https://tailwindcss.com/docs/scrollbar-gutter
-       */
-      "scrollbar-gutter": [{
-        "scrollbar-gutter": ["auto", "stable", "both"]
-      }],
-      /**
-       * Scrollbar Width
-       * @see https://tailwindcss.com/docs/scrollbar-width
-       */
-      "scrollbar-w": [{
-        scrollbar: ["auto", "thin", "none"]
-      }],
-      /**
-       * Scroll Margin
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-m": [{
-        "scroll-m": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Inline
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mx": [{
-        "scroll-mx": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Block
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-my": [{
-        "scroll-my": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Inline Start
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-ms": [{
-        "scroll-ms": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Inline End
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-me": [{
-        "scroll-me": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Block Start
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mbs": [{
-        "scroll-mbs": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Block End
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mbe": [{
-        "scroll-mbe": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Top
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mt": [{
-        "scroll-mt": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Right
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mr": [{
-        "scroll-mr": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Bottom
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mb": [{
-        "scroll-mb": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Left
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-ml": [{
-        "scroll-ml": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-p": [{
-        "scroll-p": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Inline
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-px": [{
-        "scroll-px": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Block
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-py": [{
-        "scroll-py": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Inline Start
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-ps": [{
-        "scroll-ps": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Inline End
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pe": [{
-        "scroll-pe": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Block Start
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pbs": [{
-        "scroll-pbs": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Block End
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pbe": [{
-        "scroll-pbe": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Top
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pt": [{
-        "scroll-pt": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Right
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pr": [{
-        "scroll-pr": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Bottom
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pb": [{
-        "scroll-pb": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Left
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pl": [{
-        "scroll-pl": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Snap Align
-       * @see https://tailwindcss.com/docs/scroll-snap-align
-       */
-      "snap-align": [{
-        snap: ["start", "end", "center", "align-none"]
-      }],
-      /**
-       * Scroll Snap Stop
-       * @see https://tailwindcss.com/docs/scroll-snap-stop
-       */
-      "snap-stop": [{
-        snap: ["normal", "always"]
-      }],
-      /**
-       * Scroll Snap Type
-       * @see https://tailwindcss.com/docs/scroll-snap-type
-       */
-      "snap-type": [{
-        snap: ["none", "x", "y", "both"]
-      }],
-      /**
-       * Scroll Snap Type Strictness
-       * @see https://tailwindcss.com/docs/scroll-snap-type
-       */
-      "snap-strictness": [{
-        snap: ["mandatory", "proximity"]
-      }],
-      /**
-       * Touch Action
-       * @see https://tailwindcss.com/docs/touch-action
-       */
-      touch: [{
-        touch: ["auto", "none", "manipulation"]
-      }],
-      /**
-       * Touch Action X
-       * @see https://tailwindcss.com/docs/touch-action
-       */
-      "touch-x": [{
-        "touch-pan": ["x", "left", "right"]
-      }],
-      /**
-       * Touch Action Y
-       * @see https://tailwindcss.com/docs/touch-action
-       */
-      "touch-y": [{
-        "touch-pan": ["y", "up", "down"]
-      }],
-      /**
-       * Touch Action Pinch Zoom
-       * @see https://tailwindcss.com/docs/touch-action
-       */
-      "touch-pz": ["touch-pinch-zoom"],
-      /**
-       * User Select
-       * @see https://tailwindcss.com/docs/user-select
-       */
-      select: [{
-        select: ["none", "text", "all", "auto"]
-      }],
-      /**
-       * Will Change
-       * @see https://tailwindcss.com/docs/will-change
-       */
-      "will-change": [{
-        "will-change": ["auto", "scroll", "contents", "transform", isArbitraryVariable, isArbitraryValue]
-      }],
-      // -----------
-      // --- SVG ---
-      // -----------
-      /**
-       * Fill
-       * @see https://tailwindcss.com/docs/fill
-       */
-      fill: [{
-        fill: ["none", ...scaleColor()]
-      }],
-      /**
-       * Stroke Width
-       * @see https://tailwindcss.com/docs/stroke-width
-       */
-      "stroke-w": [{
-        stroke: [isNumber4, isArbitraryVariableLength, isArbitraryLength, isArbitraryNumber]
-      }],
-      /**
-       * Stroke
-       * @see https://tailwindcss.com/docs/stroke
-       */
-      stroke: [{
-        stroke: ["none", ...scaleColor()]
-      }],
-      // ---------------------
-      // --- Accessibility ---
-      // ---------------------
-      /**
-       * Forced Color Adjust
-       * @see https://tailwindcss.com/docs/forced-color-adjust
-       */
-      "forced-color-adjust": [{
-        "forced-color-adjust": ["auto", "none"]
-      }]
-    },
-    conflictingClassGroups: {
-      "container-named": ["container-type"],
-      overflow: ["overflow-x", "overflow-y"],
-      overscroll: ["overscroll-x", "overscroll-y"],
-      inset: ["inset-x", "inset-y", "inset-bs", "inset-be", "start", "end", "top", "right", "bottom", "left"],
-      "inset-x": ["right", "left"],
-      "inset-y": ["top", "bottom"],
-      flex: ["basis", "grow", "shrink"],
-      gap: ["gap-x", "gap-y"],
-      p: ["px", "py", "ps", "pe", "pbs", "pbe", "pt", "pr", "pb", "pl"],
-      px: ["pr", "pl"],
-      py: ["pt", "pb"],
-      m: ["mx", "my", "ms", "me", "mbs", "mbe", "mt", "mr", "mb", "ml"],
-      mx: ["mr", "ml"],
-      my: ["mt", "mb"],
-      size: ["w", "h"],
-      "font-size": ["leading"],
-      "fvn-normal": ["fvn-ordinal", "fvn-slashed-zero", "fvn-figure", "fvn-spacing", "fvn-fraction"],
-      "fvn-ordinal": ["fvn-normal"],
-      "fvn-slashed-zero": ["fvn-normal"],
-      "fvn-figure": ["fvn-normal"],
-      "fvn-spacing": ["fvn-normal"],
-      "fvn-fraction": ["fvn-normal"],
-      "line-clamp": ["display", "overflow"],
-      rounded: ["rounded-s", "rounded-e", "rounded-t", "rounded-r", "rounded-b", "rounded-l", "rounded-ss", "rounded-se", "rounded-ee", "rounded-es", "rounded-tl", "rounded-tr", "rounded-br", "rounded-bl"],
-      "rounded-s": ["rounded-ss", "rounded-es"],
-      "rounded-e": ["rounded-se", "rounded-ee"],
-      "rounded-t": ["rounded-tl", "rounded-tr"],
-      "rounded-r": ["rounded-tr", "rounded-br"],
-      "rounded-b": ["rounded-br", "rounded-bl"],
-      "rounded-l": ["rounded-tl", "rounded-bl"],
-      "border-spacing": ["border-spacing-x", "border-spacing-y"],
-      "border-w": ["border-w-x", "border-w-y", "border-w-s", "border-w-e", "border-w-bs", "border-w-be", "border-w-t", "border-w-r", "border-w-b", "border-w-l"],
-      "border-w-x": ["border-w-r", "border-w-l"],
-      "border-w-y": ["border-w-t", "border-w-b"],
-      "border-color": ["border-color-x", "border-color-y", "border-color-s", "border-color-e", "border-color-bs", "border-color-be", "border-color-t", "border-color-r", "border-color-b", "border-color-l"],
-      "border-color-x": ["border-color-r", "border-color-l"],
-      "border-color-y": ["border-color-t", "border-color-b"],
-      translate: ["translate-x", "translate-y", "translate-none"],
-      "translate-none": ["translate", "translate-x", "translate-y", "translate-z"],
-      "scroll-m": ["scroll-mx", "scroll-my", "scroll-ms", "scroll-me", "scroll-mbs", "scroll-mbe", "scroll-mt", "scroll-mr", "scroll-mb", "scroll-ml"],
-      "scroll-mx": ["scroll-mr", "scroll-ml"],
-      "scroll-my": ["scroll-mt", "scroll-mb"],
-      "scroll-p": ["scroll-px", "scroll-py", "scroll-ps", "scroll-pe", "scroll-pbs", "scroll-pbe", "scroll-pt", "scroll-pr", "scroll-pb", "scroll-pl"],
-      "scroll-px": ["scroll-pr", "scroll-pl"],
-      "scroll-py": ["scroll-pt", "scroll-pb"],
-      touch: ["touch-x", "touch-y", "touch-pz"],
-      "touch-x": ["touch"],
-      "touch-y": ["touch"],
-      "touch-pz": ["touch"]
-    },
-    conflictingClassGroupModifiers: {
-      "font-size": ["leading"]
-    },
-    postfixLookupClassGroups: ["container-type"],
-    orderSensitiveModifiers: ["*", "**", "after", "backdrop", "before", "details-content", "file", "first-letter", "first-line", "marker", "placeholder", "selection"]
-  };
-};
-var mergeConfigs = (baseConfig, {
-  cacheSize,
-  prefix,
-  experimentalParseClassName,
-  extend = {},
-  override = {}
-}) => {
-  overrideProperty(baseConfig, "cacheSize", cacheSize);
-  overrideProperty(baseConfig, "prefix", prefix);
-  overrideProperty(baseConfig, "experimentalParseClassName", experimentalParseClassName);
-  overrideConfigProperties(baseConfig.theme, override.theme);
-  overrideConfigProperties(baseConfig.classGroups, override.classGroups);
-  overrideConfigProperties(baseConfig.conflictingClassGroups, override.conflictingClassGroups);
-  overrideConfigProperties(baseConfig.conflictingClassGroupModifiers, override.conflictingClassGroupModifiers);
-  overrideProperty(baseConfig, "postfixLookupClassGroups", override.postfixLookupClassGroups);
-  overrideProperty(baseConfig, "orderSensitiveModifiers", override.orderSensitiveModifiers);
-  mergeConfigProperties(baseConfig.theme, extend.theme);
-  mergeConfigProperties(baseConfig.classGroups, extend.classGroups);
-  mergeConfigProperties(baseConfig.conflictingClassGroups, extend.conflictingClassGroups);
-  mergeConfigProperties(baseConfig.conflictingClassGroupModifiers, extend.conflictingClassGroupModifiers);
-  mergeArrayProperties(baseConfig, extend, "postfixLookupClassGroups");
-  mergeArrayProperties(baseConfig, extend, "orderSensitiveModifiers");
-  return baseConfig;
-};
-var overrideProperty = (baseObject, overrideKey, overrideValue) => {
-  if (overrideValue !== void 0) {
-    baseObject[overrideKey] = overrideValue;
-  }
-};
-var overrideConfigProperties = (baseObject, overrideObject) => {
-  if (overrideObject) {
-    for (const key2 in overrideObject) {
-      overrideProperty(baseObject, key2, overrideObject[key2]);
-    }
-  }
-};
-var mergeConfigProperties = (baseObject, mergeObject) => {
-  if (mergeObject) {
-    for (const key2 in mergeObject) {
-      mergeArrayProperties(baseObject, mergeObject, key2);
-    }
-  }
-};
-var mergeArrayProperties = (baseObject, mergeObject, key2) => {
-  const mergeValue = mergeObject[key2];
-  if (mergeValue !== void 0) {
-    baseObject[key2] = baseObject[key2] ? baseObject[key2].concat(mergeValue) : mergeValue;
-  }
-};
-var extendTailwindMerge = (configExtension, ...createConfig) => typeof configExtension === "function" ? createTailwindMerge(getDefaultConfig, configExtension, ...createConfig) : createTailwindMerge(() => mergeConfigs(getDefaultConfig(), configExtension), ...createConfig);
-var twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
-
-// src/lib/utils.ts
-function cn(...inputs) {
-  return twMerge(clsx(inputs));
-}
-
-// src/lib/components/ui/card/card.svelte
-var rest_excludes = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children",
-  "size"
-]);
-var root2 = from_html(`<div><!></div>`);
-function Card($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), size3 = prop($$props, "size", 3, "default"), restProps = rest_props($$props, rest_excludes);
-  var div = root2();
-  attribute_effect(
-    div,
-    ($0) => ({
-      "data-slot": "card",
-      "data-size": size3(),
-      class: $0,
-      ...restProps
-    }),
-    [
-      () => cn("ring-foreground/10 bg-card text-card-foreground gap-4 overflow-hidden rounded-xl py-4 text-sm ring-1 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col", $$props.class)
-    ]
-  );
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/card/card-content.svelte
-var rest_excludes2 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root3 = from_html(`<div><!></div>`);
-function Card_content($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes2);
-  var div = root3();
-  attribute_effect(div, ($0) => ({ "data-slot": "card-content", class: $0, ...restProps }), [
-    () => cn("px-4 group-data-[size=sm]/card:px-3", $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/card/card-description.svelte
-var rest_excludes3 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root4 = from_html(`<p><!></p>`);
-function Card_description($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes3);
-  var p2 = root4();
-  attribute_effect(p2, ($0) => ({ "data-slot": "card-description", class: $0, ...restProps }), [() => cn("text-muted-foreground text-sm", $$props.class)]);
-  var node = child(p2);
-  snippet(node, () => $$props.children ?? noop);
-  reset(p2);
-  bind_this(p2, ($$value) => ref($$value), () => ref());
-  append($$anchor, p2);
-  pop();
-}
-
-// src/lib/components/ui/card/card-footer.svelte
-var rest_excludes4 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root5 = from_html(`<div><!></div>`);
-function Card_footer($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes4);
-  var div = root5();
-  attribute_effect(div, ($0) => ({ "data-slot": "card-footer", class: $0, ...restProps }), [
-    () => cn("bg-muted/50 rounded-b-xl border-t p-4 group-data-[size=sm]/card:p-3 flex items-center", $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/card/card-header.svelte
-var rest_excludes5 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root6 = from_html(`<div><!></div>`);
-function Card_header($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes5);
-  var div = root6();
-  attribute_effect(div, ($0) => ({ "data-slot": "card-header", class: $0, ...restProps }), [
-    () => cn("gap-1 rounded-t-xl px-4 group-data-[size=sm]/card:px-3 [.border-b]:pb-4 group-data-[size=sm]/card:[.border-b]:pb-3 group/card-header @container/card-header grid auto-rows-min items-start has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto]", $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/card/card-title.svelte
-var rest_excludes6 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root7 = from_html(`<div><!></div>`);
-function Card_title($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes6);
-  var div = root7();
-  attribute_effect(div, ($0) => ({ "data-slot": "card-title", class: $0, ...restProps }), [
-    () => cn("text-base leading-snug font-medium group-data-[size=sm]/card:text-sm", $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/card/card-action.svelte
-var rest_excludes7 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root8 = from_html(`<div><!></div>`);
-function Card_action($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes7);
-  var div = root8();
-  attribute_effect(div, ($0) => ({ "data-slot": "card-action", class: $0, ...restProps }), [
-    () => cn("cn-card-action col-start-2 row-span-2 row-start-1 self-start justify-self-end", $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/accordion/exports.js
-var exports_exports = {};
-__export(exports_exports, {
-  Content: () => Accordion_content,
-  Header: () => Accordion_header,
-  Item: () => Accordion_item,
-  Root: () => Accordion,
-  Trigger: () => Accordion_trigger
-});
-
-// node_modules/svelte-toolbelt/dist/utils/is.js
-function isFunction(value) {
-  return typeof value === "function";
-}
-function isObject(value) {
-  return value !== null && typeof value === "object";
-}
-var CLASS_VALUE_PRIMITIVE_TYPES = ["string", "number", "bigint", "boolean"];
-function isClassValue(value) {
-  if (value === null || value === void 0)
-    return true;
-  if (CLASS_VALUE_PRIMITIVE_TYPES.includes(typeof value))
-    return true;
-  if (Array.isArray(value))
-    return value.every((item) => isClassValue(item));
-  if (typeof value === "object") {
-    if (Object.getPrototypeOf(value) !== Object.prototype)
-      return false;
-    return true;
-  }
-  return false;
-}
-
-// node_modules/svelte-toolbelt/dist/box/box-extras.svelte.js
-var BoxSymbol = Symbol("box");
-var isWritableSymbol = Symbol("is-writable");
-function boxWith(getter, setter) {
-  const derived2 = user_derived(getter);
-  if (setter) {
-    return {
-      [BoxSymbol]: true,
-      [isWritableSymbol]: true,
-      get current() {
-        return get2(derived2);
-      },
-      set current(v) {
-        setter(v);
-      }
-    };
-  }
-  return {
-    [BoxSymbol]: true,
-    get current() {
-      return getter();
-    }
-  };
-}
-function isBox(value) {
-  return isObject(value) && BoxSymbol in value;
-}
-function isWritableBox(value) {
-  return isBox(value) && isWritableSymbol in value;
-}
-function boxFrom(value) {
-  if (isBox(value)) return value;
-  if (isFunction(value)) return boxWith(value);
-  return simpleBox(value);
-}
-function boxFlatten(boxes) {
-  return Object.entries(boxes).reduce(
-    (acc, [key2, b]) => {
-      if (!isBox(b)) {
-        return Object.assign(acc, { [key2]: b });
-      }
-      if (isWritableBox(b)) {
-        Object.defineProperty(acc, key2, {
-          get() {
-            return b.current;
-          },
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          set(v) {
-            b.current = v;
-          }
-        });
-      } else {
-        Object.defineProperty(acc, key2, {
-          get() {
-            return b.current;
-          }
-        });
-      }
-      return acc;
-    },
-    {}
-  );
-}
-function toReadonlyBox(b) {
-  if (!isWritableBox(b)) return b;
-  return {
-    [BoxSymbol]: true,
-    get current() {
-      return b.current;
-    }
-  };
-}
-function simpleBox(initialValue) {
-  let current = state(proxy(initialValue));
-  return {
-    [BoxSymbol]: true,
-    [isWritableSymbol]: true,
-    get current() {
-      return get2(current);
-    },
-    set current(v) {
-      set(current, v, true);
-    }
-  };
-}
-
-// node_modules/svelte-toolbelt/dist/box/box.svelte.js
-function box(initialValue) {
-  let current = state(proxy(initialValue));
-  return {
-    [BoxSymbol]: true,
-    [isWritableSymbol]: true,
-    get current() {
-      return get2(current);
-    },
-    set current(v) {
-      set(current, v, true);
-    }
-  };
-}
-box.from = boxFrom;
-box.with = boxWith;
-box.flatten = boxFlatten;
-box.readonly = toReadonlyBox;
-box.isBox = isBox;
-box.isWritableBox = isWritableBox;
-
-// node_modules/svelte-toolbelt/dist/utils/compose-handlers.js
-function composeHandlers(...handlers) {
-  return function(e) {
-    for (const handler of handlers) {
-      if (!handler)
-        continue;
-      if (e.defaultPrevented)
-        return;
-      if (typeof handler === "function") {
-        handler.call(this, e);
-      } else {
-        handler.current?.call(this, e);
-      }
-    }
-  };
-}
-
-// node_modules/inline-style-parser/esm/index.mjs
-var COMMENT_REGEX = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//g;
-var NEWLINE_REGEX = /\n/g;
-var WHITESPACE_REGEX = /^\s*/;
-var PROPERTY_REGEX = /^(\*?[-#/*\\\w]+(\[[0-9a-z_-]+\])?)\s*/;
-var COLON_REGEX = /^:\s*/;
-var VALUE_REGEX = /^((?:'(?:\\'|.)*?'|"(?:\\"|.)*?"|\([^)]*?\)|[^};])+)/;
-var SEMICOLON_REGEX = /^[;\s]*/;
-var TRIM_REGEX = /^\s+|\s+$/g;
-var NEWLINE = "\n";
-var FORWARD_SLASH = "/";
-var ASTERISK = "*";
-var EMPTY_STRING = "";
-var TYPE_COMMENT = "comment";
-var TYPE_DECLARATION = "declaration";
-function index3(style, options) {
-  if (typeof style !== "string") {
-    throw new TypeError("First argument must be a string");
-  }
-  if (!style) return [];
-  options = options || {};
-  var lineno = 1;
-  var column = 1;
-  function updatePosition(str) {
-    var lines = str.match(NEWLINE_REGEX);
-    if (lines) lineno += lines.length;
-    var i = str.lastIndexOf(NEWLINE);
-    column = ~i ? str.length - i : column + str.length;
-  }
-  function position() {
-    var start = { line: lineno, column };
-    return function(node) {
-      node.position = new Position(start);
-      whitespace3();
-      return node;
-    };
-  }
-  function Position(start) {
-    this.start = start;
-    this.end = { line: lineno, column };
-    this.source = options.source;
-  }
-  Position.prototype.content = style;
-  function error(msg) {
-    var err = new Error(
-      options.source + ":" + lineno + ":" + column + ": " + msg
-    );
-    err.reason = msg;
-    err.filename = options.source;
-    err.line = lineno;
-    err.column = column;
-    err.source = style;
-    if (options.silent) ;
-    else {
-      throw err;
-    }
-  }
-  function match(re) {
-    var m = re.exec(style);
-    if (!m) return;
-    var str = m[0];
-    updatePosition(str);
-    style = style.slice(str.length);
-    return m;
-  }
-  function whitespace3() {
-    match(WHITESPACE_REGEX);
-  }
-  function comments(rules) {
-    var c;
-    rules = rules || [];
-    while (c = comment2()) {
-      if (c !== false) {
-        rules.push(c);
-      }
-    }
-    return rules;
-  }
-  function comment2() {
-    var pos = position();
-    if (FORWARD_SLASH != style.charAt(0) || ASTERISK != style.charAt(1)) return;
-    var i = 2;
-    while (EMPTY_STRING != style.charAt(i) && (ASTERISK != style.charAt(i) || FORWARD_SLASH != style.charAt(i + 1))) {
-      ++i;
-    }
-    i += 2;
-    if (EMPTY_STRING === style.charAt(i - 1)) {
-      return error("End of comment missing");
-    }
-    var str = style.slice(2, i - 2);
-    column += 2;
-    updatePosition(str);
-    style = style.slice(i);
-    column += 2;
-    return pos({
-      type: TYPE_COMMENT,
-      comment: str
-    });
-  }
-  function declaration() {
-    var pos = position();
-    var prop3 = match(PROPERTY_REGEX);
-    if (!prop3) return;
-    comment2();
-    if (!match(COLON_REGEX)) return error("property missing ':'");
-    var val2 = match(VALUE_REGEX);
-    var ret = pos({
-      type: TYPE_DECLARATION,
-      property: trim(prop3[0].replace(COMMENT_REGEX, EMPTY_STRING)),
-      value: val2 ? trim(val2[0].replace(COMMENT_REGEX, EMPTY_STRING)) : EMPTY_STRING
-    });
-    match(SEMICOLON_REGEX);
-    return ret;
-  }
-  function declarations() {
-    var decls = [];
-    comments(decls);
-    var decl;
-    while (decl = declaration()) {
-      if (decl !== false) {
-        decls.push(decl);
-        comments(decls);
-      }
-    }
-    return decls;
-  }
-  whitespace3();
-  return declarations();
-}
-function trim(str) {
-  return str ? str.replace(TRIM_REGEX, EMPTY_STRING) : EMPTY_STRING;
-}
-
-// node_modules/style-to-object/esm/index.mjs
-function StyleToObject(style, iterator) {
-  let styleObject = null;
-  if (!style || typeof style !== "string") {
-    return styleObject;
-  }
-  const declarations = index3(style);
-  const hasIterator = typeof iterator === "function";
-  declarations.forEach((declaration) => {
-    if (declaration.type !== "declaration") {
-      return;
-    }
-    const { property, value } = declaration;
-    if (hasIterator) {
-      iterator(property, value, declaration);
-    } else if (value) {
-      styleObject = styleObject || {};
-      styleObject[property] = value;
-    }
-  });
-  return styleObject;
-}
-
-// node_modules/svelte-toolbelt/dist/utils/strings.js
-var NUMBER_CHAR_RE = /\d/;
-var STR_SPLITTERS = ["-", "_", "/", "."];
-function isUppercase(char = "") {
-  if (NUMBER_CHAR_RE.test(char))
-    return void 0;
-  return char !== char.toLowerCase();
-}
-function splitByCase(str) {
-  const parts2 = [];
-  let buff = "";
-  let previousUpper;
-  let previousSplitter;
-  for (const char of str) {
-    const isSplitter = STR_SPLITTERS.includes(char);
-    if (isSplitter === true) {
-      parts2.push(buff);
-      buff = "";
-      previousUpper = void 0;
-      continue;
-    }
-    const isUpper = isUppercase(char);
-    if (previousSplitter === false) {
-      if (previousUpper === false && isUpper === true) {
-        parts2.push(buff);
-        buff = char;
-        previousUpper = isUpper;
-        continue;
-      }
-      if (previousUpper === true && isUpper === false && buff.length > 1) {
-        const lastChar = buff.at(-1);
-        parts2.push(buff.slice(0, Math.max(0, buff.length - 1)));
-        buff = lastChar + char;
-        previousUpper = isUpper;
-        continue;
-      }
-    }
-    buff += char;
-    previousUpper = isUpper;
-    previousSplitter = isSplitter;
-  }
-  parts2.push(buff);
-  return parts2;
-}
-function pascalCase(str) {
-  if (!str)
-    return "";
-  return splitByCase(str).map((p2) => upperFirst(p2)).join("");
-}
-function camelCase2(str) {
-  return lowerFirst(pascalCase(str || ""));
-}
-function upperFirst(str) {
-  return str ? str[0].toUpperCase() + str.slice(1) : "";
-}
-function lowerFirst(str) {
-  return str ? str[0].toLowerCase() + str.slice(1) : "";
-}
-
-// node_modules/svelte-toolbelt/dist/utils/css-to-style-obj.js
-function cssToStyleObj(css2) {
-  if (!css2)
-    return {};
-  const styleObj = {};
-  function iterator(name, value) {
-    if (name.startsWith("-moz-") || name.startsWith("-webkit-") || name.startsWith("-ms-") || name.startsWith("-o-")) {
-      styleObj[pascalCase(name)] = value;
-      return;
-    }
-    if (name.startsWith("--")) {
-      styleObj[name] = value;
-      return;
-    }
-    styleObj[camelCase2(name)] = value;
-  }
-  StyleToObject(css2, iterator);
-  return styleObj;
-}
-
-// node_modules/svelte-toolbelt/dist/utils/execute-callbacks.js
-function executeCallbacks(...callbacks) {
-  return (...args) => {
-    for (const callback of callbacks) {
-      if (typeof callback === "function") {
-        callback(...args);
-      }
-    }
-  };
-}
-
-// node_modules/svelte-toolbelt/dist/utils/style-to-css.js
-function createParser(matcher, replacer) {
-  const regex = RegExp(matcher, "g");
-  return (str) => {
-    if (typeof str !== "string") {
-      throw new TypeError(`expected an argument of type string, but got ${typeof str}`);
-    }
-    if (!str.match(regex))
-      return str;
-    return str.replace(regex, replacer);
-  };
-}
-var camelToKebab = createParser(/[A-Z]/, (match) => `-${match.toLowerCase()}`);
-function styleToCSS(styleObj) {
-  if (!styleObj || typeof styleObj !== "object" || Array.isArray(styleObj)) {
-    throw new TypeError(`expected an argument of type object, but got ${typeof styleObj}`);
-  }
-  return Object.keys(styleObj).map((property) => `${camelToKebab(property)}: ${styleObj[property]};`).join("\n");
-}
-
-// node_modules/svelte-toolbelt/dist/utils/style.js
-function styleToString(style = {}) {
-  return styleToCSS(style).replace("\n", " ");
-}
-
-// node_modules/svelte-toolbelt/dist/utils/event-list.js
-var EVENT_LIST = [
-  "onabort",
-  "onanimationcancel",
-  "onanimationend",
-  "onanimationiteration",
-  "onanimationstart",
-  "onauxclick",
-  "onbeforeinput",
-  "onbeforetoggle",
-  "onblur",
-  "oncancel",
-  "oncanplay",
-  "oncanplaythrough",
-  "onchange",
-  "onclick",
-  "onclose",
-  "oncompositionend",
-  "oncompositionstart",
-  "oncompositionupdate",
-  "oncontextlost",
-  "oncontextmenu",
-  "oncontextrestored",
-  "oncopy",
-  "oncuechange",
-  "oncut",
-  "ondblclick",
-  "ondrag",
-  "ondragend",
-  "ondragenter",
-  "ondragleave",
-  "ondragover",
-  "ondragstart",
-  "ondrop",
-  "ondurationchange",
-  "onemptied",
-  "onended",
-  "onerror",
-  "onfocus",
-  "onfocusin",
-  "onfocusout",
-  "onformdata",
-  "ongotpointercapture",
-  "oninput",
-  "oninvalid",
-  "onkeydown",
-  "onkeypress",
-  "onkeyup",
-  "onload",
-  "onloadeddata",
-  "onloadedmetadata",
-  "onloadstart",
-  "onlostpointercapture",
-  "onmousedown",
-  "onmouseenter",
-  "onmouseleave",
-  "onmousemove",
-  "onmouseout",
-  "onmouseover",
-  "onmouseup",
-  "onpaste",
-  "onpause",
-  "onplay",
-  "onplaying",
-  "onpointercancel",
-  "onpointerdown",
-  "onpointerenter",
-  "onpointerleave",
-  "onpointermove",
-  "onpointerout",
-  "onpointerover",
-  "onpointerup",
-  "onprogress",
-  "onratechange",
-  "onreset",
-  "onresize",
-  "onscroll",
-  "onscrollend",
-  "onsecuritypolicyviolation",
-  "onseeked",
-  "onseeking",
-  "onselect",
-  "onselectionchange",
-  "onselectstart",
-  "onslotchange",
-  "onstalled",
-  "onsubmit",
-  "onsuspend",
-  "ontimeupdate",
-  "ontoggle",
-  "ontouchcancel",
-  "ontouchend",
-  "ontouchmove",
-  "ontouchstart",
-  "ontransitioncancel",
-  "ontransitionend",
-  "ontransitionrun",
-  "ontransitionstart",
-  "onvolumechange",
-  "onwaiting",
-  "onwebkitanimationend",
-  "onwebkitanimationiteration",
-  "onwebkitanimationstart",
-  "onwebkittransitionend",
-  "onwheel"
-];
-var EVENT_LIST_SET = new Set(EVENT_LIST);
-
-// node_modules/svelte-toolbelt/dist/utils/merge-props.js
-function isEventHandler(key2) {
-  return EVENT_LIST_SET.has(key2);
-}
-function mergeProps(...args) {
-  const result = { ...args[0] };
-  for (let i = 1; i < args.length; i++) {
-    const props = args[i];
-    if (!props)
-      continue;
-    for (const key2 of Object.keys(props)) {
-      const a2 = result[key2];
-      const b = props[key2];
-      const aIsFunction = typeof a2 === "function";
-      const bIsFunction = typeof b === "function";
-      if (aIsFunction && typeof bIsFunction && isEventHandler(key2)) {
-        const aHandler = a2;
-        const bHandler = b;
-        result[key2] = composeHandlers(aHandler, bHandler);
-      } else if (aIsFunction && bIsFunction) {
-        result[key2] = executeCallbacks(a2, b);
-      } else if (key2 === "class") {
-        const aIsClassValue = isClassValue(a2);
-        const bIsClassValue = isClassValue(b);
-        if (aIsClassValue && bIsClassValue) {
-          result[key2] = clsx(a2, b);
-        } else if (aIsClassValue) {
-          result[key2] = clsx(a2);
-        } else if (bIsClassValue) {
-          result[key2] = clsx(b);
-        }
-      } else if (key2 === "style") {
-        const aIsObject = typeof a2 === "object";
-        const bIsObject = typeof b === "object";
-        const aIsString = typeof a2 === "string";
-        const bIsString = typeof b === "string";
-        if (aIsObject && bIsObject) {
-          result[key2] = { ...a2, ...b };
-        } else if (aIsObject && bIsString) {
-          const parsedStyle = cssToStyleObj(b);
-          result[key2] = { ...a2, ...parsedStyle };
-        } else if (aIsString && bIsObject) {
-          const parsedStyle = cssToStyleObj(a2);
-          result[key2] = { ...parsedStyle, ...b };
-        } else if (aIsString && bIsString) {
-          const parsedStyleA = cssToStyleObj(a2);
-          const parsedStyleB = cssToStyleObj(b);
-          result[key2] = { ...parsedStyleA, ...parsedStyleB };
-        } else if (aIsObject) {
-          result[key2] = a2;
-        } else if (bIsObject) {
-          result[key2] = b;
-        } else if (aIsString) {
-          result[key2] = a2;
-        } else if (bIsString) {
-          result[key2] = b;
-        }
-      } else {
-        result[key2] = b !== void 0 ? b : a2;
-      }
-    }
-    for (const key2 of Object.getOwnPropertySymbols(props)) {
-      const a2 = result[key2];
-      const b = props[key2];
-      result[key2] = b !== void 0 ? b : a2;
-    }
-  }
-  if (typeof result.style === "object") {
-    result.style = styleToString(result.style).replaceAll("\n", " ");
-  }
-  if (result.hidden === false) {
-    result.hidden = void 0;
-    delete result.hidden;
-  }
-  if (result.disabled === false) {
-    result.disabled = void 0;
-    delete result.disabled;
-  }
-  return result;
-}
-
-// node_modules/svelte-toolbelt/dist/utils/sr-only-styles.js
-var srOnlyStyles = {
-  position: "absolute",
-  width: "1px",
-  height: "1px",
-  padding: "0",
-  margin: "-1px",
-  overflow: "hidden",
-  clip: "rect(0, 0, 0, 0)",
-  whiteSpace: "nowrap",
-  borderWidth: "0",
-  transform: "translateX(-100%)"
-};
-var srOnlyStylesString = styleToString(srOnlyStyles);
-
-// node_modules/svelte/src/reactivity/map.js
-var SvelteMap = class extends Map {
-  /** @type {Map<K, Source<number>>} */
-  #sources = /* @__PURE__ */ new Map();
-  #version = state(0);
-  #size = state(0);
-  #update_version = update_version || -1;
-  /**
-   * @param {Iterable<readonly [K, V]> | null | undefined} [value]
-   */
-  constructor(value) {
-    super();
-    if (dev_fallback_default) {
-      value = new Map(value);
-      tag(this.#version, "SvelteMap version");
-      tag(this.#size, "SvelteMap.size");
-    }
-    if (value) {
-      for (var [key2, v] of value) {
-        super.set(key2, v);
-      }
-      this.#size.v = super.size;
-    }
-  }
-  /**
-   * If the source is being created inside the same reaction as the SvelteMap instance,
-   * we use `state` so that it will not be a dependency of the reaction. Otherwise we
-   * use `source` so it will be.
-   *
-   * @template T
-   * @param {T} value
-   * @returns {Source<T>}
-   */
-  #source(value) {
-    return update_version === this.#update_version ? state(value) : source(value);
-  }
-  /** @param {K} key */
-  has(key2) {
-    var sources = this.#sources;
-    var s = sources.get(key2);
-    if (s === void 0) {
-      if (super.has(key2)) {
-        s = this.#source(0);
-        if (dev_fallback_default) {
-          tag(s, `SvelteMap get(${label(key2)})`);
-        }
-        sources.set(key2, s);
-      } else {
-        get2(this.#version);
-        return false;
-      }
-    }
-    get2(s);
-    return true;
-  }
-  /**
-   * @param {(value: V, key: K, map: Map<K, V>) => void} callbackfn
-   * @param {any} [this_arg]
-   */
-  forEach(callbackfn, this_arg) {
-    this.#read_all();
-    super.forEach(callbackfn, this_arg);
-  }
-  /** @param {K} key */
-  get(key2) {
-    var sources = this.#sources;
-    var s = sources.get(key2);
-    if (s === void 0) {
-      if (super.has(key2)) {
-        s = this.#source(0);
-        if (dev_fallback_default) {
-          tag(s, `SvelteMap get(${label(key2)})`);
-        }
-        sources.set(key2, s);
-      } else {
-        get2(this.#version);
-        return void 0;
-      }
-    }
-    get2(s);
-    return super.get(key2);
-  }
-  /**
-   * @param {K} key
-   * @param {V} value
-   * */
-  set(key2, value) {
-    var sources = this.#sources;
-    var s = sources.get(key2);
-    var prev_res = super.get(key2);
-    var res = super.set(key2, value);
-    var version = this.#version;
-    if (s === void 0) {
-      s = this.#source(0);
-      if (dev_fallback_default) {
-        tag(s, `SvelteMap get(${label(key2)})`);
-      }
-      sources.set(key2, s);
-      set(this.#size, super.size);
-      increment(version);
-    } else if (prev_res !== value) {
-      increment(s);
-      var v_reactions = version.reactions === null ? null : new Set(version.reactions);
-      var needs_version_increase = v_reactions === null || !s.reactions?.every(
-        (r2) => (
-          /** @type {NonNullable<typeof v_reactions>} */
-          v_reactions.has(r2)
-        )
-      );
-      if (needs_version_increase) {
-        increment(version);
-      }
-    }
-    return res;
-  }
-  /** @param {K} key */
-  delete(key2) {
-    var sources = this.#sources;
-    var s = sources.get(key2);
-    var res = super.delete(key2);
-    if (s !== void 0) {
-      sources.delete(key2);
-      set(s, -1);
-    }
-    if (res) {
-      set(this.#size, super.size);
-      increment(this.#version);
-    }
-    return res;
-  }
-  clear() {
-    if (super.size === 0) {
-      return;
-    }
-    super.clear();
-    var sources = this.#sources;
-    set(this.#size, 0);
-    for (var s of sources.values()) {
-      set(s, -1);
-    }
-    increment(this.#version);
-    sources.clear();
-  }
-  #read_all() {
-    get2(this.#version);
-    var sources = this.#sources;
-    if (this.#size.v !== sources.size) {
-      for (var key2 of super.keys()) {
-        if (!sources.has(key2)) {
-          var s = this.#source(0);
-          if (dev_fallback_default) {
-            tag(s, `SvelteMap get(${label(key2)})`);
-          }
-          sources.set(key2, s);
-        }
-      }
-    }
-    for ([, s] of this.#sources) {
-      get2(s);
-    }
-  }
-  keys() {
-    get2(this.#version);
-    return super.keys();
-  }
-  values() {
-    this.#read_all();
-    return super.values();
-  }
-  entries() {
-    this.#read_all();
-    return super.entries();
-  }
-  [Symbol.iterator]() {
-    return this.entries();
-  }
-  get size() {
-    get2(this.#size);
-    return super.size;
-  }
-};
-
-// node_modules/svelte/src/reactivity/url-search-params.js
-var REPLACE = Symbol("replace");
-var SvelteURLSearchParams = class extends URLSearchParams {
-  #version = dev_fallback_default ? tag(state(0), "SvelteURLSearchParams version") : state(0);
-  #url = get_current_url();
-  #updating = false;
-  #update_url() {
-    if (!this.#url || this.#updating) return;
-    this.#updating = true;
-    const search = this.toString();
-    this.#url.search = search && `?${search}`;
-    this.#updating = false;
-  }
-  /**
-   * @param {URLSearchParams} params
-   * @internal
-   */
-  [REPLACE](params) {
-    if (this.#updating) return;
-    if (params.toString() === super.toString()) return;
-    this.#updating = true;
-    for (const key2 of [...super.keys()]) {
-      super.delete(key2);
-    }
-    for (const [key2, value] of params) {
-      super.append(key2, value);
-    }
-    increment(this.#version);
-    this.#updating = false;
-  }
-  /**
-   * @param {string} name
-   * @param {string} value
-   * @returns {void}
-   */
-  append(name, value) {
-    super.append(name, value);
-    this.#update_url();
-    increment(this.#version);
-  }
-  /**
-   * @param {string} name
-   * @param {string=} value
-   * @returns {void}
-   */
-  delete(name, value) {
-    var has_value = super.has(name, value);
-    super.delete(name, value);
-    if (has_value) {
-      this.#update_url();
-      increment(this.#version);
-    }
-  }
-  /**
-   * @param {string} name
-   * @returns {string|null}
-   */
-  get(name) {
-    get2(this.#version);
-    return super.get(name);
-  }
-  /**
-   * @param {string} name
-   * @returns {string[]}
-   */
-  getAll(name) {
-    get2(this.#version);
-    return super.getAll(name);
-  }
-  /**
-   * @param {string} name
-   * @param {string=} value
-   * @returns {boolean}
-   */
-  has(name, value) {
-    get2(this.#version);
-    return super.has(name, value);
-  }
-  keys() {
-    get2(this.#version);
-    return super.keys();
-  }
-  /**
-   * @param {(value: string, key: string, parent: URLSearchParams) => void} callback
-   * @param {any} [this_arg]
-   * @returns {void}
-   */
-  forEach(callback, this_arg) {
-    get2(this.#version);
-    super.forEach(callback, this_arg);
-  }
-  /**
-   * @param {string} name
-   * @param {string} value
-   * @returns {void}
-   */
-  set(name, value) {
-    var previous = super.getAll(name);
-    super.set(name, value);
-    var current = super.getAll(name);
-    if (previous.length !== current.length || previous.some((value2, i) => value2 !== current[i])) {
-      this.#update_url();
-      increment(this.#version);
-    }
-  }
-  sort() {
-    super.sort();
-    this.#update_url();
-    increment(this.#version);
-  }
-  toString() {
-    get2(this.#version);
-    return super.toString();
-  }
-  values() {
-    get2(this.#version);
-    return super.values();
-  }
-  entries() {
-    get2(this.#version);
-    return super.entries();
-  }
-  [Symbol.iterator]() {
-    return this.entries();
-  }
-  get size() {
-    get2(this.#version);
-    return super.size;
-  }
-};
-
-// node_modules/svelte/src/reactivity/url.js
-var current_url = null;
-function get_current_url() {
-  return current_url;
-}
-
-// node_modules/svelte-toolbelt/dist/utils/on-destroy-effect.svelte.js
-function onDestroyEffect(fn) {
-  user_effect(() => {
-    return () => {
-      fn();
-    };
-  });
-}
-
-// node_modules/svelte-toolbelt/dist/utils/on-mount-effect.svelte.js
-function onMountEffect(fn) {
-  user_effect(() => {
-    const cleanup = untrack(() => fn());
-    return cleanup;
-  });
-}
-
-// node_modules/svelte-toolbelt/dist/utils/after-sleep.js
-function afterSleep(ms, cb) {
-  return setTimeout(cb, ms);
-}
-
-// node_modules/svelte-toolbelt/dist/utils/after-tick.js
-function afterTick(fn) {
-  tick().then(fn);
-}
-
-// node_modules/svelte-toolbelt/dist/utils/dom.js
-var ELEMENT_NODE2 = 1;
-var DOCUMENT_NODE = 9;
-var DOCUMENT_FRAGMENT_NODE2 = 11;
-function isHTMLElement(node) {
-  return isObject(node) && node.nodeType === ELEMENT_NODE2 && typeof node.nodeName === "string";
-}
-function isDocument2(node) {
-  return isObject(node) && node.nodeType === DOCUMENT_NODE;
-}
-function isWindow(node) {
-  return isObject(node) && node.constructor?.name === "VisualViewport";
-}
-function isNode2(node) {
-  return isObject(node) && node.nodeType !== void 0;
-}
-function isShadowRoot(node) {
-  return isNode2(node) && node.nodeType === DOCUMENT_FRAGMENT_NODE2 && "host" in node;
-}
-function contains2(parent2, child2) {
-  if (!parent2 || !child2)
-    return false;
-  if (!isHTMLElement(parent2) || !isHTMLElement(child2))
-    return false;
-  const rootNode = child2.getRootNode?.();
-  if (parent2 === child2)
-    return true;
-  if (parent2.contains(child2))
-    return true;
-  if (rootNode && isShadowRoot(rootNode)) {
-    let next4 = child2;
-    while (next4) {
-      if (parent2 === next4)
-        return true;
-      next4 = next4.parentNode || next4.host;
-    }
-  }
-  return false;
-}
-function getDocument(node) {
-  if (isDocument2(node))
-    return node;
-  if (isWindow(node))
-    return node.document;
-  return node?.ownerDocument ?? document;
-}
-function getWindow(node) {
-  if (isShadowRoot(node))
-    return getWindow(node.host);
-  if (isDocument2(node))
-    return node.defaultView ?? window;
-  if (isHTMLElement(node))
-    return node.ownerDocument?.defaultView ?? window;
-  return window;
-}
-function getActiveElement(rootNode) {
-  let activeElement2 = rootNode.activeElement;
-  while (activeElement2?.shadowRoot) {
-    const el = activeElement2.shadowRoot.activeElement;
-    if (el === activeElement2)
-      break;
-    else
-      activeElement2 = el;
-  }
-  return activeElement2;
-}
-
-// node_modules/svelte-toolbelt/dist/utils/dom-context.svelte.js
-var DOMContext = class {
-  element;
-  #root = user_derived(() => {
-    if (!this.element.current) return document;
-    const rootNode = this.element.current.getRootNode() ?? document;
-    return rootNode;
-  });
-  get root() {
-    return get2(this.#root);
-  }
-  set root(value) {
-    set(this.#root, value);
-  }
-  constructor(element2) {
-    if (typeof element2 === "function") {
-      this.element = boxWith(element2);
-    } else {
-      this.element = element2;
-    }
-  }
-  getDocument = () => {
-    return getDocument(this.root);
-  };
-  getWindow = () => {
-    return this.getDocument().defaultView ?? window;
-  };
-  getActiveElement = () => {
-    return getActiveElement(this.root);
-  };
-  isActiveElement = (node) => {
-    return node === this.getActiveElement();
-  };
-  getElementById(id) {
-    return this.root.getElementById(id);
-  }
-  querySelector = (selector) => {
-    if (!this.root) return null;
-    return this.root.querySelector(selector);
-  };
-  querySelectorAll = (selector) => {
-    if (!this.root) return [];
-    return this.root.querySelectorAll(selector);
-  };
-  setTimeout = (callback, delay) => {
-    return this.getWindow().setTimeout(callback, delay);
-  };
-  clearTimeout = (timeoutId) => {
-    return this.getWindow().clearTimeout(timeoutId);
-  };
-};
-
-// node_modules/svelte-toolbelt/dist/utils/attach-ref.js
-function attachRef(ref, onChange) {
-  return {
-    [createAttachmentKey()]: (node) => {
-      if (isBox(ref)) {
-        ref.current = node;
-        untrack(() => onChange?.(node));
-        return () => {
-          if ("isConnected" in node && node.isConnected)
-            return;
-          ref.current = null;
-          onChange?.(null);
-        };
-      }
-      ref(node);
-      untrack(() => onChange?.(node));
-      return () => {
-        if ("isConnected" in node && node.isConnected)
-          return;
-        ref(null);
-        onChange?.(null);
-      };
-    }
-  };
-}
-
-// node_modules/bits-ui/node_modules/runed/dist/internal/configurable-globals.js
-var defaultWindow = true_default && typeof window !== "undefined" ? window : void 0;
-var defaultDocument = true_default && typeof window !== "undefined" ? window.document : void 0;
-var defaultNavigator = true_default && typeof window !== "undefined" ? window.navigator : void 0;
-var defaultLocation = true_default && typeof window !== "undefined" ? window.location : void 0;
-
-// node_modules/bits-ui/node_modules/runed/dist/internal/utils/dom.js
-function getActiveElement2(document2) {
-  let activeElement2 = document2.activeElement;
-  while (activeElement2?.shadowRoot) {
-    const node = activeElement2.shadowRoot.activeElement;
-    if (node === activeElement2)
-      break;
-    else
-      activeElement2 = node;
-  }
-  return activeElement2;
-}
-
-// node_modules/bits-ui/node_modules/runed/dist/utilities/active-element/active-element.svelte.js
-var ActiveElement = class {
-  #document;
-  #subscribe;
-  constructor(options = {}) {
-    const { window: window2 = defaultWindow, document: document2 = window2?.document } = options;
-    if (window2 === void 0) return;
-    this.#document = document2;
-    this.#subscribe = createSubscriber((update3) => {
-      const cleanupFocusIn = on(window2, "focusin", update3);
-      const cleanupFocusOut = on(window2, "focusout", update3);
-      return () => {
-        cleanupFocusIn();
-        cleanupFocusOut();
-      };
-    });
-  }
-  get current() {
-    this.#subscribe?.();
-    if (!this.#document) return null;
-    return getActiveElement2(this.#document);
-  }
-};
-var activeElement = new ActiveElement();
-
-// node_modules/bits-ui/node_modules/runed/dist/internal/utils/is.js
-function isFunction2(value) {
-  return typeof value === "function";
-}
-
-// node_modules/bits-ui/node_modules/runed/dist/utilities/context/context.js
-var Context = class {
-  #name;
-  #key;
-  /**
-   * @param name The name of the context.
-   * This is used for generating the context key and error messages.
-   */
-  constructor(name) {
-    this.#name = name;
-    this.#key = Symbol(name);
-  }
-  /**
-   * The key used to get and set the context.
-   *
-   * It is not recommended to use this value directly.
-   * Instead, use the methods provided by this class.
-   */
-  get key() {
-    return this.#key;
-  }
-  /**
-   * Checks whether this has been set in the context of a parent component.
-   *
-   * Must be called during component initialisation.
-   */
-  exists() {
-    return hasContext(this.#key);
-  }
-  /**
-   * Retrieves the context that belongs to the closest parent component.
-   *
-   * Must be called during component initialisation.
-   *
-   * @throws An error if the context does not exist.
-   */
-  get() {
-    const context = getContext(this.#key);
-    if (context === void 0) {
-      throw new Error(`Context "${this.#name}" not found`);
-    }
-    return context;
-  }
-  /**
-   * Retrieves the context that belongs to the closest parent component,
-   * or the given fallback value if the context does not exist.
-   *
-   * Must be called during component initialisation.
-   */
-  getOr(fallback2) {
-    const context = getContext(this.#key);
-    if (context === void 0) {
-      return fallback2;
-    }
-    return context;
-  }
-  /**
-   * Associates the given value with the current component and returns it.
-   *
-   * Must be called during component initialisation.
-   */
-  set(context) {
-    return setContext(this.#key, context);
-  }
-};
-
-// node_modules/bits-ui/node_modules/runed/dist/utilities/watch/watch.svelte.js
-function runEffect(flush, effect2) {
-  switch (flush) {
-    case "post":
-      user_effect(effect2);
-      break;
-    case "pre":
-      user_pre_effect(effect2);
-      break;
-  }
-}
-function runWatcher(sources, flush, effect2, options = {}) {
-  const { lazy = false } = options;
-  let active = !lazy;
-  let previousValues = Array.isArray(sources) ? [] : void 0;
-  runEffect(flush, () => {
-    const values = Array.isArray(sources) ? sources.map((source2) => source2()) : sources();
-    if (!active) {
-      active = true;
-      previousValues = values;
-      return;
-    }
-    const cleanup = untrack(() => effect2(values, previousValues));
-    previousValues = values;
-    return cleanup;
-  });
-}
-function runWatcherOnce(sources, flush, effect2) {
-  const cleanupRoot = effect_root(() => {
-    let stop = false;
-    runWatcher(
-      sources,
-      flush,
-      (values, previousValues) => {
-        if (stop) {
-          cleanupRoot();
-          return;
-        }
-        const cleanup = effect2(values, previousValues);
-        stop = true;
-        return cleanup;
-      },
-      // Running the effect immediately just once makes no sense at all.
-      // That's just `onMount` with extra steps.
-      { lazy: true }
-    );
-  });
-  user_effect(() => {
-    return cleanupRoot;
-  });
-}
-function watch(sources, effect2, options) {
-  runWatcher(sources, "post", effect2, options);
-}
-function watchPre(sources, effect2, options) {
-  runWatcher(sources, "pre", effect2, options);
-}
-watch.pre = watchPre;
-function watchOnce(source2, effect2) {
-  runWatcherOnce(source2, "post", effect2);
-}
-function watchOncePre(source2, effect2) {
-  runWatcherOnce(source2, "pre", effect2);
-}
-watchOnce.pre = watchOncePre;
-
-// node_modules/bits-ui/node_modules/runed/dist/internal/utils/get.js
-function get4(value) {
-  if (isFunction2(value)) {
-    return value();
-  }
-  return value;
-}
-
-// node_modules/bits-ui/node_modules/runed/dist/utilities/element-size/element-size.svelte.js
-var ElementSize = class {
-  // no need to use `$state` here since we are using createSubscriber
-  #size = { width: 0, height: 0 };
-  #observed = false;
-  #options;
-  #node;
-  #window;
-  // we use a derived here to extract the width so that if the width doesn't change we don't get a state update
-  // which we would get if we would just use a getter since the version of the subscriber will be changing
-  #width = user_derived(() => {
-    get2(this.#subscribe)?.();
-    return this.getSize().width;
-  });
-  // we use a derived here to extract the height so that if the height doesn't change we don't get a state update
-  // which we would get if we would just use a getter since the version of the subscriber will be changing
-  #height = user_derived(() => {
-    get2(this.#subscribe)?.();
-    return this.getSize().height;
-  });
-  // we need to use a derived here because the class will be created before the node is bound to the ref
-  #subscribe = user_derived(() => {
-    const node$ = get4(this.#node);
-    if (!node$) return;
-    return createSubscriber((update3) => {
-      if (!this.#window) return;
-      const observer = new this.#window.ResizeObserver((entries) => {
-        this.#observed = true;
-        for (const entry of entries) {
-          const boxSize = this.#options.box === "content-box" ? entry.contentBoxSize : entry.borderBoxSize;
-          const boxSizeArr = Array.isArray(boxSize) ? boxSize : [boxSize];
-          this.#size.width = boxSizeArr.reduce((acc, size3) => Math.max(acc, size3.inlineSize), 0);
-          this.#size.height = boxSizeArr.reduce((acc, size3) => Math.max(acc, size3.blockSize), 0);
-        }
-        update3();
-      });
-      observer.observe(node$);
-      return () => {
-        this.#observed = false;
-        observer.disconnect();
-      };
-    });
-  });
-  constructor(node, options = { box: "border-box" }) {
-    this.#window = options.window ?? defaultWindow;
-    this.#options = options;
-    this.#node = node;
-    this.#size = { width: 0, height: 0 };
-  }
-  calculateSize() {
-    const element2 = get4(this.#node);
-    if (!element2 || !this.#window) {
-      return;
-    }
-    const offsetWidth = element2.offsetWidth;
-    const offsetHeight = element2.offsetHeight;
-    if (this.#options.box === "border-box") {
-      return { width: offsetWidth, height: offsetHeight };
-    }
-    const style = this.#window.getComputedStyle(element2);
-    const paddingWidth = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
-    const paddingHeight = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
-    const borderWidth = parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
-    const borderHeight = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
-    const contentWidth = offsetWidth - paddingWidth - borderWidth;
-    const contentHeight = offsetHeight - paddingHeight - borderHeight;
-    return { width: contentWidth, height: contentHeight };
-  }
-  getSize() {
-    return this.#observed ? this.#size : this.calculateSize() ?? this.#size;
-  }
-  get current() {
-    get2(this.#subscribe)?.();
-    return this.getSize();
-  }
-  get width() {
-    return get2(this.#width);
-  }
-  get height() {
-    return get2(this.#height);
-  }
-};
-
-// node_modules/bits-ui/node_modules/runed/dist/utilities/previous/previous.svelte.js
-var Previous = class {
-  #previousCallback = () => void 0;
-  #previous = user_derived(() => this.#previousCallback());
-  constructor(getter, initialValue) {
-    let actualPrevious = void 0;
-    if (initialValue !== void 0) actualPrevious = initialValue;
-    this.#previousCallback = () => {
-      try {
-        return actualPrevious;
-      } finally {
-        actualPrevious = getter();
-      }
-    };
-  }
-  get current() {
-    return get2(this.#previous);
-  }
-};
-
-// node_modules/bits-ui/node_modules/runed/dist/utilities/resource/resource.svelte.js
-function debounce(fn, delay) {
-  let timeoutId;
-  let lastResolve = null;
-  return (...args) => {
-    return new Promise((resolve) => {
-      if (lastResolve) {
-        lastResolve(void 0);
-      }
-      lastResolve = resolve;
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(
-        async () => {
-          const result = await fn(...args);
-          if (lastResolve) {
-            lastResolve(result);
-            lastResolve = null;
-          }
-        },
-        delay
-      );
-    });
-  };
-}
-function throttle(fn, delay) {
-  let lastRun = 0;
-  let lastPromise = null;
-  return (...args) => {
-    const now = Date.now();
-    if (lastRun && now - lastRun < delay) {
-      return lastPromise ?? Promise.resolve(void 0);
-    }
-    lastRun = now;
-    lastPromise = fn(...args);
-    return lastPromise;
-  };
-}
-function runResource(source2, fetcher, options = {}, effectFn) {
-  const {
-    lazy = false,
-    once: once2 = false,
-    initialValue,
-    debounce: debounceTime,
-    throttle: throttleTime
-  } = options;
-  let current = state(proxy(initialValue));
-  let loading = state(false);
-  let error = state(void 0);
-  let cleanupFns = state(proxy([]));
-  const runCleanup = () => {
-    get2(cleanupFns).forEach((fn) => fn());
-    set(cleanupFns, [], true);
-  };
-  const onCleanup2 = (fn) => {
-    set(cleanupFns, [...get2(cleanupFns), fn], true);
-  };
-  const baseFetcher = async (value, previousValue, refetching = false) => {
-    try {
-      set(loading, true);
-      set(error, void 0);
-      runCleanup();
-      const controller = new AbortController();
-      onCleanup2(() => controller.abort());
-      const result = await fetcher(value, previousValue, {
-        data: get2(current),
-        refetching,
-        onCleanup: onCleanup2,
-        signal: controller.signal
-      });
-      set(current, result, true);
-      return result;
-    } catch (e) {
-      if (!(e instanceof DOMException && e.name === "AbortError")) {
-        set(error, e, true);
-      }
-      return void 0;
-    } finally {
-      set(loading, false);
-    }
-  };
-  const runFetcher = debounceTime ? debounce(baseFetcher, debounceTime) : throttleTime ? throttle(baseFetcher, throttleTime) : baseFetcher;
-  const sources = Array.isArray(source2) ? source2 : [source2];
-  let prevValues;
-  effectFn(
-    (values, previousValues) => {
-      if (once2 && prevValues) {
-        return;
-      }
-      prevValues = values;
-      runFetcher(Array.isArray(source2) ? values : values[0], Array.isArray(source2) ? previousValues : previousValues?.[0]);
-    },
-    { lazy }
-  );
-  return {
-    get current() {
-      return get2(current);
-    },
-    get loading() {
-      return get2(loading);
-    },
-    get error() {
-      return get2(error);
-    },
-    mutate: (value) => {
-      set(current, value, true);
-    },
-    refetch: (info) => {
-      const values = sources.map((s) => s());
-      return runFetcher(Array.isArray(source2) ? values : values[0], Array.isArray(source2) ? values : values[0], info ?? true);
-    }
-  };
-}
-function resource(source2, fetcher, options) {
-  return runResource(source2, fetcher, options, (fn, options2) => {
-    const sources = Array.isArray(source2) ? source2 : [source2];
-    const getters = () => sources.map((s) => s());
-    watch(
-      getters,
-      (values, previousValues) => {
-        fn(values, previousValues ?? []);
-      },
-      options2
-    );
-  });
-}
-function resourcePre(source2, fetcher, options) {
-  return runResource(source2, fetcher, options, (fn, options2) => {
-    const sources = Array.isArray(source2) ? source2 : [source2];
-    const getter = () => sources.map((s) => s());
-    watch.pre(
-      getter,
-      (values, previousValues) => {
-        fn(values, previousValues ?? []);
-      },
-      options2
-    );
-  });
-}
-resource.pre = resourcePre;
-
-// node_modules/bits-ui/dist/internal/attrs.js
-function boolToStr(condition) {
-  return condition ? "true" : "false";
-}
-function boolToStrTrueOrUndef(condition) {
-  return condition ? "true" : void 0;
-}
-function boolToEmptyStrOrUndef(condition) {
-  return condition ? "" : void 0;
-}
-function boolToTrueOrUndef(condition) {
-  return condition ? true : void 0;
-}
-function getDataOpenClosed(condition) {
-  return condition ? "open" : "closed";
-}
-function getDataTransitionAttrs(state3) {
-  if (state3 === "starting")
-    return { "data-starting-style": "" };
-  if (state3 === "ending")
-    return { "data-ending-style": "" };
-  return {};
-}
-function getAriaChecked(checked, indeterminate) {
-  if (indeterminate)
-    return "mixed";
-  return checked ? "true" : "false";
-}
-var BitsAttrs = class {
-  #variant;
-  #prefix;
-  attrs;
-  constructor(config) {
-    this.#variant = config.getVariant ? config.getVariant() : null;
-    this.#prefix = this.#variant ? `data-${this.#variant}-` : `data-${config.component}-`;
-    this.getAttr = this.getAttr.bind(this);
-    this.selector = this.selector.bind(this);
-    this.attrs = Object.fromEntries(config.parts.map((part) => [part, this.getAttr(part)]));
-  }
-  getAttr(part, variantOverride) {
-    if (variantOverride)
-      return `data-${variantOverride}-${part}`;
-    return `${this.#prefix}${part}`;
-  }
-  selector(part, variantOverride) {
-    return `[${this.getAttr(part, variantOverride)}]`;
-  }
-};
-function createBitsAttrs(config) {
-  const bitsAttrs = new BitsAttrs(config);
-  return {
-    ...bitsAttrs.attrs,
-    selector: bitsAttrs.selector,
-    getAttr: bitsAttrs.getAttr
-  };
-}
-
-// node_modules/bits-ui/dist/internal/kbd-constants.js
-var kbd_constants_exports = {};
-__export(kbd_constants_exports, {
-  A: () => A,
-  ALT: () => ALT,
-  ARROW_DOWN: () => ARROW_DOWN,
-  ARROW_LEFT: () => ARROW_LEFT,
-  ARROW_RIGHT: () => ARROW_RIGHT,
-  ARROW_UP: () => ARROW_UP,
-  ASTERISK: () => ASTERISK2,
-  BACKSPACE: () => BACKSPACE,
-  CAPS_LOCK: () => CAPS_LOCK,
-  CONTROL: () => CONTROL,
-  CTRL: () => CTRL,
-  DELETE: () => DELETE,
-  END: () => END,
-  ENTER: () => ENTER,
-  ESCAPE: () => ESCAPE,
-  F1: () => F1,
-  F10: () => F10,
-  F11: () => F11,
-  F12: () => F12,
-  F2: () => F2,
-  F3: () => F3,
-  F4: () => F4,
-  F5: () => F5,
-  F6: () => F6,
-  F7: () => F7,
-  F8: () => F8,
-  F9: () => F9,
-  HOME: () => HOME,
-  META: () => META,
-  P: () => P,
-  PAGE_DOWN: () => PAGE_DOWN,
-  PAGE_UP: () => PAGE_UP,
-  SHIFT: () => SHIFT,
-  SPACE: () => SPACE,
-  TAB: () => TAB,
-  a: () => a,
-  h: () => h,
-  j: () => j,
-  k: () => k,
-  l: () => l,
-  n: () => n,
-  p: () => p
-});
-var ALT = "Alt";
-var ARROW_DOWN = "ArrowDown";
-var ARROW_LEFT = "ArrowLeft";
-var ARROW_RIGHT = "ArrowRight";
-var ARROW_UP = "ArrowUp";
-var BACKSPACE = "Backspace";
-var CAPS_LOCK = "CapsLock";
-var CONTROL = "Control";
-var DELETE = "Delete";
-var END = "End";
-var ENTER = "Enter";
-var ESCAPE = "Escape";
-var F1 = "F1";
-var F10 = "F10";
-var F11 = "F11";
-var F12 = "F12";
-var F2 = "F2";
-var F3 = "F3";
-var F4 = "F4";
-var F5 = "F5";
-var F6 = "F6";
-var F7 = "F7";
-var F8 = "F8";
-var F9 = "F9";
-var HOME = "Home";
-var META = "Meta";
-var PAGE_DOWN = "PageDown";
-var PAGE_UP = "PageUp";
-var SHIFT = "Shift";
-var SPACE = " ";
-var TAB = "Tab";
-var CTRL = "Control";
-var ASTERISK2 = "*";
-var a = "a";
-var P = "P";
-var A = "A";
-var p = "p";
-var n = "n";
-var j = "j";
-var k = "k";
-var h = "h";
-var l = "l";
-
-// node_modules/bits-ui/dist/internal/locale.js
-function getElemDirection(elem) {
-  const style = window.getComputedStyle(elem);
-  const direction = style.getPropertyValue("direction");
-  return direction;
-}
-
-// node_modules/bits-ui/dist/internal/get-directional-keys.js
-var FIRST_KEYS = [kbd_constants_exports.ARROW_DOWN, kbd_constants_exports.PAGE_UP, kbd_constants_exports.HOME];
-var LAST_KEYS = [kbd_constants_exports.ARROW_UP, kbd_constants_exports.PAGE_DOWN, kbd_constants_exports.END];
-var FIRST_LAST_KEYS = [...FIRST_KEYS, ...LAST_KEYS];
-var SELECTION_KEYS = [kbd_constants_exports.SPACE, kbd_constants_exports.ENTER];
-function getNextKey(dir = "ltr", orientation = "horizontal") {
-  return {
-    horizontal: dir === "rtl" ? kbd_constants_exports.ARROW_LEFT : kbd_constants_exports.ARROW_RIGHT,
-    vertical: kbd_constants_exports.ARROW_DOWN
-  }[orientation];
-}
-function getPrevKey(dir = "ltr", orientation = "horizontal") {
-  return {
-    horizontal: dir === "rtl" ? kbd_constants_exports.ARROW_RIGHT : kbd_constants_exports.ARROW_LEFT,
-    vertical: kbd_constants_exports.ARROW_UP
-  }[orientation];
-}
-function getDirectionalKeys(dir = "ltr", orientation = "horizontal") {
-  if (!["ltr", "rtl"].includes(dir))
-    dir = "ltr";
-  if (!["horizontal", "vertical"].includes(orientation))
-    orientation = "horizontal";
-  return {
-    nextKey: getNextKey(dir, orientation),
-    prevKey: getPrevKey(dir, orientation)
-  };
-}
-
-// node_modules/bits-ui/dist/internal/is.js
-var isBrowser = typeof document !== "undefined";
-var isIOS = getIsIOS();
-function getIsIOS() {
-  return isBrowser && window?.navigator?.userAgent && (/iP(ad|hone|od)/.test(window.navigator.userAgent) || // The new iPad Pro Gen3 does not identify itself as iPad, but as Macintosh.
-  window?.navigator?.maxTouchPoints > 2 && /iPad|Macintosh/.test(window?.navigator.userAgent));
-}
-function isHTMLElement2(element2) {
-  return element2 instanceof HTMLElement;
-}
-function isElementOrSVGElement(element2) {
-  return element2 instanceof Element || element2 instanceof SVGElement;
-}
-function isNotNull(value) {
-  return value !== null;
-}
-
-// node_modules/bits-ui/dist/internal/roving-focus-group.js
-var RovingFocusGroup = class {
-  #opts;
-  #currentTabStopId = box(null);
-  constructor(opts) {
-    this.#opts = opts;
-  }
-  getCandidateNodes() {
-    if (!true_default || !this.#opts.rootNode.current)
-      return [];
-    if (this.#opts.candidateSelector) {
-      const candidates = Array.from(this.#opts.rootNode.current.querySelectorAll(this.#opts.candidateSelector));
-      return candidates;
-    } else if (this.#opts.candidateAttr) {
-      const candidates = Array.from(this.#opts.rootNode.current.querySelectorAll(`[${this.#opts.candidateAttr}]:not([data-disabled])`));
-      return candidates;
-    }
-    return [];
-  }
-  focusFirstCandidate() {
-    const items = this.getCandidateNodes();
-    if (!items.length)
-      return;
-    items[0]?.focus();
-  }
-  handleKeydown(node, e, both = false) {
-    const rootNode = this.#opts.rootNode.current;
-    if (!rootNode || !node)
-      return;
-    const items = this.getCandidateNodes();
-    if (!items.length)
-      return;
-    const currentIndex = items.indexOf(node);
-    const dir = getElemDirection(rootNode);
-    const { nextKey, prevKey } = getDirectionalKeys(dir, this.#opts.orientation.current);
-    const loop2 = this.#opts.loop.current;
-    const keyToIndex = {
-      [nextKey]: currentIndex + 1,
-      [prevKey]: currentIndex - 1,
-      [kbd_constants_exports.HOME]: 0,
-      [kbd_constants_exports.END]: items.length - 1
-    };
-    if (both) {
-      const altNextKey = nextKey === kbd_constants_exports.ARROW_DOWN ? kbd_constants_exports.ARROW_RIGHT : kbd_constants_exports.ARROW_DOWN;
-      const altPrevKey = prevKey === kbd_constants_exports.ARROW_UP ? kbd_constants_exports.ARROW_LEFT : kbd_constants_exports.ARROW_UP;
-      keyToIndex[altNextKey] = currentIndex + 1;
-      keyToIndex[altPrevKey] = currentIndex - 1;
-    }
-    let itemIndex = keyToIndex[e.key];
-    if (itemIndex === void 0)
-      return;
-    e.preventDefault();
-    if (itemIndex < 0 && loop2) {
-      itemIndex = items.length - 1;
-    } else if (itemIndex === items.length && loop2) {
-      itemIndex = 0;
-    }
-    const itemToFocus = items[itemIndex];
-    if (!itemToFocus)
-      return;
-    itemToFocus.focus();
-    this.#currentTabStopId.current = itemToFocus.id;
-    this.#opts.onCandidateFocus?.(itemToFocus);
-    return itemToFocus;
-  }
-  getTabIndex(node) {
-    const items = this.getCandidateNodes();
-    const anyActive = this.#currentTabStopId.current !== null;
-    if (node && !anyActive && items[0] === node) {
-      this.#currentTabStopId.current = node.id;
-      return 0;
-    } else if (node?.id === this.#currentTabStopId.current) {
-      return 0;
-    }
-    return -1;
-  }
-  setCurrentTabStopId(id) {
-    this.#currentTabStopId.current = id;
-  }
-  focusCurrentTabStop() {
-    const currentTabStopId = this.#currentTabStopId.current;
-    if (!currentTabStopId)
-      return;
-    const currentTabStop = this.#opts.rootNode.current?.querySelector(`#${currentTabStopId}`);
-    if (!currentTabStop || !isHTMLElement2(currentTabStop))
-      return;
-    currentTabStop.focus();
-  }
-};
-
-// node_modules/bits-ui/dist/internal/animations-complete.js
-var AnimationsComplete = class {
-  #opts;
-  #currentFrame = null;
-  #observer = null;
-  #runId = 0;
-  constructor(opts) {
-    this.#opts = opts;
-    onDestroyEffect(() => this.#cleanup());
-  }
-  #cleanup() {
-    if (this.#currentFrame !== null) {
-      window.cancelAnimationFrame(this.#currentFrame);
-      this.#currentFrame = null;
-    }
-    this.#observer?.disconnect();
-    this.#observer = null;
-    this.#runId++;
-  }
-  run(fn) {
-    this.#cleanup();
-    const node = this.#opts.ref.current;
-    if (!node)
-      return;
-    if (typeof node.getAnimations !== "function") {
-      this.#executeCallback(fn);
-      return;
-    }
-    const runId = this.#runId;
-    const executeIfCurrent = () => {
-      if (runId !== this.#runId)
-        return;
-      this.#executeCallback(fn);
-    };
-    const waitForAnimations = () => {
-      if (runId !== this.#runId)
-        return;
-      const animations = node.getAnimations();
-      if (animations.length === 0) {
-        executeIfCurrent();
-        return;
-      }
-      Promise.all(animations.map((animation2) => animation2.finished)).then(() => {
-        executeIfCurrent();
-      }).catch(() => {
-        if (runId !== this.#runId)
-          return;
-        const currentAnimations = node.getAnimations();
-        const hasRunningAnimations = currentAnimations.some((animation2) => animation2.pending || animation2.playState !== "finished");
-        if (hasRunningAnimations) {
-          waitForAnimations();
-          return;
-        }
-        executeIfCurrent();
-      });
-    };
-    const requestWaitForAnimations = () => {
-      this.#currentFrame = window.requestAnimationFrame(() => {
-        this.#currentFrame = null;
-        waitForAnimations();
-      });
-    };
-    if (!this.#opts.afterTick.current) {
-      requestWaitForAnimations();
-      return;
-    }
-    this.#currentFrame = window.requestAnimationFrame(() => {
-      this.#currentFrame = null;
-      const startingStyleAttr = "data-starting-style";
-      if (!node.hasAttribute(startingStyleAttr)) {
-        requestWaitForAnimations();
-        return;
-      }
-      this.#observer = new MutationObserver(() => {
-        if (runId !== this.#runId)
-          return;
-        if (node.hasAttribute(startingStyleAttr))
-          return;
-        this.#observer?.disconnect();
-        this.#observer = null;
-        requestWaitForAnimations();
-      });
-      this.#observer.observe(node, {
-        attributes: true,
-        attributeFilter: [startingStyleAttr]
-      });
-    });
-  }
-  #executeCallback(fn) {
-    const execute = () => {
-      fn();
-    };
-    if (this.#opts.afterTick) {
-      afterTick(execute);
-    } else {
-      execute();
-    }
-  }
-};
-
-// node_modules/bits-ui/dist/internal/presence-manager.svelte.js
-var PresenceManager = class {
-  #opts;
-  #enabled;
-  #afterAnimations;
-  #shouldRender = state(false);
-  #transitionStatus = state(void 0);
-  #hasMounted = false;
-  #transitionFrame = null;
-  constructor(opts) {
-    this.#opts = opts;
-    set(this.#shouldRender, opts.open.current, true);
-    this.#enabled = opts.enabled ?? true;
-    this.#afterAnimations = new AnimationsComplete({ ref: this.#opts.ref, afterTick: this.#opts.open });
-    onDestroyEffect(() => this.#clearTransitionFrame());
-    watch(() => this.#opts.open.current, (isOpen) => {
-      if (!this.#hasMounted) {
-        this.#hasMounted = true;
-        return;
-      }
-      this.#clearTransitionFrame();
-      if (!isOpen && this.#opts.shouldSkipExitAnimation?.()) {
-        set(this.#shouldRender, false);
-        set(this.#transitionStatus, void 0);
-        this.#opts.onComplete?.();
-        return;
-      }
-      if (isOpen) set(this.#shouldRender, true);
-      set(this.#transitionStatus, isOpen ? "starting" : "ending", true);
-      if (isOpen) {
-        this.#transitionFrame = window.requestAnimationFrame(() => {
-          this.#transitionFrame = null;
-          if (this.#opts.open.current) {
-            set(this.#transitionStatus, void 0);
-          }
-        });
-      }
-      if (!this.#enabled) {
-        if (!isOpen) {
-          set(this.#shouldRender, false);
-        }
-        set(this.#transitionStatus, void 0);
-        this.#opts.onComplete?.();
-        return;
-      }
-      this.#afterAnimations.run(() => {
-        if (isOpen === this.#opts.open.current) {
-          if (!this.#opts.open.current) {
-            set(this.#shouldRender, false);
-          }
-          set(this.#transitionStatus, void 0);
-          this.#opts.onComplete?.();
-        }
-      });
-    });
-  }
-  get shouldRender() {
-    return get2(this.#shouldRender);
-  }
-  get transitionStatus() {
-    return get2(this.#transitionStatus);
-  }
-  #clearTransitionFrame() {
-    if (this.#transitionFrame === null) return;
-    window.cancelAnimationFrame(this.#transitionFrame);
-    this.#transitionFrame = null;
-  }
-};
-
-// node_modules/bits-ui/dist/bits/accordion/accordion.svelte.js
-var accordionAttrs = createBitsAttrs({
-  component: "accordion",
-  parts: ["root", "trigger", "content", "item", "header"]
-});
-var AccordionRootContext = new Context("Accordion.Root");
-var AccordionItemContext = new Context("Accordion.Item");
-var AccordionBaseState = class {
-  opts;
-  rovingFocusGroup;
-  attachment;
-  constructor(opts) {
-    this.opts = opts;
-    this.rovingFocusGroup = new RovingFocusGroup({
-      rootNode: this.opts.ref,
-      candidateAttr: accordionAttrs.trigger,
-      loop: this.opts.loop,
-      orientation: this.opts.orientation
-    });
-    this.attachment = attachRef(this.opts.ref);
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    "data-orientation": this.opts.orientation.current,
-    "data-disabled": boolToEmptyStrOrUndef(this.opts.disabled.current),
-    [accordionAttrs.root]: "",
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var AccordionSingleState = class extends AccordionBaseState {
-  opts;
-  isMulti = false;
-  constructor(opts) {
-    super(opts);
-    this.opts = opts;
-    this.includesItem = this.includesItem.bind(this);
-    this.toggleItem = this.toggleItem.bind(this);
-  }
-  includesItem(item) {
-    return this.opts.value.current === item;
-  }
-  toggleItem(item) {
-    this.opts.value.current = this.includesItem(item) ? "" : item;
-  }
-};
-var AccordionMultiState = class extends AccordionBaseState {
-  #value;
-  isMulti = true;
-  constructor(props) {
-    super(props);
-    this.#value = props.value;
-    this.includesItem = this.includesItem.bind(this);
-    this.toggleItem = this.toggleItem.bind(this);
-  }
-  includesItem(item) {
-    return this.#value.current.includes(item);
-  }
-  toggleItem(item) {
-    this.#value.current = this.includesItem(item) ? this.#value.current.filter((v) => v !== item) : [...this.#value.current, item];
-  }
-};
-var AccordionRootState = class {
-  static create(props) {
-    const { type, ...rest } = props;
-    const rootState = type === "single" ? new AccordionSingleState(rest) : new AccordionMultiState(rest);
-    return AccordionRootContext.set(rootState);
-  }
-};
-var AccordionItemState = class _AccordionItemState {
-  static create(props) {
-    return AccordionItemContext.set(new _AccordionItemState({ ...props, rootState: AccordionRootContext.get() }));
-  }
-  opts;
-  root;
-  #isActive = user_derived(() => this.root.includesItem(this.opts.value.current));
-  get isActive() {
-    return get2(this.#isActive);
-  }
-  set isActive(value) {
-    set(this.#isActive, value);
-  }
-  #isDisabled = user_derived(() => this.opts.disabled.current || this.root.opts.disabled.current);
-  get isDisabled() {
-    return get2(this.#isDisabled);
-  }
-  set isDisabled(value) {
-    set(this.#isDisabled, value);
-  }
-  attachment;
-  #contentNode = state(null);
-  get contentNode() {
-    return get2(this.#contentNode);
-  }
-  set contentNode(value) {
-    set(this.#contentNode, value, true);
-  }
-  contentPresence;
-  constructor(opts) {
-    this.opts = opts;
-    this.root = opts.rootState;
-    this.updateValue = this.updateValue.bind(this);
-    this.attachment = attachRef(this.opts.ref);
-    this.contentPresence = new PresenceManager({
-      ref: boxWith(() => this.contentNode),
-      open: boxWith(() => this.isActive)
-    });
-  }
-  updateValue() {
-    this.root.toggleItem(this.opts.value.current);
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    "data-state": getDataOpenClosed(this.isActive),
-    "data-disabled": boolToEmptyStrOrUndef(this.isDisabled),
-    "data-orientation": this.root.opts.orientation.current,
-    [accordionAttrs.item]: "",
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var AccordionTriggerState = class _AccordionTriggerState {
-  opts;
-  itemState;
-  #root;
-  #isDisabled = user_derived(() => this.opts.disabled.current || this.itemState.opts.disabled.current || this.#root.opts.disabled.current);
-  attachment;
-  constructor(opts, itemState) {
-    this.opts = opts;
-    this.itemState = itemState;
-    this.#root = itemState.root;
-    this.onclick = this.onclick.bind(this);
-    this.onkeydown = this.onkeydown.bind(this);
-    this.attachment = attachRef(this.opts.ref);
-  }
-  static create(props) {
-    return new _AccordionTriggerState(props, AccordionItemContext.get());
-  }
-  onclick(e) {
-    if (get2(this.#isDisabled) || e.button !== 0) {
-      e.preventDefault();
-      return;
-    }
-    this.itemState.updateValue();
-  }
-  onkeydown(e) {
-    if (get2(this.#isDisabled)) return;
-    if (e.key === kbd_constants_exports.SPACE || e.key === kbd_constants_exports.ENTER) {
-      e.preventDefault();
-      this.itemState.updateValue();
-      return;
-    }
-    this.#root.rovingFocusGroup.handleKeydown(this.opts.ref.current, e);
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    disabled: get2(this.#isDisabled),
-    "aria-expanded": boolToStr(this.itemState.isActive),
-    "aria-disabled": boolToStr(get2(this.#isDisabled)),
-    "data-disabled": boolToEmptyStrOrUndef(get2(this.#isDisabled)),
-    "data-state": getDataOpenClosed(this.itemState.isActive),
-    "data-orientation": this.#root.opts.orientation.current,
-    [accordionAttrs.trigger]: "",
-    tabindex: this.opts.tabindex.current,
-    onclick: this.onclick,
-    onkeydown: this.onkeydown,
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var AccordionContentState = class _AccordionContentState {
-  opts;
-  item;
-  attachment;
-  #originalStyles = void 0;
-  #isMountAnimationPrevented = false;
-  #dimensions = state(proxy({ width: 0, height: 0 }));
-  #open = user_derived(() => {
-    if (this.opts.hiddenUntilFound.current) return this.item.isActive;
-    return this.opts.forceMount.current || this.item.isActive;
-  });
-  get open() {
-    return get2(this.#open);
-  }
-  set open(value) {
-    set(this.#open, value);
-  }
-  constructor(opts, item) {
-    this.opts = opts;
-    this.item = item;
-    this.#isMountAnimationPrevented = this.item.isActive;
-    this.attachment = attachRef(this.opts.ref, (v) => this.item.contentNode = v);
-    user_effect(() => {
-      const rAF = requestAnimationFrame(() => {
-        this.#isMountAnimationPrevented = false;
-      });
-      return () => cancelAnimationFrame(rAF);
-    });
-    watch.pre(
-      [
-        () => this.opts.ref.current,
-        () => this.opts.hiddenUntilFound.current
-      ],
-      ([node, hiddenUntilFound]) => {
-        if (!node || !hiddenUntilFound) return;
-        const handleBeforeMatch = () => {
-          if (this.item.isActive) return;
-          requestAnimationFrame(() => {
-            this.item.updateValue();
-          });
-        };
-        return on(node, "beforematch", handleBeforeMatch);
-      }
-    );
-    watch([() => this.open, () => this.opts.ref.current], this.#updateDimensions);
-  }
-  static create(props) {
-    return new _AccordionContentState(props, AccordionItemContext.get());
-  }
-  #updateDimensions = ([_, node]) => {
-    if (!node) return;
-    afterTick(() => {
-      const element2 = this.opts.ref.current;
-      if (!element2) return;
-      this.#originalStyles ??= {
-        transitionDuration: element2.style.transitionDuration,
-        animationName: element2.style.animationName
-      };
-      element2.style.transitionDuration = "0s";
-      element2.style.animationName = "none";
-      const rect = element2.getBoundingClientRect();
-      set(this.#dimensions, { width: rect.width, height: rect.height }, true);
-      if (!this.#isMountAnimationPrevented && this.#originalStyles) {
-        element2.style.transitionDuration = this.#originalStyles.transitionDuration;
-        element2.style.animationName = this.#originalStyles.animationName;
-      }
-    });
-  };
-  get shouldRender() {
-    return this.item.contentPresence.shouldRender;
-  }
-  #snippetProps = user_derived(() => ({ open: this.item.isActive }));
-  get snippetProps() {
-    return get2(this.#snippetProps);
-  }
-  set snippetProps(value) {
-    set(this.#snippetProps, value);
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    "data-state": getDataOpenClosed(this.item.isActive),
-    ...getDataTransitionAttrs(this.item.contentPresence.transitionStatus),
-    "data-disabled": boolToEmptyStrOrUndef(this.item.isDisabled),
-    "data-orientation": this.item.root.opts.orientation.current,
-    [accordionAttrs.content]: "",
-    style: {
-      "--bits-accordion-content-height": `${get2(this.#dimensions).height}px`,
-      "--bits-accordion-content-width": `${get2(this.#dimensions).width}px`
-    },
-    hidden: this.opts.hiddenUntilFound.current && !this.item.isActive ? "until-found" : void 0,
-    ...this.opts.hiddenUntilFound.current && !this.shouldRender ? {} : {
-      hidden: this.opts.hiddenUntilFound.current ? !this.shouldRender : this.opts.forceMount.current ? void 0 : !this.shouldRender
-    },
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var AccordionHeaderState = class _AccordionHeaderState {
-  opts;
-  item;
-  attachment;
-  constructor(opts, item) {
-    this.opts = opts;
-    this.item = item;
-    this.attachment = attachRef(this.opts.ref);
-  }
-  static create(props) {
-    return new _AccordionHeaderState(props, AccordionItemContext.get());
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    role: "heading",
-    "aria-level": this.opts.level.current,
-    "data-heading-level": this.opts.level.current,
-    "data-state": getDataOpenClosed(this.item.isActive),
-    "data-orientation": this.item.root.opts.orientation.current,
-    [accordionAttrs.header]: "",
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-
-// node_modules/bits-ui/dist/internal/noop.js
-function noop3() {
-}
-
-// node_modules/bits-ui/dist/internal/create-id.js
-function createId(prefixOrUid, uid2) {
-  if (uid2 === void 0)
-    return `bits-${prefixOrUid}`;
-  return `bits-${prefixOrUid}-${uid2}`;
-}
-
-// node_modules/bits-ui/dist/bits/accordion/components/accordion.svelte
-var rest_excludes8 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "disabled",
-  "children",
-  "child",
-  "type",
-  "value",
-  "ref",
-  "id",
-  "onValueChange",
-  "loop",
-  "orientation"
-]);
-var root9 = from_html(`<div><!></div>`);
-function Accordion($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let disabled = prop($$props, "disabled", 3, false), value = prop($$props, "value", 15), ref = prop($$props, "ref", 15, null), id = prop($$props, "id", 19, () => createId(uid2)), onValueChange = prop($$props, "onValueChange", 3, noop3), loop2 = prop($$props, "loop", 3, true), orientation = prop($$props, "orientation", 3, "vertical"), restProps = rest_props($$props, rest_excludes8);
-  function handleDefaultValue() {
-    if (value() !== void 0) return;
-    value($$props.type === "single" ? "" : []);
-  }
-  handleDefaultValue();
-  watch.pre(() => value(), () => {
-    handleDefaultValue();
-  });
-  const rootState = AccordionRootState.create({
-    type: $$props.type,
-    value: boxWith(() => value(), (v) => {
-      value(v);
-      onValueChange()(v);
-    }),
-    id: boxWith(() => id()),
-    disabled: boxWith(() => disabled()),
-    loop: boxWith(() => loop2()),
-    orientation: boxWith(() => orientation()),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, rootState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var div = root9();
-      attribute_effect(div, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(div);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(div);
-      append($$anchor2, div);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/accordion/components/accordion-item.svelte
-var rest_excludes9 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "disabled",
-  "value",
-  "children",
-  "child",
-  "ref"
-]);
-var root10 = from_html(`<div><!></div>`);
-function Accordion_item($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  const defaultId = createId(uid2);
-  let id = prop($$props, "id", 3, defaultId), disabled = prop($$props, "disabled", 3, false), value = prop($$props, "value", 3, defaultId), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes9);
-  const itemState = AccordionItemState.create({
-    value: boxWith(() => value()),
-    disabled: boxWith(() => disabled()),
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, itemState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var div = root10();
-      attribute_effect(div, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(div);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(div);
-      append($$anchor2, div);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/accordion/components/accordion-header.svelte
-var rest_excludes10 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "level",
-  "children",
-  "child",
-  "ref"
-]);
-var root11 = from_html(`<div><!></div>`);
-function Accordion_header($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), level = prop($$props, "level", 3, 2), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes10);
-  const headerState = AccordionHeaderState.create({
-    id: boxWith(() => id()),
-    level: boxWith(() => level()),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, headerState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var div = root11();
-      attribute_effect(div, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(div);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(div);
-      append($$anchor2, div);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/accordion/components/accordion-trigger.svelte
-var rest_excludes11 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "disabled",
-  "ref",
-  "id",
-  "tabindex",
-  "children",
-  "child"
-]);
-var root12 = from_html(`<button><!></button>`);
-function Accordion_trigger($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let disabled = prop($$props, "disabled", 3, false), ref = prop($$props, "ref", 15, null), id = prop($$props, "id", 19, () => createId(uid2)), tabindex = prop($$props, "tabindex", 3, 0), restProps = rest_props($$props, rest_excludes11);
-  const triggerState = AccordionTriggerState.create({
-    disabled: boxWith(() => disabled()),
-    id: boxWith(() => id()),
-    tabindex: boxWith(() => tabindex() ?? 0),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, triggerState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var button = root12();
-      attribute_effect(button, () => ({ type: "button", ...get2(mergedProps) }));
-      var node_2 = child(button);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(button);
-      append($$anchor2, button);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/accordion/components/accordion-content.svelte
-var rest_excludes12 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "child",
-  "ref",
-  "id",
-  "forceMount",
-  "children",
-  "hiddenUntilFound"
-]);
-var root13 = from_html(`<div><!></div>`);
-function Accordion_content($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), id = prop($$props, "id", 19, () => createId(uid2)), forceMount = prop($$props, "forceMount", 3, false), hiddenUntilFound = prop($$props, "hiddenUntilFound", 3, false), restProps = rest_props($$props, rest_excludes12);
-  const contentState = AccordionContentState.create({
-    forceMount: boxWith(() => forceMount()),
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v)),
-    hiddenUntilFound: boxWith(() => hiddenUntilFound())
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, contentState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      {
-        let $0 = user_derived(() => ({ props: get2(mergedProps), ...contentState.snippetProps }));
-        snippet(node_1, () => $$props.child, () => get2($0));
-      }
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var div = root13();
-      attribute_effect(div, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(div);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(div);
-      append($$anchor2, div);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/utilities/portal/portal-consumer.svelte
-function Portal_consumer($$anchor, $$props) {
-  var fragment = comment();
-  var node = first_child(fragment);
-  key(node, () => $$props.children, ($$anchor2) => {
-    var fragment_1 = comment();
-    var node_1 = first_child(fragment_1);
-    snippet(node_1, () => $$props.children ?? noop);
-    append($$anchor2, fragment_1);
-  });
-  append($$anchor, fragment);
-}
-
-// node_modules/bits-ui/dist/bits/utilities/config/bits-config.js
-var BitsConfigContext = new Context("BitsConfig");
-function getBitsConfig() {
-  const fallback2 = new BitsConfigState(null, {});
-  return BitsConfigContext.getOr(fallback2).opts;
-}
-var BitsConfigState = class {
-  opts;
-  constructor(parent2, opts) {
-    const resolveConfigOption = createConfigResolver(parent2, opts);
-    this.opts = {
-      defaultPortalTo: resolveConfigOption((config) => config.defaultPortalTo),
-      defaultLocale: resolveConfigOption((config) => config.defaultLocale)
-    };
-  }
-};
-function createConfigResolver(parent2, currentOpts) {
-  return (getter) => {
-    const configOption = boxWith(() => {
-      const value = getter(currentOpts)?.current;
-      if (value !== void 0)
-        return value;
-      if (parent2 === null)
-        return void 0;
-      return getter(parent2.opts)?.current;
-    });
-    return configOption;
-  };
-}
-
-// node_modules/bits-ui/dist/bits/utilities/config/prop-resolvers.js
-function createPropResolver(configOption, fallback2) {
-  return (getProp2) => {
-    const config = getBitsConfig();
-    return boxWith(() => {
-      const propValue = getProp2();
-      if (propValue !== void 0)
-        return propValue;
-      const option = configOption(config).current;
-      if (option !== void 0)
-        return option;
-      return fallback2;
-    });
-  };
-}
-var resolveLocaleProp = createPropResolver((config) => config.defaultLocale, "en");
-var resolvePortalToProp = createPropResolver((config) => config.defaultPortalTo, "body");
-
-// node_modules/bits-ui/dist/bits/utilities/portal/portal.svelte
-function Portal($$anchor, $$props) {
-  push($$props, true);
-  const to = resolvePortalToProp(() => $$props.to);
-  const context = getAllContexts();
-  let target = user_derived(getTarget);
-  function getTarget() {
-    if (!isBrowser || $$props.disabled) return null;
-    let localTarget = null;
-    if (typeof to.current === "string") {
-      const target2 = document.querySelector(to.current);
-      if (dev_fallback_default && target2 === null) {
-        throw new Error(`Target element "${to.current}" not found.`);
-      }
-      localTarget = target2;
-    } else {
-      localTarget = to.current;
-    }
-    if (dev_fallback_default && !(localTarget instanceof Element)) {
-      const type = localTarget === null ? "null" : typeof localTarget;
-      throw new TypeError(`Unknown portal target type: ${type}. Allowed types: string (query selector) or Element.`);
-    }
-    return localTarget;
-  }
-  let instance;
-  function unmountInstance() {
-    if (instance) {
-      unmount(instance);
-      instance = null;
-    }
-  }
-  watch([() => get2(target), () => $$props.disabled], ([target2, disabled]) => {
-    if (!target2 || disabled) {
-      unmountInstance();
-      return;
-    }
-    instance = mount(Portal_consumer, { target: target2, props: { children: $$props.children }, context });
-    return () => {
-      unmountInstance();
-    };
-  });
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.children ?? noop);
-      append($$anchor2, fragment_1);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.disabled) $$render(consequent);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/internal/events.js
-var CustomEventDispatcher = class {
-  eventName;
-  options;
-  constructor(eventName, options = { bubbles: true, cancelable: true }) {
-    this.eventName = eventName;
-    this.options = options;
-  }
-  createEvent(detail) {
-    return new CustomEvent(this.eventName, {
-      ...this.options,
-      detail
-    });
-  }
-  dispatch(element2, detail) {
-    const event2 = this.createEvent(detail);
-    element2.dispatchEvent(event2);
-    return event2;
-  }
-  listen(element2, callback, options) {
-    const handler = (event2) => {
-      callback(event2);
-    };
-    return on(element2, this.eventName, handler, options);
-  }
-};
-
-// node_modules/bits-ui/dist/internal/debounce.js
-function debounce2(fn, wait2 = 500) {
-  let timeout = null;
-  const debounced = (...args) => {
-    if (timeout !== null) {
-      clearTimeout(timeout);
-    }
-    timeout = setTimeout(() => {
-      fn(...args);
-    }, wait2);
-  };
-  debounced.destroy = () => {
-    if (timeout !== null) {
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-  return debounced;
-}
-
-// node_modules/bits-ui/dist/internal/elements.js
-function isOrContainsTarget2(node, target) {
-  return node === target || node.contains(target);
-}
-function getOwnerDocument2(el) {
-  return el?.ownerDocument ?? document;
-}
-
-// node_modules/bits-ui/dist/internal/dom.js
-function isClickTrulyOutside(event2, contentNode) {
-  const { clientX, clientY } = event2;
-  const rect = contentNode.getBoundingClientRect();
-  return clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom;
-}
-
-// node_modules/tabbable/dist/index.esm.js
-var candidateSelectors = ["input:not([inert]):not([inert] *)", "select:not([inert]):not([inert] *)", "textarea:not([inert]):not([inert] *)", "a[href]:not([inert]):not([inert] *)", "area[href]:not([inert]):not([inert] *)", "button:not([inert]):not([inert] *)", "[tabindex]:not(slot):not([inert]):not([inert] *)", "audio[controls]:not([inert]):not([inert] *)", "video[controls]:not([inert]):not([inert] *)", '[contenteditable]:not([contenteditable="false"]):not([inert]):not([inert] *)', "details>summary:first-of-type:not([inert]):not([inert] *)", "details:not([inert]):not([inert] *)"];
-var candidateSelector = /* @__PURE__ */ candidateSelectors.join(",");
-var NoElement = typeof Element === "undefined";
-var matches = NoElement ? function() {
-} : Element.prototype.matches || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
-var getRootNode = !NoElement && Element.prototype.getRootNode ? function(element2) {
-  var _element$getRootNode;
-  return element2 === null || element2 === void 0 ? void 0 : (_element$getRootNode = element2.getRootNode) === null || _element$getRootNode === void 0 ? void 0 : _element$getRootNode.call(element2);
-} : function(element2) {
-  return element2 === null || element2 === void 0 ? void 0 : element2.ownerDocument;
-};
-var _isInert = function isInert(node, lookUp) {
-  var _node$getAttribute;
-  if (lookUp === void 0) {
-    lookUp = true;
-  }
-  var inertAtt = node === null || node === void 0 ? void 0 : (_node$getAttribute = node.getAttribute) === null || _node$getAttribute === void 0 ? void 0 : _node$getAttribute.call(node, "inert");
-  var inert = inertAtt === "" || inertAtt === "true";
-  var result = inert || lookUp && node && // closest does not exist on shadow roots, so we fall back to a manual
-  // lookup upward, in case it is not defined.
-  (typeof node.closest === "function" ? node.closest("[inert]") : _isInert(node.parentNode));
-  return result;
-};
-var isContentEditable = function isContentEditable2(node) {
-  var _node$getAttribute2;
-  var attValue = node === null || node === void 0 ? void 0 : (_node$getAttribute2 = node.getAttribute) === null || _node$getAttribute2 === void 0 ? void 0 : _node$getAttribute2.call(node, "contenteditable");
-  return attValue === "" || attValue === "true";
-};
-var getCandidates = function getCandidates2(el, includeContainer, filter4) {
-  if (_isInert(el)) {
-    return [];
-  }
-  var candidates = Array.prototype.slice.apply(el.querySelectorAll(candidateSelector));
-  if (includeContainer && matches.call(el, candidateSelector)) {
-    candidates.unshift(el);
-  }
-  candidates = candidates.filter(filter4);
-  return candidates;
-};
-var _getCandidatesIteratively = function getCandidatesIteratively(elements, includeContainer, options) {
-  var candidates = [];
-  var elementsToCheck = Array.from(elements);
-  while (elementsToCheck.length) {
-    var element2 = elementsToCheck.shift();
-    if (_isInert(element2, false)) {
-      continue;
-    }
-    if (element2.tagName === "SLOT") {
-      var assigned = element2.assignedElements();
-      var content = assigned.length ? assigned : element2.children;
-      var nestedCandidates = _getCandidatesIteratively(content, true, options);
-      if (options.flatten) {
-        candidates.push.apply(candidates, nestedCandidates);
-      } else {
-        candidates.push({
-          scopeParent: element2,
-          candidates: nestedCandidates
-        });
-      }
-    } else {
-      var validCandidate = matches.call(element2, candidateSelector);
-      if (validCandidate && options.filter(element2) && (includeContainer || !elements.includes(element2))) {
-        candidates.push(element2);
-      }
-      var shadowRoot = element2.shadowRoot || // check for an undisclosed shadow
-      typeof options.getShadowRoot === "function" && options.getShadowRoot(element2);
-      var validShadowRoot = !_isInert(shadowRoot, false) && (!options.shadowRootFilter || options.shadowRootFilter(element2));
-      if (shadowRoot && validShadowRoot) {
-        var _nestedCandidates = _getCandidatesIteratively(shadowRoot === true ? element2.children : shadowRoot.children, true, options);
-        if (options.flatten) {
-          candidates.push.apply(candidates, _nestedCandidates);
-        } else {
-          candidates.push({
-            scopeParent: element2,
-            candidates: _nestedCandidates
-          });
-        }
-      } else {
-        elementsToCheck.unshift.apply(elementsToCheck, element2.children);
-      }
-    }
-  }
-  return candidates;
-};
-var hasTabIndex = function hasTabIndex2(node) {
-  return !isNaN(parseInt(node.getAttribute("tabindex"), 10));
-};
-var getTabIndex = function getTabIndex2(node) {
-  if (!node) {
-    throw new Error("No node provided");
-  }
-  if (node.tabIndex < 0) {
-    if ((/^(AUDIO|VIDEO|DETAILS)$/.test(node.tagName) || isContentEditable(node)) && !hasTabIndex(node)) {
-      return 0;
-    }
-  }
-  return node.tabIndex;
-};
-var getSortOrderTabIndex = function getSortOrderTabIndex2(node, isScope) {
-  var tabIndex = getTabIndex(node);
-  if (tabIndex < 0 && isScope && !hasTabIndex(node)) {
-    return 0;
-  }
-  return tabIndex;
-};
-var sortOrderedTabbables = function sortOrderedTabbables2(a2, b) {
-  return a2.tabIndex === b.tabIndex ? a2.documentOrder - b.documentOrder : a2.tabIndex - b.tabIndex;
-};
-var isInput = function isInput2(node) {
-  return node.tagName === "INPUT";
-};
-var isHiddenInput2 = function isHiddenInput3(node) {
-  return isInput(node) && node.type === "hidden";
-};
-var isDetailsWithSummary = function isDetailsWithSummary2(node) {
-  var r2 = node.tagName === "DETAILS" && Array.prototype.slice.apply(node.children).some(function(child2) {
-    return child2.tagName === "SUMMARY";
-  });
-  return r2;
-};
-var getCheckedRadio = function getCheckedRadio2(nodes, form) {
-  for (var i = 0; i < nodes.length; i++) {
-    if (nodes[i].checked && nodes[i].form === form) {
-      return nodes[i];
-    }
-  }
-};
-var isTabbableRadio = function isTabbableRadio2(node) {
-  if (!node.name) {
-    return true;
-  }
-  var radioScope = node.form || getRootNode(node);
-  var queryRadios = function queryRadios2(name) {
-    return radioScope.querySelectorAll('input[type="radio"][name="' + name + '"]');
-  };
-  var radioSet;
-  if (typeof window !== "undefined" && typeof window.CSS !== "undefined" && typeof window.CSS.escape === "function") {
-    radioSet = queryRadios(window.CSS.escape(node.name));
-  } else {
-    try {
-      radioSet = queryRadios(node.name);
-    } catch (err) {
-      console.error("Looks like you have a radio button with a name attribute containing invalid CSS selector characters and need the CSS.escape polyfill: %s", err.message);
-      return false;
-    }
-  }
-  var checked = getCheckedRadio(radioSet, node.form);
-  return !checked || checked === node;
-};
-var isRadio = function isRadio2(node) {
-  return isInput(node) && node.type === "radio";
-};
-var isNonTabbableRadio = function isNonTabbableRadio2(node) {
-  return isRadio(node) && !isTabbableRadio(node);
-};
-var isNodeAttached = function isNodeAttached2(node) {
-  var _nodeRoot;
-  var nodeRoot = node && getRootNode(node);
-  var nodeRootHost = (_nodeRoot = nodeRoot) === null || _nodeRoot === void 0 ? void 0 : _nodeRoot.host;
-  var attached = false;
-  if (nodeRoot && nodeRoot !== node) {
-    var _nodeRootHost, _nodeRootHost$ownerDo, _node$ownerDocument;
-    attached = !!((_nodeRootHost = nodeRootHost) !== null && _nodeRootHost !== void 0 && (_nodeRootHost$ownerDo = _nodeRootHost.ownerDocument) !== null && _nodeRootHost$ownerDo !== void 0 && _nodeRootHost$ownerDo.contains(nodeRootHost) || node !== null && node !== void 0 && (_node$ownerDocument = node.ownerDocument) !== null && _node$ownerDocument !== void 0 && _node$ownerDocument.contains(node));
-    while (!attached && nodeRootHost) {
-      var _nodeRoot2, _nodeRootHost2, _nodeRootHost2$ownerD;
-      nodeRoot = getRootNode(nodeRootHost);
-      nodeRootHost = (_nodeRoot2 = nodeRoot) === null || _nodeRoot2 === void 0 ? void 0 : _nodeRoot2.host;
-      attached = !!((_nodeRootHost2 = nodeRootHost) !== null && _nodeRootHost2 !== void 0 && (_nodeRootHost2$ownerD = _nodeRootHost2.ownerDocument) !== null && _nodeRootHost2$ownerD !== void 0 && _nodeRootHost2$ownerD.contains(nodeRootHost));
-    }
-  }
-  return attached;
-};
-var isZeroArea = function isZeroArea2(node) {
-  var _node$getBoundingClie = node.getBoundingClientRect(), width = _node$getBoundingClie.width, height = _node$getBoundingClie.height;
-  return width === 0 && height === 0;
-};
-var isHidden = function isHidden2(node, _ref) {
-  var displayCheck = _ref.displayCheck, getShadowRoot = _ref.getShadowRoot;
-  if (displayCheck === "full-native") {
-    if ("checkVisibility" in node) {
-      var visible = node.checkVisibility({
-        // Checking opacity might be desirable for some use cases, but natively,
-        // opacity zero elements _are_ focusable and tabbable.
-        checkOpacity: false,
-        opacityProperty: false,
-        contentVisibilityAuto: true,
-        visibilityProperty: true,
-        // This is an alias for `visibilityProperty`. Contemporary browsers
-        // support both. However, this alias has wider browser support (Chrome
-        // >= 105 and Firefox >= 106, vs. Chrome >= 121 and Firefox >= 122), so
-        // we include it anyway.
-        checkVisibilityCSS: true
-      });
-      return !visible;
-    }
-  }
-  var _getComputedStyle = getComputedStyle(node), visibility = _getComputedStyle.visibility;
-  if (visibility === "hidden" || visibility === "collapse") {
-    return true;
-  }
-  var isDirectSummary = matches.call(node, "details>summary:first-of-type");
-  var nodeUnderDetails = isDirectSummary ? node.parentElement : node;
-  if (matches.call(nodeUnderDetails, "details:not([open]) *")) {
-    return true;
-  }
-  if (!displayCheck || displayCheck === "full" || // full-native can run this branch when it falls through in case
-  // Element#checkVisibility is unsupported
-  displayCheck === "full-native" || displayCheck === "legacy-full") {
-    if (typeof getShadowRoot === "function") {
-      var originalNode = node;
-      while (node) {
-        var parentElement = node.parentElement;
-        var rootNode = getRootNode(node);
-        if (parentElement && !parentElement.shadowRoot && getShadowRoot(parentElement) === true) {
-          return isZeroArea(node);
-        } else if (node.assignedSlot) {
-          node = node.assignedSlot;
-        } else if (!parentElement && rootNode !== node.ownerDocument) {
-          node = rootNode.host;
-        } else {
-          node = parentElement;
-        }
-      }
-      node = originalNode;
-    }
-    if (isNodeAttached(node)) {
-      return !node.getClientRects().length;
-    }
-    if (displayCheck !== "legacy-full") {
-      return true;
-    }
-  } else if (displayCheck === "non-zero-area") {
-    return isZeroArea(node);
-  }
-  return false;
-};
-var isDisabledFromFieldset = function isDisabledFromFieldset2(node) {
-  if (/^(INPUT|BUTTON|SELECT|TEXTAREA)$/.test(node.tagName)) {
-    var parentNode = node.parentElement;
-    while (parentNode) {
-      if (parentNode.tagName === "FIELDSET" && parentNode.disabled) {
-        for (var i = 0; i < parentNode.children.length; i++) {
-          var child2 = parentNode.children.item(i);
-          if (child2.tagName === "LEGEND") {
-            return matches.call(parentNode, "fieldset[disabled] *") ? true : !child2.contains(node);
-          }
-        }
-        return true;
-      }
-      parentNode = parentNode.parentElement;
-    }
-  }
-  return false;
-};
-var isNodeMatchingSelectorFocusable = function isNodeMatchingSelectorFocusable2(options, node) {
-  if (node.disabled || isHiddenInput2(node) || isHidden(node, options) || // For a details element with a summary, the summary element gets the focus
-  isDetailsWithSummary(node) || isDisabledFromFieldset(node)) {
-    return false;
-  }
-  return true;
-};
-var isNodeMatchingSelectorTabbable = function isNodeMatchingSelectorTabbable2(options, node) {
-  if (isNonTabbableRadio(node) || getTabIndex(node) < 0 || !isNodeMatchingSelectorFocusable(options, node)) {
-    return false;
-  }
-  return true;
-};
-var isShadowRootTabbable = function isShadowRootTabbable2(shadowHostNode) {
-  var tabIndex = parseInt(shadowHostNode.getAttribute("tabindex"), 10);
-  if (isNaN(tabIndex) || tabIndex >= 0) {
-    return true;
-  }
-  return false;
-};
-var _sortByOrder = function sortByOrder(candidates) {
-  var regularTabbables = [];
-  var orderedTabbables = [];
-  candidates.forEach(function(item, i) {
-    var isScope = !!item.scopeParent;
-    var element2 = isScope ? item.scopeParent : item;
-    var candidateTabindex = getSortOrderTabIndex(element2, isScope);
-    var elements = isScope ? _sortByOrder(item.candidates) : element2;
-    if (candidateTabindex === 0) {
-      isScope ? regularTabbables.push.apply(regularTabbables, elements) : regularTabbables.push(element2);
-    } else {
-      orderedTabbables.push({
-        documentOrder: i,
-        tabIndex: candidateTabindex,
-        item,
-        isScope,
-        content: elements
-      });
-    }
-  });
-  return orderedTabbables.sort(sortOrderedTabbables).reduce(function(acc, sortable) {
-    sortable.isScope ? acc.push.apply(acc, sortable.content) : acc.push(sortable.content);
-    return acc;
-  }, []).concat(regularTabbables);
-};
-var tabbable = function tabbable2(container, options) {
-  options = options || {};
-  var candidates;
-  if (options.getShadowRoot) {
-    candidates = _getCandidatesIteratively([container], options.includeContainer, {
-      filter: isNodeMatchingSelectorTabbable.bind(null, options),
-      flatten: false,
-      getShadowRoot: options.getShadowRoot,
-      shadowRootFilter: isShadowRootTabbable
-    });
-  } else {
-    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorTabbable.bind(null, options));
-  }
-  return _sortByOrder(candidates);
-};
-var focusable = function focusable2(container, options) {
-  options = options || {};
-  var candidates;
-  if (options.getShadowRoot) {
-    candidates = _getCandidatesIteratively([container], options.includeContainer, {
-      filter: isNodeMatchingSelectorFocusable.bind(null, options),
-      flatten: true,
-      getShadowRoot: options.getShadowRoot
-    });
-  } else {
-    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorFocusable.bind(null, options));
-  }
-  return candidates;
-};
-var focusableCandidateSelector = /* @__PURE__ */ candidateSelectors.concat("iframe:not([inert]):not([inert] *)").join(",");
-var isFocusable = function isFocusable2(node, options) {
-  options = options || {};
-  if (!node) {
-    throw new Error("No node provided");
-  }
-  if (matches.call(node, focusableCandidateSelector) === false) {
-    return false;
-  }
-  return isNodeMatchingSelectorFocusable(options, node);
-};
-
-// node_modules/bits-ui/dist/internal/arrays.js
-function next3(array, index4, loop2 = true) {
-  if (array.length === 0 || index4 < 0 || index4 >= array.length)
-    return;
-  if (array.length === 1 && index4 === 0)
-    return array[0];
-  if (index4 === array.length - 1)
-    return loop2 ? array[0] : void 0;
-  return array[index4 + 1];
-}
-function prev2(array, index4, loop2 = true) {
-  if (array.length === 0 || index4 < 0 || index4 >= array.length)
-    return;
-  if (array.length === 1 && index4 === 0)
-    return array[0];
-  if (index4 === 0)
-    return loop2 ? array[array.length - 1] : void 0;
-  return array[index4 - 1];
-}
-function forward(array, index4, increment2, loop2 = true) {
-  if (array.length === 0 || index4 < 0 || index4 >= array.length)
-    return;
-  let targetIndex = index4 + increment2;
-  if (loop2) {
-    targetIndex = (targetIndex % array.length + array.length) % array.length;
-  } else {
-    targetIndex = Math.max(0, Math.min(targetIndex, array.length - 1));
-  }
-  return array[targetIndex];
-}
-function backward(array, index4, decrement, loop2 = true) {
-  if (array.length === 0 || index4 < 0 || index4 >= array.length)
-    return;
-  let targetIndex = index4 - decrement;
-  if (loop2) {
-    targetIndex = (targetIndex % array.length + array.length) % array.length;
-  } else {
-    targetIndex = Math.max(0, Math.min(targetIndex, array.length - 1));
-  }
-  return array[targetIndex];
-}
-function getNextMatch(values, search, currentMatch) {
-  const lowerSearch = search.toLowerCase();
-  if (lowerSearch.endsWith(" ")) {
-    const searchWithoutSpace = lowerSearch.slice(0, -1);
-    const matchesWithoutSpace = values.filter((value) => value.toLowerCase().startsWith(searchWithoutSpace));
-    if (matchesWithoutSpace.length <= 1) {
-      return getNextMatch(values, searchWithoutSpace, currentMatch);
-    }
-    const currentMatchLowercase = currentMatch?.toLowerCase();
-    if (currentMatchLowercase && currentMatchLowercase.startsWith(searchWithoutSpace) && currentMatchLowercase.charAt(searchWithoutSpace.length) === " " && search.trim() === searchWithoutSpace) {
-      return currentMatch;
-    }
-    const spacedMatches = values.filter((value) => value.toLowerCase().startsWith(lowerSearch));
-    if (spacedMatches.length > 0) {
-      const currentMatchIndex2 = currentMatch ? values.indexOf(currentMatch) : -1;
-      let wrappedMatches = wrapArray(spacedMatches, Math.max(currentMatchIndex2, 0));
-      const nextMatch2 = wrappedMatches.find((match) => match !== currentMatch);
-      return nextMatch2 || currentMatch;
-    }
-  }
-  const isRepeated = search.length > 1 && Array.from(search).every((char) => char === search[0]);
-  const normalizedSearch = isRepeated ? search[0] : search;
-  const normalizedLowerSearch = normalizedSearch.toLowerCase();
-  const currentMatchIndex = currentMatch ? values.indexOf(currentMatch) : -1;
-  let wrappedValues = wrapArray(values, Math.max(currentMatchIndex, 0));
-  const excludeCurrentMatch = normalizedSearch.length === 1;
-  if (excludeCurrentMatch)
-    wrappedValues = wrappedValues.filter((v) => v !== currentMatch);
-  const nextMatch = wrappedValues.find((value) => value?.toLowerCase().startsWith(normalizedLowerSearch));
-  return nextMatch !== currentMatch ? nextMatch : void 0;
-}
-function wrapArray(array, startIndex) {
-  return array.map((_, index4) => array[(startIndex + index4) % array.length]);
-}
-
-// node_modules/bits-ui/dist/internal/box-auto-reset.svelte.js
-var defaultOptions2 = { afterMs: 1e4, onChange: noop3 };
-function boxAutoReset(defaultValue, options) {
-  const { afterMs, onChange, getWindow: getWindow3 } = { ...defaultOptions2, ...options };
-  let timeout = null;
-  let value = state(proxy(defaultValue));
-  function resetAfter() {
-    return getWindow3().setTimeout(
-      () => {
-        set(value, defaultValue, true);
-        onChange?.(defaultValue);
-      },
-      afterMs
-    );
-  }
-  user_effect(() => {
-    return () => {
-      if (timeout) getWindow3().clearTimeout(timeout);
-    };
-  });
-  return boxWith(() => get2(value), (v) => {
-    set(value, v, true);
-    onChange?.(v);
-    if (timeout) getWindow3().clearTimeout(timeout);
-    timeout = resetAfter();
-  });
-}
-
-// node_modules/bits-ui/dist/internal/dom-typeahead.svelte.js
-var DOMTypeahead = class {
-  #opts;
-  #search;
-  #onMatch = user_derived(() => {
-    if (this.#opts.onMatch) return this.#opts.onMatch;
-    return (node) => node.focus();
-  });
-  #getCurrentItem = user_derived(() => {
-    if (this.#opts.getCurrentItem) return this.#opts.getCurrentItem;
-    return this.#opts.getActiveElement;
-  });
-  constructor(opts) {
-    this.#opts = opts;
-    this.#search = boxAutoReset("", { afterMs: 1e3, getWindow: opts.getWindow });
-    this.handleTypeaheadSearch = this.handleTypeaheadSearch.bind(this);
-    this.resetTypeahead = this.resetTypeahead.bind(this);
-  }
-  handleTypeaheadSearch(key2, candidates) {
-    if (!candidates.length) return;
-    this.#search.current = this.#search.current + key2;
-    const currentItem = get2(this.#getCurrentItem)();
-    const currentMatch = candidates.find((item) => item === currentItem)?.textContent?.trim() ?? "";
-    const values = candidates.map((item) => item.textContent?.trim() ?? "");
-    const nextMatch = getNextMatch(values, this.#search.current, currentMatch);
-    const newItem = candidates.find((item) => item.textContent?.trim() === nextMatch);
-    if (newItem) get2(this.#onMatch)(newItem);
-    return newItem;
-  }
-  resetTypeahead() {
-    this.#search.current = "";
-  }
-  get search() {
-    return this.#search.current;
-  }
-};
-
-// node_modules/bits-ui/dist/bits/menu/menu.svelte.js
-var CONTEXT_MENU_TRIGGER_ATTR = "data-context-menu-trigger";
-var CONTEXT_MENU_CONTENT_ATTR = "data-context-menu-content";
-var MenuRootContext = new Context("Menu.Root");
-var MenuMenuContext = new Context("Menu.Root | Menu.Sub");
-var MenuContentContext = new Context("Menu.Content");
-var MenuGroupContext = new Context("Menu.Group | Menu.RadioGroup");
-var MenuRadioGroupContext = new Context("Menu.RadioGroup");
-var MenuCheckboxGroupContext = new Context("Menu.CheckboxGroup");
-var MenuOpenEvent = new CustomEventDispatcher("bitsmenuopen", { bubbles: false, cancelable: true });
-var menuAttrs = createBitsAttrs({
-  component: "menu",
-  parts: [
-    "trigger",
-    "content",
-    "sub-trigger",
-    "item",
-    "group",
-    "group-heading",
-    "checkbox-group",
-    "checkbox-item",
-    "radio-group",
-    "radio-item",
-    "separator",
-    "sub-content",
-    "arrow"
-  ]
-});
-
-// node_modules/bits-ui/dist/bits/utilities/dismissible-layer/use-dismissable-layer.svelte.js
-globalThis.bitsDismissableLayers ??= /* @__PURE__ */ new Map();
-var DismissibleLayerState = class _DismissibleLayerState {
-  static create(opts) {
-    return new _DismissibleLayerState(opts);
-  }
-  opts;
-  #interactOutsideProp;
-  #behaviorType;
-  #interceptedEvents = { pointerdown: false };
-  #isResponsibleLayer = false;
-  #isFocusInsideDOMTree = false;
-  #documentObj = void 0;
-  #onFocusOutside;
-  #unsubClickListener = noop3;
-  constructor(opts) {
-    this.opts = opts;
-    this.#behaviorType = opts.interactOutsideBehavior;
-    this.#interactOutsideProp = opts.onInteractOutside;
-    this.#onFocusOutside = opts.onFocusOutside;
-    user_effect(() => {
-      this.#documentObj = getOwnerDocument2(this.opts.ref.current);
-    });
-    let unsubEvents = noop3;
-    const cleanup = () => {
-      this.#resetState();
-      globalThis.bitsDismissableLayers.delete(this);
-      this.#handleInteractOutside.destroy();
-      unsubEvents();
-    };
-    watch([() => this.opts.enabled.current, () => this.opts.ref.current], () => {
-      if (!this.opts.enabled.current || !this.opts.ref.current) return;
-      afterSleep(1, () => {
-        if (!this.opts.ref.current) return;
-        globalThis.bitsDismissableLayers.set(this, this.#behaviorType);
-        unsubEvents();
-        unsubEvents = this.#addEventListeners();
-      });
-      return cleanup;
-    });
-    onDestroyEffect(() => {
-      this.#resetState.destroy();
-      globalThis.bitsDismissableLayers.delete(this);
-      this.#handleInteractOutside.destroy();
-      this.#unsubClickListener();
-      unsubEvents();
-    });
-  }
-  #handleFocus = (event2) => {
-    if (event2.defaultPrevented) return;
-    if (!this.opts.ref.current) return;
-    afterTick(() => {
-      if (!this.opts.ref.current || this.#isTargetWithinLayer(event2.target)) return;
-      if (event2.target && !this.#isFocusInsideDOMTree) {
-        this.#onFocusOutside.current?.(event2);
-      }
-    });
-  };
-  #addEventListeners() {
-    return executeCallbacks(
-      /**
-       * CAPTURE INTERACTION START
-       * mark interaction-start event as intercepted.
-       * mark responsible layer during interaction start
-       * to avoid checking if is responsible layer during interaction end
-       * when a new floating element may have been opened.
-       */
-      on(this.#documentObj, "pointerdown", executeCallbacks(this.#markInterceptedEvent, this.#markResponsibleLayer), { capture: true }),
-      /**
-       * BUBBLE INTERACTION START
-       * Mark interaction-start event as non-intercepted. Debounce `onInteractOutsideStart`
-       * to avoid prematurely checking if other events were intercepted.
-       */
-      on(this.#documentObj, "pointerdown", executeCallbacks(this.#markNonInterceptedEvent, this.#handleInteractOutside)),
-      /**
-       * HANDLE FOCUS OUTSIDE
-       */
-      on(this.#documentObj, "focusin", this.#handleFocus)
-    );
-  }
-  #handleDismiss = (e) => {
-    let event2 = e;
-    if (event2.defaultPrevented) {
-      event2 = createWrappedEvent(e);
-    }
-    this.#interactOutsideProp.current(e);
-  };
-  #handleInteractOutside = debounce2(
-    (e) => {
-      if (!this.opts.ref.current) {
-        this.#unsubClickListener();
-        return;
-      }
-      const isEventValid = this.opts.isValidEvent.current(e, this.opts.ref.current) || isValidEvent(e, this.opts.ref.current);
-      if (!this.#isResponsibleLayer || this.#isAnyEventIntercepted() || !isEventValid) {
-        this.#unsubClickListener();
-        return;
-      }
-      let event2 = e;
-      if (event2.defaultPrevented) {
-        event2 = createWrappedEvent(event2);
-      }
-      if (this.#behaviorType.current !== "close" && this.#behaviorType.current !== "defer-otherwise-close") {
-        this.#unsubClickListener();
-        return;
-      }
-      if (e.pointerType === "touch") {
-        this.#unsubClickListener();
-        this.#unsubClickListener = on(this.#documentObj, "click", this.#handleDismiss, { once: true });
-      } else {
-        this.#interactOutsideProp.current(event2);
-      }
-    },
-    10
-  );
-  #markInterceptedEvent = (e) => {
-    this.#interceptedEvents[e.type] = true;
-  };
-  #markNonInterceptedEvent = (e) => {
-    this.#interceptedEvents[e.type] = false;
-  };
-  #markResponsibleLayer = () => {
-    if (!this.opts.ref.current) return;
-    this.#isResponsibleLayer = isResponsibleLayer(this.opts.ref.current);
-  };
-  #isTargetWithinLayer = (target) => {
-    if (!this.opts.ref.current) return false;
-    return isOrContainsTarget2(this.opts.ref.current, target);
-  };
-  #resetState = debounce2(
-    () => {
-      for (const eventType in this.#interceptedEvents) {
-        this.#interceptedEvents[eventType] = false;
-      }
-      this.#isResponsibleLayer = false;
-    },
-    20
-  );
-  #isAnyEventIntercepted() {
-    const i = Object.values(this.#interceptedEvents).some(Boolean);
-    return i;
-  }
-  #onfocuscapture = () => {
-    this.#isFocusInsideDOMTree = true;
-  };
-  #onblurcapture = () => {
-    this.#isFocusInsideDOMTree = false;
-  };
-  props = {
-    onfocuscapture: this.#onfocuscapture,
-    onblurcapture: this.#onblurcapture
-  };
-};
-function getTopMostDismissableLayer(layersArr = [...globalThis.bitsDismissableLayers]) {
-  return layersArr.findLast(([_, { current: behaviorType }]) => behaviorType === "close" || behaviorType === "ignore");
-}
-function isResponsibleLayer(node) {
-  const layersArr = [...globalThis.bitsDismissableLayers];
-  const topMostLayer = getTopMostDismissableLayer(layersArr);
-  if (topMostLayer) return topMostLayer[0].opts.ref.current === node;
-  const [firstLayerNode] = layersArr[0];
-  return firstLayerNode.opts.ref.current === node;
-}
-function isValidEvent(e, node) {
-  const target = e.target;
-  if (!isElementOrSVGElement(target)) return false;
-  const targetIsContextMenuTrigger = Boolean(target.closest(`[${CONTEXT_MENU_TRIGGER_ATTR}]`));
-  const nodeIsContextMenu = Boolean(node.closest(`[${CONTEXT_MENU_CONTENT_ATTR}]`));
-  if ("button" in e && e.button > 0 && !targetIsContextMenuTrigger) return false;
-  if ("button" in e && e.button === 0 && targetIsContextMenuTrigger && nodeIsContextMenu) {
-    return true;
-  }
-  if (targetIsContextMenuTrigger && nodeIsContextMenu) return false;
-  const ownerDocument = getOwnerDocument2(target);
-  const isValid = ownerDocument.documentElement.contains(target) && !isOrContainsTarget2(node, target) && isClickTrulyOutside(e, node);
-  return isValid;
-}
-function createWrappedEvent(e) {
-  const capturedCurrentTarget = e.currentTarget;
-  const capturedTarget = e.target;
-  let newEvent;
-  if (e instanceof PointerEvent) {
-    newEvent = new PointerEvent(e.type, e);
-  } else {
-    newEvent = new PointerEvent("pointerdown", e);
-  }
-  let isPrevented = false;
-  const wrappedEvent = new Proxy(newEvent, {
-    get: (target, prop3) => {
-      if (prop3 === "currentTarget") {
-        return capturedCurrentTarget;
-      }
-      if (prop3 === "target") {
-        return capturedTarget;
-      }
-      if (prop3 === "preventDefault") {
-        return () => {
-          isPrevented = true;
-          if (typeof target.preventDefault === "function") {
-            target.preventDefault();
-          }
-        };
-      }
-      if (prop3 === "defaultPrevented") {
-        return isPrevented;
-      }
-      if (prop3 in target) {
-        return target[prop3];
-      }
-      return e[prop3];
-    }
-  });
-  return wrappedEvent;
-}
-
-// node_modules/bits-ui/dist/bits/utilities/dismissible-layer/dismissible-layer.svelte
-function Dismissible_layer($$anchor, $$props) {
-  push($$props, true);
-  let interactOutsideBehavior = prop($$props, "interactOutsideBehavior", 3, "close"), onInteractOutside = prop($$props, "onInteractOutside", 3, noop3), onFocusOutside = prop($$props, "onFocusOutside", 3, noop3), isValidEvent2 = prop($$props, "isValidEvent", 3, () => false);
-  const dismissibleLayerState = DismissibleLayerState.create({
-    id: boxWith(() => $$props.id),
-    interactOutsideBehavior: boxWith(() => interactOutsideBehavior()),
-    onInteractOutside: boxWith(() => onInteractOutside()),
-    enabled: boxWith(() => $$props.enabled),
-    onFocusOutside: boxWith(() => onFocusOutside()),
-    isValidEvent: boxWith(() => isValidEvent2()),
-    ref: $$props.ref
-  });
-  var fragment = comment();
-  var node = first_child(fragment);
-  snippet(node, () => $$props.children ?? noop, () => ({ props: dismissibleLayerState.props }));
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/utilities/escape-layer/use-escape-layer.svelte.js
-globalThis.bitsEscapeLayers ??= /* @__PURE__ */ new Map();
-var EscapeLayerState = class _EscapeLayerState {
-  static create(opts) {
-    return new _EscapeLayerState(opts);
-  }
-  opts;
-  domContext;
-  constructor(opts) {
-    this.opts = opts;
-    this.domContext = new DOMContext(this.opts.ref);
-    let unsubEvents = noop3;
-    watch(() => opts.enabled.current, (enabled) => {
-      if (enabled) {
-        globalThis.bitsEscapeLayers.set(this, opts.escapeKeydownBehavior);
-        unsubEvents = this.#addEventListener();
-      }
-      return () => {
-        unsubEvents();
-        globalThis.bitsEscapeLayers.delete(this);
-      };
-    });
-  }
-  #addEventListener = () => {
-    return on(this.domContext.getDocument(), "keydown", this.#onkeydown, { passive: false });
-  };
-  #onkeydown = (e) => {
-    if (e.key !== kbd_constants_exports.ESCAPE || !isResponsibleEscapeLayer(this)) return;
-    const clonedEvent = new KeyboardEvent(e.type, e);
-    e.preventDefault();
-    const behaviorType = this.opts.escapeKeydownBehavior.current;
-    if (behaviorType !== "close" && behaviorType !== "defer-otherwise-close") return;
-    this.opts.onEscapeKeydown.current(clonedEvent);
-  };
-};
-function isResponsibleEscapeLayer(instance) {
-  const layersArr = [...globalThis.bitsEscapeLayers];
-  const topMostLayer = layersArr.findLast(([_, { current: behaviorType }]) => behaviorType === "close" || behaviorType === "ignore");
-  if (topMostLayer) return topMostLayer[0] === instance;
-  const [firstLayerNode] = layersArr[0];
-  return firstLayerNode === instance;
-}
-
-// node_modules/bits-ui/dist/bits/utilities/escape-layer/escape-layer.svelte
-function Escape_layer($$anchor, $$props) {
-  push($$props, true);
-  let escapeKeydownBehavior = prop($$props, "escapeKeydownBehavior", 3, "close"), onEscapeKeydown = prop($$props, "onEscapeKeydown", 3, noop3);
-  EscapeLayerState.create({
-    escapeKeydownBehavior: boxWith(() => escapeKeydownBehavior()),
-    onEscapeKeydown: boxWith(() => onEscapeKeydown()),
-    enabled: boxWith(() => $$props.enabled),
-    ref: $$props.ref
-  });
-  var fragment = comment();
-  var node = first_child(fragment);
-  snippet(node, () => $$props.children ?? noop);
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/utilities/focus-scope/focus-scope-manager.js
-var FocusScopeManager = class _FocusScopeManager {
-  static instance;
-  #scopeStack = simpleBox([]);
-  #focusHistory = /* @__PURE__ */ new WeakMap();
-  #preFocusHistory = /* @__PURE__ */ new WeakMap();
-  static getInstance() {
-    if (!this.instance) {
-      this.instance = new _FocusScopeManager();
-    }
-    return this.instance;
-  }
-  register(scope) {
-    const current = this.getActive();
-    if (current && current !== scope) {
-      current.pause();
-    }
-    const activeElement2 = document.activeElement;
-    if (activeElement2 && activeElement2 !== document.body) {
-      this.#preFocusHistory.set(scope, activeElement2);
-    }
-    this.#scopeStack.current = this.#scopeStack.current.filter((s) => s !== scope);
-    this.#scopeStack.current.unshift(scope);
-  }
-  unregister(scope) {
-    this.#scopeStack.current = this.#scopeStack.current.filter((s) => s !== scope);
-    const next4 = this.getActive();
-    if (next4) {
-      next4.resume();
-    }
-  }
-  getActive() {
-    return this.#scopeStack.current[0];
-  }
-  setFocusMemory(scope, element2) {
-    this.#focusHistory.set(scope, element2);
-  }
-  getFocusMemory(scope) {
-    return this.#focusHistory.get(scope);
-  }
-  isActiveScope(scope) {
-    return this.getActive() === scope;
-  }
-  setPreFocusMemory(scope, element2) {
-    this.#preFocusHistory.set(scope, element2);
-  }
-  getPreFocusMemory(scope) {
-    return this.#preFocusHistory.get(scope);
-  }
-  clearPreFocusMemory(scope) {
-    this.#preFocusHistory.delete(scope);
-  }
-};
-
-// node_modules/bits-ui/dist/bits/utilities/focus-scope/focus-scope.svelte.js
-var FocusScope = class _FocusScope {
-  #paused = false;
-  #container = null;
-  #manager = FocusScopeManager.getInstance();
-  #cleanupFns = [];
-  #opts;
-  constructor(opts) {
-    this.#opts = opts;
-  }
-  get paused() {
-    return this.#paused;
-  }
-  pause() {
-    this.#paused = true;
-  }
-  resume() {
-    this.#paused = false;
-  }
-  #cleanup() {
-    for (const fn of this.#cleanupFns) {
-      fn();
-    }
-    this.#cleanupFns = [];
-  }
-  mount(container) {
-    if (this.#container) {
-      this.unmount();
-    }
-    this.#container = container;
-    this.#manager.register(this);
-    this.#setupEventListeners();
-    this.#handleOpenAutoFocus();
-  }
-  unmount() {
-    if (!this.#container) return;
-    this.#cleanup();
-    this.#handleCloseAutoFocus();
-    this.#manager.unregister(this);
-    this.#manager.clearPreFocusMemory(this);
-    this.#container = null;
-  }
-  #handleOpenAutoFocus() {
-    if (!this.#container) return;
-    const event2 = new CustomEvent("focusScope.onOpenAutoFocus", { bubbles: false, cancelable: true });
-    this.#opts.onOpenAutoFocus.current(event2);
-    if (!event2.defaultPrevented) {
-      requestAnimationFrame(() => {
-        if (!this.#container) return;
-        const firstTabbable = this.#getFirstTabbable();
-        if (firstTabbable) {
-          firstTabbable.focus();
-          this.#manager.setFocusMemory(this, firstTabbable);
-        } else {
-          this.#container.focus();
-        }
-      });
-    }
-  }
-  #handleCloseAutoFocus() {
-    const event2 = new CustomEvent("focusScope.onCloseAutoFocus", { bubbles: false, cancelable: true });
-    this.#opts.onCloseAutoFocus.current?.(event2);
-    if (!event2.defaultPrevented) {
-      const preFocusedElement = this.#manager.getPreFocusMemory(this);
-      if (preFocusedElement && document.contains(preFocusedElement)) {
-        try {
-          preFocusedElement.focus();
-        } catch {
-          document.body.focus();
-        }
-      }
-    }
-  }
-  #setupEventListeners() {
-    if (!this.#container || !this.#opts.trap.current) return;
-    const container = this.#container;
-    const doc = container.ownerDocument;
-    const handleFocus = (e) => {
-      if (this.#paused || !this.#manager.isActiveScope(this)) return;
-      const target = e.target;
-      if (!target) return;
-      const isInside = container.contains(target);
-      if (isInside) {
-        this.#manager.setFocusMemory(this, target);
-      } else {
-        const lastFocused = this.#manager.getFocusMemory(this);
-        if (lastFocused && container.contains(lastFocused) && isFocusable(lastFocused)) {
-          e.preventDefault();
-          lastFocused.focus();
-        } else {
-          const firstTabbable = this.#getFirstTabbable();
-          const firstFocusable = this.#getAllFocusables()[0];
-          (firstTabbable || firstFocusable || container).focus();
-        }
-      }
-    };
-    const handleKeydown = (e) => {
-      if (!this.#opts.loop || this.#paused || e.key !== "Tab") return;
-      if (!this.#manager.isActiveScope(this)) return;
-      const tabbables = this.#getTabbables();
-      if (tabbables.length === 0) return;
-      const first2 = tabbables[0];
-      const last2 = tabbables[tabbables.length - 1];
-      if (!e.shiftKey && doc.activeElement === last2) {
-        e.preventDefault();
-        first2.focus();
-      } else if (e.shiftKey && doc.activeElement === first2) {
-        e.preventDefault();
-        last2.focus();
-      }
-    };
-    this.#cleanupFns.push(on(doc, "focusin", handleFocus, { capture: true }), on(container, "keydown", handleKeydown));
-    const observer = new MutationObserver(() => {
-      const lastFocused = this.#manager.getFocusMemory(this);
-      if (lastFocused && !container.contains(lastFocused)) {
-        const firstTabbable = this.#getFirstTabbable();
-        const firstFocusable = this.#getAllFocusables()[0];
-        const elementToFocus = firstTabbable || firstFocusable;
-        if (elementToFocus) {
-          elementToFocus.focus();
-          this.#manager.setFocusMemory(this, elementToFocus);
-        } else {
-          container.focus();
-        }
-      }
-    });
-    observer.observe(container, { childList: true, subtree: true });
-    this.#cleanupFns.push(() => observer.disconnect());
-  }
-  #getTabbables() {
-    if (!this.#container) return [];
-    return tabbable(this.#container, { includeContainer: false, getShadowRoot: true });
-  }
-  #getFirstTabbable() {
-    const tabbables = this.#getTabbables();
-    return tabbables[0] || null;
-  }
-  #getAllFocusables() {
-    if (!this.#container) return [];
-    return focusable(this.#container, { includeContainer: false, getShadowRoot: true });
-  }
-  static use(opts) {
-    let scope = null;
-    watch([() => opts.ref.current, () => opts.enabled.current], ([ref, enabled]) => {
-      if (ref && enabled) {
-        if (!scope) {
-          scope = new _FocusScope(opts);
-        }
-        scope.mount(ref);
-      } else if (scope) {
-        scope.unmount();
-        scope = null;
-      }
-    });
-    onDestroyEffect(() => {
-      scope?.unmount();
-    });
-    return {
-      get props() {
-        return { tabindex: -1 };
-      }
-    };
-  }
-};
-
-// node_modules/bits-ui/dist/bits/utilities/focus-scope/focus-scope.svelte
-function Focus_scope($$anchor, $$props) {
-  push($$props, true);
-  let enabled = prop($$props, "enabled", 3, false), trapFocus = prop($$props, "trapFocus", 3, false), loop2 = prop($$props, "loop", 3, false), onCloseAutoFocus = prop($$props, "onCloseAutoFocus", 3, noop3), onOpenAutoFocus = prop($$props, "onOpenAutoFocus", 3, noop3);
-  const focusScopeState = FocusScope.use({
-    enabled: boxWith(() => enabled()),
-    trap: boxWith(() => trapFocus()),
-    loop: loop2(),
-    onCloseAutoFocus: boxWith(() => onCloseAutoFocus()),
-    onOpenAutoFocus: boxWith(() => onOpenAutoFocus()),
-    ref: $$props.ref
-  });
-  var fragment = comment();
-  var node = first_child(fragment);
-  snippet(node, () => $$props.focusScope ?? noop, () => ({ props: focusScopeState.props }));
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/utilities/text-selection-layer/use-text-selection-layer.svelte.js
-var noopPointer = () => {
-};
-globalThis.bitsTextSelectionLayers ??= /* @__PURE__ */ new Map();
-var TextSelectionLayerState = class _TextSelectionLayerState {
-  static create(opts) {
-    return new _TextSelectionLayerState(opts);
-  }
-  opts;
-  domContext;
-  #unsubSelectionLock = noop3;
-  #enabledSnapshot = false;
-  #onPointerDownSnapshot = noopPointer;
-  #onPointerUpSnapshot = noopPointer;
-  constructor(opts) {
-    this.opts = opts;
-    this.domContext = new DOMContext(opts.ref);
-    let unsubEvents = noop3;
-    watch(
-      () => [
-        this.opts.enabled.current,
-        this.opts.onPointerDown.current,
-        this.opts.onPointerUp.current
-      ],
-      ([enabled, onPointerDown, onPointerUp]) => {
-        this.#enabledSnapshot = enabled;
-        this.#onPointerDownSnapshot = onPointerDown;
-        this.#onPointerUpSnapshot = onPointerUp;
-        if (enabled) {
-          globalThis.bitsTextSelectionLayers.set(this, this.opts.enabled);
-          unsubEvents();
-          unsubEvents = this.#addEventListeners();
-        }
-        return () => {
-          this.#enabledSnapshot = false;
-          unsubEvents();
-          this.#resetSelectionLock();
-          globalThis.bitsTextSelectionLayers.delete(this);
-        };
-      }
-    );
-  }
-  #addEventListeners() {
-    return executeCallbacks(on(this.domContext.getDocument(), "pointerdown", this.#pointerdown), on(this.domContext.getDocument(), "pointerup", composeHandlers(this.#resetSelectionLock, this.#pointerupUserHandler)));
-  }
-  #pointerupUserHandler = (e) => {
-    this.#onPointerUpSnapshot(e);
-  };
-  #pointerdown = (e) => {
-    const node = this.opts.ref.current;
-    const target = e.target;
-    if (!isHTMLElement2(node) || !isHTMLElement2(target) || !this.#enabledSnapshot) return;
-    if (!isHighestLayer(this) || !contains2(node, target)) return;
-    this.#onPointerDownSnapshot(e);
-    if (e.defaultPrevented) return;
-    this.#unsubSelectionLock = preventTextSelectionOverflow(node, this.domContext.getDocument().body);
-  };
-  #resetSelectionLock = () => {
-    this.#unsubSelectionLock();
-    this.#unsubSelectionLock = noop3;
-  };
-};
-var getUserSelect = (node) => node.style.userSelect || node.style.webkitUserSelect;
-function preventTextSelectionOverflow(node, body) {
-  const originalBodyUserSelect = getUserSelect(body);
-  const originalNodeUserSelect = getUserSelect(node);
-  setUserSelect(body, "none");
-  setUserSelect(node, "text");
-  return () => {
-    setUserSelect(body, originalBodyUserSelect);
-    setUserSelect(node, originalNodeUserSelect);
-  };
-}
-function setUserSelect(node, value) {
-  node.style.userSelect = value;
-  node.style.webkitUserSelect = value;
-}
-function isHighestLayer(instance) {
-  const layersArr = [...globalThis.bitsTextSelectionLayers];
-  if (!layersArr.length) return false;
-  const highestLayer = layersArr.at(-1);
-  if (!highestLayer) return false;
-  return highestLayer[0] === instance;
-}
-
-// node_modules/bits-ui/dist/bits/utilities/text-selection-layer/text-selection-layer.svelte
-function Text_selection_layer($$anchor, $$props) {
-  push($$props, true);
-  let preventOverflowTextSelection = prop($$props, "preventOverflowTextSelection", 3, true), onPointerDown = prop($$props, "onPointerDown", 3, noop3), onPointerUp = prop($$props, "onPointerUp", 3, noop3);
-  TextSelectionLayerState.create({
-    id: boxWith(() => $$props.id),
-    onPointerDown: boxWith(() => onPointerDown()),
-    onPointerUp: boxWith(() => onPointerUp()),
-    enabled: boxWith(() => $$props.enabled && preventOverflowTextSelection()),
-    ref: $$props.ref
-  });
-  var fragment = comment();
-  var node = first_child(fragment);
-  snippet(node, () => $$props.children ?? noop);
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/internal/use-id.js
-globalThis.bitsIdCounter ??= { current: 0 };
-function useId(prefix = "bits") {
-  globalThis.bitsIdCounter.current++;
-  return `${prefix}-${globalThis.bitsIdCounter.current}`;
-}
-
-// node_modules/bits-ui/dist/internal/shared-state.svelte.js
-var SharedState = class {
-  #factory;
-  #subscribers = 0;
-  #state = state();
-  #scope;
-  constructor(factory) {
-    this.#factory = factory;
-  }
-  #dispose() {
-    this.#subscribers -= 1;
-    if (this.#scope && this.#subscribers <= 0) {
-      this.#scope();
-      set(this.#state, void 0);
-      this.#scope = void 0;
-    }
-  }
-  get(...args) {
-    this.#subscribers += 1;
-    if (get2(this.#state) === void 0) {
-      this.#scope = effect_root(() => {
-        set(this.#state, this.#factory(...args), true);
-      });
-    }
-    user_effect(() => {
-      return () => {
-        this.#dispose();
-      };
-    });
-    return get2(this.#state);
-  }
-};
-
-// node_modules/bits-ui/dist/internal/body-scroll-lock.svelte.js
-var lockMap = new SvelteMap();
-var initialBodyStyle = state(null);
-var stopTouchMoveListener = null;
-var cleanupTimeoutId = null;
-var isInCleanupTransition = false;
-var anyLocked = boxWith(() => {
-  for (const value of lockMap.values()) {
-    if (value) return true;
-  }
-  return false;
-});
-var cleanupScheduledAt = null;
-var bodyLockStackCount = new SharedState(() => {
-  function resetBodyStyle() {
-    if (!true_default) return;
-    document.body.setAttribute("style", get2(initialBodyStyle) ?? "");
-    document.body.style.removeProperty("--scrollbar-width");
-    isIOS && stopTouchMoveListener?.();
-    set(initialBodyStyle, null);
-  }
-  function cancelPendingCleanup() {
-    if (cleanupTimeoutId === null) return;
-    window.clearTimeout(cleanupTimeoutId);
-    cleanupTimeoutId = null;
-  }
-  function scheduleCleanupIfNoNewLocks(delay, callback) {
-    cancelPendingCleanup();
-    isInCleanupTransition = true;
-    cleanupScheduledAt = Date.now();
-    const currentCleanupId = cleanupScheduledAt;
-    const cleanupFn = () => {
-      cleanupTimeoutId = null;
-      if (cleanupScheduledAt !== currentCleanupId) return;
-      if (!isAnyLocked(lockMap)) {
-        isInCleanupTransition = false;
-        callback();
-      } else {
-        isInCleanupTransition = false;
-      }
-    };
-    const actualDelay = delay === null ? 24 : delay;
-    cleanupTimeoutId = window.setTimeout(cleanupFn, actualDelay);
-  }
-  function ensureInitialStyleCaptured() {
-    if (get2(initialBodyStyle) === null && lockMap.size === 0 && !isInCleanupTransition) {
-      set(initialBodyStyle, document.body.getAttribute("style"), true);
-    }
-  }
-  watch(() => anyLocked.current, () => {
-    if (!anyLocked.current) return;
-    ensureInitialStyleCaptured();
-    isInCleanupTransition = false;
-    const htmlStyle = getComputedStyle(document.documentElement);
-    const bodyStyle = getComputedStyle(document.body);
-    const hasStableGutter = htmlStyle.scrollbarGutter?.includes("stable") || bodyStyle.scrollbarGutter?.includes("stable");
-    const verticalScrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    const paddingRight = Number.parseInt(bodyStyle.paddingRight ?? "0", 10);
-    const config = {
-      padding: paddingRight + verticalScrollbarWidth,
-      margin: Number.parseInt(bodyStyle.marginRight ?? "0", 10)
-    };
-    if (verticalScrollbarWidth > 0 && !hasStableGutter) {
-      document.body.style.paddingRight = `${config.padding}px`;
-      document.body.style.marginRight = `${config.margin}px`;
-      document.body.style.setProperty("--scrollbar-width", `${verticalScrollbarWidth}px`);
-    }
-    document.body.style.overflow = "hidden";
-    if (isIOS) {
-      stopTouchMoveListener = on(
-        document,
-        "touchmove",
-        (e) => {
-          if (e.target !== document.documentElement) return;
-          if (e.touches.length > 1) return;
-          e.preventDefault();
-        },
-        { passive: false }
-      );
-    }
-    afterTick(() => {
-      document.body.style.pointerEvents = "none";
-      document.body.style.overflow = "hidden";
-    });
-  });
-  onDestroyEffect(() => {
-    return () => {
-      stopTouchMoveListener?.();
-    };
-  });
-  return {
-    get lockMap() {
-      return lockMap;
-    },
-    resetBodyStyle,
-    scheduleCleanupIfNoNewLocks,
-    cancelPendingCleanup,
-    ensureInitialStyleCaptured
-  };
-});
-var BodyScrollLock = class {
-  #id = useId();
-  #initialState;
-  #restoreScrollDelay = () => null;
-  #countState;
-  locked;
-  constructor(initialState, restoreScrollDelay = () => null) {
-    this.#initialState = initialState;
-    this.#restoreScrollDelay = restoreScrollDelay;
-    this.#countState = bodyLockStackCount.get();
-    if (!this.#countState) return;
-    this.#countState.cancelPendingCleanup();
-    this.#countState.ensureInitialStyleCaptured();
-    this.#countState.lockMap.set(this.#id, this.#initialState ?? false);
-    this.locked = boxWith(() => this.#countState.lockMap.get(this.#id) ?? false, (v) => this.#countState.lockMap.set(this.#id, v));
-    onDestroyEffect(() => {
-      this.#countState.lockMap.delete(this.#id);
-      if (isAnyLocked(this.#countState.lockMap)) return;
-      const restoreScrollDelay2 = this.#restoreScrollDelay();
-      this.#countState.scheduleCleanupIfNoNewLocks(restoreScrollDelay2, () => {
-        this.#countState.resetBodyStyle();
-      });
-    });
-  }
-};
-function isAnyLocked(map2) {
-  for (const [_, value] of map2) {
-    if (value) return true;
-  }
-  return false;
-}
-
-// node_modules/bits-ui/dist/bits/utilities/scroll-lock/scroll-lock.svelte
-function Scroll_lock($$anchor, $$props) {
-  push($$props, true);
-  let preventScroll = prop($$props, "preventScroll", 3, true), restoreScrollDelay = prop($$props, "restoreScrollDelay", 3, null);
-  if (preventScroll()) {
-    new BodyScrollLock(preventScroll(), () => restoreScrollDelay());
-  }
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/utilities/hidden-input.svelte
-var rest_excludes13 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "value"]);
-var root14 = from_html(`<input/>`);
-function Hidden_input($$anchor, $$props) {
-  push($$props, true);
-  let value = prop($$props, "value", 15), restProps = rest_props($$props, rest_excludes13);
-  const mergedProps = user_derived(() => mergeProps(restProps, {
-    "aria-hidden": "true",
-    tabindex: -1,
-    style: { ...srOnlyStyles, position: "absolute", top: "0", left: "0" }
-  }));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var input = root14();
-      attribute_effect(input, () => ({ ...get2(mergedProps), value: value() }), void 0, void 0, void 0, void 0, true);
-      append($$anchor2, input);
-    };
-    var alternate = ($$anchor2) => {
-      var input_1 = root14();
-      attribute_effect(input_1, () => ({ ...get2(mergedProps) }), void 0, void 0, void 0, void 0, true);
-      bind_value(input_1, value);
-      append($$anchor2, input_1);
-    };
-    if_block(node, ($$render) => {
-      if (get2(mergedProps).type === "checkbox") $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs
-var sides = ["top", "right", "bottom", "left"];
-var min = Math.min;
-var max = Math.max;
-var round = Math.round;
-var floor = Math.floor;
-var createCoords = (v) => ({
-  x: v,
-  y: v
-});
-var oppositeSideMap = {
-  left: "right",
-  right: "left",
-  bottom: "top",
-  top: "bottom"
-};
-function clamp(start, value, end2) {
-  return max(start, min(value, end2));
-}
-function evaluate(value, param) {
-  return typeof value === "function" ? value(param) : value;
-}
-function getSide(placement) {
-  return placement.split("-")[0];
-}
-function getAlignment(placement) {
-  return placement.split("-")[1];
-}
-function getOppositeAxis(axis) {
-  return axis === "x" ? "y" : "x";
-}
-function getAxisLength(axis) {
-  return axis === "y" ? "height" : "width";
-}
-function getSideAxis(placement) {
-  const firstChar = placement[0];
-  return firstChar === "t" || firstChar === "b" ? "y" : "x";
-}
-function getAlignmentAxis(placement) {
-  return getOppositeAxis(getSideAxis(placement));
-}
-function getAlignmentSides(placement, rects, rtl) {
-  if (rtl === void 0) {
-    rtl = false;
-  }
-  const alignment = getAlignment(placement);
-  const alignmentAxis = getAlignmentAxis(placement);
-  const length = getAxisLength(alignmentAxis);
-  let mainAlignmentSide = alignmentAxis === "x" ? alignment === (rtl ? "end" : "start") ? "right" : "left" : alignment === "start" ? "bottom" : "top";
-  if (rects.reference[length] > rects.floating[length]) {
-    mainAlignmentSide = getOppositePlacement(mainAlignmentSide);
-  }
-  return [mainAlignmentSide, getOppositePlacement(mainAlignmentSide)];
-}
-function getExpandedPlacements(placement) {
-  const oppositePlacement = getOppositePlacement(placement);
-  return [getOppositeAlignmentPlacement(placement), oppositePlacement, getOppositeAlignmentPlacement(oppositePlacement)];
-}
-function getOppositeAlignmentPlacement(placement) {
-  return placement.includes("start") ? placement.replace("start", "end") : placement.replace("end", "start");
-}
-var lrPlacement = ["left", "right"];
-var rlPlacement = ["right", "left"];
-var tbPlacement = ["top", "bottom"];
-var btPlacement = ["bottom", "top"];
-function getSideList(side, isStart, rtl) {
-  switch (side) {
-    case "top":
-    case "bottom":
-      if (rtl) return isStart ? rlPlacement : lrPlacement;
-      return isStart ? lrPlacement : rlPlacement;
-    case "left":
-    case "right":
-      return isStart ? tbPlacement : btPlacement;
-    default:
-      return [];
-  }
-}
-function getOppositeAxisPlacements(placement, flipAlignment, direction, rtl) {
-  const alignment = getAlignment(placement);
-  let list = getSideList(getSide(placement), direction === "start", rtl);
-  if (alignment) {
-    list = list.map((side) => side + "-" + alignment);
-    if (flipAlignment) {
-      list = list.concat(list.map(getOppositeAlignmentPlacement));
-    }
-  }
-  return list;
-}
-function getOppositePlacement(placement) {
-  const side = getSide(placement);
-  return oppositeSideMap[side] + placement.slice(side.length);
-}
-function expandPaddingObject(padding) {
-  return {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    ...padding
-  };
-}
-function getPaddingObject(padding) {
-  return typeof padding !== "number" ? expandPaddingObject(padding) : {
-    top: padding,
-    right: padding,
-    bottom: padding,
-    left: padding
-  };
-}
-function rectToClientRect(rect) {
-  const {
-    x,
-    y,
-    width,
-    height
-  } = rect;
-  return {
-    width,
-    height,
-    top: y,
-    left: x,
-    right: x + width,
-    bottom: y + height,
-    x,
-    y
-  };
-}
-
-// node_modules/@floating-ui/core/dist/floating-ui.core.mjs
-function computeCoordsFromPlacement(_ref, placement, rtl) {
-  let {
-    reference,
-    floating
-  } = _ref;
-  const sideAxis = getSideAxis(placement);
-  const alignmentAxis = getAlignmentAxis(placement);
-  const alignLength = getAxisLength(alignmentAxis);
-  const side = getSide(placement);
-  const isVertical = sideAxis === "y";
-  const commonX = reference.x + reference.width / 2 - floating.width / 2;
-  const commonY = reference.y + reference.height / 2 - floating.height / 2;
-  const commonAlign = reference[alignLength] / 2 - floating[alignLength] / 2;
-  let coords;
-  switch (side) {
-    case "top":
-      coords = {
-        x: commonX,
-        y: reference.y - floating.height
-      };
-      break;
-    case "bottom":
-      coords = {
-        x: commonX,
-        y: reference.y + reference.height
-      };
-      break;
-    case "right":
-      coords = {
-        x: reference.x + reference.width,
-        y: commonY
-      };
-      break;
-    case "left":
-      coords = {
-        x: reference.x - floating.width,
-        y: commonY
-      };
-      break;
-    default:
-      coords = {
-        x: reference.x,
-        y: reference.y
-      };
-  }
-  switch (getAlignment(placement)) {
-    case "start":
-      coords[alignmentAxis] -= commonAlign * (rtl && isVertical ? -1 : 1);
-      break;
-    case "end":
-      coords[alignmentAxis] += commonAlign * (rtl && isVertical ? -1 : 1);
-      break;
-  }
-  return coords;
-}
-async function detectOverflow(state3, options) {
-  var _await$platform$isEle;
-  if (options === void 0) {
-    options = {};
-  }
-  const {
-    x,
-    y,
-    platform: platform2,
-    rects,
-    elements,
-    strategy
-  } = state3;
-  const {
-    boundary: boundary2 = "clippingAncestors",
-    rootBoundary = "viewport",
-    elementContext = "floating",
-    altBoundary = false,
-    padding = 0
-  } = evaluate(options, state3);
-  const paddingObject = getPaddingObject(padding);
-  const altContext = elementContext === "floating" ? "reference" : "floating";
-  const element2 = elements[altBoundary ? altContext : elementContext];
-  const clippingClientRect = rectToClientRect(await platform2.getClippingRect({
-    element: ((_await$platform$isEle = await (platform2.isElement == null ? void 0 : platform2.isElement(element2))) != null ? _await$platform$isEle : true) ? element2 : element2.contextElement || await (platform2.getDocumentElement == null ? void 0 : platform2.getDocumentElement(elements.floating)),
-    boundary: boundary2,
-    rootBoundary,
-    strategy
-  }));
-  const rect = elementContext === "floating" ? {
-    x,
-    y,
-    width: rects.floating.width,
-    height: rects.floating.height
-  } : rects.reference;
-  const offsetParent = await (platform2.getOffsetParent == null ? void 0 : platform2.getOffsetParent(elements.floating));
-  const offsetScale = await (platform2.isElement == null ? void 0 : platform2.isElement(offsetParent)) ? await (platform2.getScale == null ? void 0 : platform2.getScale(offsetParent)) || {
-    x: 1,
-    y: 1
-  } : {
-    x: 1,
-    y: 1
-  };
-  const elementClientRect = rectToClientRect(platform2.convertOffsetParentRelativeRectToViewportRelativeRect ? await platform2.convertOffsetParentRelativeRectToViewportRelativeRect({
-    elements,
-    rect,
-    offsetParent,
-    strategy
-  }) : rect);
-  return {
-    top: (clippingClientRect.top - elementClientRect.top + paddingObject.top) / offsetScale.y,
-    bottom: (elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom) / offsetScale.y,
-    left: (clippingClientRect.left - elementClientRect.left + paddingObject.left) / offsetScale.x,
-    right: (elementClientRect.right - clippingClientRect.right + paddingObject.right) / offsetScale.x
-  };
-}
-var MAX_RESET_COUNT = 50;
-var computePosition = async (reference, floating, config) => {
-  const {
-    placement = "bottom",
-    strategy = "absolute",
-    middleware = [],
-    platform: platform2
-  } = config;
-  const platformWithDetectOverflow = platform2.detectOverflow ? platform2 : {
-    ...platform2,
-    detectOverflow
-  };
-  const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(floating));
-  let rects = await platform2.getElementRects({
-    reference,
-    floating,
-    strategy
-  });
-  let {
-    x,
-    y
-  } = computeCoordsFromPlacement(rects, placement, rtl);
-  let statefulPlacement = placement;
-  let resetCount = 0;
-  const middlewareData = {};
-  for (let i = 0; i < middleware.length; i++) {
-    const currentMiddleware = middleware[i];
-    if (!currentMiddleware) {
-      continue;
-    }
-    const {
-      name,
-      fn
-    } = currentMiddleware;
-    const {
-      x: nextX,
-      y: nextY,
-      data: data2,
-      reset: reset2
-    } = await fn({
-      x,
-      y,
-      initialPlacement: placement,
-      placement: statefulPlacement,
-      strategy,
-      middlewareData,
-      rects,
-      platform: platformWithDetectOverflow,
-      elements: {
-        reference,
-        floating
-      }
-    });
-    x = nextX != null ? nextX : x;
-    y = nextY != null ? nextY : y;
-    middlewareData[name] = {
-      ...middlewareData[name],
-      ...data2
-    };
-    if (reset2 && resetCount < MAX_RESET_COUNT) {
-      resetCount++;
-      if (typeof reset2 === "object") {
-        if (reset2.placement) {
-          statefulPlacement = reset2.placement;
-        }
-        if (reset2.rects) {
-          rects = reset2.rects === true ? await platform2.getElementRects({
-            reference,
-            floating,
-            strategy
-          }) : reset2.rects;
-        }
-        ({
-          x,
-          y
-        } = computeCoordsFromPlacement(rects, statefulPlacement, rtl));
-      }
-      i = -1;
-    }
-  }
-  return {
-    x,
-    y,
-    placement: statefulPlacement,
-    strategy,
-    middlewareData
-  };
-};
-var arrow = (options) => ({
-  name: "arrow",
-  options,
-  async fn(state3) {
-    const {
-      x,
-      y,
-      placement,
-      rects,
-      platform: platform2,
-      elements,
-      middlewareData
-    } = state3;
-    const {
-      element: element2,
-      padding = 0
-    } = evaluate(options, state3) || {};
-    if (element2 == null) {
-      return {};
-    }
-    const paddingObject = getPaddingObject(padding);
-    const coords = {
-      x,
-      y
-    };
-    const axis = getAlignmentAxis(placement);
-    const length = getAxisLength(axis);
-    const arrowDimensions = await platform2.getDimensions(element2);
-    const isYAxis = axis === "y";
-    const minProp = isYAxis ? "top" : "left";
-    const maxProp = isYAxis ? "bottom" : "right";
-    const clientProp = isYAxis ? "clientHeight" : "clientWidth";
-    const endDiff = rects.reference[length] + rects.reference[axis] - coords[axis] - rects.floating[length];
-    const startDiff = coords[axis] - rects.reference[axis];
-    const arrowOffsetParent = await (platform2.getOffsetParent == null ? void 0 : platform2.getOffsetParent(element2));
-    let clientSize = arrowOffsetParent ? arrowOffsetParent[clientProp] : 0;
-    if (!clientSize || !await (platform2.isElement == null ? void 0 : platform2.isElement(arrowOffsetParent))) {
-      clientSize = elements.floating[clientProp] || rects.floating[length];
-    }
-    const centerToReference = endDiff / 2 - startDiff / 2;
-    const largestPossiblePadding = clientSize / 2 - arrowDimensions[length] / 2 - 1;
-    const minPadding = min(paddingObject[minProp], largestPossiblePadding);
-    const maxPadding = min(paddingObject[maxProp], largestPossiblePadding);
-    const min$1 = minPadding;
-    const max2 = clientSize - arrowDimensions[length] - maxPadding;
-    const center = clientSize / 2 - arrowDimensions[length] / 2 + centerToReference;
-    const offset3 = clamp(min$1, center, max2);
-    const shouldAddOffset = !middlewareData.arrow && getAlignment(placement) != null && center !== offset3 && rects.reference[length] / 2 - (center < min$1 ? minPadding : maxPadding) - arrowDimensions[length] / 2 < 0;
-    const alignmentOffset = shouldAddOffset ? center < min$1 ? center - min$1 : center - max2 : 0;
-    return {
-      [axis]: coords[axis] + alignmentOffset,
-      data: {
-        [axis]: offset3,
-        centerOffset: center - offset3 - alignmentOffset,
-        ...shouldAddOffset && {
-          alignmentOffset
-        }
-      },
-      reset: shouldAddOffset
-    };
-  }
-});
-var flip = function(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: "flip",
-    options,
-    async fn(state3) {
-      var _middlewareData$arrow, _middlewareData$flip;
-      const {
-        placement,
-        middlewareData,
-        rects,
-        initialPlacement,
-        platform: platform2,
-        elements
-      } = state3;
-      const {
-        mainAxis: checkMainAxis = true,
-        crossAxis: checkCrossAxis = true,
-        fallbackPlacements: specifiedFallbackPlacements,
-        fallbackStrategy = "bestFit",
-        fallbackAxisSideDirection = "none",
-        flipAlignment = true,
-        ...detectOverflowOptions
-      } = evaluate(options, state3);
-      if ((_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
-        return {};
-      }
-      const side = getSide(placement);
-      const initialSideAxis = getSideAxis(initialPlacement);
-      const isBasePlacement = getSide(initialPlacement) === initialPlacement;
-      const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating));
-      const fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipAlignment ? [getOppositePlacement(initialPlacement)] : getExpandedPlacements(initialPlacement));
-      const hasFallbackAxisSideDirection = fallbackAxisSideDirection !== "none";
-      if (!specifiedFallbackPlacements && hasFallbackAxisSideDirection) {
-        fallbackPlacements.push(...getOppositeAxisPlacements(initialPlacement, flipAlignment, fallbackAxisSideDirection, rtl));
-      }
-      const placements2 = [initialPlacement, ...fallbackPlacements];
-      const overflow = await platform2.detectOverflow(state3, detectOverflowOptions);
-      const overflows = [];
-      let overflowsData = ((_middlewareData$flip = middlewareData.flip) == null ? void 0 : _middlewareData$flip.overflows) || [];
-      if (checkMainAxis) {
-        overflows.push(overflow[side]);
-      }
-      if (checkCrossAxis) {
-        const sides2 = getAlignmentSides(placement, rects, rtl);
-        overflows.push(overflow[sides2[0]], overflow[sides2[1]]);
-      }
-      overflowsData = [...overflowsData, {
-        placement,
-        overflows
-      }];
-      if (!overflows.every((side2) => side2 <= 0)) {
-        var _middlewareData$flip2, _overflowsData$filter;
-        const nextIndex = (((_middlewareData$flip2 = middlewareData.flip) == null ? void 0 : _middlewareData$flip2.index) || 0) + 1;
-        const nextPlacement = placements2[nextIndex];
-        if (nextPlacement) {
-          const ignoreCrossAxisOverflow = checkCrossAxis === "alignment" ? initialSideAxis !== getSideAxis(nextPlacement) : false;
-          if (!ignoreCrossAxisOverflow || // We leave the current main axis only if every placement on that axis
-          // overflows the main axis.
-          overflowsData.every((d) => getSideAxis(d.placement) === initialSideAxis ? d.overflows[0] > 0 : true)) {
-            return {
-              data: {
-                index: nextIndex,
-                overflows: overflowsData
-              },
-              reset: {
-                placement: nextPlacement
-              }
-            };
-          }
-        }
-        let resetPlacement = (_overflowsData$filter = overflowsData.filter((d) => d.overflows[0] <= 0).sort((a2, b) => a2.overflows[1] - b.overflows[1])[0]) == null ? void 0 : _overflowsData$filter.placement;
-        if (!resetPlacement) {
-          switch (fallbackStrategy) {
-            case "bestFit": {
-              var _overflowsData$filter2;
-              const placement2 = (_overflowsData$filter2 = overflowsData.filter((d) => {
-                if (hasFallbackAxisSideDirection) {
-                  const currentSideAxis = getSideAxis(d.placement);
-                  return currentSideAxis === initialSideAxis || // Create a bias to the `y` side axis due to horizontal
-                  // reading directions favoring greater width.
-                  currentSideAxis === "y";
-                }
-                return true;
-              }).map((d) => [d.placement, d.overflows.filter((overflow2) => overflow2 > 0).reduce((acc, overflow2) => acc + overflow2, 0)]).sort((a2, b) => a2[1] - b[1])[0]) == null ? void 0 : _overflowsData$filter2[0];
-              if (placement2) {
-                resetPlacement = placement2;
-              }
-              break;
-            }
-            case "initialPlacement":
-              resetPlacement = initialPlacement;
-              break;
-          }
-        }
-        if (placement !== resetPlacement) {
-          return {
-            reset: {
-              placement: resetPlacement
-            }
-          };
-        }
-      }
-      return {};
-    }
-  };
-};
-function getSideOffsets(overflow, rect) {
-  return {
-    top: overflow.top - rect.height,
-    right: overflow.right - rect.width,
-    bottom: overflow.bottom - rect.height,
-    left: overflow.left - rect.width
-  };
-}
-function isAnySideFullyClipped(overflow) {
-  return sides.some((side) => overflow[side] >= 0);
-}
-var hide = function(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: "hide",
-    options,
-    async fn(state3) {
-      const {
-        rects,
-        platform: platform2
-      } = state3;
-      const {
-        strategy = "referenceHidden",
-        ...detectOverflowOptions
-      } = evaluate(options, state3);
-      switch (strategy) {
-        case "referenceHidden": {
-          const overflow = await platform2.detectOverflow(state3, {
-            ...detectOverflowOptions,
-            elementContext: "reference"
-          });
-          const offsets = getSideOffsets(overflow, rects.reference);
-          return {
-            data: {
-              referenceHiddenOffsets: offsets,
-              referenceHidden: isAnySideFullyClipped(offsets)
-            }
-          };
-        }
-        case "escaped": {
-          const overflow = await platform2.detectOverflow(state3, {
-            ...detectOverflowOptions,
-            altBoundary: true
-          });
-          const offsets = getSideOffsets(overflow, rects.floating);
-          return {
-            data: {
-              escapedOffsets: offsets,
-              escaped: isAnySideFullyClipped(offsets)
-            }
-          };
-        }
-        default: {
-          return {};
-        }
-      }
-    }
-  };
-};
-var originSides = /* @__PURE__ */ new Set(["left", "top"]);
-async function convertValueToCoords(state3, options) {
-  const {
-    placement,
-    platform: platform2,
-    elements
-  } = state3;
-  const rtl = await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating));
-  const side = getSide(placement);
-  const alignment = getAlignment(placement);
-  const isVertical = getSideAxis(placement) === "y";
-  const mainAxisMulti = originSides.has(side) ? -1 : 1;
-  const crossAxisMulti = rtl && isVertical ? -1 : 1;
-  const rawValue = evaluate(options, state3);
-  let {
-    mainAxis,
-    crossAxis,
-    alignmentAxis
-  } = typeof rawValue === "number" ? {
-    mainAxis: rawValue,
-    crossAxis: 0,
-    alignmentAxis: null
-  } : {
-    mainAxis: rawValue.mainAxis || 0,
-    crossAxis: rawValue.crossAxis || 0,
-    alignmentAxis: rawValue.alignmentAxis
-  };
-  if (alignment && typeof alignmentAxis === "number") {
-    crossAxis = alignment === "end" ? alignmentAxis * -1 : alignmentAxis;
-  }
-  return isVertical ? {
-    x: crossAxis * crossAxisMulti,
-    y: mainAxis * mainAxisMulti
-  } : {
-    x: mainAxis * mainAxisMulti,
-    y: crossAxis * crossAxisMulti
-  };
-}
-var offset = function(options) {
-  if (options === void 0) {
-    options = 0;
-  }
-  return {
-    name: "offset",
-    options,
-    async fn(state3) {
-      var _middlewareData$offse, _middlewareData$arrow;
-      const {
-        x,
-        y,
-        placement,
-        middlewareData
-      } = state3;
-      const diffCoords = await convertValueToCoords(state3, options);
-      if (placement === ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse.placement) && (_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
-        return {};
-      }
-      return {
-        x: x + diffCoords.x,
-        y: y + diffCoords.y,
-        data: {
-          ...diffCoords,
-          placement
-        }
-      };
-    }
-  };
-};
-var shift = function(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: "shift",
-    options,
-    async fn(state3) {
-      const {
-        x,
-        y,
-        placement,
-        platform: platform2
-      } = state3;
-      const {
-        mainAxis: checkMainAxis = true,
-        crossAxis: checkCrossAxis = false,
-        limiter = {
-          fn: (_ref) => {
-            let {
-              x: x2,
-              y: y2
-            } = _ref;
-            return {
-              x: x2,
-              y: y2
-            };
-          }
-        },
-        ...detectOverflowOptions
-      } = evaluate(options, state3);
-      const coords = {
-        x,
-        y
-      };
-      const overflow = await platform2.detectOverflow(state3, detectOverflowOptions);
-      const crossAxis = getSideAxis(getSide(placement));
-      const mainAxis = getOppositeAxis(crossAxis);
-      let mainAxisCoord = coords[mainAxis];
-      let crossAxisCoord = coords[crossAxis];
-      if (checkMainAxis) {
-        const minSide = mainAxis === "y" ? "top" : "left";
-        const maxSide = mainAxis === "y" ? "bottom" : "right";
-        const min2 = mainAxisCoord + overflow[minSide];
-        const max2 = mainAxisCoord - overflow[maxSide];
-        mainAxisCoord = clamp(min2, mainAxisCoord, max2);
-      }
-      if (checkCrossAxis) {
-        const minSide = crossAxis === "y" ? "top" : "left";
-        const maxSide = crossAxis === "y" ? "bottom" : "right";
-        const min2 = crossAxisCoord + overflow[minSide];
-        const max2 = crossAxisCoord - overflow[maxSide];
-        crossAxisCoord = clamp(min2, crossAxisCoord, max2);
-      }
-      const limitedCoords = limiter.fn({
-        ...state3,
-        [mainAxis]: mainAxisCoord,
-        [crossAxis]: crossAxisCoord
-      });
-      return {
-        ...limitedCoords,
-        data: {
-          x: limitedCoords.x - x,
-          y: limitedCoords.y - y,
-          enabled: {
-            [mainAxis]: checkMainAxis,
-            [crossAxis]: checkCrossAxis
-          }
-        }
-      };
-    }
-  };
-};
-var limitShift = function(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    options,
-    fn(state3) {
-      const {
-        x,
-        y,
-        placement,
-        rects,
-        middlewareData
-      } = state3;
-      const {
-        offset: offset3 = 0,
-        mainAxis: checkMainAxis = true,
-        crossAxis: checkCrossAxis = true
-      } = evaluate(options, state3);
-      const coords = {
-        x,
-        y
-      };
-      const crossAxis = getSideAxis(placement);
-      const mainAxis = getOppositeAxis(crossAxis);
-      let mainAxisCoord = coords[mainAxis];
-      let crossAxisCoord = coords[crossAxis];
-      const rawOffset = evaluate(offset3, state3);
-      const computedOffset = typeof rawOffset === "number" ? {
-        mainAxis: rawOffset,
-        crossAxis: 0
-      } : {
-        mainAxis: 0,
-        crossAxis: 0,
-        ...rawOffset
-      };
-      if (checkMainAxis) {
-        const len = mainAxis === "y" ? "height" : "width";
-        const limitMin = rects.reference[mainAxis] - rects.floating[len] + computedOffset.mainAxis;
-        const limitMax = rects.reference[mainAxis] + rects.reference[len] - computedOffset.mainAxis;
-        if (mainAxisCoord < limitMin) {
-          mainAxisCoord = limitMin;
-        } else if (mainAxisCoord > limitMax) {
-          mainAxisCoord = limitMax;
-        }
-      }
-      if (checkCrossAxis) {
-        var _middlewareData$offse, _middlewareData$offse2;
-        const len = mainAxis === "y" ? "width" : "height";
-        const isOriginSide = originSides.has(getSide(placement));
-        const limitMin = rects.reference[crossAxis] - rects.floating[len] + (isOriginSide ? ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse[crossAxis]) || 0 : 0) + (isOriginSide ? 0 : computedOffset.crossAxis);
-        const limitMax = rects.reference[crossAxis] + rects.reference[len] + (isOriginSide ? 0 : ((_middlewareData$offse2 = middlewareData.offset) == null ? void 0 : _middlewareData$offse2[crossAxis]) || 0) - (isOriginSide ? computedOffset.crossAxis : 0);
-        if (crossAxisCoord < limitMin) {
-          crossAxisCoord = limitMin;
-        } else if (crossAxisCoord > limitMax) {
-          crossAxisCoord = limitMax;
-        }
-      }
-      return {
-        [mainAxis]: mainAxisCoord,
-        [crossAxis]: crossAxisCoord
-      };
-    }
-  };
-};
-var size = function(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: "size",
-    options,
-    async fn(state3) {
-      var _state$middlewareData, _state$middlewareData2;
-      const {
-        placement,
-        rects,
-        platform: platform2,
-        elements
-      } = state3;
-      const {
-        apply: apply2 = () => {
-        },
-        ...detectOverflowOptions
-      } = evaluate(options, state3);
-      const overflow = await platform2.detectOverflow(state3, detectOverflowOptions);
-      const side = getSide(placement);
-      const alignment = getAlignment(placement);
-      const isYAxis = getSideAxis(placement) === "y";
-      const {
-        width,
-        height
-      } = rects.floating;
-      let heightSide;
-      let widthSide;
-      if (side === "top" || side === "bottom") {
-        heightSide = side;
-        widthSide = alignment === (await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating)) ? "start" : "end") ? "left" : "right";
-      } else {
-        widthSide = side;
-        heightSide = alignment === "end" ? "top" : "bottom";
-      }
-      const maximumClippingHeight = height - overflow.top - overflow.bottom;
-      const maximumClippingWidth = width - overflow.left - overflow.right;
-      const overflowAvailableHeight = min(height - overflow[heightSide], maximumClippingHeight);
-      const overflowAvailableWidth = min(width - overflow[widthSide], maximumClippingWidth);
-      const noShift = !state3.middlewareData.shift;
-      let availableHeight = overflowAvailableHeight;
-      let availableWidth = overflowAvailableWidth;
-      if ((_state$middlewareData = state3.middlewareData.shift) != null && _state$middlewareData.enabled.x) {
-        availableWidth = maximumClippingWidth;
-      }
-      if ((_state$middlewareData2 = state3.middlewareData.shift) != null && _state$middlewareData2.enabled.y) {
-        availableHeight = maximumClippingHeight;
-      }
-      if (noShift && !alignment) {
-        const xMin = max(overflow.left, 0);
-        const xMax = max(overflow.right, 0);
-        const yMin = max(overflow.top, 0);
-        const yMax = max(overflow.bottom, 0);
-        if (isYAxis) {
-          availableWidth = width - 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : max(overflow.left, overflow.right));
-        } else {
-          availableHeight = height - 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : max(overflow.top, overflow.bottom));
-        }
-      }
-      await apply2({
-        ...state3,
-        availableWidth,
-        availableHeight
-      });
-      const nextDimensions = await platform2.getDimensions(elements.floating);
-      if (width !== nextDimensions.width || height !== nextDimensions.height) {
-        return {
-          reset: {
-            rects: true
-          }
-        };
-      }
-      return {};
-    }
-  };
-};
-
-// node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs
-function hasWindow() {
-  return typeof window !== "undefined";
-}
-function getNodeName2(node) {
-  if (isNode3(node)) {
-    return (node.nodeName || "").toLowerCase();
-  }
-  return "#document";
-}
-function getWindow2(node) {
-  var _node$ownerDocument;
-  return (node == null || (_node$ownerDocument = node.ownerDocument) == null ? void 0 : _node$ownerDocument.defaultView) || window;
-}
-function getDocumentElement2(node) {
-  var _ref;
-  return (_ref = (isNode3(node) ? node.ownerDocument : node.document) || window.document) == null ? void 0 : _ref.documentElement;
-}
-function isNode3(value) {
-  if (!hasWindow()) {
-    return false;
-  }
-  return value instanceof Node || value instanceof getWindow2(value).Node;
-}
-function isElement2(value) {
-  if (!hasWindow()) {
-    return false;
-  }
-  return value instanceof Element || value instanceof getWindow2(value).Element;
-}
-function isHTMLElement3(value) {
-  if (!hasWindow()) {
-    return false;
-  }
-  return value instanceof HTMLElement || value instanceof getWindow2(value).HTMLElement;
-}
-function isShadowRoot2(value) {
-  if (!hasWindow() || typeof ShadowRoot === "undefined") {
-    return false;
-  }
-  return value instanceof ShadowRoot || value instanceof getWindow2(value).ShadowRoot;
-}
-function isOverflowElement(element2) {
-  const {
-    overflow,
-    overflowX,
-    overflowY,
-    display
-  } = getComputedStyle2(element2);
-  return /auto|scroll|overlay|hidden|clip/.test(overflow + overflowY + overflowX) && display !== "inline" && display !== "contents";
-}
-function isTableElement(element2) {
-  return /^(table|td|th)$/.test(getNodeName2(element2));
-}
-function isTopLayer(element2) {
-  try {
-    if (element2.matches(":popover-open")) {
-      return true;
-    }
-  } catch (_e) {
-  }
-  try {
-    return element2.matches(":modal");
-  } catch (_e) {
-    return false;
-  }
-}
-var willChangeRe = /transform|translate|scale|rotate|perspective|filter/;
-var containRe = /paint|layout|strict|content/;
-var isNotNone = (value) => !!value && value !== "none";
-var isWebKitValue;
-function isContainingBlock(elementOrCss) {
-  const css2 = isElement2(elementOrCss) ? getComputedStyle2(elementOrCss) : elementOrCss;
-  return isNotNone(css2.transform) || isNotNone(css2.translate) || isNotNone(css2.scale) || isNotNone(css2.rotate) || isNotNone(css2.perspective) || !isWebKit() && (isNotNone(css2.backdropFilter) || isNotNone(css2.filter)) || willChangeRe.test(css2.willChange || "") || containRe.test(css2.contain || "");
-}
-function getContainingBlock(element2) {
-  let currentNode = getParentNode2(element2);
-  while (isHTMLElement3(currentNode) && !isLastTraversableNode(currentNode)) {
-    if (isContainingBlock(currentNode)) {
-      return currentNode;
-    } else if (isTopLayer(currentNode)) {
-      return null;
-    }
-    currentNode = getParentNode2(currentNode);
-  }
-  return null;
-}
-function isWebKit() {
-  if (isWebKitValue == null) {
-    isWebKitValue = typeof CSS !== "undefined" && CSS.supports && CSS.supports("-webkit-backdrop-filter", "none");
-  }
-  return isWebKitValue;
-}
-function isLastTraversableNode(node) {
-  return /^(html|body|#document)$/.test(getNodeName2(node));
-}
-function getComputedStyle2(element2) {
-  return getWindow2(element2).getComputedStyle(element2);
-}
-function getNodeScroll(element2) {
-  if (isElement2(element2)) {
-    return {
-      scrollLeft: element2.scrollLeft,
-      scrollTop: element2.scrollTop
-    };
-  }
-  return {
-    scrollLeft: element2.scrollX,
-    scrollTop: element2.scrollY
-  };
-}
-function getParentNode2(node) {
-  if (getNodeName2(node) === "html") {
-    return node;
-  }
-  const result = (
-    // Step into the shadow DOM of the parent of a slotted node.
-    node.assignedSlot || // DOM Element detected.
-    node.parentNode || // ShadowRoot detected.
-    isShadowRoot2(node) && node.host || // Fallback.
-    getDocumentElement2(node)
-  );
-  return isShadowRoot2(result) ? result.host : result;
-}
-function getNearestOverflowAncestor(node) {
-  const parentNode = getParentNode2(node);
-  if (isLastTraversableNode(parentNode)) {
-    return node.ownerDocument ? node.ownerDocument.body : node.body;
-  }
-  if (isHTMLElement3(parentNode) && isOverflowElement(parentNode)) {
-    return parentNode;
-  }
-  return getNearestOverflowAncestor(parentNode);
-}
-function getOverflowAncestors(node, list, traverseIframes) {
-  var _node$ownerDocument2;
-  if (list === void 0) {
-    list = [];
-  }
-  if (traverseIframes === void 0) {
-    traverseIframes = true;
-  }
-  const scrollableAncestor = getNearestOverflowAncestor(node);
-  const isBody = scrollableAncestor === ((_node$ownerDocument2 = node.ownerDocument) == null ? void 0 : _node$ownerDocument2.body);
-  const win = getWindow2(scrollableAncestor);
-  if (isBody) {
-    const frameElement = getFrameElement(win);
-    return list.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], frameElement && traverseIframes ? getOverflowAncestors(frameElement) : []);
-  } else {
-    return list.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
-  }
-}
-function getFrameElement(win) {
-  return win.parent && Object.getPrototypeOf(win.parent) ? win.frameElement : null;
-}
-
-// node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs
-function getCssDimensions(element2) {
-  const css2 = getComputedStyle2(element2);
-  let width = parseFloat(css2.width) || 0;
-  let height = parseFloat(css2.height) || 0;
-  const hasOffset = isHTMLElement3(element2);
-  const offsetWidth = hasOffset ? element2.offsetWidth : width;
-  const offsetHeight = hasOffset ? element2.offsetHeight : height;
-  const shouldFallback = round(width) !== offsetWidth || round(height) !== offsetHeight;
-  if (shouldFallback) {
-    width = offsetWidth;
-    height = offsetHeight;
-  }
-  return {
-    width,
-    height,
-    $: shouldFallback
-  };
-}
-function unwrapElement(element2) {
-  return !isElement2(element2) ? element2.contextElement : element2;
-}
-function getScale(element2) {
-  const domElement = unwrapElement(element2);
-  if (!isHTMLElement3(domElement)) {
-    return createCoords(1);
-  }
-  const rect = domElement.getBoundingClientRect();
-  const {
-    width,
-    height,
-    $: $2
-  } = getCssDimensions(domElement);
-  let x = ($2 ? round(rect.width) : rect.width) / width;
-  let y = ($2 ? round(rect.height) : rect.height) / height;
-  if (!x || !Number.isFinite(x)) {
-    x = 1;
-  }
-  if (!y || !Number.isFinite(y)) {
-    y = 1;
-  }
-  return {
-    x,
-    y
-  };
-}
-var noOffsets = /* @__PURE__ */ createCoords(0);
-function getVisualOffsets(element2) {
-  const win = getWindow2(element2);
-  if (!isWebKit() || !win.visualViewport) {
-    return noOffsets;
-  }
-  return {
-    x: win.visualViewport.offsetLeft,
-    y: win.visualViewport.offsetTop
-  };
-}
-function shouldAddVisualOffsets(element2, isFixed, floatingOffsetParent) {
-  if (isFixed === void 0) {
-    isFixed = false;
-  }
-  if (!floatingOffsetParent || isFixed && floatingOffsetParent !== getWindow2(element2)) {
-    return false;
-  }
-  return isFixed;
-}
-function getBoundingClientRect(element2, includeScale, isFixedStrategy, offsetParent) {
-  if (includeScale === void 0) {
-    includeScale = false;
-  }
-  if (isFixedStrategy === void 0) {
-    isFixedStrategy = false;
-  }
-  const clientRect = element2.getBoundingClientRect();
-  const domElement = unwrapElement(element2);
-  let scale = createCoords(1);
-  if (includeScale) {
-    if (offsetParent) {
-      if (isElement2(offsetParent)) {
-        scale = getScale(offsetParent);
-      }
-    } else {
-      scale = getScale(element2);
-    }
-  }
-  const visualOffsets = shouldAddVisualOffsets(domElement, isFixedStrategy, offsetParent) ? getVisualOffsets(domElement) : createCoords(0);
-  let x = (clientRect.left + visualOffsets.x) / scale.x;
-  let y = (clientRect.top + visualOffsets.y) / scale.y;
-  let width = clientRect.width / scale.x;
-  let height = clientRect.height / scale.y;
-  if (domElement) {
-    const win = getWindow2(domElement);
-    const offsetWin = offsetParent && isElement2(offsetParent) ? getWindow2(offsetParent) : offsetParent;
-    let currentWin = win;
-    let currentIFrame = getFrameElement(currentWin);
-    while (currentIFrame && offsetParent && offsetWin !== currentWin) {
-      const iframeScale = getScale(currentIFrame);
-      const iframeRect = currentIFrame.getBoundingClientRect();
-      const css2 = getComputedStyle2(currentIFrame);
-      const left = iframeRect.left + (currentIFrame.clientLeft + parseFloat(css2.paddingLeft)) * iframeScale.x;
-      const top = iframeRect.top + (currentIFrame.clientTop + parseFloat(css2.paddingTop)) * iframeScale.y;
-      x *= iframeScale.x;
-      y *= iframeScale.y;
-      width *= iframeScale.x;
-      height *= iframeScale.y;
-      x += left;
-      y += top;
-      currentWin = getWindow2(currentIFrame);
-      currentIFrame = getFrameElement(currentWin);
-    }
-  }
-  return rectToClientRect({
-    width,
-    height,
-    x,
-    y
-  });
-}
-function getWindowScrollBarX(element2, rect) {
-  const leftScroll = getNodeScroll(element2).scrollLeft;
-  if (!rect) {
-    return getBoundingClientRect(getDocumentElement2(element2)).left + leftScroll;
-  }
-  return rect.left + leftScroll;
-}
-function getHTMLOffset(documentElement, scroll) {
-  const htmlRect = documentElement.getBoundingClientRect();
-  const x = htmlRect.left + scroll.scrollLeft - getWindowScrollBarX(documentElement, htmlRect);
-  const y = htmlRect.top + scroll.scrollTop;
-  return {
-    x,
-    y
-  };
-}
-function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
-  let {
-    elements,
-    rect,
-    offsetParent,
-    strategy
-  } = _ref;
-  const isFixed = strategy === "fixed";
-  const documentElement = getDocumentElement2(offsetParent);
-  const topLayer = elements ? isTopLayer(elements.floating) : false;
-  if (offsetParent === documentElement || topLayer && isFixed) {
-    return rect;
-  }
-  let scroll = {
-    scrollLeft: 0,
-    scrollTop: 0
-  };
-  let scale = createCoords(1);
-  const offsets = createCoords(0);
-  const isOffsetParentAnElement = isHTMLElement3(offsetParent);
-  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
-    if (getNodeName2(offsetParent) !== "body" || isOverflowElement(documentElement)) {
-      scroll = getNodeScroll(offsetParent);
-    }
-    if (isOffsetParentAnElement) {
-      const offsetRect = getBoundingClientRect(offsetParent);
-      scale = getScale(offsetParent);
-      offsets.x = offsetRect.x + offsetParent.clientLeft;
-      offsets.y = offsetRect.y + offsetParent.clientTop;
-    }
-  }
-  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
-  return {
-    width: rect.width * scale.x,
-    height: rect.height * scale.y,
-    x: rect.x * scale.x - scroll.scrollLeft * scale.x + offsets.x + htmlOffset.x,
-    y: rect.y * scale.y - scroll.scrollTop * scale.y + offsets.y + htmlOffset.y
-  };
-}
-function getClientRects(element2) {
-  return Array.from(element2.getClientRects());
-}
-function getDocumentRect(element2) {
-  const html4 = getDocumentElement2(element2);
-  const scroll = getNodeScroll(element2);
-  const body = element2.ownerDocument.body;
-  const width = max(html4.scrollWidth, html4.clientWidth, body.scrollWidth, body.clientWidth);
-  const height = max(html4.scrollHeight, html4.clientHeight, body.scrollHeight, body.clientHeight);
-  let x = -scroll.scrollLeft + getWindowScrollBarX(element2);
-  const y = -scroll.scrollTop;
-  if (getComputedStyle2(body).direction === "rtl") {
-    x += max(html4.clientWidth, body.clientWidth) - width;
-  }
-  return {
-    width,
-    height,
-    x,
-    y
-  };
-}
-var SCROLLBAR_MAX = 25;
-function getViewportRect(element2, strategy) {
-  const win = getWindow2(element2);
-  const html4 = getDocumentElement2(element2);
-  const visualViewport = win.visualViewport;
-  let width = html4.clientWidth;
-  let height = html4.clientHeight;
-  let x = 0;
-  let y = 0;
-  if (visualViewport) {
-    width = visualViewport.width;
-    height = visualViewport.height;
-    const visualViewportBased = isWebKit();
-    if (!visualViewportBased || visualViewportBased && strategy === "fixed") {
-      x = visualViewport.offsetLeft;
-      y = visualViewport.offsetTop;
-    }
-  }
-  const windowScrollbarX = getWindowScrollBarX(html4);
-  if (windowScrollbarX <= 0) {
-    const doc = html4.ownerDocument;
-    const body = doc.body;
-    const bodyStyles = getComputedStyle(body);
-    const bodyMarginInline = doc.compatMode === "CSS1Compat" ? parseFloat(bodyStyles.marginLeft) + parseFloat(bodyStyles.marginRight) || 0 : 0;
-    const clippingStableScrollbarWidth = Math.abs(html4.clientWidth - body.clientWidth - bodyMarginInline);
-    if (clippingStableScrollbarWidth <= SCROLLBAR_MAX) {
-      width -= clippingStableScrollbarWidth;
-    }
-  } else if (windowScrollbarX <= SCROLLBAR_MAX) {
-    width += windowScrollbarX;
-  }
-  return {
-    width,
-    height,
-    x,
-    y
-  };
-}
-function getInnerBoundingClientRect(element2, strategy) {
-  const clientRect = getBoundingClientRect(element2, true, strategy === "fixed");
-  const top = clientRect.top + element2.clientTop;
-  const left = clientRect.left + element2.clientLeft;
-  const scale = isHTMLElement3(element2) ? getScale(element2) : createCoords(1);
-  const width = element2.clientWidth * scale.x;
-  const height = element2.clientHeight * scale.y;
-  const x = left * scale.x;
-  const y = top * scale.y;
-  return {
-    width,
-    height,
-    x,
-    y
-  };
-}
-function getClientRectFromClippingAncestor(element2, clippingAncestor, strategy) {
-  let rect;
-  if (clippingAncestor === "viewport") {
-    rect = getViewportRect(element2, strategy);
-  } else if (clippingAncestor === "document") {
-    rect = getDocumentRect(getDocumentElement2(element2));
-  } else if (isElement2(clippingAncestor)) {
-    rect = getInnerBoundingClientRect(clippingAncestor, strategy);
-  } else {
-    const visualOffsets = getVisualOffsets(element2);
-    rect = {
-      x: clippingAncestor.x - visualOffsets.x,
-      y: clippingAncestor.y - visualOffsets.y,
-      width: clippingAncestor.width,
-      height: clippingAncestor.height
-    };
-  }
-  return rectToClientRect(rect);
-}
-function hasFixedPositionAncestor(element2, stopNode) {
-  const parentNode = getParentNode2(element2);
-  if (parentNode === stopNode || !isElement2(parentNode) || isLastTraversableNode(parentNode)) {
-    return false;
-  }
-  return getComputedStyle2(parentNode).position === "fixed" || hasFixedPositionAncestor(parentNode, stopNode);
-}
-function getClippingElementAncestors(element2, cache) {
-  const cachedResult = cache.get(element2);
-  if (cachedResult) {
-    return cachedResult;
-  }
-  let result = getOverflowAncestors(element2, [], false).filter((el) => isElement2(el) && getNodeName2(el) !== "body");
-  let currentContainingBlockComputedStyle = null;
-  const elementIsFixed = getComputedStyle2(element2).position === "fixed";
-  let currentNode = elementIsFixed ? getParentNode2(element2) : element2;
-  while (isElement2(currentNode) && !isLastTraversableNode(currentNode)) {
-    const computedStyle = getComputedStyle2(currentNode);
-    const currentNodeIsContaining = isContainingBlock(currentNode);
-    if (!currentNodeIsContaining && computedStyle.position === "fixed") {
-      currentContainingBlockComputedStyle = null;
-    }
-    const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === "static" && !!currentContainingBlockComputedStyle && (currentContainingBlockComputedStyle.position === "absolute" || currentContainingBlockComputedStyle.position === "fixed") || isOverflowElement(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element2, currentNode);
-    if (shouldDropCurrentNode) {
-      result = result.filter((ancestor) => ancestor !== currentNode);
-    } else {
-      currentContainingBlockComputedStyle = computedStyle;
-    }
-    currentNode = getParentNode2(currentNode);
-  }
-  cache.set(element2, result);
-  return result;
-}
-function getClippingRect(_ref) {
-  let {
-    element: element2,
-    boundary: boundary2,
-    rootBoundary,
-    strategy
-  } = _ref;
-  const elementClippingAncestors = boundary2 === "clippingAncestors" ? isTopLayer(element2) ? [] : getClippingElementAncestors(element2, this._c) : [].concat(boundary2);
-  const clippingAncestors = [...elementClippingAncestors, rootBoundary];
-  const firstRect = getClientRectFromClippingAncestor(element2, clippingAncestors[0], strategy);
-  let top = firstRect.top;
-  let right = firstRect.right;
-  let bottom = firstRect.bottom;
-  let left = firstRect.left;
-  for (let i = 1; i < clippingAncestors.length; i++) {
-    const rect = getClientRectFromClippingAncestor(element2, clippingAncestors[i], strategy);
-    top = max(rect.top, top);
-    right = min(rect.right, right);
-    bottom = min(rect.bottom, bottom);
-    left = max(rect.left, left);
-  }
-  return {
-    width: right - left,
-    height: bottom - top,
-    x: left,
-    y: top
-  };
-}
-function getDimensions(element2) {
-  const {
-    width,
-    height
-  } = getCssDimensions(element2);
-  return {
-    width,
-    height
-  };
-}
-function getRectRelativeToOffsetParent(element2, offsetParent, strategy) {
-  const isOffsetParentAnElement = isHTMLElement3(offsetParent);
-  const documentElement = getDocumentElement2(offsetParent);
-  const isFixed = strategy === "fixed";
-  const rect = getBoundingClientRect(element2, true, isFixed, offsetParent);
-  let scroll = {
-    scrollLeft: 0,
-    scrollTop: 0
-  };
-  const offsets = createCoords(0);
-  function setLeftRTLScrollbarOffset() {
-    offsets.x = getWindowScrollBarX(documentElement);
-  }
-  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
-    if (getNodeName2(offsetParent) !== "body" || isOverflowElement(documentElement)) {
-      scroll = getNodeScroll(offsetParent);
-    }
-    if (isOffsetParentAnElement) {
-      const offsetRect = getBoundingClientRect(offsetParent, true, isFixed, offsetParent);
-      offsets.x = offsetRect.x + offsetParent.clientLeft;
-      offsets.y = offsetRect.y + offsetParent.clientTop;
-    } else if (documentElement) {
-      setLeftRTLScrollbarOffset();
-    }
-  }
-  if (isFixed && !isOffsetParentAnElement && documentElement) {
-    setLeftRTLScrollbarOffset();
-  }
-  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
-  const x = rect.left + scroll.scrollLeft - offsets.x - htmlOffset.x;
-  const y = rect.top + scroll.scrollTop - offsets.y - htmlOffset.y;
-  return {
-    x,
-    y,
-    width: rect.width,
-    height: rect.height
-  };
-}
-function isStaticPositioned(element2) {
-  return getComputedStyle2(element2).position === "static";
-}
-function getTrueOffsetParent(element2, polyfill) {
-  if (!isHTMLElement3(element2) || getComputedStyle2(element2).position === "fixed") {
-    return null;
-  }
-  if (polyfill) {
-    return polyfill(element2);
-  }
-  let rawOffsetParent = element2.offsetParent;
-  if (getDocumentElement2(element2) === rawOffsetParent) {
-    rawOffsetParent = rawOffsetParent.ownerDocument.body;
-  }
-  return rawOffsetParent;
-}
-function getOffsetParent(element2, polyfill) {
-  const win = getWindow2(element2);
-  if (isTopLayer(element2)) {
-    return win;
-  }
-  if (!isHTMLElement3(element2)) {
-    let svgOffsetParent = getParentNode2(element2);
-    while (svgOffsetParent && !isLastTraversableNode(svgOffsetParent)) {
-      if (isElement2(svgOffsetParent) && !isStaticPositioned(svgOffsetParent)) {
-        return svgOffsetParent;
-      }
-      svgOffsetParent = getParentNode2(svgOffsetParent);
-    }
-    return win;
-  }
-  let offsetParent = getTrueOffsetParent(element2, polyfill);
-  while (offsetParent && isTableElement(offsetParent) && isStaticPositioned(offsetParent)) {
-    offsetParent = getTrueOffsetParent(offsetParent, polyfill);
-  }
-  if (offsetParent && isLastTraversableNode(offsetParent) && isStaticPositioned(offsetParent) && !isContainingBlock(offsetParent)) {
-    return win;
-  }
-  return offsetParent || getContainingBlock(element2) || win;
-}
-var getElementRects = async function(data2) {
-  const getOffsetParentFn = this.getOffsetParent || getOffsetParent;
-  const getDimensionsFn = this.getDimensions;
-  const floatingDimensions = await getDimensionsFn(data2.floating);
-  return {
-    reference: getRectRelativeToOffsetParent(data2.reference, await getOffsetParentFn(data2.floating), data2.strategy),
-    floating: {
-      x: 0,
-      y: 0,
-      width: floatingDimensions.width,
-      height: floatingDimensions.height
-    }
-  };
-};
-function isRTL(element2) {
-  return getComputedStyle2(element2).direction === "rtl";
-}
-var platform = {
-  convertOffsetParentRelativeRectToViewportRelativeRect,
-  getDocumentElement: getDocumentElement2,
-  getClippingRect,
-  getOffsetParent,
-  getElementRects,
-  getClientRects,
-  getDimensions,
-  getScale,
-  isElement: isElement2,
-  isRTL
-};
-function rectsAreEqual(a2, b) {
-  return a2.x === b.x && a2.y === b.y && a2.width === b.width && a2.height === b.height;
-}
-function observeMove(element2, onMove) {
-  let io = null;
-  let timeoutId;
-  const root71 = getDocumentElement2(element2);
-  function cleanup() {
-    var _io;
-    clearTimeout(timeoutId);
-    (_io = io) == null || _io.disconnect();
-    io = null;
-  }
-  function refresh(skip, threshold) {
-    if (skip === void 0) {
-      skip = false;
-    }
-    if (threshold === void 0) {
-      threshold = 1;
-    }
-    cleanup();
-    const elementRectForRootMargin = element2.getBoundingClientRect();
-    const {
-      left,
-      top,
-      width,
-      height
-    } = elementRectForRootMargin;
-    if (!skip) {
-      onMove();
-    }
-    if (!width || !height) {
-      return;
-    }
-    const insetTop = floor(top);
-    const insetRight = floor(root71.clientWidth - (left + width));
-    const insetBottom = floor(root71.clientHeight - (top + height));
-    const insetLeft = floor(left);
-    const rootMargin = -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px";
-    const options = {
-      rootMargin,
-      threshold: max(0, min(1, threshold)) || 1
-    };
-    let isFirstUpdate = true;
-    function handleObserve(entries) {
-      const ratio = entries[0].intersectionRatio;
-      if (ratio !== threshold) {
-        if (!isFirstUpdate) {
-          return refresh();
-        }
-        if (!ratio) {
-          timeoutId = setTimeout(() => {
-            refresh(false, 1e-7);
-          }, 1e3);
-        } else {
-          refresh(false, ratio);
-        }
-      }
-      if (ratio === 1 && !rectsAreEqual(elementRectForRootMargin, element2.getBoundingClientRect())) {
-        refresh();
-      }
-      isFirstUpdate = false;
-    }
-    try {
-      io = new IntersectionObserver(handleObserve, {
-        ...options,
-        // Handle <iframe>s
-        root: root71.ownerDocument
-      });
-    } catch (_e) {
-      io = new IntersectionObserver(handleObserve, options);
-    }
-    io.observe(element2);
-  }
-  refresh(true);
-  return cleanup;
-}
-function autoUpdate(reference, floating, update3, options) {
-  if (options === void 0) {
-    options = {};
-  }
-  const {
-    ancestorScroll = true,
-    ancestorResize = true,
-    elementResize = typeof ResizeObserver === "function",
-    layoutShift = typeof IntersectionObserver === "function",
-    animationFrame = false
-  } = options;
-  const referenceEl = unwrapElement(reference);
-  const ancestors = ancestorScroll || ancestorResize ? [...referenceEl ? getOverflowAncestors(referenceEl) : [], ...floating ? getOverflowAncestors(floating) : []] : [];
-  ancestors.forEach((ancestor) => {
-    ancestorScroll && ancestor.addEventListener("scroll", update3, {
-      passive: true
-    });
-    ancestorResize && ancestor.addEventListener("resize", update3);
-  });
-  const cleanupIo = referenceEl && layoutShift ? observeMove(referenceEl, update3) : null;
-  let reobserveFrame = -1;
-  let resizeObserver = null;
-  if (elementResize) {
-    resizeObserver = new ResizeObserver((_ref) => {
-      let [firstEntry] = _ref;
-      if (firstEntry && firstEntry.target === referenceEl && resizeObserver && floating) {
-        resizeObserver.unobserve(floating);
-        cancelAnimationFrame(reobserveFrame);
-        reobserveFrame = requestAnimationFrame(() => {
-          var _resizeObserver;
-          (_resizeObserver = resizeObserver) == null || _resizeObserver.observe(floating);
-        });
-      }
-      update3();
-    });
-    if (referenceEl && !animationFrame) {
-      resizeObserver.observe(referenceEl);
-    }
-    if (floating) {
-      resizeObserver.observe(floating);
-    }
-  }
-  let frameId;
-  let prevRefRect = animationFrame ? getBoundingClientRect(reference) : null;
-  if (animationFrame) {
-    frameLoop();
-  }
-  function frameLoop() {
-    const nextRefRect = getBoundingClientRect(reference);
-    if (prevRefRect && !rectsAreEqual(prevRefRect, nextRefRect)) {
-      update3();
-    }
-    prevRefRect = nextRefRect;
-    frameId = requestAnimationFrame(frameLoop);
-  }
-  update3();
-  return () => {
-    var _resizeObserver2;
-    ancestors.forEach((ancestor) => {
-      ancestorScroll && ancestor.removeEventListener("scroll", update3);
-      ancestorResize && ancestor.removeEventListener("resize", update3);
-    });
-    cleanupIo == null || cleanupIo();
-    (_resizeObserver2 = resizeObserver) == null || _resizeObserver2.disconnect();
-    resizeObserver = null;
-    if (animationFrame) {
-      cancelAnimationFrame(frameId);
-    }
-  };
-}
-var offset2 = offset;
-var shift2 = shift;
-var flip2 = flip;
-var size2 = size;
-var hide2 = hide;
-var arrow2 = arrow;
-var limitShift2 = limitShift;
-var computePosition2 = (reference, floating, options) => {
-  const cache = /* @__PURE__ */ new Map();
-  const mergedOptions = {
-    platform,
-    ...options
-  };
-  const platformWithCache = {
-    ...mergedOptions.platform,
-    _c: cache
-  };
-  return computePosition(reference, floating, {
-    ...mergedOptions,
-    platform: platformWithCache
-  });
-};
-
-// node_modules/bits-ui/dist/internal/floating-svelte/floating-utils.svelte.js
-function get5(valueOrGetValue) {
-  return typeof valueOrGetValue === "function" ? valueOrGetValue() : valueOrGetValue;
-}
-function getDPR(element2) {
-  if (typeof window === "undefined") return 1;
-  const win = element2.ownerDocument.defaultView || window;
-  return win.devicePixelRatio || 1;
-}
-function roundByDPR(element2, value) {
-  const dpr = getDPR(element2);
-  return Math.round(value * dpr) / dpr;
-}
-function getFloatingContentCSSVars(name) {
-  return {
-    [`--bits-${name}-content-transform-origin`]: `var(--bits-floating-transform-origin)`,
-    [`--bits-${name}-content-available-width`]: `var(--bits-floating-available-width)`,
-    [`--bits-${name}-content-available-height`]: `var(--bits-floating-available-height)`,
-    [`--bits-${name}-anchor-width`]: `var(--bits-floating-anchor-width)`,
-    [`--bits-${name}-anchor-height`]: `var(--bits-floating-anchor-height)`
-  };
-}
-
-// node_modules/bits-ui/dist/internal/floating-svelte/use-floating.svelte.js
-function useFloating(options) {
-  const whileElementsMountedOption = options.whileElementsMounted;
-  const openOption = user_derived(() => get5(options.open) ?? true);
-  const middlewareOption = user_derived(() => get5(options.middleware));
-  const transformOption = user_derived(() => get5(options.transform) ?? true);
-  const placementOption = user_derived(() => get5(options.placement) ?? "bottom");
-  const strategyOption = user_derived(() => get5(options.strategy) ?? "absolute");
-  const sideOffsetOption = user_derived(() => get5(options.sideOffset) ?? 0);
-  const alignOffsetOption = user_derived(() => get5(options.alignOffset) ?? 0);
-  const reference = options.reference;
-  let x = state(0);
-  let y = state(0);
-  const floating = simpleBox(null);
-  let strategy = state(proxy(get2(strategyOption)));
-  let placement = state(proxy(get2(placementOption)));
-  let middlewareData = state(proxy({}));
-  let isPositioned = state(false);
-  let hasWhileMountedPosition = false;
-  let updateRequestId = 0;
-  const floatingStyles = user_derived(() => {
-    const xVal = floating.current ? roundByDPR(floating.current, get2(x)) : get2(x);
-    const yVal = floating.current ? roundByDPR(floating.current, get2(y)) : get2(y);
-    if (get2(transformOption)) {
-      return {
-        position: get2(strategy),
-        left: "0",
-        top: "0",
-        transform: `translate(${xVal}px, ${yVal}px)`,
-        ...floating.current && getDPR(floating.current) >= 1.5 && { willChange: "transform" }
-      };
-    }
-    return {
-      position: get2(strategy),
-      left: `${xVal}px`,
-      top: `${yVal}px`
-    };
-  });
-  let whileElementsMountedCleanup;
-  function update3() {
-    if (reference.current === null || floating.current === null) return;
-    const referenceNode = reference.current;
-    const floatingNode = floating.current;
-    const requestId = ++updateRequestId;
-    computePosition2(referenceNode, floatingNode, {
-      middleware: get2(middlewareOption),
-      placement: get2(placementOption),
-      strategy: get2(strategyOption)
-    }).then((position) => {
-      if (requestId !== updateRequestId) return;
-      if (reference.current !== referenceNode || floating.current !== floatingNode) return;
-      const referenceHidden = isReferenceHidden(referenceNode);
-      if (referenceHidden) {
-        set(
-          middlewareData,
-          {
-            ...get2(middlewareData),
-            hide: {
-              // oxlint-disable-next-line no-explicit-any
-              ...get2(middlewareData).hide,
-              referenceHidden: true
-            }
-          },
-          true
-        );
-        return;
-      }
-      if (!get2(openOption) && get2(x) !== 0 && get2(y) !== 0) {
-        const maxExpectedOffset = Math.max(Math.abs(get2(sideOffsetOption)), Math.abs(get2(alignOffsetOption)), 15);
-        if (position.x <= maxExpectedOffset && position.y <= maxExpectedOffset) return;
-      }
-      set(x, position.x, true);
-      set(y, position.y, true);
-      set(strategy, position.strategy, true);
-      set(placement, position.placement, true);
-      set(middlewareData, position.middlewareData, true);
-      set(isPositioned, true);
-    });
-  }
-  function cleanup() {
-    if (typeof whileElementsMountedCleanup === "function") {
-      whileElementsMountedCleanup();
-      whileElementsMountedCleanup = void 0;
+    update(next3) {
+      node.empty();
+      (0, import_obsidian4.setIcon)(node, next3);
     }
-    updateRequestId++;
-  }
-  function attach2() {
-    cleanup();
-    if (whileElementsMountedOption === void 0) {
-      update3();
-      return;
-    }
-    if (!get2(openOption)) return;
-    if (reference.current === null || floating.current === null) return;
-    whileElementsMountedCleanup = whileElementsMountedOption(reference.current, floating.current, update3);
-  }
-  function reset2() {
-    if (!get2(openOption) && floating.current === null) {
-      set(isPositioned, false);
-    }
-  }
-  function trackWhileMountedDeps() {
-    return [
-      get2(middlewareOption),
-      get2(placementOption),
-      get2(strategyOption),
-      get2(sideOffsetOption),
-      get2(alignOffsetOption),
-      get2(openOption)
-    ];
-  }
-  user_effect(() => {
-    if (whileElementsMountedOption !== void 0) return;
-    if (!get2(openOption)) return;
-    update3();
-  });
-  user_effect(attach2);
-  user_effect(() => {
-    if (whileElementsMountedOption === void 0) return;
-    trackWhileMountedDeps();
-    if (!get2(openOption)) {
-      hasWhileMountedPosition = false;
-      return;
-    }
-    if (!get2(isPositioned)) {
-      hasWhileMountedPosition = false;
-      return;
-    }
-    if (!hasWhileMountedPosition) {
-      hasWhileMountedPosition = true;
-      return;
-    }
-    update3();
-  });
-  user_effect(reset2);
-  user_effect(() => cleanup);
-  return {
-    floating,
-    reference,
-    get strategy() {
-      return get2(strategy);
-    },
-    get placement() {
-      return get2(placement);
-    },
-    get middlewareData() {
-      return get2(middlewareData);
-    },
-    get isPositioned() {
-      return get2(isPositioned);
-    },
-    get floatingStyles() {
-      return get2(floatingStyles);
-    },
-    get update() {
-      return update3;
-    }
-  };
-}
-function isReferenceHidden(node) {
-  if (!(node instanceof Element)) return false;
-  if (!node.isConnected) return true;
-  if (node instanceof HTMLElement && node.hidden) return true;
-  return node.getClientRects().length === 0;
-}
-
-// node_modules/bits-ui/dist/bits/utilities/floating-layer/use-floating-layer.svelte.js
-var OPPOSITE_SIDE = { top: "bottom", right: "left", bottom: "top", left: "right" };
-var FloatingRootContext = new Context("Floating.Root");
-var FloatingContentContext = new Context("Floating.Content");
-var FloatingTooltipRootContext = new Context("Floating.Root");
-var FloatingRootState = class _FloatingRootState {
-  static create(tooltip = false) {
-    return tooltip ? FloatingTooltipRootContext.set(new _FloatingRootState()) : FloatingRootContext.set(new _FloatingRootState());
-  }
-  anchorNode = simpleBox(null);
-  customAnchorNode = simpleBox(null);
-  triggerNode = simpleBox(null);
-  constructor() {
-    user_effect(() => {
-      if (this.customAnchorNode.current) {
-        if (typeof this.customAnchorNode.current === "string") {
-          this.anchorNode.current = document.querySelector(this.customAnchorNode.current);
-        } else {
-          this.anchorNode.current = this.customAnchorNode.current;
-        }
-      } else {
-        this.anchorNode.current = this.triggerNode.current;
-      }
-    });
-  }
-};
-var FloatingContentState = class _FloatingContentState {
-  static create(opts, tooltip = false) {
-    return tooltip ? FloatingContentContext.set(new _FloatingContentState(opts, FloatingTooltipRootContext.get())) : FloatingContentContext.set(new _FloatingContentState(opts, FloatingRootContext.get()));
-  }
-  opts;
-  root;
-  // nodes
-  contentRef = simpleBox(null);
-  wrapperRef = simpleBox(null);
-  arrowRef = simpleBox(null);
-  contentAttachment = attachRef(this.contentRef);
-  wrapperAttachment = attachRef(this.wrapperRef);
-  arrowAttachment = attachRef(this.arrowRef);
-  // ids
-  arrowId = simpleBox(useId());
-  #transformedStyle = user_derived(() => {
-    if (typeof this.opts.style === "string") return cssToStyleObj(this.opts.style);
-    if (!this.opts.style) return {};
-  });
-  #updatePositionStrategy = void 0;
-  #arrowSize = new ElementSize(() => this.arrowRef.current ?? void 0);
-  #arrowWidth = user_derived(() => this.#arrowSize?.width ?? 0);
-  #arrowHeight = user_derived(() => this.#arrowSize?.height ?? 0);
-  #desiredPlacement = user_derived(() => this.opts.side?.current + (this.opts.align.current !== "center" ? `-${this.opts.align.current}` : ""));
-  #boundary = user_derived(() => Array.isArray(this.opts.collisionBoundary.current) ? this.opts.collisionBoundary.current : [this.opts.collisionBoundary.current]);
-  #hasExplicitBoundaries = user_derived(() => get2(this.#boundary).length > 0);
-  get hasExplicitBoundaries() {
-    return get2(this.#hasExplicitBoundaries);
-  }
-  set hasExplicitBoundaries(value) {
-    set(this.#hasExplicitBoundaries, value);
-  }
-  #detectOverflowOptions = user_derived(() => ({
-    padding: this.opts.collisionPadding.current,
-    boundary: get2(this.#boundary).filter(isNotNull),
-    altBoundary: this.hasExplicitBoundaries
-  }));
-  get detectOverflowOptions() {
-    return get2(this.#detectOverflowOptions);
-  }
-  set detectOverflowOptions(value) {
-    set(this.#detectOverflowOptions, value);
-  }
-  #availableWidth = state(void 0);
-  #availableHeight = state(void 0);
-  #anchorWidth = state(void 0);
-  #anchorHeight = state(void 0);
-  #middleware = user_derived(() => [
-    offset2({
-      mainAxis: this.opts.sideOffset.current + get2(this.#arrowHeight),
-      alignmentAxis: this.opts.alignOffset.current
-    }),
-    this.opts.avoidCollisions.current && shift2({
-      mainAxis: true,
-      crossAxis: false,
-      limiter: this.opts.sticky.current === "partial" ? limitShift2() : void 0,
-      ...this.detectOverflowOptions
-    }),
-    this.opts.avoidCollisions.current && flip2({ ...this.detectOverflowOptions }),
-    size2({
-      ...this.detectOverflowOptions,
-      apply: ({ rects, availableWidth, availableHeight }) => {
-        const { width: anchorWidth, height: anchorHeight } = rects.reference;
-        set(this.#availableWidth, availableWidth, true);
-        set(this.#availableHeight, availableHeight, true);
-        set(this.#anchorWidth, anchorWidth, true);
-        set(this.#anchorHeight, anchorHeight, true);
-      }
-    }),
-    this.arrowRef.current && arrow2({
-      element: this.arrowRef.current,
-      padding: this.opts.arrowPadding.current
-    }),
-    transformOrigin({
-      arrowWidth: get2(this.#arrowWidth),
-      arrowHeight: get2(this.#arrowHeight)
-    }),
-    this.opts.hideWhenDetached.current && hide2({ strategy: "referenceHidden", ...this.detectOverflowOptions })
-  ].filter(Boolean));
-  get middleware() {
-    return get2(this.#middleware);
-  }
-  set middleware(value) {
-    set(this.#middleware, value);
-  }
-  floating;
-  #placedSide = user_derived(() => getSideFromPlacement(this.floating.placement));
-  get placedSide() {
-    return get2(this.#placedSide);
-  }
-  set placedSide(value) {
-    set(this.#placedSide, value);
-  }
-  #placedAlign = user_derived(() => getAlignFromPlacement(this.floating.placement));
-  get placedAlign() {
-    return get2(this.#placedAlign);
-  }
-  set placedAlign(value) {
-    set(this.#placedAlign, value);
-  }
-  #arrowX = user_derived(() => this.floating.middlewareData.arrow?.x ?? 0);
-  get arrowX() {
-    return get2(this.#arrowX);
-  }
-  set arrowX(value) {
-    set(this.#arrowX, value);
-  }
-  #arrowY = user_derived(() => this.floating.middlewareData.arrow?.y ?? 0);
-  get arrowY() {
-    return get2(this.#arrowY);
-  }
-  set arrowY(value) {
-    set(this.#arrowY, value);
-  }
-  #cannotCenterArrow = user_derived(() => this.floating.middlewareData.arrow?.centerOffset !== 0);
-  get cannotCenterArrow() {
-    return get2(this.#cannotCenterArrow);
-  }
-  set cannotCenterArrow(value) {
-    set(this.#cannotCenterArrow, value);
-  }
-  #contentZIndex = state();
-  get contentZIndex() {
-    return get2(this.#contentZIndex);
-  }
-  set contentZIndex(value) {
-    set(this.#contentZIndex, value, true);
-  }
-  #arrowBaseSide = user_derived(() => OPPOSITE_SIDE[this.placedSide]);
-  get arrowBaseSide() {
-    return get2(this.#arrowBaseSide);
-  }
-  set arrowBaseSide(value) {
-    set(this.#arrowBaseSide, value);
-  }
-  #wrapperProps = user_derived(() => ({
-    id: this.opts.wrapperId.current,
-    "data-bits-floating-content-wrapper": "",
-    style: {
-      ...this.floating.floatingStyles,
-      transform: this.floating.isPositioned ? this.floating.floatingStyles.transform : "translate(0, -200%)",
-      minWidth: "max-content",
-      zIndex: this.contentZIndex,
-      "--bits-floating-transform-origin": `${this.floating.middlewareData.transformOrigin?.x} ${this.floating.middlewareData.transformOrigin?.y}`,
-      "--bits-floating-available-width": `${get2(this.#availableWidth)}px`,
-      "--bits-floating-available-height": `${get2(this.#availableHeight)}px`,
-      "--bits-floating-anchor-width": `${get2(this.#anchorWidth)}px`,
-      "--bits-floating-anchor-height": `${get2(this.#anchorHeight)}px`,
-      ...this.floating.middlewareData.hide?.referenceHidden && { visibility: "hidden", "pointer-events": "none" },
-      ...get2(this.#transformedStyle)
-    },
-    dir: this.opts.dir.current,
-    ...this.wrapperAttachment
-  }));
-  get wrapperProps() {
-    return get2(this.#wrapperProps);
-  }
-  set wrapperProps(value) {
-    set(this.#wrapperProps, value);
-  }
-  #props = user_derived(() => ({
-    "data-side": this.placedSide,
-    "data-align": this.placedAlign,
-    style: styleToString({ ...get2(this.#transformedStyle) }),
-    ...this.contentAttachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-  #arrowStyle = user_derived(() => ({
-    position: "absolute",
-    left: this.arrowX ? `${this.arrowX}px` : void 0,
-    top: this.arrowY ? `${this.arrowY}px` : void 0,
-    [this.arrowBaseSide]: 0,
-    "transform-origin": { top: "", right: "0 0", bottom: "center 0", left: "100% 0" }[this.placedSide],
-    transform: {
-      top: "translateY(100%)",
-      right: "translateY(50%) rotate(90deg) translateX(-50%)",
-      bottom: "rotate(180deg)",
-      left: "translateY(50%) rotate(-90deg) translateX(50%)"
-    }[this.placedSide],
-    visibility: this.cannotCenterArrow ? "hidden" : void 0
-  }));
-  get arrowStyle() {
-    return get2(this.#arrowStyle);
-  }
-  set arrowStyle(value) {
-    set(this.#arrowStyle, value);
-  }
-  constructor(opts, root71) {
-    this.opts = opts;
-    this.root = root71;
-    this.#updatePositionStrategy = opts.updatePositionStrategy;
-    if (opts.customAnchor) {
-      this.root.customAnchorNode.current = opts.customAnchor.current;
-    }
-    watch(() => opts.customAnchor.current, (customAnchor) => {
-      this.root.customAnchorNode.current = customAnchor;
-    });
-    this.floating = useFloating({
-      strategy: () => this.opts.strategy.current,
-      placement: () => get2(this.#desiredPlacement),
-      middleware: () => this.middleware,
-      reference: this.root.anchorNode,
-      whileElementsMounted: (...args) => {
-        const cleanup = autoUpdate(...args, {
-          animationFrame: this.#updatePositionStrategy?.current === "always"
-        });
-        return cleanup;
-      },
-      open: () => this.opts.enabled.current,
-      sideOffset: () => this.opts.sideOffset.current,
-      alignOffset: () => this.opts.alignOffset.current
-    });
-    user_effect(() => {
-      if (!this.floating.isPositioned) return;
-      this.opts.onPlaced?.current();
-    });
-    watch(() => this.contentRef.current, (contentNode) => {
-      if (!contentNode || !this.opts.enabled.current) return;
-      const win = getWindow(contentNode);
-      const rafId = win.requestAnimationFrame(() => {
-        if (this.contentRef.current !== contentNode || !this.opts.enabled.current) return;
-        const zIndex = win.getComputedStyle(contentNode).zIndex;
-        if (zIndex !== this.contentZIndex) {
-          this.contentZIndex = zIndex;
-        }
-      });
-      return () => {
-        win.cancelAnimationFrame(rafId);
-      };
-    });
-    user_effect(() => {
-      this.floating.floating.current = this.wrapperRef.current;
-    });
-  }
-};
-var FloatingArrowState = class _FloatingArrowState {
-  static create(opts) {
-    return new _FloatingArrowState(opts, FloatingContentContext.get());
-  }
-  opts;
-  content;
-  constructor(opts, content) {
-    this.opts = opts;
-    this.content = content;
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    style: this.content.arrowStyle,
-    "data-side": this.content.placedSide,
-    ...this.content.arrowAttachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var FloatingAnchorState = class _FloatingAnchorState {
-  static create(opts, tooltip = false) {
-    return tooltip ? new _FloatingAnchorState(opts, FloatingTooltipRootContext.get()) : new _FloatingAnchorState(opts, FloatingRootContext.get());
-  }
-  opts;
-  root;
-  constructor(opts, root71) {
-    this.opts = opts;
-    this.root = root71;
-    if (opts.virtualEl && opts.virtualEl.current) {
-      root71.triggerNode = boxFrom(opts.virtualEl.current);
-    } else {
-      root71.triggerNode = opts.ref;
-    }
-  }
-};
-function transformOrigin(options) {
-  return {
-    name: "transformOrigin",
-    options,
-    fn(data2) {
-      const { placement, rects, middlewareData } = data2;
-      const cannotCenterArrow = middlewareData.arrow?.centerOffset !== 0;
-      const isArrowHidden = cannotCenterArrow;
-      const arrowWidth = isArrowHidden ? 0 : options.arrowWidth;
-      const arrowHeight = isArrowHidden ? 0 : options.arrowHeight;
-      const [placedSide, placedAlign] = getSideAndAlignFromPlacement(placement);
-      const noArrowAlign = { start: "0%", center: "50%", end: "100%" }[placedAlign];
-      const arrowXCenter = (middlewareData.arrow?.x ?? 0) + arrowWidth / 2;
-      const arrowYCenter = (middlewareData.arrow?.y ?? 0) + arrowHeight / 2;
-      let x = "";
-      let y = "";
-      if (placedSide === "bottom") {
-        x = isArrowHidden ? noArrowAlign : `${arrowXCenter}px`;
-        y = `${-arrowHeight}px`;
-      } else if (placedSide === "top") {
-        x = isArrowHidden ? noArrowAlign : `${arrowXCenter}px`;
-        y = `${rects.floating.height + arrowHeight}px`;
-      } else if (placedSide === "right") {
-        x = `${-arrowHeight}px`;
-        y = isArrowHidden ? noArrowAlign : `${arrowYCenter}px`;
-      } else if (placedSide === "left") {
-        x = `${rects.floating.width + arrowHeight}px`;
-        y = isArrowHidden ? noArrowAlign : `${arrowYCenter}px`;
-      }
-      return { data: { x, y } };
-    }
-  };
-}
-function getSideAndAlignFromPlacement(placement) {
-  const [side, align = "center"] = placement.split("-");
-  return [side, align];
-}
-function getSideFromPlacement(placement) {
-  return getSideAndAlignFromPlacement(placement)[0];
-}
-function getAlignFromPlacement(placement) {
-  return getSideAndAlignFromPlacement(placement)[1];
-}
-
-// node_modules/bits-ui/dist/bits/utilities/floating-layer/components/floating-layer.svelte
-function Floating_layer($$anchor, $$props) {
-  push($$props, true);
-  let tooltip = prop($$props, "tooltip", 3, false);
-  FloatingRootState.create(tooltip());
-  var fragment = comment();
-  var node = first_child(fragment);
-  snippet(node, () => $$props.children ?? noop);
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/internal/data-typeahead.svelte.js
-var DataTypeahead = class {
-  #opts;
-  #candidateValues = user_derived(() => this.#opts.candidateValues());
-  #search;
-  constructor(opts) {
-    this.#opts = opts;
-    this.#search = boxAutoReset("", { afterMs: 1e3, getWindow: this.#opts.getWindow });
-    this.handleTypeaheadSearch = this.handleTypeaheadSearch.bind(this);
-    this.resetTypeahead = this.resetTypeahead.bind(this);
-  }
-  handleTypeaheadSearch(key2) {
-    if (!this.#opts.enabled() || !get2(this.#candidateValues).length) return;
-    this.#search.current = this.#search.current + key2;
-    const currentItem = this.#opts.getCurrentItem();
-    const currentMatch = get2(this.#candidateValues).find((item) => item === currentItem) ?? "";
-    const values = get2(this.#candidateValues).map((item) => item ?? "");
-    const nextMatch = getNextMatch(values, this.#search.current, currentMatch);
-    const newItem = get2(this.#candidateValues).find((item) => item === nextMatch);
-    if (newItem) {
-      this.#opts.onMatch(newItem);
-    }
-    return newItem;
-  }
-  resetTypeahead() {
-    this.#search.current = "";
-  }
-};
-
-// node_modules/bits-ui/dist/bits/select/select.svelte.js
-var INTERACTION_KEYS = [
-  kbd_constants_exports.ARROW_LEFT,
-  kbd_constants_exports.ESCAPE,
-  kbd_constants_exports.ARROW_RIGHT,
-  kbd_constants_exports.SHIFT,
-  kbd_constants_exports.CAPS_LOCK,
-  kbd_constants_exports.CONTROL,
-  kbd_constants_exports.ALT,
-  kbd_constants_exports.META,
-  kbd_constants_exports.ENTER,
-  kbd_constants_exports.F1,
-  kbd_constants_exports.F2,
-  kbd_constants_exports.F3,
-  kbd_constants_exports.F4,
-  kbd_constants_exports.F5,
-  kbd_constants_exports.F6,
-  kbd_constants_exports.F7,
-  kbd_constants_exports.F8,
-  kbd_constants_exports.F9,
-  kbd_constants_exports.F10,
-  kbd_constants_exports.F11,
-  kbd_constants_exports.F12
-];
-var FIRST_KEYS2 = [kbd_constants_exports.ARROW_DOWN, kbd_constants_exports.PAGE_UP, kbd_constants_exports.HOME];
-var LAST_KEYS2 = [kbd_constants_exports.ARROW_UP, kbd_constants_exports.PAGE_DOWN, kbd_constants_exports.END];
-var FIRST_LAST_KEYS2 = [...FIRST_KEYS2, ...LAST_KEYS2];
-var SELECTION_KEYS2 = [kbd_constants_exports.ENTER, kbd_constants_exports.SPACE];
-var selectAttrs = createBitsAttrs({
-  component: "select",
-  parts: [
-    "trigger",
-    "content",
-    "item",
-    "viewport",
-    "scroll-up-button",
-    "scroll-down-button",
-    "group",
-    "group-label",
-    "separator",
-    "arrow",
-    "input",
-    "content-wrapper",
-    "item-text",
-    "value"
-  ]
-});
-var SelectRootContext = new Context("Select.Root | Combobox.Root");
-var SelectGroupContext = new Context("Select.Group | Combobox.Group");
-var SelectContentContext = new Context("Select.Content | Combobox.Content");
-var SelectBaseRootState = class {
-  opts;
-  #touchedInput = state(false);
-  get touchedInput() {
-    return get2(this.#touchedInput);
-  }
-  set touchedInput(value) {
-    set(this.#touchedInput, value, true);
-  }
-  #inputNode = state(null);
-  get inputNode() {
-    return get2(this.#inputNode);
-  }
-  set inputNode(value) {
-    set(this.#inputNode, value, true);
-  }
-  #contentNode = state(null);
-  get contentNode() {
-    return get2(this.#contentNode);
-  }
-  set contentNode(value) {
-    set(this.#contentNode, value, true);
-  }
-  contentPresence;
-  #viewportNode = state(null);
-  get viewportNode() {
-    return get2(this.#viewportNode);
-  }
-  set viewportNode(value) {
-    set(this.#viewportNode, value, true);
-  }
-  #triggerNode = state(null);
-  get triggerNode() {
-    return get2(this.#triggerNode);
-  }
-  set triggerNode(value) {
-    set(this.#triggerNode, value, true);
-  }
-  #valueNode = state(null);
-  get valueNode() {
-    return get2(this.#valueNode);
-  }
-  set valueNode(value) {
-    set(this.#valueNode, value, true);
-  }
-  #valueId = state("");
-  get valueId() {
-    return get2(this.#valueId);
-  }
-  set valueId(value) {
-    set(this.#valueId, value, true);
-  }
-  #highlightedNode = state(null);
-  get highlightedNode() {
-    return get2(this.#highlightedNode);
-  }
-  set highlightedNode(value) {
-    set(this.#highlightedNode, value, true);
-  }
-  #highlightedValue = user_derived(() => {
-    if (!this.highlightedNode) return null;
-    return this.highlightedNode.getAttribute("data-value");
-  });
-  get highlightedValue() {
-    return get2(this.#highlightedValue);
-  }
-  set highlightedValue(value) {
-    set(this.#highlightedValue, value);
-  }
-  #highlightedId = user_derived(() => {
-    if (!this.highlightedNode) return void 0;
-    return this.highlightedNode.id;
-  });
-  get highlightedId() {
-    return get2(this.#highlightedId);
-  }
-  set highlightedId(value) {
-    set(this.#highlightedId, value);
-  }
-  #highlightedLabel = user_derived(() => {
-    if (!this.highlightedNode) return null;
-    return this.highlightedNode.getAttribute("data-label");
-  });
-  get highlightedLabel() {
-    return get2(this.#highlightedLabel);
-  }
-  set highlightedLabel(value) {
-    set(this.#highlightedLabel, value);
-  }
-  #contentIsPositioned = state(false);
-  get contentIsPositioned() {
-    return get2(this.#contentIsPositioned);
-  }
-  set contentIsPositioned(value) {
-    set(this.#contentIsPositioned, value, true);
-  }
-  isUsingKeyboard = false;
-  isCombobox = false;
-  domContext = new DOMContext(() => null);
-  constructor(opts) {
-    this.opts = opts;
-    this.isCombobox = opts.isCombobox;
-    this.contentPresence = new PresenceManager({
-      ref: boxWith(() => this.contentNode),
-      open: this.opts.open,
-      onComplete: () => {
-        this.opts.onOpenChangeComplete.current(this.opts.open.current);
-      }
-    });
-    user_pre_effect(() => {
-      if (!this.opts.open.current) {
-        this.setHighlightedNode(null);
-      }
-    });
-  }
-  setHighlightedNode(node, initial = false) {
-    this.highlightedNode = node;
-    if (node && (this.isUsingKeyboard || initial)) {
-      this.scrollHighlightedNodeIntoView(node);
-    }
-  }
-  scrollHighlightedNodeIntoView(node) {
-    if (!this.viewportNode || !this.contentIsPositioned) return;
-    node.scrollIntoView({ block: this.opts.scrollAlignment.current });
-  }
-  getCandidateNodes() {
-    const node = this.contentNode;
-    if (!node) return [];
-    return Array.from(node.querySelectorAll(`[${this.getBitsAttr("item")}]:not([data-disabled])`));
-  }
-  setHighlightedToFirstCandidate(initial = false) {
-    this.setHighlightedNode(null);
-    let nodes = this.getCandidateNodes();
-    if (!nodes.length) return;
-    if (this.viewportNode) {
-      const viewportRect = this.viewportNode.getBoundingClientRect();
-      nodes = nodes.filter((node) => {
-        if (!this.viewportNode) return false;
-        const nodeRect = node.getBoundingClientRect();
-        const isNodeFullyVisible = nodeRect.right <= viewportRect.right && nodeRect.left >= viewportRect.left && nodeRect.bottom <= viewportRect.bottom && nodeRect.top >= viewportRect.top;
-        return isNodeFullyVisible;
-      });
-    }
-    this.setHighlightedNode(nodes[0], initial);
-  }
-  getNodeByValue(value) {
-    const candidateNodes = this.getCandidateNodes();
-    return candidateNodes.find((node) => node.dataset.value === value) ?? null;
-  }
-  /**
-   * Resolves the display label for a value: `items` entry when present, otherwise the
-   * mounted item's `data-label` or its text content.
-   */
-  getLabelForValue(value) {
-    if (value === "") return "";
-    const fromItems = this.opts.items.current.find((item) => item.value === value)?.label;
-    if (fromItems !== void 0) return fromItems;
-    const node = this.getNodeByValue(value);
-    if (node) {
-      const dataLabel = node.getAttribute("data-label");
-      if (dataLabel !== null && dataLabel !== "") return dataLabel;
-      return node.textContent?.trim() ?? value;
-    }
-    return value;
-  }
-  setOpen(open) {
-    this.opts.open.current = open;
-  }
-  toggleOpen() {
-    this.opts.open.current = !this.opts.open.current;
-  }
-  handleOpen() {
-    this.setOpen(true);
-  }
-  handleClose() {
-    this.setHighlightedNode(null);
-    this.setOpen(false);
-  }
-  toggleMenu() {
-    this.toggleOpen();
-  }
-  getBitsAttr = (part) => {
-    return selectAttrs.getAttr(part, this.isCombobox ? "combobox" : void 0);
-  };
-};
-var SelectSingleRootState = class extends SelectBaseRootState {
-  opts;
-  isMulti = false;
-  #hasValue = user_derived(() => this.opts.value.current !== "");
-  get hasValue() {
-    return get2(this.#hasValue);
-  }
-  set hasValue(value) {
-    set(this.#hasValue, value);
-  }
-  #currentLabel = user_derived(() => {
-    if (!this.opts.items.current.length) return "";
-    return this.opts.items.current.find((item) => item.value === this.opts.value.current)?.label ?? "";
-  });
-  get currentLabel() {
-    return get2(this.#currentLabel);
-  }
-  set currentLabel(value) {
-    set(this.#currentLabel, value);
-  }
-  #candidateLabels = user_derived(() => {
-    if (!this.opts.items.current.length) return [];
-    const filteredItems = this.opts.items.current.filter((item) => !item.disabled);
-    return filteredItems.map((item) => item.label);
-  });
-  get candidateLabels() {
-    return get2(this.#candidateLabels);
-  }
-  set candidateLabels(value) {
-    set(this.#candidateLabels, value);
-  }
-  #dataTypeaheadEnabled = user_derived(() => {
-    if (this.isMulti) return false;
-    if (this.opts.items.current.length === 0) return false;
-    return true;
-  });
-  get dataTypeaheadEnabled() {
-    return get2(this.#dataTypeaheadEnabled);
-  }
-  set dataTypeaheadEnabled(value) {
-    set(this.#dataTypeaheadEnabled, value);
-  }
-  constructor(opts) {
-    super(opts);
-    this.opts = opts;
-    user_effect(() => {
-      if (!this.opts.open.current && this.highlightedNode) {
-        this.setHighlightedNode(null);
-      }
-    });
-    watch(() => this.opts.open.current, () => {
-      if (!this.opts.open.current) return;
-      this.setInitialHighlightedNode();
-    });
-  }
-  includesItem(itemValue) {
-    return this.opts.value.current === itemValue;
-  }
-  toggleItem(itemValue, itemLabel = itemValue) {
-    const newValue = this.includesItem(itemValue) ? "" : itemValue;
-    this.opts.value.current = newValue;
-    if (newValue !== "") {
-      this.opts.inputValue.current = itemLabel;
-    }
-  }
-  setInitialHighlightedNode() {
-    afterTick(() => {
-      if (this.highlightedNode && this.domContext.getDocument().contains(this.highlightedNode)) return;
-      if (this.opts.value.current !== "") {
-        const node = this.getNodeByValue(this.opts.value.current);
-        if (node) {
-          this.setHighlightedNode(node, true);
-          return;
-        }
-      }
-      this.setHighlightedToFirstCandidate(true);
-    });
-  }
-};
-var SelectMultipleRootState = class extends SelectBaseRootState {
-  opts;
-  isMulti = true;
-  #hasValue = user_derived(() => this.opts.value.current.length > 0);
-  get hasValue() {
-    return get2(this.#hasValue);
-  }
-  set hasValue(value) {
-    set(this.#hasValue, value);
-  }
-  constructor(opts) {
-    super(opts);
-    this.opts = opts;
-    user_effect(() => {
-      if (!this.opts.open.current && this.highlightedNode) {
-        this.setHighlightedNode(null);
-      }
-    });
-    watch(() => this.opts.open.current, () => {
-      if (!this.opts.open.current) return;
-      this.setInitialHighlightedNode();
-    });
-  }
-  includesItem(itemValue) {
-    return this.opts.value.current.includes(itemValue);
-  }
-  toggleItem(itemValue, itemLabel = itemValue) {
-    if (this.includesItem(itemValue)) {
-      this.opts.value.current = this.opts.value.current.filter((v) => v !== itemValue);
-    } else {
-      this.opts.value.current = [...this.opts.value.current, itemValue];
-    }
-    this.opts.inputValue.current = itemLabel;
-  }
-  setInitialHighlightedNode() {
-    afterTick(() => {
-      if (!this.domContext) return;
-      if (this.highlightedNode && this.domContext.getDocument().contains(this.highlightedNode)) return;
-      if (this.opts.value.current.length && this.opts.value.current[0] !== "") {
-        const node = this.getNodeByValue(this.opts.value.current[0]);
-        if (node) {
-          this.setHighlightedNode(node, true);
-          return;
-        }
-      }
-      this.setHighlightedToFirstCandidate(true);
-    });
-  }
-};
-var SelectRootState = class {
-  static create(props) {
-    const { type, ...rest } = props;
-    const rootState = type === "single" ? new SelectSingleRootState(rest) : new SelectMultipleRootState(rest);
-    return SelectRootContext.set(rootState);
-  }
-};
-var SelectValueState = class _SelectValueState {
-  static create(opts) {
-    return new _SelectValueState(opts, SelectRootContext.get());
-  }
-  root;
-  opts;
-  attachment;
-  constructor(opts, root71) {
-    this.root = root71;
-    this.opts = opts;
-    this.attachment = attachRef(opts.ref, (v) => this.root.valueNode = v);
-    this.setValue = this.setValue.bind(this);
-  }
-  setValue(value) {
-    if (this.root.isMulti && !Array.isArray(value)) {
-      if (dev_fallback_default) throw new Error(`Expected an array of strings passed to \`setValue\` got ${typeof value}.`);
-      return;
-    }
-    if (!this.root.isMulti && typeof value !== "string") {
-      if (dev_fallback_default) throw new Error(`Expected a string passed to \`setValue\` got ${typeof value}.`);
-      return;
-    }
-    this.root.opts.value.current = value;
-  }
-  #snippetProps = user_derived(
-    // this way consumers get type narrowing for the value on `type`
-    () => {
-      if (this.root.isMulti) {
-        return {
-          selection: {
-            type: "multiple",
-            selected: this.root.opts.value.current.length > 0 ? this.root.opts.value.current.map((value2) => ({ value: value2, label: this.root.getLabelForValue(value2) })) : [],
-            setValue: this.setValue
-          },
-          placeholder: this.opts.placeholder.current ?? null,
-          disabled: this.root.opts.disabled.current
-        };
-      }
-      const value = this.root.opts.value.current;
-      return {
-        selection: {
-          type: "single",
-          selected: value !== "" ? {
-            value,
-            label: value === "" ? "" : this.root.getLabelForValue(value)
-          } : void 0,
-          setValue: this.setValue
-        },
-        placeholder: this.opts.placeholder.current ?? null,
-        disabled: this.root.opts.disabled.current
-      };
-    }
-  );
-  get snippetProps() {
-    return get2(this.#snippetProps);
-  }
-  set snippetProps(value) {
-    set(this.#snippetProps, value);
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    "data-placeholder": this.root.hasValue ? void 0 : "",
-    "data-select-value": "",
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var SelectTriggerState = class _SelectTriggerState {
-  static create(opts) {
-    return new _SelectTriggerState(opts, SelectRootContext.get());
-  }
-  opts;
-  root;
-  attachment;
-  #domTypeahead;
-  #dataTypeahead;
-  constructor(opts, root71) {
-    this.opts = opts;
-    this.root = root71;
-    this.attachment = attachRef(opts.ref, (v) => this.root.triggerNode = v);
-    this.root.domContext = new DOMContext(opts.ref);
-    this.#domTypeahead = new DOMTypeahead({
-      getCurrentItem: () => this.root.highlightedNode,
-      onMatch: (node) => {
-        this.root.setHighlightedNode(node);
-      },
-      getActiveElement: () => this.root.domContext.getActiveElement(),
-      getWindow: () => this.root.domContext.getWindow()
-    });
-    this.#dataTypeahead = new DataTypeahead({
-      getCurrentItem: () => {
-        if (this.root.isMulti) return "";
-        return this.root.currentLabel;
-      },
-      onMatch: (label2) => {
-        if (this.root.isMulti) return;
-        if (!this.root.opts.items.current) return;
-        const matchedItem = this.root.opts.items.current.find((item) => item.label === label2);
-        if (!matchedItem) return;
-        this.root.opts.value.current = matchedItem.value;
-      },
-      enabled: () => !this.root.isMulti && this.root.dataTypeaheadEnabled,
-      candidateValues: () => this.root.isMulti ? [] : this.root.candidateLabels,
-      getWindow: () => this.root.domContext.getWindow()
-    });
-    this.onkeydown = this.onkeydown.bind(this);
-    this.onpointerdown = this.onpointerdown.bind(this);
-    this.onpointerup = this.onpointerup.bind(this);
-    this.onclick = this.onclick.bind(this);
-  }
-  #handleOpen() {
-    this.root.opts.open.current = true;
-    this.#dataTypeahead.resetTypeahead();
-    this.#domTypeahead.resetTypeahead();
-  }
-  #handlePointerOpen(_) {
-    this.#handleOpen();
-  }
-  /**
-   * Logic used to handle keyboard selection/deselection.
-   *
-   * If it returns true, it means the item was selected and whatever is calling
-   * this function should return early
-   *
-   */
-  #handleKeyboardSelection() {
-    const isCurrentSelectedValue = this.root.highlightedValue === this.root.opts.value.current;
-    if (!this.root.opts.allowDeselect.current && isCurrentSelectedValue && !this.root.isMulti) {
-      this.root.handleClose();
-      return true;
-    }
-    if (this.root.highlightedValue !== null) {
-      this.root.toggleItem(this.root.highlightedValue, this.root.highlightedLabel ?? void 0);
-    }
-    if (!this.root.isMulti && !isCurrentSelectedValue) {
-      this.root.handleClose();
-      return true;
-    }
-    return false;
-  }
-  onkeydown(e) {
-    this.root.isUsingKeyboard = true;
-    if (e.key === kbd_constants_exports.ARROW_UP || e.key === kbd_constants_exports.ARROW_DOWN) e.preventDefault();
-    if (!this.root.opts.open.current) {
-      if (e.key === kbd_constants_exports.ENTER || e.key === kbd_constants_exports.SPACE || e.key === kbd_constants_exports.ARROW_DOWN || e.key === kbd_constants_exports.ARROW_UP) {
-        e.preventDefault();
-        this.root.handleOpen();
-      } else if (!this.root.isMulti && this.root.dataTypeaheadEnabled) {
-        this.#dataTypeahead.handleTypeaheadSearch(e.key);
-        return;
-      }
-      if (this.root.hasValue) return;
-      const candidateNodes2 = this.root.getCandidateNodes();
-      if (!candidateNodes2.length) return;
-      if (e.key === kbd_constants_exports.ARROW_DOWN) {
-        const firstCandidate = candidateNodes2[0];
-        this.root.setHighlightedNode(firstCandidate);
-      } else if (e.key === kbd_constants_exports.ARROW_UP) {
-        const lastCandidate = candidateNodes2[candidateNodes2.length - 1];
-        this.root.setHighlightedNode(lastCandidate);
-      }
-      return;
-    }
-    if (e.key === kbd_constants_exports.TAB) {
-      this.root.handleClose();
-      return;
-    }
-    if ((e.key === kbd_constants_exports.ENTER || // if we're currently "typing ahead", we don't want to select the item
-    // just yet as the item the user is trying to get to may have a space in it,
-    // so we defer handling the close for this case until further down
-    e.key === kbd_constants_exports.SPACE && this.#domTypeahead.search === "") && !e.isComposing) {
-      e.preventDefault();
-      const shouldReturn = this.#handleKeyboardSelection();
-      if (shouldReturn) return;
-    }
-    if (e.key === kbd_constants_exports.ARROW_UP && e.altKey) {
-      this.root.handleClose();
-    }
-    if (FIRST_LAST_KEYS2.includes(e.key)) {
-      e.preventDefault();
-      const candidateNodes2 = this.root.getCandidateNodes();
-      const currHighlightedNode = this.root.highlightedNode;
-      const currIndex = currHighlightedNode ? candidateNodes2.indexOf(currHighlightedNode) : -1;
-      const loop2 = this.root.opts.loop.current;
-      let nextItem;
-      if (e.key === kbd_constants_exports.ARROW_DOWN) {
-        nextItem = next3(candidateNodes2, currIndex, loop2);
-      } else if (e.key === kbd_constants_exports.ARROW_UP) {
-        nextItem = prev2(candidateNodes2, currIndex, loop2);
-      } else if (e.key === kbd_constants_exports.PAGE_DOWN) {
-        nextItem = forward(candidateNodes2, currIndex, 10, loop2);
-      } else if (e.key === kbd_constants_exports.PAGE_UP) {
-        nextItem = backward(candidateNodes2, currIndex, 10, loop2);
-      } else if (e.key === kbd_constants_exports.HOME) {
-        nextItem = candidateNodes2[0];
-      } else if (e.key === kbd_constants_exports.END) {
-        nextItem = candidateNodes2[candidateNodes2.length - 1];
-      }
-      if (!nextItem) return;
-      this.root.setHighlightedNode(nextItem);
-      return;
-    }
-    const isModifierKey = e.ctrlKey || e.altKey || e.metaKey;
-    const isCharacterKey = e.key.length === 1;
-    const isSpaceKey = e.key === kbd_constants_exports.SPACE;
-    const candidateNodes = this.root.getCandidateNodes();
-    if (e.key === kbd_constants_exports.TAB) return;
-    if (!isModifierKey && (isCharacterKey || isSpaceKey)) {
-      const matchedNode = this.#domTypeahead.handleTypeaheadSearch(e.key, candidateNodes);
-      if (!matchedNode && isSpaceKey) {
-        e.preventDefault();
-        this.#handleKeyboardSelection();
-      }
-      return;
-    }
-    if (!this.root.highlightedNode) {
-      this.root.setHighlightedToFirstCandidate();
-    }
-  }
-  onclick(e) {
-    const currTarget = e.currentTarget;
-    currTarget.focus();
-  }
-  onpointerdown(e) {
-    if (this.root.opts.disabled.current) return;
-    if (e.pointerType === "touch") return e.preventDefault();
-    const target = e.target;
-    if (target?.hasPointerCapture(e.pointerId)) {
-      target?.releasePointerCapture(e.pointerId);
-    }
-    if (e.button === 0 && e.ctrlKey === false) {
-      if (this.root.opts.open.current === false) {
-        this.#handlePointerOpen(e);
-      } else {
-        this.root.handleClose();
-      }
-    }
-  }
-  onpointerup(e) {
-    if (this.root.opts.disabled.current) return;
-    e.preventDefault();
-    if (e.pointerType === "touch") {
-      if (this.root.opts.open.current === false) {
-        this.#handlePointerOpen(e);
-      } else {
-        this.root.handleClose();
-      }
-    }
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    disabled: this.root.opts.disabled.current ? true : void 0,
-    "aria-haspopup": "listbox",
-    "aria-expanded": boolToStr(this.root.opts.open.current),
-    "aria-activedescendant": this.root.highlightedId,
-    "data-state": getDataOpenClosed(this.root.opts.open.current),
-    "data-disabled": boolToEmptyStrOrUndef(this.root.opts.disabled.current),
-    "data-placeholder": this.root.hasValue ? void 0 : "",
-    [this.root.getBitsAttr("trigger")]: "",
-    onpointerdown: this.onpointerdown,
-    onkeydown: this.onkeydown,
-    onclick: this.onclick,
-    onpointerup: this.onpointerup,
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var SelectContentState = class _SelectContentState {
-  static create(opts) {
-    return SelectContentContext.set(new _SelectContentState(opts, SelectRootContext.get()));
-  }
-  opts;
-  root;
-  attachment;
-  #isPositioned = state(false);
-  get isPositioned() {
-    return get2(this.#isPositioned);
-  }
-  set isPositioned(value) {
-    set(this.#isPositioned, value, true);
-  }
-  domContext;
-  constructor(opts, root71) {
-    this.opts = opts;
-    this.root = root71;
-    this.attachment = attachRef(opts.ref, (v) => this.root.contentNode = v);
-    this.domContext = new DOMContext(this.opts.ref);
-    if (this.root.domContext === null) {
-      this.root.domContext = this.domContext;
-    }
-    onDestroyEffect(() => {
-      this.root.contentNode = null;
-      this.root.contentIsPositioned = false;
-      this.isPositioned = false;
-    });
-    watch(() => this.root.opts.open.current, () => {
-      if (this.root.opts.open.current) return;
-      this.root.contentIsPositioned = false;
-      this.isPositioned = false;
-    });
-    watch([() => this.isPositioned, () => this.root.highlightedNode], () => {
-      if (!this.isPositioned || !this.root.highlightedNode) return;
-      this.root.scrollHighlightedNodeIntoView(this.root.highlightedNode);
-    });
-    this.onpointermove = this.onpointermove.bind(this);
-  }
-  onpointermove(_) {
-    this.root.isUsingKeyboard = false;
-  }
-  #styles = user_derived(() => {
-    return getFloatingContentCSSVars(this.root.isCombobox ? "combobox" : "select");
-  });
-  onInteractOutside = (e) => {
-    if (e.target === this.root.triggerNode || e.target === this.root.inputNode) {
-      e.preventDefault();
-      return;
-    }
-    this.opts.onInteractOutside.current(e);
-    if (e.defaultPrevented) return;
-    this.root.handleClose();
-  };
-  onEscapeKeydown = (e) => {
-    this.opts.onEscapeKeydown.current(e);
-    if (e.defaultPrevented) return;
-    this.root.handleClose();
-  };
-  onOpenAutoFocus = (e) => {
-    e.preventDefault();
-  };
-  onCloseAutoFocus = (e) => {
-    e.preventDefault();
-  };
-  get shouldRender() {
-    return this.root.contentPresence.shouldRender;
-  }
-  #snippetProps = user_derived(() => ({ open: this.root.opts.open.current }));
-  get snippetProps() {
-    return get2(this.#snippetProps);
-  }
-  set snippetProps(value) {
-    set(this.#snippetProps, value);
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    role: "listbox",
-    "aria-multiselectable": this.root.isMulti ? "true" : void 0,
-    "data-state": getDataOpenClosed(this.root.opts.open.current),
-    ...getDataTransitionAttrs(this.root.contentPresence.transitionStatus),
-    [this.root.getBitsAttr("content")]: "",
-    style: {
-      display: "flex",
-      flexDirection: "column",
-      outline: "none",
-      boxSizing: "border-box",
-      pointerEvents: "auto",
-      ...get2(this.#styles)
-    },
-    onpointermove: this.onpointermove,
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-  popperProps = {
-    onInteractOutside: this.onInteractOutside,
-    onEscapeKeydown: this.onEscapeKeydown,
-    onOpenAutoFocus: this.onOpenAutoFocus,
-    onCloseAutoFocus: this.onCloseAutoFocus,
-    trapFocus: false,
-    loop: false,
-    onPlaced: () => {
-      if (this.root.opts.open.current) {
-        this.root.contentIsPositioned = true;
-        this.isPositioned = true;
-      }
-    }
-  };
-};
-var SelectItemState = class _SelectItemState {
-  static create(opts) {
-    return new _SelectItemState(opts, SelectRootContext.get());
-  }
-  opts;
-  root;
-  attachment;
-  #isSelected = user_derived(() => this.root.includesItem(this.opts.value.current));
-  get isSelected() {
-    return get2(this.#isSelected);
-  }
-  set isSelected(value) {
-    set(this.#isSelected, value);
-  }
-  #isHighlighted = user_derived(() => this.root.highlightedValue === this.opts.value.current);
-  get isHighlighted() {
-    return get2(this.#isHighlighted);
-  }
-  set isHighlighted(value) {
-    set(this.#isHighlighted, value);
-  }
-  prevHighlighted = new Previous(() => this.isHighlighted);
-  #mounted = state(false);
-  get mounted() {
-    return get2(this.#mounted);
-  }
-  set mounted(value) {
-    set(this.#mounted, value, true);
-  }
-  constructor(opts, root71) {
-    this.opts = opts;
-    this.root = root71;
-    this.attachment = attachRef(opts.ref);
-    watch([() => this.isHighlighted, () => this.prevHighlighted.current], () => {
-      if (this.isHighlighted) {
-        this.opts.onHighlight.current();
-      } else if (this.prevHighlighted.current) {
-        this.opts.onUnhighlight.current();
-      }
-    });
-    watch(() => this.mounted, () => {
-      if (!this.mounted) return;
-      this.root.setInitialHighlightedNode();
-    });
-    this.onpointerdown = this.onpointerdown.bind(this);
-    this.onpointerup = this.onpointerup.bind(this);
-    this.onpointermove = this.onpointermove.bind(this);
-  }
-  handleSelect() {
-    if (this.opts.disabled.current) return;
-    const isCurrentSelectedValue = this.opts.value.current === this.root.opts.value.current;
-    if (!this.root.opts.allowDeselect.current && isCurrentSelectedValue && !this.root.isMulti) {
-      this.root.handleClose();
-      return;
-    }
-    this.root.toggleItem(this.opts.value.current, this.opts.label.current);
-    if (!this.root.isMulti && !isCurrentSelectedValue) {
-      this.root.handleClose();
-    }
-  }
-  #snippetProps = user_derived(() => ({ selected: this.isSelected, highlighted: this.isHighlighted }));
-  get snippetProps() {
-    return get2(this.#snippetProps);
-  }
-  set snippetProps(value) {
-    set(this.#snippetProps, value);
-  }
-  onpointerdown(e) {
-    e.preventDefault();
-  }
-  /**
-   * Using `pointerup` instead of `click` allows power users to pointerdown
-   * the trigger, then release pointerup on an item to select it vs having to do
-   * multiple clicks.
-   */
-  onpointerup(e) {
-    if (e.defaultPrevented || !this.opts.ref.current) return;
-    if (e.pointerType === "touch" && !isIOS) {
-      on(
-        this.opts.ref.current,
-        "click",
-        () => {
-          this.handleSelect();
-          this.root.setHighlightedNode(this.opts.ref.current);
-        },
-        { once: true }
-      );
-      return;
-    }
-    e.preventDefault();
-    this.handleSelect();
-    if (e.pointerType === "touch") {
-      this.root.setHighlightedNode(this.opts.ref.current);
-    }
-  }
-  onpointermove(e) {
-    if (e.pointerType === "touch") return;
-    if (this.root.highlightedNode !== this.opts.ref.current) {
-      this.root.setHighlightedNode(this.opts.ref.current);
-    }
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    role: "option",
-    "aria-selected": this.root.includesItem(this.opts.value.current) ? "true" : void 0,
-    "data-value": this.opts.value.current,
-    "data-disabled": boolToEmptyStrOrUndef(this.opts.disabled.current),
-    "data-highlighted": this.root.highlightedValue === this.opts.value.current && !this.opts.disabled.current ? "" : void 0,
-    "data-selected": this.root.includesItem(this.opts.value.current) ? "" : void 0,
-    "data-label": this.opts.label.current,
-    [this.root.getBitsAttr("item")]: "",
-    onpointermove: this.onpointermove,
-    onpointerdown: this.onpointerdown,
-    onpointerup: this.onpointerup,
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var SelectGroupState = class _SelectGroupState {
-  static create(opts) {
-    return SelectGroupContext.set(new _SelectGroupState(opts, SelectRootContext.get()));
-  }
-  opts;
-  root;
-  #labelNode = state(null);
-  get labelNode() {
-    return get2(this.#labelNode);
-  }
-  set labelNode(value) {
-    set(this.#labelNode, value, true);
-  }
-  attachment;
-  constructor(opts, root71) {
-    this.opts = opts;
-    this.root = root71;
-    this.attachment = attachRef(opts.ref);
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    role: "group",
-    [this.root.getBitsAttr("group")]: "",
-    "aria-labelledby": this.labelNode?.id ?? void 0,
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var SelectGroupHeadingState = class _SelectGroupHeadingState {
-  static create(opts) {
-    return new _SelectGroupHeadingState(opts, SelectGroupContext.get());
-  }
-  opts;
-  group;
-  attachment;
-  constructor(opts, group) {
-    this.opts = opts;
-    this.group = group;
-    this.attachment = attachRef(opts.ref, (v) => this.group.labelNode = v);
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    [this.group.root.getBitsAttr("group-label")]: "",
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var SelectHiddenInputState = class _SelectHiddenInputState {
-  static create(opts) {
-    return new _SelectHiddenInputState(opts, SelectRootContext.get());
-  }
-  opts;
-  root;
-  #shouldRender = user_derived(() => this.root.opts.name.current !== "");
-  get shouldRender() {
-    return get2(this.#shouldRender);
-  }
-  set shouldRender(value) {
-    set(this.#shouldRender, value);
-  }
-  constructor(opts, root71) {
-    this.opts = opts;
-    this.root = root71;
-    this.onfocus = this.onfocus.bind(this);
-  }
-  onfocus(e) {
-    e.preventDefault();
-    if (!this.root.isCombobox) {
-      this.root.triggerNode?.focus();
-    } else {
-      this.root.inputNode?.focus();
-    }
-  }
-  #props = user_derived(() => ({
-    disabled: boolToTrueOrUndef(this.root.opts.disabled.current),
-    required: boolToTrueOrUndef(this.root.opts.required.current),
-    name: this.root.opts.name.current,
-    value: this.opts.value.current,
-    onfocus: this.onfocus
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var SelectViewportState = class _SelectViewportState {
-  static create(opts) {
-    return new _SelectViewportState(opts, SelectContentContext.get());
-  }
-  opts;
-  content;
-  root;
-  attachment;
-  #prevScrollTop = state(0);
-  get prevScrollTop() {
-    return get2(this.#prevScrollTop);
-  }
-  set prevScrollTop(value) {
-    set(this.#prevScrollTop, value, true);
-  }
-  constructor(opts, content) {
-    this.opts = opts;
-    this.content = content;
-    this.root = content.root;
-    this.attachment = attachRef(opts.ref, (v) => {
-      this.root.viewportNode = v;
-    });
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    role: "presentation",
-    [this.root.getBitsAttr("viewport")]: "",
-    style: {
-      // we use position: 'relative' here on the `viewport` so that when we call
-      // `selectedItem.offsetTop` in calculations, the offset is relative to the viewport
-      // (independent of the scrollUpButton).
-      position: "relative",
-      flex: 1,
-      overflow: "auto"
-    },
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var SelectScrollButtonImplState = class {
-  opts;
-  content;
-  root;
-  attachment;
-  autoScrollTimer = null;
-  userScrollTimer = -1;
-  isUserScrolling = false;
-  onAutoScroll = noop3;
-  #mounted = state(false);
-  get mounted() {
-    return get2(this.#mounted);
-  }
-  set mounted(value) {
-    set(this.#mounted, value, true);
-  }
-  constructor(opts, content) {
-    this.opts = opts;
-    this.content = content;
-    this.root = content.root;
-    this.attachment = attachRef(opts.ref);
-    watch([() => this.mounted], () => {
-      if (!this.mounted) {
-        this.isUserScrolling = false;
-        return;
-      }
-      if (this.isUserScrolling) return;
-    });
-    user_effect(() => {
-      if (this.mounted) return;
-      this.clearAutoScrollInterval();
-    });
-    this.onpointerdown = this.onpointerdown.bind(this);
-    this.onpointermove = this.onpointermove.bind(this);
-    this.onpointerleave = this.onpointerleave.bind(this);
-  }
-  handleUserScroll() {
-    this.content.domContext.clearTimeout(this.userScrollTimer);
-    this.isUserScrolling = true;
-    this.userScrollTimer = this.content.domContext.setTimeout(
-      () => {
-        this.isUserScrolling = false;
-      },
-      200
-    );
-  }
-  clearAutoScrollInterval() {
-    if (this.autoScrollTimer === null) return;
-    this.content.domContext.clearTimeout(this.autoScrollTimer);
-    this.autoScrollTimer = null;
-  }
-  onpointerdown(_) {
-    if (this.autoScrollTimer !== null) return;
-    const autoScroll = (tick2) => {
-      this.onAutoScroll();
-      this.autoScrollTimer = this.content.domContext.setTimeout(() => autoScroll(tick2 + 1), this.opts.delay.current(tick2));
-    };
-    this.autoScrollTimer = this.content.domContext.setTimeout(() => autoScroll(1), this.opts.delay.current(0));
-  }
-  onpointermove(e) {
-    this.onpointerdown(e);
-  }
-  onpointerleave(_) {
-    this.clearAutoScrollInterval();
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    "aria-hidden": boolToStrTrueOrUndef(true),
-    style: { flexShrink: 0 },
-    onpointerdown: this.onpointerdown,
-    onpointermove: this.onpointermove,
-    onpointerleave: this.onpointerleave,
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var SelectScrollDownButtonState = class _SelectScrollDownButtonState {
-  static create(opts) {
-    return new _SelectScrollDownButtonState(new SelectScrollButtonImplState(opts, SelectContentContext.get()));
-  }
-  scrollButtonState;
-  content;
-  root;
-  #canScrollDown = state(false);
-  get canScrollDown() {
-    return get2(this.#canScrollDown);
-  }
-  set canScrollDown(value) {
-    set(this.#canScrollDown, value, true);
-  }
-  scrollIntoViewTimer = null;
-  constructor(scrollButtonState) {
-    this.scrollButtonState = scrollButtonState;
-    this.content = scrollButtonState.content;
-    this.root = scrollButtonState.root;
-    this.scrollButtonState.onAutoScroll = this.handleAutoScroll;
-    watch(
-      [
-        () => this.root.viewportNode,
-        () => this.content.isPositioned
-      ],
-      () => {
-        if (!this.root.viewportNode || !this.content.isPositioned) return;
-        this.handleScroll(true);
-        return on(this.root.viewportNode, "scroll", () => this.handleScroll());
-      }
-    );
-    watch(
-      [
-        () => this.root.opts.inputValue.current,
-        () => this.root.viewportNode,
-        () => this.content.isPositioned
-      ],
-      () => {
-        if (!this.root.viewportNode || !this.content.isPositioned) return;
-        this.handleScroll(true);
-      }
-    );
-    watch(() => this.scrollButtonState.mounted, () => {
-      if (!this.scrollButtonState.mounted) return;
-      if (this.scrollIntoViewTimer) {
-        clearTimeout(this.scrollIntoViewTimer);
-      }
-      this.scrollIntoViewTimer = afterSleep(5, () => {
-        const activeItem = this.root.highlightedNode;
-        if (!activeItem) return;
-        this.root.scrollHighlightedNodeIntoView(activeItem);
-      });
-    });
-  }
-  /**
-   * @param manual - if true, it means the function was invoked manually outside of an event
-   * listener, so we don't call `handleUserScroll` to prevent the auto scroll from kicking in.
-   */
-  handleScroll = (manual = false) => {
-    if (!manual) {
-      this.scrollButtonState.handleUserScroll();
-    }
-    if (!this.root.viewportNode) return;
-    const maxScroll = this.root.viewportNode.scrollHeight - this.root.viewportNode.clientHeight;
-    const paddingTop = Number.parseInt(getComputedStyle(this.root.viewportNode).paddingTop, 10);
-    this.canScrollDown = Math.ceil(this.root.viewportNode.scrollTop) < maxScroll - paddingTop;
-  };
-  handleAutoScroll = () => {
-    const viewport = this.root.viewportNode;
-    const selectedItem = this.root.highlightedNode;
-    if (!viewport || !selectedItem) return;
-    viewport.scrollTop = viewport.scrollTop + selectedItem.offsetHeight;
-  };
-  #props = user_derived(() => ({
-    ...this.scrollButtonState.props,
-    [this.root.getBitsAttr("scroll-down-button")]: ""
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var SelectScrollUpButtonState = class _SelectScrollUpButtonState {
-  static create(opts) {
-    return new _SelectScrollUpButtonState(new SelectScrollButtonImplState(opts, SelectContentContext.get()));
-  }
-  scrollButtonState;
-  content;
-  root;
-  #canScrollUp = state(false);
-  get canScrollUp() {
-    return get2(this.#canScrollUp);
-  }
-  set canScrollUp(value) {
-    set(this.#canScrollUp, value, true);
-  }
-  constructor(scrollButtonState) {
-    this.scrollButtonState = scrollButtonState;
-    this.content = scrollButtonState.content;
-    this.root = scrollButtonState.root;
-    this.scrollButtonState.onAutoScroll = this.handleAutoScroll;
-    watch(
-      [
-        () => this.root.viewportNode,
-        () => this.content.isPositioned
-      ],
-      () => {
-        if (!this.root.viewportNode || !this.content.isPositioned) return;
-        this.handleScroll(true);
-        return on(this.root.viewportNode, "scroll", () => this.handleScroll());
-      }
-    );
-  }
-  /**
-   * @param manual - if true, it means the function was invoked manually outside of an event
-   * listener, so we don't call `handleUserScroll` to prevent the auto scroll from kicking in.
-   */
-  handleScroll = (manual = false) => {
-    if (!manual) {
-      this.scrollButtonState.handleUserScroll();
-    }
-    if (!this.root.viewportNode) return;
-    const paddingTop = Number.parseInt(getComputedStyle(this.root.viewportNode).paddingTop, 10);
-    this.canScrollUp = this.root.viewportNode.scrollTop - paddingTop > 0.1;
-  };
-  handleAutoScroll = () => {
-    if (!this.root.viewportNode || !this.root.highlightedNode) return;
-    this.root.viewportNode.scrollTop = this.root.viewportNode.scrollTop - this.root.highlightedNode.offsetHeight;
-  };
-  #props = user_derived(() => ({
-    ...this.scrollButtonState.props,
-    [this.root.getBitsAttr("scroll-up-button")]: ""
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-
-// node_modules/bits-ui/dist/bits/select/components/select-hidden-input.svelte
-function Select_hidden_input($$anchor, $$props) {
-  push($$props, true);
-  let value = prop($$props, "value", 15);
-  const hiddenInputState = SelectHiddenInputState.create({ value: boxWith(() => value()) });
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      Hidden_input($$anchor2, spread_props(() => hiddenInputState.props, {
-        get autocomplete() {
-          return $$props.autocomplete;
-        },
-        get value() {
-          return value();
-        },
-        set value($$value) {
-          value($$value);
-        }
-      }));
-    };
-    if_block(node, ($$render) => {
-      if (hiddenInputState.shouldRender) $$render(consequent);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/utilities/floating-layer/components/index.js
-var components_exports = {};
-__export(components_exports, {
-  Anchor: () => Floating_layer_anchor,
-  Arrow: () => Floating_layer_arrow,
-  Content: () => Floating_layer_content,
-  ContentStatic: () => Floating_layer_content_static,
-  Root: () => Floating_layer
-});
-
-// node_modules/bits-ui/dist/bits/utilities/floating-layer/components/floating-layer-anchor.svelte
-function Floating_layer_anchor($$anchor, $$props) {
-  push($$props, true);
-  let tooltip = prop($$props, "tooltip", 3, false);
-  FloatingAnchorState.create(
-    {
-      id: boxWith(() => $$props.id),
-      virtualEl: boxWith(() => $$props.virtualEl),
-      ref: $$props.ref
-    },
-    tooltip()
-  );
-  var fragment = comment();
-  var node = first_child(fragment);
-  snippet(node, () => $$props.children ?? noop);
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/utilities/arrow/arrow.svelte
-var rest_excludes14 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "children",
-  "child",
-  "width",
-  "height"
-]);
-var root15 = from_svg(`<svg viewBox="0 0 30 10" preserveAspectRatio="none" data-arrow=""><polygon points="0,0 30,0 15,10" fill="currentColor"></polygon></svg>`);
-var root_1 = from_html(`<span><!></span>`);
-function Arrow($$anchor, $$props) {
-  push($$props, true);
-  let id = prop($$props, "id", 19, useId), width = prop($$props, "width", 3, 10), height = prop($$props, "height", 3, 5), restProps = rest_props($$props, rest_excludes14);
-  const mergedProps = user_derived(() => mergeProps(restProps, { id: id() }));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate_1 = ($$anchor2) => {
-      var span = root_1();
-      attribute_effect(span, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(span);
-      {
-        var consequent_1 = ($$anchor3) => {
-          var fragment_2 = comment();
-          var node_3 = first_child(fragment_2);
-          snippet(node_3, () => $$props.children ?? noop);
-          append($$anchor3, fragment_2);
-        };
-        var alternate = ($$anchor3) => {
-          var svg = root15();
-          template_effect(() => {
-            set_attribute2(svg, "width", width());
-            set_attribute2(svg, "height", height());
-          });
-          append($$anchor3, svg);
-        };
-        if_block(node_2, ($$render) => {
-          if ($$props.children) $$render(consequent_1);
-          else $$render(alternate, -1);
-        });
-      }
-      reset(span);
-      append($$anchor2, span);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate_1, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/utilities/floating-layer/components/floating-layer-arrow.svelte
-var rest_excludes15 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "id", "ref"]);
-function Floating_layer_arrow($$anchor, $$props) {
-  push($$props, true);
-  let id = prop($$props, "id", 19, useId), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes15);
-  const arrowState = FloatingArrowState.create({
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, arrowState.props));
-  Arrow($$anchor, spread_props(() => get2(mergedProps)));
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/utilities/floating-layer/components/floating-layer-content.svelte
-function Floating_layer_content($$anchor, $$props) {
-  push($$props, true);
-  let side = prop($$props, "side", 3, "bottom"), sideOffset = prop($$props, "sideOffset", 3, 0), align = prop($$props, "align", 3, "center"), alignOffset = prop($$props, "alignOffset", 3, 0), arrowPadding = prop($$props, "arrowPadding", 3, 0), avoidCollisions = prop($$props, "avoidCollisions", 3, true), collisionBoundary = prop($$props, "collisionBoundary", 19, () => []), collisionPadding = prop($$props, "collisionPadding", 3, 0), hideWhenDetached = prop($$props, "hideWhenDetached", 3, false), onPlaced = prop($$props, "onPlaced", 3, () => {
-  }), sticky = prop($$props, "sticky", 3, "partial"), updatePositionStrategy = prop($$props, "updatePositionStrategy", 3, "optimized"), strategy = prop($$props, "strategy", 3, "fixed"), dir = prop($$props, "dir", 3, "ltr"), style = prop($$props, "style", 19, () => ({})), wrapperId = prop($$props, "wrapperId", 19, useId), customAnchor = prop($$props, "customAnchor", 3, null), tooltip = prop($$props, "tooltip", 3, false);
-  const contentState = FloatingContentState.create(
-    {
-      side: boxWith(() => side()),
-      sideOffset: boxWith(() => sideOffset()),
-      align: boxWith(() => align()),
-      alignOffset: boxWith(() => alignOffset()),
-      id: boxWith(() => $$props.id),
-      arrowPadding: boxWith(() => arrowPadding()),
-      avoidCollisions: boxWith(() => avoidCollisions()),
-      collisionBoundary: boxWith(() => collisionBoundary()),
-      collisionPadding: boxWith(() => collisionPadding()),
-      hideWhenDetached: boxWith(() => hideWhenDetached()),
-      onPlaced: boxWith(() => onPlaced()),
-      sticky: boxWith(() => sticky()),
-      updatePositionStrategy: boxWith(() => updatePositionStrategy()),
-      strategy: boxWith(() => strategy()),
-      dir: boxWith(() => dir()),
-      style: boxWith(() => style()),
-      enabled: boxWith(() => $$props.enabled),
-      wrapperId: boxWith(() => wrapperId()),
-      customAnchor: boxWith(() => customAnchor())
-    },
-    tooltip()
-  );
-  const mergedProps = user_derived(() => mergeProps(contentState.wrapperProps, { style: { pointerEvents: "auto" } }));
-  var fragment = comment();
-  var node = first_child(fragment);
-  snippet(node, () => $$props.content ?? noop, () => ({ props: contentState.props, wrapperProps: get2(mergedProps) }));
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/utilities/floating-layer/components/floating-layer-content-static.svelte
-function Floating_layer_content_static($$anchor, $$props) {
-  push($$props, true);
-  onMount(() => {
-    $$props.onPlaced?.();
-  });
-  var fragment = comment();
-  var node = first_child(fragment);
-  snippet(node, () => $$props.content ?? noop, () => ({ props: {}, wrapperProps: {} }));
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/utilities/popper-layer/popper-content.svelte
-var rest_excludes16 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "content",
-  "isStatic",
-  "onPlaced"
-]);
-function Popper_content($$anchor, $$props) {
-  let isStatic = prop($$props, "isStatic", 3, false), restProps = rest_props($$props, rest_excludes16);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      Floating_layer_content_static($$anchor2, {
-        get content() {
-          return $$props.content;
-        },
-        get onPlaced() {
-          return $$props.onPlaced;
-        }
-      });
-    };
-    var alternate = ($$anchor2) => {
-      Floating_layer_content($$anchor2, spread_props(
-        {
-          get content() {
-            return $$props.content;
-          },
-          get onPlaced() {
-            return $$props.onPlaced;
-          }
-        },
-        () => restProps
-      ));
-    };
-    if_block(node, ($$render) => {
-      if (isStatic()) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-}
-
-// node_modules/bits-ui/dist/bits/utilities/popper-layer/popper-layer-inner.svelte
-var rest_excludes17 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "popper",
-  "onEscapeKeydown",
-  "escapeKeydownBehavior",
-  "preventOverflowTextSelection",
-  "id",
-  "onPointerDown",
-  "onPointerUp",
-  "side",
-  "sideOffset",
-  "align",
-  "alignOffset",
-  "arrowPadding",
-  "avoidCollisions",
-  "collisionBoundary",
-  "collisionPadding",
-  "sticky",
-  "hideWhenDetached",
-  "updatePositionStrategy",
-  "strategy",
-  "dir",
-  "preventScroll",
-  "wrapperId",
-  "style",
-  "onPlaced",
-  "onInteractOutside",
-  "onCloseAutoFocus",
-  "onOpenAutoFocus",
-  "onFocusOutside",
-  "interactOutsideBehavior",
-  "loop",
-  "trapFocus",
-  "isValidEvent",
-  "customAnchor",
-  "isStatic",
-  "enabled",
-  "ref",
-  "tooltip",
-  "contentPointerEvents"
-]);
-var root16 = from_html(`<!> <!>`, 1);
-function Popper_layer_inner($$anchor, $$props) {
-  push($$props, true);
-  let interactOutsideBehavior = prop($$props, "interactOutsideBehavior", 3, "close"), trapFocus = prop($$props, "trapFocus", 3, true), isValidEvent2 = prop($$props, "isValidEvent", 3, () => false), customAnchor = prop($$props, "customAnchor", 3, null), isStatic = prop($$props, "isStatic", 3, false), tooltip = prop($$props, "tooltip", 3, false), contentPointerEvents = prop($$props, "contentPointerEvents", 3, "auto"), restProps = rest_props($$props, rest_excludes17);
-  const resolvedPreventScroll = user_derived(() => $$props.preventScroll ?? true);
-  const effectiveStrategy = user_derived(() => $$props.strategy ?? (get2(resolvedPreventScroll) ? "fixed" : "absolute"));
-  {
-    const content = ($$anchor2, $$arg0) => {
-      let floatingProps = () => ($$arg0?.()).props;
-      let wrapperProps = () => ($$arg0?.()).wrapperProps;
-      var fragment_1 = root16();
-      var node = first_child(fragment_1);
-      {
-        var consequent = ($$anchor3) => {
-          Scroll_lock($$anchor3, {
-            get preventScroll() {
-              return get2(resolvedPreventScroll);
-            }
-          });
-        };
-        var consequent_1 = ($$anchor3) => {
-          Scroll_lock($$anchor3, {
-            get preventScroll() {
-              return get2(resolvedPreventScroll);
-            }
-          });
-        };
-        if_block(node, ($$render) => {
-          if ($$props.forceMount && $$props.enabled) $$render(consequent);
-          else if (!$$props.forceMount) $$render(consequent_1, 1);
-        });
-      }
-      var node_1 = sibling(node, 2);
-      {
-        const focusScope = ($$anchor3, $$arg02) => {
-          let focusScopeProps = () => ($$arg02?.()).props;
-          Escape_layer($$anchor3, {
-            get onEscapeKeydown() {
-              return $$props.onEscapeKeydown;
-            },
-            get escapeKeydownBehavior() {
-              return $$props.escapeKeydownBehavior;
-            },
-            get enabled() {
-              return $$props.enabled;
-            },
-            get ref() {
-              return $$props.ref;
-            },
-            children: ($$anchor4, $$slotProps) => {
-              {
-                const children2 = ($$anchor5, $$arg03) => {
-                  let dismissibleProps = () => ($$arg03?.()).props;
-                  Text_selection_layer($$anchor5, {
-                    get id() {
-                      return $$props.id;
-                    },
-                    get preventOverflowTextSelection() {
-                      return $$props.preventOverflowTextSelection;
-                    },
-                    get onPointerDown() {
-                      return $$props.onPointerDown;
-                    },
-                    get onPointerUp() {
-                      return $$props.onPointerUp;
-                    },
-                    get enabled() {
-                      return $$props.enabled;
-                    },
-                    get ref() {
-                      return $$props.ref;
-                    },
-                    children: ($$anchor6, $$slotProps2) => {
-                      var fragment_7 = comment();
-                      var node_2 = first_child(fragment_7);
-                      {
-                        let $0 = user_derived(() => ({
-                          props: mergeProps(restProps, floatingProps(), dismissibleProps(), focusScopeProps(), { style: { pointerEvents: contentPointerEvents() } }),
-                          wrapperProps: wrapperProps()
-                        }));
-                        snippet(node_2, () => $$props.popper ?? noop, () => get2($0));
-                      }
-                      append($$anchor6, fragment_7);
-                    },
-                    $$slots: { default: true }
-                  });
-                };
-                Dismissible_layer($$anchor4, {
-                  get id() {
-                    return $$props.id;
-                  },
-                  get onInteractOutside() {
-                    return $$props.onInteractOutside;
-                  },
-                  get onFocusOutside() {
-                    return $$props.onFocusOutside;
-                  },
-                  get interactOutsideBehavior() {
-                    return interactOutsideBehavior();
-                  },
-                  get isValidEvent() {
-                    return isValidEvent2();
-                  },
-                  get enabled() {
-                    return $$props.enabled;
-                  },
-                  get ref() {
-                    return $$props.ref;
-                  },
-                  children: children2,
-                  $$slots: { default: true }
-                });
-              }
-            },
-            $$slots: { default: true }
-          });
-        };
-        Focus_scope(node_1, {
-          get onOpenAutoFocus() {
-            return $$props.onOpenAutoFocus;
-          },
-          get onCloseAutoFocus() {
-            return $$props.onCloseAutoFocus;
-          },
-          get loop() {
-            return $$props.loop;
-          },
-          get enabled() {
-            return $$props.enabled;
-          },
-          get trapFocus() {
-            return trapFocus();
-          },
-          get forceMount() {
-            return $$props.forceMount;
-          },
-          get ref() {
-            return $$props.ref;
-          },
-          focusScope,
-          $$slots: { focusScope: true }
-        });
-      }
-      append($$anchor2, fragment_1);
-    };
-    Popper_content($$anchor, {
-      get isStatic() {
-        return isStatic();
-      },
-      get id() {
-        return $$props.id;
-      },
-      get side() {
-        return $$props.side;
-      },
-      get sideOffset() {
-        return $$props.sideOffset;
-      },
-      get align() {
-        return $$props.align;
-      },
-      get alignOffset() {
-        return $$props.alignOffset;
-      },
-      get arrowPadding() {
-        return $$props.arrowPadding;
-      },
-      get avoidCollisions() {
-        return $$props.avoidCollisions;
-      },
-      get collisionBoundary() {
-        return $$props.collisionBoundary;
-      },
-      get collisionPadding() {
-        return $$props.collisionPadding;
-      },
-      get sticky() {
-        return $$props.sticky;
-      },
-      get hideWhenDetached() {
-        return $$props.hideWhenDetached;
-      },
-      get updatePositionStrategy() {
-        return $$props.updatePositionStrategy;
-      },
-      get strategy() {
-        return get2(effectiveStrategy);
-      },
-      get dir() {
-        return $$props.dir;
-      },
-      get wrapperId() {
-        return $$props.wrapperId;
-      },
-      get style() {
-        return $$props.style;
-      },
-      get onPlaced() {
-        return $$props.onPlaced;
-      },
-      get customAnchor() {
-        return customAnchor();
-      },
-      get enabled() {
-        return $$props.enabled;
-      },
-      get tooltip() {
-        return tooltip();
-      },
-      content,
-      $$slots: { content: true }
-    });
-  }
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/utilities/popper-layer/popper-layer.svelte
-var rest_excludes18 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "popper",
-  "open",
-  "onEscapeKeydown",
-  "escapeKeydownBehavior",
-  "preventOverflowTextSelection",
-  "id",
-  "onPointerDown",
-  "onPointerUp",
-  "side",
-  "sideOffset",
-  "align",
-  "alignOffset",
-  "arrowPadding",
-  "avoidCollisions",
-  "collisionBoundary",
-  "collisionPadding",
-  "sticky",
-  "hideWhenDetached",
-  "updatePositionStrategy",
-  "strategy",
-  "dir",
-  "preventScroll",
-  "wrapperId",
-  "style",
-  "onPlaced",
-  "onInteractOutside",
-  "onCloseAutoFocus",
-  "onOpenAutoFocus",
-  "onFocusOutside",
-  "interactOutsideBehavior",
-  "loop",
-  "trapFocus",
-  "isValidEvent",
-  "customAnchor",
-  "isStatic",
-  "ref",
-  "shouldRender"
-]);
-function Popper_layer($$anchor, $$props) {
-  let interactOutsideBehavior = prop($$props, "interactOutsideBehavior", 3, "close"), trapFocus = prop($$props, "trapFocus", 3, true), isValidEvent2 = prop($$props, "isValidEvent", 3, () => false), customAnchor = prop($$props, "customAnchor", 3, null), isStatic = prop($$props, "isStatic", 3, false), restProps = rest_props($$props, rest_excludes18);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      Popper_layer_inner($$anchor2, spread_props(
-        {
-          get popper() {
-            return $$props.popper;
-          },
-          get onEscapeKeydown() {
-            return $$props.onEscapeKeydown;
-          },
-          get escapeKeydownBehavior() {
-            return $$props.escapeKeydownBehavior;
-          },
-          get preventOverflowTextSelection() {
-            return $$props.preventOverflowTextSelection;
-          },
-          get id() {
-            return $$props.id;
-          },
-          get onPointerDown() {
-            return $$props.onPointerDown;
-          },
-          get onPointerUp() {
-            return $$props.onPointerUp;
-          },
-          get side() {
-            return $$props.side;
-          },
-          get sideOffset() {
-            return $$props.sideOffset;
-          },
-          get align() {
-            return $$props.align;
-          },
-          get alignOffset() {
-            return $$props.alignOffset;
-          },
-          get arrowPadding() {
-            return $$props.arrowPadding;
-          },
-          get avoidCollisions() {
-            return $$props.avoidCollisions;
-          },
-          get collisionBoundary() {
-            return $$props.collisionBoundary;
-          },
-          get collisionPadding() {
-            return $$props.collisionPadding;
-          },
-          get sticky() {
-            return $$props.sticky;
-          },
-          get hideWhenDetached() {
-            return $$props.hideWhenDetached;
-          },
-          get updatePositionStrategy() {
-            return $$props.updatePositionStrategy;
-          },
-          get strategy() {
-            return $$props.strategy;
-          },
-          get dir() {
-            return $$props.dir;
-          },
-          get preventScroll() {
-            return $$props.preventScroll;
-          },
-          get wrapperId() {
-            return $$props.wrapperId;
-          },
-          get style() {
-            return $$props.style;
-          },
-          get onPlaced() {
-            return $$props.onPlaced;
-          },
-          get customAnchor() {
-            return customAnchor();
-          },
-          get isStatic() {
-            return isStatic();
-          },
-          get enabled() {
-            return $$props.open;
-          },
-          get onInteractOutside() {
-            return $$props.onInteractOutside;
-          },
-          get onCloseAutoFocus() {
-            return $$props.onCloseAutoFocus;
-          },
-          get onOpenAutoFocus() {
-            return $$props.onOpenAutoFocus;
-          },
-          get interactOutsideBehavior() {
-            return interactOutsideBehavior();
-          },
-          get loop() {
-            return $$props.loop;
-          },
-          get trapFocus() {
-            return trapFocus();
-          },
-          get isValidEvent() {
-            return isValidEvent2();
-          },
-          get onFocusOutside() {
-            return $$props.onFocusOutside;
-          },
-          forceMount: false,
-          get ref() {
-            return $$props.ref;
-          }
-        },
-        () => restProps
-      ));
-    };
-    if_block(node, ($$render) => {
-      if ($$props.shouldRender) $$render(consequent);
-    });
-  }
-  append($$anchor, fragment);
-}
-
-// node_modules/bits-ui/dist/bits/utilities/popper-layer/popper-layer-force-mount.svelte
-var rest_excludes19 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "popper",
-  "onEscapeKeydown",
-  "escapeKeydownBehavior",
-  "preventOverflowTextSelection",
-  "id",
-  "onPointerDown",
-  "onPointerUp",
-  "side",
-  "sideOffset",
-  "align",
-  "alignOffset",
-  "arrowPadding",
-  "avoidCollisions",
-  "collisionBoundary",
-  "collisionPadding",
-  "sticky",
-  "hideWhenDetached",
-  "updatePositionStrategy",
-  "strategy",
-  "dir",
-  "preventScroll",
-  "wrapperId",
-  "style",
-  "onPlaced",
-  "onInteractOutside",
-  "onCloseAutoFocus",
-  "onOpenAutoFocus",
-  "onFocusOutside",
-  "interactOutsideBehavior",
-  "loop",
-  "trapFocus",
-  "isValidEvent",
-  "customAnchor",
-  "isStatic",
-  "enabled"
-]);
-function Popper_layer_force_mount($$anchor, $$props) {
-  let interactOutsideBehavior = prop($$props, "interactOutsideBehavior", 3, "close"), trapFocus = prop($$props, "trapFocus", 3, true), isValidEvent2 = prop($$props, "isValidEvent", 3, () => false), customAnchor = prop($$props, "customAnchor", 3, null), isStatic = prop($$props, "isStatic", 3, false), restProps = rest_props($$props, rest_excludes19);
-  Popper_layer_inner($$anchor, spread_props(
-    {
-      get popper() {
-        return $$props.popper;
-      },
-      get onEscapeKeydown() {
-        return $$props.onEscapeKeydown;
-      },
-      get escapeKeydownBehavior() {
-        return $$props.escapeKeydownBehavior;
-      },
-      get preventOverflowTextSelection() {
-        return $$props.preventOverflowTextSelection;
-      },
-      get id() {
-        return $$props.id;
-      },
-      get onPointerDown() {
-        return $$props.onPointerDown;
-      },
-      get onPointerUp() {
-        return $$props.onPointerUp;
-      },
-      get side() {
-        return $$props.side;
-      },
-      get sideOffset() {
-        return $$props.sideOffset;
-      },
-      get align() {
-        return $$props.align;
-      },
-      get alignOffset() {
-        return $$props.alignOffset;
-      },
-      get arrowPadding() {
-        return $$props.arrowPadding;
-      },
-      get avoidCollisions() {
-        return $$props.avoidCollisions;
-      },
-      get collisionBoundary() {
-        return $$props.collisionBoundary;
-      },
-      get collisionPadding() {
-        return $$props.collisionPadding;
-      },
-      get sticky() {
-        return $$props.sticky;
-      },
-      get hideWhenDetached() {
-        return $$props.hideWhenDetached;
-      },
-      get updatePositionStrategy() {
-        return $$props.updatePositionStrategy;
-      },
-      get strategy() {
-        return $$props.strategy;
-      },
-      get dir() {
-        return $$props.dir;
-      },
-      get preventScroll() {
-        return $$props.preventScroll;
-      },
-      get wrapperId() {
-        return $$props.wrapperId;
-      },
-      get style() {
-        return $$props.style;
-      },
-      get onPlaced() {
-        return $$props.onPlaced;
-      },
-      get customAnchor() {
-        return customAnchor();
-      },
-      get isStatic() {
-        return isStatic();
-      },
-      get enabled() {
-        return $$props.enabled;
-      },
-      get onInteractOutside() {
-        return $$props.onInteractOutside;
-      },
-      get onCloseAutoFocus() {
-        return $$props.onCloseAutoFocus;
-      },
-      get onOpenAutoFocus() {
-        return $$props.onOpenAutoFocus;
-      },
-      get interactOutsideBehavior() {
-        return interactOutsideBehavior();
-      },
-      get loop() {
-        return $$props.loop;
-      },
-      get trapFocus() {
-        return trapFocus();
-      },
-      get isValidEvent() {
-        return isValidEvent2();
-      },
-      get onFocusOutside() {
-        return $$props.onFocusOutside;
-      }
-    },
-    () => restProps,
-    { forceMount: true }
-  ));
-}
-
-// node_modules/bits-ui/dist/bits/select/components/select-content.svelte
-var rest_excludes20 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "ref",
-  "forceMount",
-  "side",
-  "onInteractOutside",
-  "onEscapeKeydown",
-  "children",
-  "child",
-  "preventScroll",
-  "style"
-]);
-var root17 = from_html(`<div><div><!></div></div>`);
-function Select_content($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), forceMount = prop($$props, "forceMount", 3, false), side = prop($$props, "side", 3, "bottom"), onInteractOutside = prop($$props, "onInteractOutside", 3, noop3), onEscapeKeydown = prop($$props, "onEscapeKeydown", 3, noop3), preventScroll = prop($$props, "preventScroll", 3, false), restProps = rest_props($$props, rest_excludes20);
-  const contentState = SelectContentState.create({
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v)),
-    onInteractOutside: boxWith(() => onInteractOutside()),
-    onEscapeKeydown: boxWith(() => onEscapeKeydown())
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, contentState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent_1 = ($$anchor2) => {
-      {
-        const popper = ($$anchor3, $$arg0) => {
-          let props = () => ($$arg0?.()).props;
-          let wrapperProps = () => ($$arg0?.()).wrapperProps;
-          const finalProps = user_derived(() => mergeProps(props(), { style: contentState.props.style }, { style: $$props.style }));
-          var fragment_2 = comment();
-          var node_1 = first_child(fragment_2);
-          {
-            var consequent = ($$anchor4) => {
-              var fragment_3 = comment();
-              var node_2 = first_child(fragment_3);
-              {
-                let $0 = user_derived(() => ({
-                  props: get2(finalProps),
-                  wrapperProps: wrapperProps(),
-                  ...contentState.snippetProps
-                }));
-                snippet(node_2, () => $$props.child, () => get2($0));
-              }
-              append($$anchor4, fragment_3);
-            };
-            var alternate = ($$anchor4) => {
-              var div = root17();
-              attribute_effect(div, () => ({ ...wrapperProps() }));
-              var div_1 = child(div);
-              attribute_effect(div_1, () => ({ ...get2(finalProps) }));
-              var node_3 = child(div_1);
-              snippet(node_3, () => $$props.children ?? noop);
-              reset(div_1);
-              reset(div);
-              append($$anchor4, div);
-            };
-            if_block(node_1, ($$render) => {
-              if ($$props.child) $$render(consequent);
-              else $$render(alternate, -1);
-            });
-          }
-          append($$anchor3, fragment_2);
-        };
-        Popper_layer_force_mount($$anchor2, spread_props(() => get2(mergedProps), () => contentState.popperProps, {
-          get ref() {
-            return contentState.opts.ref;
-          },
-          get side() {
-            return side();
-          },
-          get enabled() {
-            return contentState.root.opts.open.current;
-          },
-          get id() {
-            return id();
-          },
-          get preventScroll() {
-            return preventScroll();
-          },
-          forceMount: true,
-          get shouldRender() {
-            return contentState.shouldRender;
-          },
-          popper,
-          $$slots: { popper: true }
-        }));
-      }
-    };
-    var consequent_3 = ($$anchor2) => {
-      {
-        const popper = ($$anchor3, $$arg0) => {
-          let props = () => ($$arg0?.()).props;
-          let wrapperProps = () => ($$arg0?.()).wrapperProps;
-          const finalProps = user_derived(() => mergeProps(props(), { style: contentState.props.style }, { style: $$props.style }));
-          var fragment_5 = comment();
-          var node_4 = first_child(fragment_5);
-          {
-            var consequent_2 = ($$anchor4) => {
-              var fragment_6 = comment();
-              var node_5 = first_child(fragment_6);
-              {
-                let $0 = user_derived(() => ({
-                  props: get2(finalProps),
-                  wrapperProps: wrapperProps(),
-                  ...contentState.snippetProps
-                }));
-                snippet(node_5, () => $$props.child, () => get2($0));
-              }
-              append($$anchor4, fragment_6);
-            };
-            var alternate_1 = ($$anchor4) => {
-              var div_2 = root17();
-              attribute_effect(div_2, () => ({ ...wrapperProps() }));
-              var div_3 = child(div_2);
-              attribute_effect(div_3, () => ({ ...get2(finalProps) }));
-              var node_6 = child(div_3);
-              snippet(node_6, () => $$props.children ?? noop);
-              reset(div_3);
-              reset(div_2);
-              append($$anchor4, div_2);
-            };
-            if_block(node_4, ($$render) => {
-              if ($$props.child) $$render(consequent_2);
-              else $$render(alternate_1, -1);
-            });
-          }
-          append($$anchor3, fragment_5);
-        };
-        Popper_layer($$anchor2, spread_props(() => get2(mergedProps), () => contentState.popperProps, {
-          get ref() {
-            return contentState.opts.ref;
-          },
-          get side() {
-            return side();
-          },
-          get open() {
-            return contentState.root.opts.open.current;
-          },
-          get id() {
-            return id();
-          },
-          get preventScroll() {
-            return preventScroll();
-          },
-          forceMount: false,
-          get shouldRender() {
-            return contentState.shouldRender;
-          },
-          popper,
-          $$slots: { popper: true }
-        }));
-      }
-    };
-    if_block(node, ($$render) => {
-      if (forceMount()) $$render(consequent_1);
-      else if (!forceMount()) $$render(consequent_3, 1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/select/components/select-content-static.svelte
-var rest_excludes21 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "ref",
-  "forceMount",
-  "onInteractOutside",
-  "onEscapeKeydown",
-  "children",
-  "child",
-  "preventScroll",
-  "style"
-]);
-var root18 = from_html(`<div><!></div>`);
-function Select_content_static($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), forceMount = prop($$props, "forceMount", 3, false), onInteractOutside = prop($$props, "onInteractOutside", 3, noop3), onEscapeKeydown = prop($$props, "onEscapeKeydown", 3, noop3), preventScroll = prop($$props, "preventScroll", 3, false), restProps = rest_props($$props, rest_excludes21);
-  const contentState = SelectContentState.create({
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v)),
-    onInteractOutside: boxWith(() => onInteractOutside()),
-    onEscapeKeydown: boxWith(() => onEscapeKeydown())
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, contentState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent_1 = ($$anchor2) => {
-      {
-        const popper = ($$anchor3, $$arg0) => {
-          let props = () => ($$arg0?.()).props;
-          const finalProps = user_derived(() => mergeProps(props(), { style: contentState.props.style }, { style: $$props.style }));
-          var fragment_2 = comment();
-          var node_1 = first_child(fragment_2);
-          {
-            var consequent = ($$anchor4) => {
-              var fragment_3 = comment();
-              var node_2 = first_child(fragment_3);
-              {
-                let $0 = user_derived(() => ({ props: get2(finalProps), ...contentState.snippetProps }));
-                snippet(node_2, () => $$props.child, () => get2($0));
-              }
-              append($$anchor4, fragment_3);
-            };
-            var alternate = ($$anchor4) => {
-              var div = root18();
-              attribute_effect(div, () => ({ ...get2(finalProps) }));
-              var node_3 = child(div);
-              snippet(node_3, () => $$props.children ?? noop);
-              reset(div);
-              append($$anchor4, div);
-            };
-            if_block(node_1, ($$render) => {
-              if ($$props.child) $$render(consequent);
-              else $$render(alternate, -1);
-            });
-          }
-          append($$anchor3, fragment_2);
-        };
-        Popper_layer_force_mount($$anchor2, spread_props(() => get2(mergedProps), () => contentState.popperProps, {
-          get ref() {
-            return contentState.opts.ref;
-          },
-          isStatic: true,
-          get enabled() {
-            return contentState.root.opts.open.current;
-          },
-          get id() {
-            return id();
-          },
-          get preventScroll() {
-            return preventScroll();
-          },
-          forceMount: true,
-          get shouldRender() {
-            return contentState.shouldRender;
-          },
-          popper,
-          $$slots: { popper: true }
-        }));
-      }
-    };
-    var consequent_3 = ($$anchor2) => {
-      {
-        const popper = ($$anchor3, $$arg0) => {
-          let props = () => ($$arg0?.()).props;
-          const finalProps = user_derived(() => mergeProps(props(), { style: contentState.props.style }, { style: $$props.style }));
-          var fragment_5 = comment();
-          var node_4 = first_child(fragment_5);
-          {
-            var consequent_2 = ($$anchor4) => {
-              var fragment_6 = comment();
-              var node_5 = first_child(fragment_6);
-              {
-                let $0 = user_derived(() => ({ props: get2(finalProps), ...contentState.snippetProps }));
-                snippet(node_5, () => $$props.child, () => get2($0));
-              }
-              append($$anchor4, fragment_6);
-            };
-            var alternate_1 = ($$anchor4) => {
-              var div_1 = root18();
-              attribute_effect(div_1, () => ({ ...get2(finalProps) }));
-              var node_6 = child(div_1);
-              snippet(node_6, () => $$props.children ?? noop);
-              reset(div_1);
-              append($$anchor4, div_1);
-            };
-            if_block(node_4, ($$render) => {
-              if ($$props.child) $$render(consequent_2);
-              else $$render(alternate_1, -1);
-            });
-          }
-          append($$anchor3, fragment_5);
-        };
-        Popper_layer($$anchor2, spread_props(() => get2(mergedProps), () => contentState.popperProps, {
-          get ref() {
-            return contentState.opts.ref;
-          },
-          isStatic: true,
-          get open() {
-            return contentState.root.opts.open.current;
-          },
-          get id() {
-            return id();
-          },
-          get preventScroll() {
-            return preventScroll();
-          },
-          forceMount: false,
-          get shouldRender() {
-            return contentState.shouldRender;
-          },
-          popper,
-          $$slots: { popper: true }
-        }));
-      }
-    };
-    if_block(node, ($$render) => {
-      if (forceMount()) $$render(consequent_1);
-      else if (!forceMount()) $$render(consequent_3, 1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/utilities/mounted.svelte
-function Mounted($$anchor, $$props) {
-  push($$props, true);
-  let mounted = prop($$props, "mounted", 15, false), onMountedChange = prop($$props, "onMountedChange", 3, noop3);
-  onMountEffect(() => {
-    mounted(true);
-    onMountedChange()(true);
-    return () => {
-      mounted(false);
-      onMountedChange()(false);
-    };
-  });
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/select/components/select-item.svelte
-var rest_excludes22 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "ref",
-  "value",
-  "label",
-  "disabled",
-  "children",
-  "child",
-  "onHighlight",
-  "onUnhighlight"
-]);
-var root19 = from_html(`<div><!></div>`);
-var root_12 = from_html(`<!> <!>`, 1);
-function Select_item($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), label2 = prop($$props, "label", 19, () => $$props.value), disabled = prop($$props, "disabled", 3, false), onHighlight = prop($$props, "onHighlight", 3, noop3), onUnhighlight = prop($$props, "onUnhighlight", 3, noop3), restProps = rest_props($$props, rest_excludes22);
-  const itemState = SelectItemState.create({
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v)),
-    value: boxWith(() => $$props.value),
-    disabled: boxWith(() => disabled()),
-    label: boxWith(() => label2()),
-    onHighlight: boxWith(() => onHighlight()),
-    onUnhighlight: boxWith(() => onUnhighlight())
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, itemState.props));
-  var fragment = root_12();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      {
-        let $0 = user_derived(() => ({ props: get2(mergedProps), ...itemState.snippetProps }));
-        snippet(node_1, () => $$props.child, () => get2($0));
-      }
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var div = root19();
-      attribute_effect(div, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(div);
-      snippet(node_2, () => $$props.children ?? noop, () => itemState.snippetProps);
-      reset(div);
-      append($$anchor2, div);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  var node_3 = sibling(node, 2);
-  Mounted(node_3, {
-    get mounted() {
-      return itemState.mounted;
-    },
-    set mounted($$value) {
-      itemState.mounted = $$value;
-    }
-  });
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/select/components/select-group.svelte
-var rest_excludes23 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "ref",
-  "children",
-  "child"
-]);
-var root20 = from_html(`<div><!></div>`);
-function Select_group($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes23);
-  const groupState = SelectGroupState.create({
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, groupState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var div = root20();
-      attribute_effect(div, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(div);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(div);
-      append($$anchor2, div);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/select/components/select-group-heading.svelte
-var rest_excludes24 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "ref",
-  "child",
-  "children"
-]);
-var root21 = from_html(`<div><!></div>`);
-function Select_group_heading($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes24);
-  const groupHeadingState = SelectGroupHeadingState.create({
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, groupHeadingState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var div = root21();
-      attribute_effect(div, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(div);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(div);
-      append($$anchor2, div);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/select/components/select-viewport.svelte
-var rest_excludes25 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "ref",
-  "children",
-  "child"
-]);
-var root22 = from_html(`<div><!></div>`);
-var $$css = {
-  hash: "svelte-18zq11a",
-  code: "\n	/* Hide scrollbars cross browser and enable momentum scroll for touch devices */[data-select-viewport] {scrollbar-width:none !important;-ms-overflow-style:none !important;-webkit-overflow-scrolling:touch !important;}[data-combobox-viewport] {scrollbar-width:none !important;-ms-overflow-style:none !important;-webkit-overflow-scrolling:touch !important;}[data-combobox-viewport]::-webkit-scrollbar {display:none !important;}[data-select-viewport]::-webkit-scrollbar {display:none !important;}"
-};
-function Select_viewport($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  append_styles($$anchor, $$css);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes25);
-  const viewportState = SelectViewportState.create({
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, viewportState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var div = root22();
-      attribute_effect(div, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(div);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(div);
-      append($$anchor2, div);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/select/components/select-scroll-down-button.svelte
-var rest_excludes26 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "ref",
-  "delay",
-  "child",
-  "children"
-]);
-var root23 = from_html(`<div><!></div>`);
-var root_13 = from_html(`<!> <!>`, 1);
-function Select_scroll_down_button($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), delay = prop($$props, "delay", 3, () => 50), restProps = rest_props($$props, rest_excludes26);
-  const scrollButtonState = SelectScrollDownButtonState.create({
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v)),
-    delay: boxWith(() => delay())
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, scrollButtonState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent_1 = ($$anchor2) => {
-      var fragment_1 = root_13();
-      var node_1 = first_child(fragment_1);
-      Mounted(node_1, {
-        get mounted() {
-          return scrollButtonState.scrollButtonState.mounted;
-        },
-        set mounted($$value) {
-          scrollButtonState.scrollButtonState.mounted = $$value;
-        }
-      });
-      var node_2 = sibling(node_1, 2);
-      {
-        var consequent = ($$anchor3) => {
-          var fragment_2 = comment();
-          var node_3 = first_child(fragment_2);
-          snippet(node_3, () => $$props.child, () => ({ props: restProps }));
-          append($$anchor3, fragment_2);
-        };
-        var alternate = ($$anchor3) => {
-          var div = root23();
-          attribute_effect(div, () => ({ ...get2(mergedProps) }));
-          var node_4 = child(div);
-          snippet(node_4, () => $$props.children ?? noop);
-          reset(div);
-          append($$anchor3, div);
-        };
-        if_block(node_2, ($$render) => {
-          if ($$props.child) $$render(consequent);
-          else $$render(alternate, -1);
-        });
-      }
-      append($$anchor2, fragment_1);
-    };
-    if_block(node, ($$render) => {
-      if (scrollButtonState.canScrollDown) $$render(consequent_1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/select/components/select-scroll-up-button.svelte
-var rest_excludes27 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "ref",
-  "delay",
-  "child",
-  "children"
-]);
-var root24 = from_html(`<div><!></div>`);
-var root_14 = from_html(`<!> <!>`, 1);
-function Select_scroll_up_button($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), delay = prop($$props, "delay", 3, () => 50), restProps = rest_props($$props, rest_excludes27);
-  const scrollButtonState = SelectScrollUpButtonState.create({
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v)),
-    delay: boxWith(() => delay())
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, scrollButtonState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent_1 = ($$anchor2) => {
-      var fragment_1 = root_14();
-      var node_1 = first_child(fragment_1);
-      Mounted(node_1, {
-        get mounted() {
-          return scrollButtonState.scrollButtonState.mounted;
-        },
-        set mounted($$value) {
-          scrollButtonState.scrollButtonState.mounted = $$value;
-        }
-      });
-      var node_2 = sibling(node_1, 2);
-      {
-        var consequent = ($$anchor3) => {
-          var fragment_2 = comment();
-          var node_3 = first_child(fragment_2);
-          snippet(node_3, () => $$props.child, () => ({ props: restProps }));
-          append($$anchor3, fragment_2);
-        };
-        var alternate = ($$anchor3) => {
-          var div = root24();
-          attribute_effect(div, () => ({ ...get2(mergedProps) }));
-          var node_4 = child(div);
-          snippet(node_4, () => $$props.children ?? noop);
-          reset(div);
-          append($$anchor3, div);
-        };
-        if_block(node_2, ($$render) => {
-          if ($$props.child) $$render(consequent);
-          else $$render(alternate, -1);
-        });
-      }
-      append($$anchor2, fragment_1);
-    };
-    if_block(node, ($$render) => {
-      if (scrollButtonState.canScrollUp) $$render(consequent_1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/label/exports.js
-var exports_exports2 = {};
-__export(exports_exports2, {
-  Root: () => Label
-});
-
-// node_modules/bits-ui/dist/bits/label/label.svelte.js
-var labelAttrs = createBitsAttrs({ component: "label", parts: ["root"] });
-var LabelRootState = class _LabelRootState {
-  static create(opts) {
-    return new _LabelRootState(opts);
-  }
-  opts;
-  attachment;
-  constructor(opts) {
-    this.opts = opts;
-    this.attachment = attachRef(this.opts.ref);
-    this.onmousedown = this.onmousedown.bind(this);
-  }
-  onmousedown(e) {
-    if (e.detail > 1) e.preventDefault();
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    [labelAttrs.root]: "",
-    onmousedown: this.onmousedown,
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-
-// node_modules/bits-ui/dist/bits/label/components/label.svelte
-var rest_excludes28 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "children",
-  "child",
-  "id",
-  "ref",
-  "for"
-]);
-var root25 = from_html(`<label><!></label>`);
-function Label($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes28);
-  const rootState = LabelRootState.create({
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, rootState.props, { for: $$props.for }));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var label2 = root25();
-      attribute_effect(label2, () => ({ ...get2(mergedProps), for: $$props.for }));
-      var node_2 = child(label2);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(label2);
-      append($$anchor2, label2);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/select/exports.js
-var exports_exports3 = {};
-__export(exports_exports3, {
-  Content: () => Select_content,
-  ContentStatic: () => Select_content_static,
-  Group: () => Select_group,
-  GroupHeading: () => Select_group_heading,
-  Item: () => Select_item,
-  Portal: () => Portal,
-  Root: () => Select,
-  ScrollDownButton: () => Select_scroll_down_button,
-  ScrollUpButton: () => Select_scroll_up_button,
-  Trigger: () => Select_trigger,
-  Value: () => Select_value,
-  Viewport: () => Select_viewport
-});
-
-// node_modules/bits-ui/dist/bits/select/components/select.svelte
-var root26 = from_html(`<!> <!>`, 1);
-function Select($$anchor, $$props) {
-  push($$props, true);
-  let value = prop($$props, "value", 15), onValueChange = prop($$props, "onValueChange", 3, noop3), name = prop($$props, "name", 3, ""), disabled = prop($$props, "disabled", 3, false), open = prop($$props, "open", 15, false), onOpenChange = prop($$props, "onOpenChange", 3, noop3), onOpenChangeComplete = prop($$props, "onOpenChangeComplete", 3, noop3), loop2 = prop($$props, "loop", 3, false), scrollAlignment = prop($$props, "scrollAlignment", 3, "nearest"), required = prop($$props, "required", 3, false), items = prop($$props, "items", 19, () => []), allowDeselect = prop($$props, "allowDeselect", 3, false);
-  function handleDefaultValue() {
-    if (value() !== void 0) return;
-    value($$props.type === "single" ? "" : []);
-  }
-  handleDefaultValue();
-  watch.pre(() => value(), () => {
-    handleDefaultValue();
-  });
-  let inputValue = state("");
-  const rootState = SelectRootState.create({
-    type: $$props.type,
-    value: boxWith(() => value(), (v) => {
-      value(v);
-      onValueChange()(v);
-    }),
-    disabled: boxWith(() => disabled()),
-    required: boxWith(() => required()),
-    open: boxWith(() => open(), (v) => {
-      open(v);
-      onOpenChange()(v);
-    }),
-    loop: boxWith(() => loop2()),
-    scrollAlignment: boxWith(() => scrollAlignment()),
-    name: boxWith(() => name()),
-    isCombobox: false,
-    items: boxWith(() => items()),
-    allowDeselect: boxWith(() => allowDeselect()),
-    inputValue: boxWith(() => get2(inputValue), (v) => set(inputValue, v, true)),
-    onOpenChangeComplete: boxWith(() => onOpenChangeComplete())
-  });
-  var fragment = root26();
-  var node = first_child(fragment);
-  Floating_layer(node, {
-    children: ($$anchor2, $$slotProps) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.children ?? noop);
-      append($$anchor2, fragment_1);
-    },
-    $$slots: { default: true }
-  });
-  var node_2 = sibling(node, 2);
-  {
-    var consequent_1 = ($$anchor2) => {
-      var fragment_2 = comment();
-      var node_3 = first_child(fragment_2);
-      {
-        var consequent = ($$anchor3) => {
-          Select_hidden_input($$anchor3, {
-            get autocomplete() {
-              return $$props.autocomplete;
-            }
-          });
-        };
-        var alternate = ($$anchor3) => {
-          var fragment_4 = comment();
-          var node_4 = first_child(fragment_4);
-          each(node_4, 16, () => rootState.opts.value.current, (item) => item, ($$anchor4, item) => {
-            Select_hidden_input($$anchor4, {
-              get value() {
-                return item;
-              },
-              get autocomplete() {
-                return $$props.autocomplete;
-              }
-            });
-          });
-          append($$anchor3, fragment_4);
-        };
-        if_block(node_3, ($$render) => {
-          if (rootState.opts.value.current.length === 0) $$render(consequent);
-          else $$render(alternate, -1);
-        });
-      }
-      append($$anchor2, fragment_2);
-    };
-    var d = user_derived(() => Array.isArray(rootState.opts.value.current));
-    var alternate_1 = ($$anchor2) => {
-      Select_hidden_input($$anchor2, {
-        get autocomplete() {
-          return $$props.autocomplete;
-        },
-        get value() {
-          return rootState.opts.value.current;
-        },
-        set value($$value) {
-          rootState.opts.value.current = $$value;
-        }
-      });
-    };
-    if_block(node_2, ($$render) => {
-      if (get2(d)) $$render(consequent_1);
-      else $$render(alternate_1, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/select/components/select-value.svelte
-var rest_excludes29 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "id",
-  "placeholder",
-  "child",
-  "children"
-]);
-var root27 = from_html(`<span><!></span>`);
-function Select_value($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), id = prop($$props, "id", 19, () => createId(uid2)), restProps = rest_props($$props, rest_excludes29);
-  const valueState = SelectValueState.create({
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v)),
-    placeholder: boxWith(() => $$props.placeholder)
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, valueState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      {
-        let $0 = user_derived(() => ({ props: get2(mergedProps), ...valueState.snippetProps }));
-        snippet(node_1, () => $$props.child, () => get2($0));
-      }
-      append($$anchor2, fragment_1);
-    };
-    var alternate_1 = ($$anchor2) => {
-      var span = root27();
-      attribute_effect(span, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(span);
-      {
-        var consequent_1 = ($$anchor3) => {
-          var fragment_2 = comment();
-          var node_3 = first_child(fragment_2);
-          snippet(node_3, () => $$props.children ?? noop, () => valueState.snippetProps);
-          append($$anchor3, fragment_2);
-        };
-        var consequent_2 = ($$anchor3) => {
-          var text4 = text();
-          template_effect(() => set_text(text4, valueState.snippetProps.selection.selected?.label ?? $$props.placeholder));
-          append($$anchor3, text4);
-        };
-        var consequent_3 = ($$anchor3) => {
-          var text_1 = text();
-          template_effect(($0) => set_text(text_1, $0), [
-            () => valueState.snippetProps.selection.selected.length > 0 ? valueState.snippetProps.selection.selected.map((selected) => selected.label).join(", ") : $$props.placeholder
-          ]);
-          append($$anchor3, text_1);
-        };
-        var alternate = ($$anchor3) => {
-          var text_2 = text();
-          template_effect(() => set_text(text_2, $$props.placeholder));
-          append($$anchor3, text_2);
-        };
-        if_block(node_2, ($$render) => {
-          if ($$props.children) $$render(consequent_1);
-          else if (valueState.snippetProps.selection.type === "single") $$render(consequent_2, 1);
-          else if (valueState.snippetProps.selection.type === "multiple" && valueState.snippetProps.selection.selected) $$render(consequent_3, 2);
-          else $$render(alternate, -1);
-        });
-      }
-      reset(span);
-      append($$anchor2, span);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate_1, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/select/components/select-trigger.svelte
-var rest_excludes30 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "ref",
-  "child",
-  "children",
-  "type"
-]);
-var root28 = from_html(`<button><!></button>`);
-function Select_trigger($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), type = prop($$props, "type", 3, "button"), restProps = rest_props($$props, rest_excludes30);
-  const triggerState = SelectTriggerState.create({
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, triggerState.props, { type: type() }));
-  var fragment = comment();
-  var node = first_child(fragment);
-  component(node, () => components_exports.Anchor, ($$anchor2, FloatingLayer_Anchor) => {
-    FloatingLayer_Anchor($$anchor2, {
-      get id() {
-        return id();
-      },
-      get ref() {
-        return triggerState.opts.ref;
-      },
-      children: ($$anchor3, $$slotProps) => {
-        var fragment_1 = comment();
-        var node_1 = first_child(fragment_1);
-        {
-          var consequent = ($$anchor4) => {
-            var fragment_2 = comment();
-            var node_2 = first_child(fragment_2);
-            snippet(node_2, () => $$props.child, () => ({ props: get2(mergedProps) }));
-            append($$anchor4, fragment_2);
-          };
-          var alternate = ($$anchor4) => {
-            var button = root28();
-            attribute_effect(button, () => ({ ...get2(mergedProps) }));
-            var node_3 = child(button);
-            snippet(node_3, () => $$props.children ?? noop);
-            reset(button);
-            append($$anchor4, button);
-          };
-          if_block(node_1, ($$render) => {
-            if ($$props.child) $$render(consequent);
-            else $$render(alternate, -1);
-          });
-        }
-        append($$anchor3, fragment_1);
-      },
-      $$slots: { default: true }
-    });
-  });
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/tabs/exports.js
-var exports_exports4 = {};
-__export(exports_exports4, {
-  Content: () => Tabs_content,
-  List: () => Tabs_list,
-  Root: () => Tabs,
-  Trigger: () => Tabs_trigger
-});
-
-// node_modules/bits-ui/dist/bits/tabs/tabs.svelte.js
-var tabsAttrs = createBitsAttrs({
-  component: "tabs",
-  parts: ["root", "list", "trigger", "content"]
-});
-var TabsRootContext = new Context("Tabs.Root");
-var TabsRootState = class _TabsRootState {
-  static create(opts) {
-    return TabsRootContext.set(new _TabsRootState(opts));
-  }
-  opts;
-  attachment;
-  rovingFocusGroup;
-  #triggerIds = state(proxy([]));
-  get triggerIds() {
-    return get2(this.#triggerIds);
-  }
-  set triggerIds(value) {
-    set(this.#triggerIds, value, true);
-  }
-  valueToTriggerId = new SvelteMap();
-  valueToContentId = new SvelteMap();
-  constructor(opts) {
-    this.opts = opts;
-    this.attachment = attachRef(opts.ref);
-    this.rovingFocusGroup = new RovingFocusGroup({
-      candidateAttr: tabsAttrs.trigger,
-      rootNode: this.opts.ref,
-      loop: this.opts.loop,
-      orientation: this.opts.orientation
-    });
-  }
-  registerTrigger(id, value) {
-    this.triggerIds.push(id);
-    this.valueToTriggerId.set(value, id);
-    return () => {
-      this.triggerIds = this.triggerIds.filter((triggerId) => triggerId !== id);
-      this.valueToTriggerId.delete(value);
-    };
-  }
-  registerContent(id, value) {
-    this.valueToContentId.set(value, id);
-    return () => {
-      this.valueToContentId.delete(value);
-    };
-  }
-  setValue(v) {
-    this.opts.value.current = v;
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    "data-orientation": this.opts.orientation.current,
-    [tabsAttrs.root]: "",
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var TabsListState = class _TabsListState {
-  static create(opts) {
-    return new _TabsListState(opts, TabsRootContext.get());
-  }
-  opts;
-  root;
-  attachment;
-  #isDisabled = user_derived(() => this.root.opts.disabled.current);
-  constructor(opts, root71) {
-    this.opts = opts;
-    this.root = root71;
-    this.attachment = attachRef(opts.ref);
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    role: "tablist",
-    "aria-orientation": this.root.opts.orientation.current,
-    "data-orientation": this.root.opts.orientation.current,
-    [tabsAttrs.list]: "",
-    "data-disabled": boolToEmptyStrOrUndef(get2(this.#isDisabled)),
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var TabsTriggerState = class _TabsTriggerState {
-  static create(opts) {
-    return new _TabsTriggerState(opts, TabsRootContext.get());
-  }
-  opts;
-  root;
-  attachment;
-  #tabIndex = state(0);
-  #isActive = user_derived(() => this.root.opts.value.current === this.opts.value.current);
-  #isDisabled = user_derived(() => this.opts.disabled.current || this.root.opts.disabled.current);
-  #ariaControls = user_derived(() => this.root.valueToContentId.get(this.opts.value.current));
-  constructor(opts, root71) {
-    this.opts = opts;
-    this.root = root71;
-    this.attachment = attachRef(opts.ref);
-    watch([() => this.opts.id.current, () => this.opts.value.current], ([id, value]) => {
-      return this.root.registerTrigger(id, value);
-    });
-    user_effect(() => {
-      this.root.triggerIds.length;
-      if (get2(this.#isActive) || !this.root.opts.value.current) {
-        set(this.#tabIndex, 0);
-      } else {
-        set(this.#tabIndex, -1);
-      }
-    });
-    this.onfocus = this.onfocus.bind(this);
-    this.onclick = this.onclick.bind(this);
-    this.onkeydown = this.onkeydown.bind(this);
-  }
-  #activate() {
-    if (this.root.opts.value.current === this.opts.value.current) return;
-    this.root.setValue(this.opts.value.current);
-  }
-  onfocus(_) {
-    if (this.root.opts.activationMode.current !== "automatic" || get2(this.#isDisabled)) return;
-    this.#activate();
-  }
-  onclick(_) {
-    if (get2(this.#isDisabled)) return;
-    this.#activate();
-  }
-  onkeydown(e) {
-    if (get2(this.#isDisabled)) return;
-    if (e.key === kbd_constants_exports.SPACE || e.key === kbd_constants_exports.ENTER) {
-      e.preventDefault();
-      this.#activate();
-      return;
-    }
-    this.root.rovingFocusGroup.handleKeydown(this.opts.ref.current, e);
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    role: "tab",
-    "data-state": getTabDataState(get2(this.#isActive)),
-    "data-value": this.opts.value.current,
-    "data-orientation": this.root.opts.orientation.current,
-    "data-disabled": boolToEmptyStrOrUndef(get2(this.#isDisabled)),
-    "aria-selected": boolToStr(get2(this.#isActive)),
-    "aria-controls": get2(this.#ariaControls),
-    [tabsAttrs.trigger]: "",
-    disabled: boolToTrueOrUndef(get2(this.#isDisabled)),
-    tabindex: get2(this.#tabIndex),
-    //
-    onclick: this.onclick,
-    onfocus: this.onfocus,
-    onkeydown: this.onkeydown,
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var TabsContentState = class _TabsContentState {
-  static create(opts) {
-    return new _TabsContentState(opts, TabsRootContext.get());
-  }
-  opts;
-  root;
-  attachment;
-  #isActive = user_derived(() => this.root.opts.value.current === this.opts.value.current);
-  #ariaLabelledBy = user_derived(() => this.root.valueToTriggerId.get(this.opts.value.current));
-  constructor(opts, root71) {
-    this.opts = opts;
-    this.root = root71;
-    this.attachment = attachRef(opts.ref);
-    watch([() => this.opts.id.current, () => this.opts.value.current], ([id, value]) => {
-      return this.root.registerContent(id, value);
-    });
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    role: "tabpanel",
-    hidden: boolToTrueOrUndef(!get2(this.#isActive)),
-    tabindex: 0,
-    "data-value": this.opts.value.current,
-    "data-state": getTabDataState(get2(this.#isActive)),
-    "aria-labelledby": get2(this.#ariaLabelledBy),
-    "data-orientation": this.root.opts.orientation.current,
-    [tabsAttrs.content]: "",
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-function getTabDataState(condition) {
-  return condition ? "active" : "inactive";
-}
-
-// node_modules/bits-ui/dist/bits/tabs/components/tabs.svelte
-var rest_excludes31 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "ref",
-  "value",
-  "onValueChange",
-  "orientation",
-  "loop",
-  "activationMode",
-  "disabled",
-  "children",
-  "child"
-]);
-var root29 = from_html(`<div><!></div>`);
-function Tabs($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15, ""), onValueChange = prop($$props, "onValueChange", 3, noop3), orientation = prop($$props, "orientation", 3, "horizontal"), loop2 = prop($$props, "loop", 3, true), activationMode = prop($$props, "activationMode", 3, "automatic"), disabled = prop($$props, "disabled", 3, false), restProps = rest_props($$props, rest_excludes31);
-  const rootState = TabsRootState.create({
-    id: boxWith(() => id()),
-    value: boxWith(() => value(), (v) => {
-      value(v);
-      onValueChange()(v);
-    }),
-    orientation: boxWith(() => orientation()),
-    loop: boxWith(() => loop2()),
-    activationMode: boxWith(() => activationMode()),
-    disabled: boxWith(() => disabled()),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, rootState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var div = root29();
-      attribute_effect(div, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(div);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(div);
-      append($$anchor2, div);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/tabs/components/tabs-content.svelte
-var rest_excludes32 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "children",
-  "child",
-  "id",
-  "ref",
-  "value"
-]);
-var root30 = from_html(`<div><!></div>`);
-function Tabs_content($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes32);
-  const contentState = TabsContentState.create({
-    value: boxWith(() => $$props.value),
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, contentState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var div = root30();
-      attribute_effect(div, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(div);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(div);
-      append($$anchor2, div);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/tabs/components/tabs-list.svelte
-var rest_excludes33 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "child",
-  "children",
-  "id",
-  "ref"
-]);
-var root31 = from_html(`<div><!></div>`);
-function Tabs_list($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes33);
-  const listState = TabsListState.create({
-    id: boxWith(() => id()),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, listState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var div = root31();
-      attribute_effect(div, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(div);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(div);
-      append($$anchor2, div);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/tabs/components/tabs-trigger.svelte
-var rest_excludes34 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "child",
-  "children",
-  "disabled",
-  "id",
-  "type",
-  "value",
-  "ref"
-]);
-var root32 = from_html(`<button><!></button>`);
-function Tabs_trigger($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let disabled = prop($$props, "disabled", 3, false), id = prop($$props, "id", 19, () => createId(uid2)), type = prop($$props, "type", 3, "button"), ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes34);
-  const triggerState = TabsTriggerState.create({
-    id: boxWith(() => id()),
-    disabled: boxWith(() => disabled() ?? false),
-    value: boxWith(() => $$props.value),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, triggerState.props, { type: type() }));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var button = root32();
-      attribute_effect(button, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(button);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(button);
-      append($$anchor2, button);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/toggle-group/exports.js
-var exports_exports5 = {};
-__export(exports_exports5, {
-  Item: () => Toggle_group_item,
-  Root: () => Toggle_group
-});
-
-// node_modules/bits-ui/dist/bits/toggle-group/toggle-group.svelte.js
-var toggleGroupAttrs = createBitsAttrs({ component: "toggle-group", parts: ["root", "item"] });
-var ToggleGroupRootContext = new Context("ToggleGroup.Root");
-var ToggleGroupBaseState = class {
-  opts;
-  rovingFocusGroup;
-  attachment;
-  constructor(opts) {
-    this.opts = opts;
-    this.attachment = attachRef(this.opts.ref);
-    this.rovingFocusGroup = new RovingFocusGroup({
-      candidateAttr: toggleGroupAttrs.item,
-      rootNode: opts.ref,
-      loop: opts.loop,
-      orientation: opts.orientation
-    });
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    [toggleGroupAttrs.root]: "",
-    role: "group",
-    "data-orientation": this.opts.orientation.current,
-    "data-disabled": boolToEmptyStrOrUndef(this.opts.disabled.current),
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-var ToggleGroupSingleState = class extends ToggleGroupBaseState {
-  opts;
-  isMulti = false;
-  #anyPressed = user_derived(() => this.opts.value.current !== "");
-  get anyPressed() {
-    return get2(this.#anyPressed);
-  }
-  set anyPressed(value) {
-    set(this.#anyPressed, value);
-  }
-  constructor(opts) {
-    super(opts);
-    this.opts = opts;
-  }
-  includesItem(item) {
-    return this.opts.value.current === item;
-  }
-  toggleItem(item, id) {
-    if (this.includesItem(item)) {
-      this.opts.value.current = "";
-    } else {
-      this.opts.value.current = item;
-      this.rovingFocusGroup.setCurrentTabStopId(id);
-    }
-  }
-};
-var ToggleGroupMultipleState = class extends ToggleGroupBaseState {
-  opts;
-  isMulti = true;
-  #anyPressed = user_derived(() => this.opts.value.current.length > 0);
-  get anyPressed() {
-    return get2(this.#anyPressed);
-  }
-  set anyPressed(value) {
-    set(this.#anyPressed, value);
-  }
-  constructor(opts) {
-    super(opts);
-    this.opts = opts;
-  }
-  includesItem(item) {
-    return this.opts.value.current.includes(item);
-  }
-  toggleItem(item, id) {
-    if (this.includesItem(item)) {
-      this.opts.value.current = this.opts.value.current.filter((v) => v !== item);
-    } else {
-      this.opts.value.current = [...this.opts.value.current, item];
-      this.rovingFocusGroup.setCurrentTabStopId(id);
-    }
-  }
-};
-var ToggleGroupRootState = class {
-  static create(opts) {
-    const { type, ...rest } = opts;
-    const rootState = type === "single" ? new ToggleGroupSingleState(rest) : new ToggleGroupMultipleState(rest);
-    return ToggleGroupRootContext.set(rootState);
-  }
-};
-var ToggleGroupItemState = class _ToggleGroupItemState {
-  static create(opts) {
-    return new _ToggleGroupItemState(opts, ToggleGroupRootContext.get());
-  }
-  opts;
-  root;
-  attachment;
-  #isDisabled = user_derived(() => this.opts.disabled.current || this.root.opts.disabled.current);
-  #isPressed = user_derived(() => this.root.includesItem(this.opts.value.current));
-  get isPressed() {
-    return get2(this.#isPressed);
-  }
-  set isPressed(value) {
-    set(this.#isPressed, value);
-  }
-  #ariaChecked = user_derived(() => {
-    return this.root.isMulti ? void 0 : getAriaChecked(this.isPressed, false);
-  });
-  #ariaPressed = user_derived(() => {
-    return this.root.isMulti ? boolToStr(this.isPressed) : void 0;
-  });
-  constructor(opts, root71) {
-    this.opts = opts;
-    this.root = root71;
-    this.attachment = attachRef(this.opts.ref);
-    user_effect(() => {
-      if (!this.root.opts.rovingFocus.current) {
-        set(this.#tabIndex, 0);
-      } else {
-        set(this.#tabIndex, this.root.rovingFocusGroup.getTabIndex(this.opts.ref.current), true);
-      }
-    });
-    this.onclick = this.onclick.bind(this);
-    this.onkeydown = this.onkeydown.bind(this);
-  }
-  #toggleItem() {
-    if (get2(this.#isDisabled)) return;
-    this.root.toggleItem(this.opts.value.current, this.opts.id.current);
-  }
-  onclick(_) {
-    if (get2(this.#isDisabled)) return;
-    this.root.toggleItem(this.opts.value.current, this.opts.id.current);
-  }
-  onkeydown(e) {
-    if (get2(this.#isDisabled)) return;
-    if (e.key === kbd_constants_exports.ENTER || e.key === kbd_constants_exports.SPACE) {
-      e.preventDefault();
-      this.#toggleItem();
-      return;
-    }
-    if (!this.root.opts.rovingFocus.current) return;
-    this.root.rovingFocusGroup.handleKeydown(this.opts.ref.current, e);
-  }
-  #tabIndex = state(0);
-  #snippetProps = user_derived(() => ({ pressed: this.isPressed }));
-  get snippetProps() {
-    return get2(this.#snippetProps);
-  }
-  set snippetProps(value) {
-    set(this.#snippetProps, value);
-  }
-  #props = user_derived(() => ({
-    id: this.opts.id.current,
-    role: this.root.isMulti ? void 0 : "radio",
-    tabindex: get2(this.#tabIndex),
-    "data-orientation": this.root.opts.orientation.current,
-    "data-disabled": boolToEmptyStrOrUndef(get2(this.#isDisabled)),
-    "data-state": getToggleItemDataState(this.isPressed),
-    "data-value": this.opts.value.current,
-    "aria-pressed": get2(this.#ariaPressed),
-    "aria-checked": get2(this.#ariaChecked),
-    disabled: boolToTrueOrUndef(get2(this.#isDisabled)),
-    [toggleGroupAttrs.item]: "",
-    onclick: this.onclick,
-    onkeydown: this.onkeydown,
-    ...this.attachment
-  }));
-  get props() {
-    return get2(this.#props);
-  }
-  set props(value) {
-    set(this.#props, value);
-  }
-};
-function getToggleItemDataState(condition) {
-  return condition ? "on" : "off";
-}
-
-// node_modules/bits-ui/dist/bits/toggle-group/components/toggle-group.svelte
-var rest_excludes35 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "id",
-  "ref",
-  "value",
-  "onValueChange",
-  "type",
-  "disabled",
-  "loop",
-  "orientation",
-  "rovingFocus",
-  "child",
-  "children"
-]);
-var root33 = from_html(`<div><!></div>`);
-function Toggle_group($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let id = prop($$props, "id", 19, () => createId(uid2)), ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15), onValueChange = prop($$props, "onValueChange", 3, noop3), disabled = prop($$props, "disabled", 3, false), loop2 = prop($$props, "loop", 3, true), orientation = prop($$props, "orientation", 3, "horizontal"), rovingFocus = prop($$props, "rovingFocus", 3, true), restProps = rest_props($$props, rest_excludes35);
-  function handleDefaultValue() {
-    if (value() !== void 0) return;
-    value($$props.type === "single" ? "" : []);
-  }
-  handleDefaultValue();
-  watch.pre(() => value(), () => {
-    handleDefaultValue();
-  });
-  const rootState = ToggleGroupRootState.create({
-    id: boxWith(() => id()),
-    value: boxWith(() => value(), (v) => {
-      value(v);
-      onValueChange()(v);
-    }),
-    disabled: boxWith(() => disabled()),
-    loop: boxWith(() => loop2()),
-    orientation: boxWith(() => orientation()),
-    rovingFocus: boxWith(() => rovingFocus()),
-    type: $$props.type,
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, rootState.props));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      snippet(node_1, () => $$props.child, () => ({ props: get2(mergedProps) }));
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var div = root33();
-      attribute_effect(div, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(div);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(div);
-      append($$anchor2, div);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/bits-ui/dist/bits/toggle-group/components/toggle-group-item.svelte
-var rest_excludes36 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "children",
-  "child",
-  "ref",
-  "value",
-  "disabled",
-  "id",
-  "type"
-]);
-var root34 = from_html(`<button><!></button>`);
-function Toggle_group_item($$anchor, $$props) {
-  const uid2 = props_id();
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), disabled = prop($$props, "disabled", 3, false), id = prop($$props, "id", 19, () => createId(uid2)), type = prop($$props, "type", 3, "button"), restProps = rest_props($$props, rest_excludes36);
-  const itemState = ToggleGroupItemState.create({
-    id: boxWith(() => id()),
-    value: boxWith(() => $$props.value),
-    disabled: boxWith(() => disabled() ?? false),
-    ref: boxWith(() => ref(), (v) => ref(v))
-  });
-  const mergedProps = user_derived(() => mergeProps(restProps, itemState.props, { type: type() }));
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_1 = first_child(fragment_1);
-      {
-        let $0 = user_derived(() => ({ props: get2(mergedProps), ...itemState.snippetProps }));
-        snippet(node_1, () => $$props.child, () => get2($0));
-      }
-      append($$anchor2, fragment_1);
-    };
-    var alternate = ($$anchor2) => {
-      var button = root34();
-      attribute_effect(button, () => ({ ...get2(mergedProps) }));
-      var node_2 = child(button);
-      snippet(node_2, () => $$props.children ?? noop, () => itemState.snippetProps);
-      reset(button);
-      append($$anchor2, button);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.child) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/tabs/tabs.svelte
-var rest_excludes37 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "value", "class"]);
-function Tabs2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15, ""), restProps = rest_props($$props, rest_excludes37);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    let $0 = user_derived(() => cn("gap-2 group/tabs flex data-[orientation=horizontal]:flex-col", $$props.class));
-    component(node, () => exports_exports4.Root, ($$anchor2, TabsPrimitive_Root) => {
-      TabsPrimitive_Root($$anchor2, spread_props(
-        {
-          "data-slot": "tabs",
-          get class() {
-            return get2($0);
-          }
-        },
-        () => restProps,
-        {
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          },
-          get value() {
-            return value();
-          },
-          set value($$value) {
-            value($$value);
-          }
-        }
-      ));
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/tabs/tabs-content.svelte
-var rest_excludes38 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
-function Tabs_content2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes38);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    let $0 = user_derived(() => cn("text-sm flex-1 outline-none", $$props.class));
-    component(node, () => exports_exports4.Content, ($$anchor2, TabsPrimitive_Content) => {
-      TabsPrimitive_Content($$anchor2, spread_props(
-        {
-          "data-slot": "tabs-content",
-          get class() {
-            return get2($0);
-          }
-        },
-        () => restProps,
-        {
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          }
-        }
-      ));
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/tailwind-variants/dist/chunk-LQJYWU4O.js
-var SPACE_REGEX = /\s+/g;
-var removeExtraSpaces = (str) => {
-  if (typeof str !== "string" || !str) return str;
-  return str.replace(SPACE_REGEX, " ").trim();
-};
-var cx = (...classnames) => {
-  const classList = [];
-  const buildClassString = (input) => {
-    if (!input && input !== 0 && input !== 0n) return;
-    if (Array.isArray(input)) {
-      for (let i = 0, len = input.length; i < len; i++) buildClassString(input[i]);
-      return;
-    }
-    const type = typeof input;
-    if (type === "string" || type === "number" || type === "bigint") {
-      if (type === "number" && input !== input) return;
-      classList.push(String(input));
-    } else if (type === "object") {
-      const keys = Object.keys(input);
-      for (let i = 0, len = keys.length; i < len; i++) {
-        const key2 = keys[i];
-        if (input[key2]) classList.push(key2);
-      }
-    }
-  };
-  for (let i = 0, len = classnames.length; i < len; i++) {
-    const c = classnames[i];
-    if (c !== null && c !== void 0) buildClassString(c);
-  }
-  return classList.length > 0 ? removeExtraSpaces(classList.join(" ")) : void 0;
-};
-var falsyToString = (value) => value === false ? "false" : value === true ? "true" : value === 0 ? "0" : value;
-var isEmptyObject = (obj) => {
-  if (!obj || typeof obj !== "object") return true;
-  for (const _ in obj) return false;
-  return true;
-};
-var isEqual = (obj1, obj2) => {
-  if (obj1 === obj2) return true;
-  if (!obj1 || !obj2) return false;
-  const keys1 = Object.keys(obj1);
-  const keys2 = Object.keys(obj2);
-  if (keys1.length !== keys2.length) return false;
-  for (let i = 0; i < keys1.length; i++) {
-    const key2 = keys1[i];
-    if (!keys2.includes(key2)) return false;
-    if (obj1[key2] !== obj2[key2]) return false;
-  }
-  return true;
-};
-var joinObjects = (obj1, obj2) => {
-  for (const key2 in obj2) {
-    if (Object.prototype.hasOwnProperty.call(obj2, key2)) {
-      const val2 = obj2[key2];
-      if (key2 in obj1) {
-        obj1[key2] = cx(obj1[key2], val2);
-      } else {
-        obj1[key2] = val2;
-      }
-    }
-  }
-  return obj1;
-};
-var flat = (arr, target) => {
-  for (let i = 0; i < arr.length; i++) {
-    const el = arr[i];
-    if (Array.isArray(el)) flat(el, target);
-    else if (el) target.push(el);
-  }
-};
-var flatMergeArrays = (...arrays) => {
-  const result = [];
-  flat(arrays, result);
-  const filtered = [];
-  for (let i = 0; i < result.length; i++) {
-    if (result[i]) filtered.push(result[i]);
-  }
-  return filtered;
-};
-var mergeObjects = (obj1, obj2) => {
-  const result = {};
-  for (const key2 in obj1) {
-    const val1 = obj1[key2];
-    if (key2 in obj2) {
-      const val2 = obj2[key2];
-      if (Array.isArray(val1) || Array.isArray(val2)) {
-        result[key2] = flatMergeArrays(val2, val1);
-      } else if (typeof val1 === "object" && typeof val2 === "object" && val1 && val2) {
-        result[key2] = mergeObjects(val1, val2);
-      } else {
-        result[key2] = val2 + " " + val1;
-      }
-    } else {
-      result[key2] = val1;
-    }
-  }
-  for (const key2 in obj2) {
-    if (!(key2 in obj1)) {
-      result[key2] = obj2[key2];
-    }
-  }
-  return result;
-};
-
-// node_modules/tailwind-variants/dist/chunk-RZF76H2U.js
-var defaultConfig = {
-  twMerge: true,
-  twMergeConfig: {}
-};
-function createState() {
-  let cachedTwMerge = null;
-  let cachedTwMergeConfig = {};
-  let didTwMergeConfigChange = false;
-  return {
-    get cachedTwMerge() {
-      return cachedTwMerge;
-    },
-    set cachedTwMerge(value) {
-      cachedTwMerge = value;
-    },
-    get cachedTwMergeConfig() {
-      return cachedTwMergeConfig;
-    },
-    set cachedTwMergeConfig(value) {
-      cachedTwMergeConfig = value;
-    },
-    get didTwMergeConfigChange() {
-      return didTwMergeConfigChange;
-    },
-    set didTwMergeConfigChange(value) {
-      didTwMergeConfigChange = value;
-    },
-    reset() {
-      cachedTwMerge = null;
-      cachedTwMergeConfig = {};
-      didTwMergeConfigChange = false;
-    }
-  };
-}
-var state2 = createState();
-var getTailwindVariants = (cn2) => {
-  const tv2 = (options, configProp) => {
-    const {
-      extend = null,
-      slots: slotProps = {},
-      variants: variantsProps = {},
-      compoundVariants: compoundVariantsProps = [],
-      compoundSlots = [],
-      defaultVariants: defaultVariantsProps = {}
-    } = options;
-    const config = { ...defaultConfig, ...configProp };
-    const base = extend?.base ? cx(extend.base, options?.base) : options?.base;
-    const variants = extend?.variants && !isEmptyObject(extend.variants) ? mergeObjects(variantsProps, extend.variants) : variantsProps;
-    const defaultVariants = extend?.defaultVariants && !isEmptyObject(extend.defaultVariants) ? { ...extend.defaultVariants, ...defaultVariantsProps } : defaultVariantsProps;
-    if (!isEmptyObject(config.twMergeConfig) && !isEqual(config.twMergeConfig, state2.cachedTwMergeConfig)) {
-      state2.didTwMergeConfigChange = true;
-      state2.cachedTwMergeConfig = config.twMergeConfig;
-    }
-    const isExtendedSlotsEmpty = isEmptyObject(extend?.slots);
-    const componentSlots = !isEmptyObject(slotProps) ? {
-      // add "base" to the slots object
-      base: cx(options?.base, isExtendedSlotsEmpty && extend?.base),
-      ...slotProps
-    } : {};
-    const slots = isExtendedSlotsEmpty ? componentSlots : joinObjects(
-      { ...extend?.slots },
-      isEmptyObject(componentSlots) ? { base: options?.base } : componentSlots
-    );
-    const compoundVariants = isEmptyObject(extend?.compoundVariants) ? compoundVariantsProps : flatMergeArrays(extend?.compoundVariants, compoundVariantsProps);
-    const component2 = (props) => {
-      if (isEmptyObject(variants) && isEmptyObject(slotProps) && isExtendedSlotsEmpty) {
-        return cn2(base, props?.class, props?.className)(config);
-      }
-      if (compoundVariants && !Array.isArray(compoundVariants)) {
-        throw new TypeError(
-          `The "compoundVariants" prop must be an array. Received: ${typeof compoundVariants}`
-        );
-      }
-      if (compoundSlots && !Array.isArray(compoundSlots)) {
-        throw new TypeError(
-          `The "compoundSlots" prop must be an array. Received: ${typeof compoundSlots}`
-        );
-      }
-      const getVariantValue = (variant, vrs = variants, _slotKey = null, slotProps2 = null) => {
-        const variantObj = vrs[variant];
-        if (!variantObj || isEmptyObject(variantObj)) {
-          return null;
-        }
-        const variantProp = slotProps2?.[variant] ?? props?.[variant];
-        if (variantProp === null) return null;
-        const variantKey = falsyToString(variantProp);
-        if (typeof variantKey === "object") {
-          return null;
-        }
-        const defaultVariantProp = defaultVariants?.[variant];
-        const key2 = variantKey != null ? variantKey : falsyToString(defaultVariantProp);
-        const value = variantObj[key2 || "false"];
-        return value;
-      };
-      const getVariantClassNames = () => {
-        if (!variants) return null;
-        const keys = Object.keys(variants);
-        const result = [];
-        for (let i = 0; i < keys.length; i++) {
-          const value = getVariantValue(keys[i], variants);
-          if (value) result.push(value);
-        }
-        return result;
-      };
-      const getVariantClassNamesBySlotKey = (slotKey, slotProps2) => {
-        if (!variants || typeof variants !== "object") return null;
-        const result = [];
-        for (const variant in variants) {
-          const variantValue = getVariantValue(variant, variants, slotKey, slotProps2);
-          const value = slotKey === "base" && typeof variantValue === "string" ? variantValue : variantValue && variantValue[slotKey];
-          if (value) result.push(value);
-        }
-        return result;
-      };
-      const propsWithoutUndefined = {};
-      for (const prop3 in props) {
-        const value = props[prop3];
-        if (value !== void 0) propsWithoutUndefined[prop3] = value;
-      }
-      const getCompleteProps = (key2, slotProps2) => {
-        const initialProp = typeof props?.[key2] === "object" ? {
-          [key2]: props[key2]?.initial
-        } : {};
-        return {
-          ...defaultVariants,
-          ...propsWithoutUndefined,
-          ...initialProp,
-          ...slotProps2
-        };
-      };
-      const getCompoundVariantsValue = (cv = [], slotProps2) => {
-        const result = [];
-        const cvLength = cv.length;
-        for (let i = 0; i < cvLength; i++) {
-          const { class: tvClass, className: tvClassName, ...compoundVariantOptions } = cv[i];
-          let isValid = true;
-          const completeProps = getCompleteProps(null, slotProps2);
-          for (const key2 in compoundVariantOptions) {
-            const value = compoundVariantOptions[key2];
-            const completePropsValue = completeProps[key2];
-            if (Array.isArray(value)) {
-              if (!value.includes(completePropsValue)) {
-                isValid = false;
-                break;
-              }
-            } else {
-              if ((value == null || value === false) && (completePropsValue == null || completePropsValue === false))
-                continue;
-              if (completePropsValue !== value) {
-                isValid = false;
-                break;
-              }
-            }
-          }
-          if (isValid) {
-            if (tvClass) result.push(tvClass);
-            if (tvClassName) result.push(tvClassName);
-          }
-        }
-        return result;
-      };
-      const getCompoundVariantClassNamesBySlot = (slotProps2) => {
-        const compoundClassNames = getCompoundVariantsValue(compoundVariants, slotProps2);
-        if (!Array.isArray(compoundClassNames)) return compoundClassNames;
-        const result = {};
-        const cnFn = cn2;
-        for (let i = 0; i < compoundClassNames.length; i++) {
-          const className = compoundClassNames[i];
-          if (typeof className === "string") {
-            result.base = cnFn(result.base, className)(config);
-          } else if (typeof className === "object") {
-            for (const slot2 in className) {
-              result[slot2] = cnFn(result[slot2], className[slot2])(config);
-            }
-          }
-        }
-        return result;
-      };
-      const getCompoundSlotClassNameBySlot = (slotProps2) => {
-        if (compoundSlots.length < 1) return null;
-        const result = {};
-        const completeProps = getCompleteProps(null, slotProps2);
-        for (let i = 0; i < compoundSlots.length; i++) {
-          const {
-            slots: slots2 = [],
-            class: slotClass,
-            className: slotClassName,
-            ...slotVariants
-          } = compoundSlots[i];
-          if (!isEmptyObject(slotVariants)) {
-            let isValid = true;
-            for (const key2 in slotVariants) {
-              const completePropsValue = completeProps[key2];
-              const slotVariantValue = slotVariants[key2];
-              if (completePropsValue === void 0 || (Array.isArray(slotVariantValue) ? !slotVariantValue.includes(completePropsValue) : slotVariantValue !== completePropsValue)) {
-                isValid = false;
-                break;
-              }
-            }
-            if (!isValid) continue;
-          }
-          for (let j2 = 0; j2 < slots2.length; j2++) {
-            const slotName = slots2[j2];
-            if (!result[slotName]) result[slotName] = [];
-            result[slotName].push([slotClass, slotClassName]);
-          }
-        }
-        return result;
-      };
-      if (!isEmptyObject(slotProps) || !isExtendedSlotsEmpty) {
-        const slotsFns = {};
-        if (typeof slots === "object" && !isEmptyObject(slots)) {
-          const cnFn = cn2;
-          for (const slotKey in slots) {
-            slotsFns[slotKey] = (slotProps2) => {
-              const compoundVariantClasses = getCompoundVariantClassNamesBySlot(slotProps2);
-              const compoundSlotClasses = getCompoundSlotClassNameBySlot(slotProps2);
-              return cnFn(
-                slots[slotKey],
-                getVariantClassNamesBySlotKey(slotKey, slotProps2),
-                compoundVariantClasses ? compoundVariantClasses[slotKey] : void 0,
-                compoundSlotClasses ? compoundSlotClasses[slotKey] : void 0,
-                slotProps2?.class,
-                slotProps2?.className
-              )(config);
-            };
-          }
-        }
-        return slotsFns;
-      }
-      return cn2(
-        base,
-        getVariantClassNames(),
-        getCompoundVariantsValue(compoundVariants),
-        props?.class,
-        props?.className
-      )(config);
-    };
-    const getVariantKeys = () => {
-      if (!variants || typeof variants !== "object") return;
-      return Object.keys(variants);
-    };
-    component2.variantKeys = getVariantKeys();
-    component2.extend = extend;
-    component2.base = base;
-    component2.slots = slots;
-    component2.variants = variants;
-    component2.defaultVariants = defaultVariants;
-    component2.compoundSlots = compoundSlots;
-    component2.compoundVariants = compoundVariants;
-    return component2;
-  };
-  const createTV2 = (configProp) => {
-    return (options, config) => tv2(options, config ? mergeObjects(configProp, config) : configProp);
-  };
-  return {
-    tv: tv2,
-    createTV: createTV2
   };
-};
-
-// node_modules/tailwind-variants/dist/index.js
-var createTwMerge = (cachedTwMergeConfig) => {
-  return isEmptyObject(cachedTwMergeConfig) ? twMerge : extendTailwindMerge({
-    ...cachedTwMergeConfig,
-    extend: {
-      theme: cachedTwMergeConfig.theme,
-      classGroups: cachedTwMergeConfig.classGroups,
-      conflictingClassGroupModifiers: cachedTwMergeConfig.conflictingClassGroupModifiers,
-      conflictingClassGroups: cachedTwMergeConfig.conflictingClassGroups,
-      ...cachedTwMergeConfig.extend
-    }
-  });
-};
-var executeMerge = (classnames, config) => {
-  const base = cx(classnames);
-  if (!base || !(config?.twMerge ?? true)) return base;
-  if (!state2.cachedTwMerge || state2.didTwMergeConfigChange) {
-    state2.didTwMergeConfigChange = false;
-    state2.cachedTwMerge = createTwMerge(state2.cachedTwMergeConfig);
-  }
-  return state2.cachedTwMerge(base) || void 0;
-};
-var cnMerge = (...classnames) => {
-  return (config) => executeMerge(classnames, config);
-};
-var { createTV, tv } = getTailwindVariants(cnMerge);
-
-// src/lib/components/ui/tabs/tabs-list.svelte
-var tabsListVariants = tv({
-  base: "rounded-lg p-[3px] group-data-horizontal/tabs:h-8 data-[variant=line]:rounded-none group/tabs-list text-muted-foreground inline-flex w-fit items-center justify-center group-data-[orientation=vertical]/tabs:h-fit group-data-[orientation=vertical]/tabs:flex-col",
-  variants: {
-    variant: {
-      default: "cn-tabs-list-variant-default bg-muted",
-      line: "cn-tabs-list-variant-line gap-1 bg-transparent"
-    }
-  },
-  defaultVariants: { variant: "default" }
-});
-var rest_excludes39 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "variant", "class"]);
-function Tabs_list2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), variant = prop($$props, "variant", 3, "default"), restProps = rest_props($$props, rest_excludes39);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    let $0 = user_derived(() => cn(tabsListVariants({ variant: variant() }), $$props.class));
-    component(node, () => exports_exports4.List, ($$anchor2, TabsPrimitive_List) => {
-      TabsPrimitive_List($$anchor2, spread_props(
-        {
-          "data-slot": "tabs-list",
-          get "data-variant"() {
-            return variant();
-          },
-          get class() {
-            return get2($0);
-          }
-        },
-        () => restProps,
-        {
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          }
-        }
-      ));
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/tabs/tabs-trigger.svelte
-var rest_excludes40 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
-function Tabs_trigger2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes40);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    let $0 = user_derived(() => cn("gap-1.5 rounded-md border border-transparent px-1.5 py-0.5 text-sm font-medium has-data-[icon=inline-end]:pr-1 has-data-[icon=inline-start]:pl-1 group-data-[variant=default]/tabs-list:data-active:shadow-sm group-data-[variant=line]/tabs-list:data-active:shadow-none [&_svg:not([class*='size-'])]:size-4 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring text-foreground/60 hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center whitespace-nowrap transition-all group-data-[orientation=vertical]/tabs:w-full group-data-[orientation=vertical]/tabs:justify-start focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0", "group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-active:bg-transparent dark:group-data-[variant=line]/tabs-list:data-active:border-transparent dark:group-data-[variant=line]/tabs-list:data-active:bg-transparent", "data-active:bg-background dark:data-active:text-foreground dark:data-active:border-input dark:data-active:bg-input/30 data-active:text-foreground", "after:bg-foreground after:absolute after:opacity-0 after:transition-opacity group-data-[orientation=horizontal]/tabs:after:inset-x-0 group-data-[orientation=horizontal]/tabs:after:bottom-[-5px] group-data-[orientation=horizontal]/tabs:after:h-0.5 group-data-[orientation=vertical]/tabs:after:inset-y-0 group-data-[orientation=vertical]/tabs:after:-right-1 group-data-[orientation=vertical]/tabs:after:w-0.5 group-data-[variant=line]/tabs-list:data-active:after:opacity-100", $$props.class));
-    component(node, () => exports_exports4.Trigger, ($$anchor2, TabsPrimitive_Trigger) => {
-      TabsPrimitive_Trigger($$anchor2, spread_props(
-        {
-          "data-slot": "tabs-trigger",
-          get class() {
-            return get2($0);
-          }
-        },
-        () => restProps,
-        {
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          }
-        }
-      ));
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/table/table.svelte
-var rest_excludes41 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root35 = from_html(`<div data-slot="table-container" class="relative w-full overflow-x-auto"><table><!></table></div>`);
-function Table($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes41);
-  var div = root35();
-  var table = child(div);
-  attribute_effect(table, ($0) => ({ "data-slot": "table", class: $0, ...restProps }), [() => cn("w-full caption-bottom text-sm", $$props.class)]);
-  var node = child(table);
-  snippet(node, () => $$props.children ?? noop);
-  reset(table);
-  bind_this(table, ($$value) => ref($$value), () => ref());
-  reset(div);
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/table/table-body.svelte
-var rest_excludes42 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root36 = from_html(`<tbody><!></tbody>`);
-function Table_body($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes42);
-  var tbody = root36();
-  attribute_effect(tbody, ($0) => ({ "data-slot": "table-body", class: $0, ...restProps }), [() => cn("[&_tr:last-child]:border-0", $$props.class)]);
-  var node = child(tbody);
-  snippet(node, () => $$props.children ?? noop);
-  reset(tbody);
-  bind_this(tbody, ($$value) => ref($$value), () => ref());
-  append($$anchor, tbody);
-  pop();
-}
-
-// src/lib/components/ui/table/table-caption.svelte
-var root37 = from_html(`<caption><!></caption>`);
-
-// src/lib/components/ui/table/table-cell.svelte
-var rest_excludes43 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root38 = from_html(`<td><!></td>`);
-function Table_cell($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes43);
-  var td = root38();
-  attribute_effect(td, ($0) => ({ "data-slot": "table-cell", class: $0, ...restProps }), [
-    () => cn("p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0", $$props.class)
-  ]);
-  var node = child(td);
-  snippet(node, () => $$props.children ?? noop);
-  reset(td);
-  bind_this(td, ($$value) => ref($$value), () => ref());
-  append($$anchor, td);
-  pop();
-}
-
-// src/lib/components/ui/table/table-footer.svelte
-var root39 = from_html(`<tfoot><!></tfoot>`);
-
-// src/lib/components/ui/table/table-head.svelte
-var rest_excludes44 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root40 = from_html(`<th><!></th>`);
-function Table_head($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes44);
-  var th = root40();
-  attribute_effect(th, ($0) => ({ "data-slot": "table-head", class: $0, ...restProps }), [
-    () => cn("text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0", $$props.class)
-  ]);
-  var node = child(th);
-  snippet(node, () => $$props.children ?? noop);
-  reset(th);
-  bind_this(th, ($$value) => ref($$value), () => ref());
-  append($$anchor, th);
-  pop();
-}
-
-// src/lib/components/ui/table/table-header.svelte
-var rest_excludes45 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root41 = from_html(`<thead><!></thead>`);
-function Table_header($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes45);
-  var thead = root41();
-  attribute_effect(thead, ($0) => ({ "data-slot": "table-header", class: $0, ...restProps }), [() => cn("[&_tr]:border-b", $$props.class)]);
-  var node = child(thead);
-  snippet(node, () => $$props.children ?? noop);
-  reset(thead);
-  bind_this(thead, ($$value) => ref($$value), () => ref());
-  append($$anchor, thead);
-  pop();
-}
-
-// src/lib/components/ui/table/table-row.svelte
-var rest_excludes46 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root42 = from_html(`<tr><!></tr>`);
-function Table_row($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes46);
-  var tr = root42();
-  attribute_effect(tr, ($0) => ({ "data-slot": "table-row", class: $0, ...restProps }), [
-    () => cn("hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors", $$props.class)
-  ]);
-  var node = child(tr);
-  snippet(node, () => $$props.children ?? noop);
-  reset(tr);
-  bind_this(tr, ($$value) => ref($$value), () => ref());
-  append($$anchor, tr);
-  pop();
-}
-
-// src/lib/components/ui/accordion/accordion.svelte
-var rest_excludes47 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "value", "class"]);
-function Accordion2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15), restProps = rest_props($$props, rest_excludes47);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    let $0 = user_derived(() => cn("cn-accordion flex w-full flex-col", $$props.class));
-    component(node, () => exports_exports.Root, ($$anchor2, AccordionPrimitive_Root) => {
-      AccordionPrimitive_Root($$anchor2, spread_props(
-        {
-          "data-slot": "accordion",
-          get class() {
-            return get2($0);
-          }
-        },
-        () => restProps,
-        {
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          },
-          get value() {
-            return value();
-          },
-          set value($$value) {
-            value($$value);
-          }
-        }
-      ));
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/accordion/accordion-content.svelte
-var rest_excludes48 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root43 = from_html(`<div><!></div>`);
-function Accordion_content2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes48);
-  var fragment = comment();
-  var node = first_child(fragment);
-  component(node, () => exports_exports.Content, ($$anchor2, AccordionPrimitive_Content) => {
-    AccordionPrimitive_Content($$anchor2, spread_props(
-      {
-        "data-slot": "accordion-content",
-        class: "data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
-      },
-      () => restProps,
-      {
-        get ref() {
-          return ref();
-        },
-        set ref($$value) {
-          ref($$value);
-        },
-        children: ($$anchor3, $$slotProps) => {
-          var div = root43();
-          var node_1 = child(div);
-          snippet(node_1, () => $$props.children ?? noop);
-          reset(div);
-          template_effect(($0) => set_class(div, 1, $0), [
-            () => clsx2(cn("pt-0 pb-2.5 [&_a]:hover:text-foreground [&_a]:underline [&_a]:underline-offset-3 [&_p:not(:last-child)]:mb-4", $$props.class))
-          ]);
-          append($$anchor3, div);
-        },
-        $$slots: { default: true }
-      }
-    ));
-  });
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/accordion/accordion-item.svelte
-var rest_excludes49 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
-function Accordion_item2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes49);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    let $0 = user_derived(() => cn("not-last:border-b", $$props.class));
-    component(node, () => exports_exports.Item, ($$anchor2, AccordionPrimitive_Item) => {
-      AccordionPrimitive_Item($$anchor2, spread_props(
-        {
-          "data-slot": "accordion-item",
-          get class() {
-            return get2($0);
-          }
-        },
-        () => restProps,
-        {
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          }
-        }
-      ));
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// node_modules/@lucide/svelte/dist/defaultAttributes.js
-var defaultAttributes = {
-  xmlns: "http://www.w3.org/2000/svg",
-  width: 24,
-  height: 24,
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  "stroke-width": 2,
-  "stroke-linecap": "round",
-  "stroke-linejoin": "round"
-};
-var defaultAttributes_default = defaultAttributes;
-
-// node_modules/@lucide/svelte/dist/utils/hasA11yProp.js
-var hasA11yProp = (props) => {
-  for (const prop3 in props) {
-    if (prop3.startsWith("aria-") || prop3 === "role" || prop3 === "title") {
-      return true;
-    }
-  }
-  return false;
-};
-
-// node_modules/@lucide/svelte/dist/context.js
-var LucideContext = Symbol("lucide-context");
-var getLucideContext = () => getContext(LucideContext);
-
-// node_modules/@lucide/svelte/dist/Icon.svelte
-var rest_excludes50 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "name",
-  "color",
-  "size",
-  "strokeWidth",
-  "absoluteStrokeWidth",
-  "iconNode",
-  "children"
-]);
-var root44 = from_svg(`<svg><!><!></svg>`);
-function Icon($$anchor, $$props) {
-  push($$props, true);
-  const globalProps = getLucideContext() ?? {};
-  const color = prop($$props, "color", 19, () => globalProps.color ?? "currentColor"), size3 = prop($$props, "size", 19, () => globalProps.size ?? 24), strokeWidth = prop($$props, "strokeWidth", 19, () => globalProps.strokeWidth ?? 2), absoluteStrokeWidth = prop($$props, "absoluteStrokeWidth", 19, () => globalProps.absoluteStrokeWidth ?? false), iconNode = prop($$props, "iconNode", 19, () => []), props = rest_props($$props, rest_excludes50);
-  const calculatedStrokeWidth = user_derived(() => absoluteStrokeWidth() ? Number(strokeWidth()) * 24 / Number(size3()) : strokeWidth());
-  var svg = root44();
-  attribute_effect(
-    svg,
-    ($0) => ({
-      ...defaultAttributes_default,
-      ...$0,
-      ...props,
-      width: size3(),
-      height: size3(),
-      stroke: color(),
-      "stroke-width": get2(calculatedStrokeWidth),
-      class: [
-        "lucide-icon lucide",
-        globalProps.class,
-        $$props.name && `lucide-${$$props.name}`,
-        $$props.class
-      ]
-    }),
-    [
-      () => !$$props.children && !hasA11yProp(props) && { "aria-hidden": "true" }
-    ]
-  );
-  var node = child(svg);
-  each(node, 17, iconNode, index, ($$anchor2, $$item) => {
-    var $$array = user_derived(() => to_array(get2($$item), 2));
-    let tag2 = () => get2($$array)[0];
-    let attrs = () => get2($$array)[1];
-    var fragment = comment();
-    var node_1 = first_child(fragment);
-    element(node_1, tag2, true, ($$element, $$anchor3) => {
-      attribute_effect($$element, () => ({ ...attrs() }));
-    });
-    append($$anchor2, fragment);
-  });
-  var node_2 = sibling(node);
-  snippet(node_2, () => $$props.children ?? noop);
-  reset(svg);
-  append($$anchor, svg);
-  pop();
-}
-
-// node_modules/@lucide/svelte/dist/icons/chevron-down.svelte
-var rest_excludes51 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
-function Chevron_down($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes51);
-  const iconNode = [["path", { "d": "m6 9 6 6 6-6" }]];
-  Icon($$anchor, spread_props({ name: "chevron-down" }, () => props, {
-    get iconNode() {
-      return iconNode;
-    }
-  }));
-}
-
-// node_modules/@lucide/svelte/dist/icons/chevron-up.svelte
-var rest_excludes52 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
-function Chevron_up($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes52);
-  const iconNode = [["path", { "d": "m18 15-6-6-6 6" }]];
-  Icon($$anchor, spread_props({ name: "chevron-up" }, () => props, {
-    get iconNode() {
-      return iconNode;
-    }
-  }));
-}
-
-// src/lib/components/ui/accordion/accordion-trigger.svelte
-var rest_excludes53 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "level",
-  "children"
-]);
-var root45 = from_html(`<!> <!> <!>`, 1);
-function Accordion_trigger2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), level = prop($$props, "level", 3, 3), restProps = rest_props($$props, rest_excludes53);
-  var fragment = comment();
-  var node = first_child(fragment);
-  component(node, () => exports_exports.Header, ($$anchor2, AccordionPrimitive_Header) => {
-    AccordionPrimitive_Header($$anchor2, {
-      get level() {
-        return level();
-      },
-      class: "flex",
-      children: ($$anchor3, $$slotProps) => {
-        var fragment_1 = comment();
-        var node_1 = first_child(fragment_1);
-        {
-          let $0 = user_derived(() => cn("focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50", $$props.class));
-          component(node_1, () => exports_exports.Trigger, ($$anchor4, AccordionPrimitive_Trigger) => {
-            AccordionPrimitive_Trigger($$anchor4, spread_props(
-              {
-                "data-slot": "accordion-trigger",
-                get class() {
-                  return get2($0);
-                }
-              },
-              () => restProps,
-              {
-                get ref() {
-                  return ref();
-                },
-                set ref($$value) {
-                  ref($$value);
-                },
-                children: ($$anchor5, $$slotProps2) => {
-                  var fragment_2 = root45();
-                  var node_2 = first_child(fragment_2);
-                  snippet(node_2, () => $$props.children ?? noop);
-                  var node_3 = sibling(node_2, 2);
-                  Chevron_down(node_3, {
-                    "data-slot": "accordion-trigger-icon",
-                    class: "cn-accordion-trigger-icon pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
-                  });
-                  var node_4 = sibling(node_3, 2);
-                  Chevron_up(node_4, {
-                    "data-slot": "accordion-trigger-icon",
-                    class: "cn-accordion-trigger-icon pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
-                  });
-                  append($$anchor5, fragment_2);
-                },
-                $$slots: { default: true }
-              }
-            ));
-          });
-        }
-        append($$anchor3, fragment_1);
-      },
-      $$slots: { default: true }
-    });
-  });
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/select/select.svelte
-var rest_excludes54 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "open", "value"]);
-function Select2($$anchor, $$props) {
-  push($$props, true);
-  let open = prop($$props, "open", 15, false), value = prop($$props, "value", 15), restProps = rest_props($$props, rest_excludes54);
-  var fragment = comment();
-  var node = first_child(fragment);
-  component(node, () => exports_exports3.Root, ($$anchor2, SelectPrimitive_Root) => {
-    SelectPrimitive_Root($$anchor2, spread_props(() => restProps, {
-      get open() {
-        return open();
-      },
-      set open($$value) {
-        open($$value);
-      },
-      get value() {
-        return value();
-      },
-      set value($$value) {
-        value($$value);
-      }
-    }));
-  });
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/select/select-label.svelte
-var root46 = from_html(`<div><!></div>`);
-
-// node_modules/@lucide/svelte/dist/icons/check.svelte
-var rest_excludes55 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
-function Check($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes55);
-  const iconNode = [["path", { "d": "M20 6 9 17l-5-5" }]];
-  Icon($$anchor, spread_props({ name: "check" }, () => props, {
-    get iconNode() {
-      return iconNode;
-    }
-  }));
-}
-
-// src/lib/components/ui/select/select-item.svelte
-var rest_excludes56 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "value",
-  "label",
-  "children"
-]);
-var root47 = from_html(`<span class="absolute end-2 flex size-3.5 items-center justify-center"><!></span> <span class="flex flex-1 gap-2 shrink-0 whitespace-nowrap"><!></span>`, 1);
-function Select_item2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes56);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    const children2 = ($$anchor2, $$arg0) => {
-      let selected = () => ($$arg0?.()).selected;
-      let highlighted = () => ($$arg0?.()).highlighted;
-      var fragment_1 = root47();
-      var span = first_child(fragment_1);
-      var node_1 = child(span);
-      {
-        var consequent = ($$anchor3) => {
-          Check($$anchor3, { class: "cn-select-item-indicator-icon" });
-        };
-        if_block(node_1, ($$render) => {
-          if (selected()) $$render(consequent);
-        });
-      }
-      reset(span);
-      var span_1 = sibling(span, 2);
-      var node_2 = child(span_1);
-      {
-        var consequent_1 = ($$anchor3) => {
-          var fragment_3 = comment();
-          var node_3 = first_child(fragment_3);
-          snippet(node_3, () => $$props.children, () => ({ selected: selected(), highlighted: highlighted() }));
-          append($$anchor3, fragment_3);
-        };
-        var alternate = ($$anchor3) => {
-          var text4 = text();
-          template_effect(() => set_text(text4, $$props.label || $$props.value));
-          append($$anchor3, text4);
-        };
-        if_block(node_2, ($$render) => {
-          if ($$props.children) $$render(consequent_1);
-          else $$render(alternate, -1);
-        });
-      }
-      reset(span_1);
-      append($$anchor2, fragment_1);
-    };
-    let $0 = user_derived(() => cn("focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 focus:bg-accent data-highlighted:bg-accent data-highlighted:text-accent-foreground focus:text-accent-foreground relative flex w-full cursor-default items-center outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0", $$props.class));
-    component(node, () => exports_exports3.Item, ($$anchor2, SelectPrimitive_Item) => {
-      SelectPrimitive_Item($$anchor2, spread_props(
-        {
-          get value() {
-            return $$props.value;
-          },
-          "data-slot": "select-item",
-          get class() {
-            return get2($0);
-          }
-        },
-        () => restProps,
-        {
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          },
-          children: children2,
-          $$slots: { default: true }
-        }
-      ));
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/select/select-portal.svelte
-var rest_excludes57 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
-function Select_portal($$anchor, $$props) {
-  let restProps = rest_props($$props, rest_excludes57);
-  var fragment = comment();
-  var node = first_child(fragment);
-  component(node, () => exports_exports3.Portal, ($$anchor2, SelectPrimitive_Portal) => {
-    SelectPrimitive_Portal($$anchor2, spread_props(() => restProps));
-  });
-  append($$anchor, fragment);
-}
-
-// src/lib/components/ui/select/select-scroll-up-button.svelte
-var rest_excludes58 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
-function Select_scroll_up_button2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes58);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    let $0 = user_derived(() => cn("bg-popover z-10 flex cursor-default items-center justify-center py-1 [&_svg:not([class*='size-'])]:size-4 top-0 w-full", $$props.class));
-    component(node, () => exports_exports3.ScrollUpButton, ($$anchor2, SelectPrimitive_ScrollUpButton) => {
-      SelectPrimitive_ScrollUpButton($$anchor2, spread_props(
-        {
-          "data-slot": "select-scroll-up-button",
-          get class() {
-            return get2($0);
-          }
-        },
-        () => restProps,
-        {
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          },
-          children: ($$anchor3, $$slotProps) => {
-            Chevron_up($$anchor3, {});
-          },
-          $$slots: { default: true }
-        }
-      ));
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/select/select-scroll-down-button.svelte
-var rest_excludes59 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
-function Select_scroll_down_button2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes59);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    let $0 = user_derived(() => cn("bg-popover z-10 flex cursor-default items-center justify-center py-1 [&_svg:not([class*='size-'])]:size-4 bottom-0 w-full", $$props.class));
-    component(node, () => exports_exports3.ScrollDownButton, ($$anchor2, SelectPrimitive_ScrollDownButton) => {
-      SelectPrimitive_ScrollDownButton($$anchor2, spread_props(
-        {
-          "data-slot": "select-scroll-down-button",
-          get class() {
-            return get2($0);
-          }
-        },
-        () => restProps,
-        {
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          },
-          children: ($$anchor3, $$slotProps) => {
-            Chevron_down($$anchor3, {});
-          },
-          $$slots: { default: true }
-        }
-      ));
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/select/select-content.svelte
-var rest_excludes60 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "sideOffset",
-  "portalProps",
-  "children",
-  "preventScroll"
-]);
-var root48 = from_html(`<!> <!> <!>`, 1);
-function Select_content2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), sideOffset = prop($$props, "sideOffset", 3, 4), preventScroll = prop($$props, "preventScroll", 3, true), restProps = rest_props($$props, rest_excludes60);
-  Select_portal($$anchor, spread_props(() => $$props.portalProps, {
-    children: ($$anchor2, $$slotProps) => {
-      var fragment_1 = comment();
-      var node = first_child(fragment_1);
-      {
-        let $0 = user_derived(() => cn("bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg shadow-md ring-1 duration-100 data-[side=inline-start]:slide-in-from-right-2 data-[side=inline-end]:slide-in-from-left-2 relative isolate z-50 overflow-x-hidden overflow-y-auto", $$props.class));
-        component(node, () => exports_exports3.Content, ($$anchor3, SelectPrimitive_Content) => {
-          SelectPrimitive_Content($$anchor3, spread_props(
-            {
-              get sideOffset() {
-                return sideOffset();
-              },
-              get preventScroll() {
-                return preventScroll();
-              },
-              "data-slot": "select-content",
-              get class() {
-                return get2($0);
-              }
-            },
-            () => restProps,
-            {
-              get ref() {
-                return ref();
-              },
-              set ref($$value) {
-                ref($$value);
-              },
-              children: ($$anchor4, $$slotProps2) => {
-                var fragment_2 = root48();
-                var node_1 = first_child(fragment_2);
-                Select_scroll_up_button2(node_1, {});
-                var node_2 = sibling(node_1, 2);
-                {
-                  let $02 = user_derived(() => cn("h-(--bits-select-anchor-height) w-full min-w-(--bits-select-anchor-width) scroll-my-1"));
-                  component(node_2, () => exports_exports3.Viewport, ($$anchor5, SelectPrimitive_Viewport) => {
-                    SelectPrimitive_Viewport($$anchor5, {
-                      get class() {
-                        return get2($02);
-                      },
-                      children: ($$anchor6, $$slotProps3) => {
-                        var fragment_3 = comment();
-                        var node_3 = first_child(fragment_3);
-                        snippet(node_3, () => $$props.children ?? noop);
-                        append($$anchor6, fragment_3);
-                      },
-                      $$slots: { default: true }
-                    });
-                  });
-                }
-                var node_4 = sibling(node_2, 2);
-                Select_scroll_down_button2(node_4, {});
-                append($$anchor4, fragment_2);
-              },
-              $$slots: { default: true }
-            }
-          ));
-        });
-      }
-      append($$anchor2, fragment_1);
-    },
-    $$slots: { default: true }
-  }));
-  pop();
-}
-
-// src/lib/components/ui/select/select-trigger.svelte
-var rest_excludes61 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children",
-  "size"
-]);
-var root49 = from_html(`<!> <!>`, 1);
-function Select_trigger2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), size3 = prop($$props, "size", 3, "default"), restProps = rest_props($$props, rest_excludes61);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    let $0 = user_derived(() => cn("border-input data-placeholder:text-muted-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg border bg-transparent py-2 pr-2 pl-2.5 text-sm transition-colors select-none focus-visible:ring-3 aria-invalid:ring-3 data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:flex *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex w-fit items-center justify-between whitespace-nowrap outline-none disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center [&_svg]:pointer-events-none [&_svg]:shrink-0", $$props.class));
-    component(node, () => exports_exports3.Trigger, ($$anchor2, SelectPrimitive_Trigger) => {
-      SelectPrimitive_Trigger($$anchor2, spread_props(
-        {
-          "data-slot": "select-trigger",
-          get "data-size"() {
-            return size3();
-          },
-          get class() {
-            return get2($0);
-          }
-        },
-        () => restProps,
-        {
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          },
-          children: ($$anchor3, $$slotProps) => {
-            var fragment_1 = root49();
-            var node_1 = first_child(fragment_1);
-            snippet(node_1, () => $$props.children ?? noop);
-            var node_2 = sibling(node_1, 2);
-            Chevron_down(node_2, { class: "text-muted-foreground size-4 pointer-events-none" });
-            append($$anchor3, fragment_1);
-          },
-          $$slots: { default: true }
-        }
-      ));
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/toggle/toggle.svelte
-var toggleVariants = tv({
-  base: "hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 rounded-lg text-sm font-medium transition-all [&_svg:not([class*='size-'])]:size-4 group/toggle hover:bg-muted inline-flex items-center justify-center whitespace-nowrap outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-  variants: {
-    variant: {
-      default: "bg-transparent",
-      outline: "border-input hover:bg-muted border bg-transparent"
-    },
-    size: {
-      default: "h-8 min-w-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-      sm: "h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-      lg: "h-9 min-w-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
-    }
-  },
-  defaultVariants: { variant: "default", size: "default" }
-});
-
-// src/lib/components/ui/toggle-group/toggle-group.svelte
-function setToggleGroupCtx(props) {
-  setContext("toggleGroup", props);
-}
-function getToggleGroupCtx() {
-  return getContext("toggleGroup");
-}
-var rest_excludes62 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "value",
-  "class",
-  "size",
-  "spacing",
-  "orientation",
-  "variant"
-]);
-function Toggle_group2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15), size3 = prop($$props, "size", 3, "default"), spacing = prop($$props, "spacing", 3, 0), orientation = prop($$props, "orientation", 3, "horizontal"), variant = prop($$props, "variant", 3, "default"), restProps = rest_props($$props, rest_excludes62);
-  setToggleGroupCtx({
-    get variant() {
-      return variant();
-    },
-    get size() {
-      return size3();
-    },
-    get spacing() {
-      return spacing();
-    },
-    get orientation() {
-      return orientation();
-    }
-  });
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    let $0 = user_derived(() => `--gap: ${spacing()}`);
-    let $1 = user_derived(() => cn("rounded-lg data-[size=sm]:rounded-[min(var(--radius-md),10px)] group/toggle-group flex w-fit flex-row items-center gap-[--spacing(var(--gap))] data-vertical:flex-col data-vertical:items-stretch", $$props.class));
-    component(node, () => exports_exports5.Root, ($$anchor2, ToggleGroupPrimitive_Root) => {
-      ToggleGroupPrimitive_Root($$anchor2, spread_props(
-        {
-          get orientation() {
-            return orientation();
-          },
-          "data-slot": "toggle-group",
-          get "data-variant"() {
-            return variant();
-          },
-          get "data-size"() {
-            return size3();
-          },
-          get "data-spacing"() {
-            return spacing();
-          },
-          get style() {
-            return get2($0);
-          },
-          get class() {
-            return get2($1);
-          }
-        },
-        () => restProps,
-        {
-          get value() {
-            return value();
-          },
-          set value($$value) {
-            value($$value);
-          },
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          }
-        }
-      ));
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/toggle-group/toggle-group-item.svelte
-var rest_excludes63 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "value",
-  "class",
-  "size",
-  "variant"
-]);
-function Toggle_group_item2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes63);
-  const ctx = getToggleGroupCtx();
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    let $0 = user_derived(() => ctx.variant || $$props.variant);
-    let $1 = user_derived(() => ctx.size || $$props.size);
-    let $2 = user_derived(() => cn(
-      "group-data-[spacing=0]/toggle-group:rounded-none group-data-[spacing=0]/toggle-group:px-2 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pr-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:pl-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-l-lg group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-lg group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-r-lg group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-lg shrink-0 focus:z-10 focus-visible:z-10 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-l-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-l group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t",
-      toggleVariants({
-        variant: ctx.variant || $$props.variant,
-        size: ctx.size || $$props.size
-      }),
-      $$props.class
-    ));
-    component(node, () => exports_exports5.Item, ($$anchor2, ToggleGroupPrimitive_Item) => {
-      ToggleGroupPrimitive_Item($$anchor2, spread_props(
-        {
-          "data-slot": "toggle-group-item",
-          get "data-variant"() {
-            return get2($0);
-          },
-          get "data-size"() {
-            return get2($1);
-          },
-          get "data-spacing"() {
-            return ctx.spacing;
-          },
-          get class() {
-            return get2($2);
-          },
-          get value() {
-            return $$props.value;
-          }
-        },
-        () => restProps,
-        {
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          }
-        }
-      ));
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/badge/badge.svelte
-var badgeVariants = tv({
-  base: "h-5 gap-1 rounded-4xl border border-transparent px-2 py-0.5 text-xs font-medium transition-all has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive group/badge inline-flex w-fit shrink-0 items-center justify-center overflow-hidden whitespace-nowrap transition-colors focus-visible:ring-[3px] [&>svg]:pointer-events-none",
-  variants: {
-    variant: {
-      default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
-      secondary: "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
-      destructive: "bg-destructive/10 [a]:hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-destructive dark:bg-destructive/20",
-      outline: "border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground",
-      ghost: "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
-      link: "text-primary underline-offset-4 hover:underline"
-    }
-  },
-  defaultVariants: { variant: "default" }
-});
-var rest_excludes64 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "href",
-  "class",
-  "variant",
-  "children"
-]);
-function Badge($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), variant = prop($$props, "variant", 3, "default"), restProps = rest_props($$props, rest_excludes64);
-  var fragment = comment();
-  var node = first_child(fragment);
-  element(node, () => $$props.href ? "a" : "span", false, ($$element, $$anchor2) => {
-    bind_this($$element, ($$value) => ref($$value), () => ref());
-    attribute_effect(
-      $$element,
-      ($0) => ({
-        "data-slot": "badge",
-        href: $$props.href,
-        class: $0,
-        ...restProps
-      }),
-      [
-        () => cn(badgeVariants({ variant: variant() }), $$props.class)
-      ]
-    );
-    var fragment_1 = comment();
-    var node_1 = first_child(fragment_1);
-    snippet(node_1, () => $$props.children ?? noop);
-    append($$anchor2, fragment_1);
-  });
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/button/button.svelte
-var buttonVariants = tv({
-  base: "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 active:not-aria-[haspopup]:translate-y-px aria-invalid:ring-3 [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-  variants: {
-    variant: {
-      default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
-      outline: "border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
-      secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
-      ghost: "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground",
-      destructive: "bg-destructive/10 hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/20 text-destructive focus-visible:border-destructive/40 dark:hover:bg-destructive/30",
-      link: "text-primary underline-offset-4 hover:underline"
-    },
-    size: {
-      default: "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-      xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-      sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-      lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-      icon: "size-8",
-      "icon-xs": "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
-      "icon-sm": "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
-      "icon-lg": "size-9"
-    }
-  },
-  defaultVariants: { variant: "default", size: "default" }
-});
-var rest_excludes65 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "class",
-  "variant",
-  "size",
-  "ref",
-  "href",
-  "type",
-  "disabled",
-  "children"
-]);
-var root50 = from_html(`<a><!></a>`);
-var root_15 = from_html(`<button><!></button>`);
-function Button($$anchor, $$props) {
-  push($$props, true);
-  "use strict";
-  let variant = prop($$props, "variant", 3, "default"), size3 = prop($$props, "size", 3, "default"), ref = prop($$props, "ref", 15, null), href = prop($$props, "href", 3, void 0), type = prop($$props, "type", 3, "button"), restProps = rest_props($$props, rest_excludes65);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var a2 = root50();
-      attribute_effect(
-        a2,
-        ($0) => ({
-          "data-slot": "button",
-          class: $0,
-          href: $$props.disabled ? void 0 : href(),
-          "aria-disabled": $$props.disabled,
-          role: $$props.disabled ? "link" : void 0,
-          tabindex: $$props.disabled ? -1 : void 0,
-          ...restProps
-        }),
-        [
-          () => cn(buttonVariants({ variant: variant(), size: size3() }), $$props.class)
-        ]
-      );
-      var node_1 = child(a2);
-      snippet(node_1, () => $$props.children ?? noop);
-      reset(a2);
-      bind_this(a2, ($$value) => ref($$value), () => ref());
-      append($$anchor2, a2);
-    };
-    var alternate = ($$anchor2) => {
-      var button = root_15();
-      attribute_effect(
-        button,
-        ($0) => ({
-          "data-slot": "button",
-          class: $0,
-          type: type(),
-          disabled: $$props.disabled,
-          ...restProps
-        }),
-        [
-          () => cn(buttonVariants({ variant: variant(), size: size3() }), $$props.class)
-        ]
-      );
-      var node_2 = child(button);
-      snippet(node_2, () => $$props.children ?? noop);
-      reset(button);
-      bind_this(button, ($$value) => ref($$value), () => ref());
-      append($$anchor2, button);
-    };
-    if_block(node, ($$render) => {
-      if (href()) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/input/input.svelte
-var rest_excludes66 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "value",
-  "type",
-  "files",
-  "class",
-  "data-slot"
-]);
-var root51 = from_html(`<input/>`);
-function Input($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), value = prop($$props, "value", 15), files = prop($$props, "files", 15), dataSlot = prop($$props, "data-slot", 3, "input"), restProps = rest_props($$props, rest_excludes66);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    var consequent = ($$anchor2) => {
-      var input = root51();
-      attribute_effect(
-        input,
-        ($0) => ({
-          "data-slot": dataSlot(),
-          class: $0,
-          type: "file",
-          ...restProps
-        }),
-        [
-          () => cn("dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium focus-visible:ring-3 aria-invalid:ring-3 md:text-sm file:text-foreground placeholder:text-muted-foreground w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50", $$props.class)
-        ],
-        void 0,
-        void 0,
-        void 0,
-        true
-      );
-      bind_this(input, ($$value) => ref($$value), () => ref());
-      bind_files(input, files);
-      bind_value(input, value);
-      append($$anchor2, input);
-    };
-    var alternate = ($$anchor2) => {
-      var input_1 = root51();
-      attribute_effect(
-        input_1,
-        ($0) => ({
-          "data-slot": dataSlot(),
-          class: $0,
-          type: $$props.type,
-          ...restProps
-        }),
-        [
-          () => cn("dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium focus-visible:ring-3 aria-invalid:ring-3 md:text-sm file:text-foreground placeholder:text-muted-foreground w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50", $$props.class)
-        ],
-        void 0,
-        void 0,
-        void 0,
-        true
-      );
-      bind_this(input_1, ($$value) => ref($$value), () => ref());
-      bind_value(input_1, value);
-      append($$anchor2, input_1);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.type === "file") $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  append($$anchor, fragment);
-  pop();
 }
 
 // src/ui/ScoreGauge.svelte
-var root52 = from_html(`<div class="relative shrink-0"><svg class="-rotate-90"><circle fill="none" stroke="currentColor" class="text-muted opacity-40"></circle><circle fill="none" stroke-linecap="round" style="transition: stroke-dashoffset 600ms ease"></circle></svg> <div class="absolute inset-0 flex flex-col items-center justify-center"><span class="text-2xl font-bold leading-none"> </span> <span class="text-[10px] uppercase tracking-wide text-muted-foreground">Score</span></div></div>`);
+var root2 = from_html(`<div class="ssa-gauge"><svg><circle fill="none" class="ssa-gauge-track"></circle><circle fill="none" stroke-linecap="round" style="transition: stroke-dashoffset 600ms ease"></circle></svg> <div class="ssa-gauge-center"><span class="ssa-gauge-value"> </span> <span class="ssa-gauge-label">Score</span></div></div>`);
 function ScoreGauge($$anchor, $$props) {
   "use strict";
-  let size3 = prop($$props, "size", 3, 96);
+  let size = prop($$props, "size", 3, 96);
   const stroke = 8;
-  const r2 = user_derived(() => (size3() - stroke) / 2);
-  const c = user_derived(() => 2 * Math.PI * get2(r2));
-  const offset3 = user_derived(() => get2(c) * (1 - Math.max(0, Math.min(100, $$props.value)) / 100));
+  const r = user_derived(() => (size() - stroke) / 2);
+  const c = user_derived(() => 2 * Math.PI * get2(r));
+  const offset = user_derived(() => get2(c) * (1 - Math.max(0, Math.min(100, $$props.value)) / 100));
   const color = user_derived(() => $$props.value >= 80 ? "#10b981" : $$props.value >= 50 ? "#f59e0b" : "#ef4444");
-  var div = root52();
+  var div = root2();
   var svg = child(div);
   var circle = child(svg);
   set_attribute2(circle, "stroke-width", stroke);
@@ -39851,19 +23630,19 @@ function ScoreGauge($$anchor, $$props) {
   reset(div);
   template_effect(
     ($0) => {
-      set_style(div, `width:${size3() ?? ""}px;height:${size3() ?? ""}px`);
-      set_attribute2(svg, "width", size3());
-      set_attribute2(svg, "height", size3());
-      set_attribute2(svg, "viewBox", `0 0 ${size3() ?? ""} ${size3() ?? ""}`);
-      set_attribute2(circle, "cx", size3() / 2);
-      set_attribute2(circle, "cy", size3() / 2);
-      set_attribute2(circle, "r", get2(r2));
-      set_attribute2(circle_1, "cx", size3() / 2);
-      set_attribute2(circle_1, "cy", size3() / 2);
-      set_attribute2(circle_1, "r", get2(r2));
+      set_style(div, `width:${size() ?? ""}px;height:${size() ?? ""}px`);
+      set_attribute2(svg, "width", size());
+      set_attribute2(svg, "height", size());
+      set_attribute2(svg, "viewBox", `0 0 ${size() ?? ""} ${size() ?? ""}`);
+      set_attribute2(circle, "cx", size() / 2);
+      set_attribute2(circle, "cy", size() / 2);
+      set_attribute2(circle, "r", get2(r));
+      set_attribute2(circle_1, "cx", size() / 2);
+      set_attribute2(circle_1, "cy", size() / 2);
+      set_attribute2(circle_1, "r", get2(r));
       set_attribute2(circle_1, "stroke", get2(color));
       set_attribute2(circle_1, "stroke-dasharray", get2(c));
-      set_attribute2(circle_1, "stroke-dashoffset", get2(offset3));
+      set_attribute2(circle_1, "stroke-dashoffset", get2(offset));
       set_text(text4, $0);
     },
     [() => Math.round($$props.value)]
@@ -39871,53 +23650,30 @@ function ScoreGauge($$anchor, $$props) {
   append($$anchor, div);
 }
 
-// node_modules/@lucide/svelte/dist/icons/file-text.svelte
-var rest_excludes67 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
-function File_text($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes67);
-  const iconNode = [
-    [
-      "path",
-      {
-        "d": "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
-      }
-    ],
-    ["path", { "d": "M14 2v5a1 1 0 0 0 1 1h5" }],
-    ["path", { "d": "M10 9H8" }],
-    ["path", { "d": "M16 13H8" }],
-    ["path", { "d": "M16 17H8" }]
-  ];
-  Icon($$anchor, spread_props({ name: "file-text" }, () => props, {
-    get iconNode() {
-      return iconNode;
-    }
-  }));
-}
-
 // src/ui/ReportView.svelte
-var root53 = from_html(`<!> Open note`, 1);
-var root_16 = from_html(`<div class="mt-1"><!></div>`);
-var root_2 = from_html(`<!> <div class="flex min-w-48 flex-col gap-1"><div class="flex items-center gap-2"><span class="text-lg font-semibold"> </span> <!></div> <span class="truncate text-sm text-muted-foreground"> </span> <span class="text-sm text-muted-foreground"> </span> <!></div> <div class="ml-auto flex gap-6"><div class="text-center"><div class="text-2xl font-bold text-emerald-500"> </div> <div class="text-xs text-muted-foreground"> </div></div> <div class="text-center"><div class="text-2xl font-bold text-amber-500"> </div> <div class="text-xs text-muted-foreground"> </div></div> <div class="text-center"><div class="text-2xl font-bold text-red-500"> </div> <div class="text-xs text-muted-foreground"> </div></div></div>`, 1);
-var root_3 = from_html(`<!> <!>`, 1);
-var root_4 = from_html(`<!> <!> <!>`, 1);
-var root_5 = from_html(`<div class="flex items-center gap-3"><span class="w-36 shrink-0 truncate text-sm"> </span> <span class="h-2 flex-1 overflow-hidden rounded-full bg-muted"><span class="block h-full rounded-full bg-primary"></span></span> <span class="w-8 shrink-0 text-right text-sm font-medium"> </span></div>`);
-var root_6 = from_html(`<p class="py-4 text-center text-sm text-muted-foreground">No issues match these filters.</p>`);
-var root_7 = from_html(`<span class="flex min-w-0 flex-1 items-center gap-2 pr-2 text-left"><span></span> <span class="truncate font-medium"> </span> <!> <!> <!></span>`);
-var root_8 = from_html(`<span class="truncate text-sm"> </span>`);
-var root_9 = from_html(`<div class="flex flex-col gap-3 pl-4"><p class="text-sm text-muted-foreground"> </p> <div class="flex flex-col gap-1"><span class="text-xs font-medium text-muted-foreground">Affected pages</span> <!></div></div>`);
-var root_10 = from_html(`<div class="flex flex-wrap items-center gap-2"><!> <!> <!></div> <!>`, 1);
-var root_11 = from_html(`<span class="flex w-full items-center gap-2 pr-2"><!> <span class="truncate"> </span> <span class="ml-auto text-muted-foreground"> </span></span>`);
-var root_122 = from_html(`<p class="text-muted-foreground">No issues found on this page.</p>`);
-var root_132 = from_html(`<div class="flex flex-col gap-4"><!> <!></div>`);
+var root3 = from_html(`<div class="ssa-mt"><button class="ssa-btn ssa-btn-outline ssa-btn-sm"><span></span> Open note</button></div>`);
+var root_1 = from_html(`<div class="ssa-cat-row"><span class="ssa-cat-name"> </span> <span class="ssa-cat-bar"><span class="ssa-cat-bar-fill"></span></span> <span class="ssa-cat-score"> </span></div>`);
+var root_2 = from_html(`<option> </option>`);
+var root_3 = from_html(`<p class="ssa-no-results">No issues match these filters.</p>`);
+var root_4 = from_html(`<span class="ssa-page-url"> </span>`);
+var root_5 = from_html(`<details class="ssa-acc-item"><summary class="ssa-acc-trigger"><span class="ssa-issue-head"><span></span> <span class="ssa-issue-title"> </span> <span> </span> <span class="ssa-badge ssa-badge-outline"> </span> <span class="ssa-badge ssa-badge-secondary ssa-push"> </span></span></summary> <div class="ssa-acc-content"><div class="ssa-issue-body"><p class="ssa-issue-msg"> </p> <div class="ssa-pages"><span class="ssa-pages-label">Affected pages</span> <!></div></div></div></details>`);
+var root_6 = from_html(`<div class="ssa-accordion"></div>`);
+var root_7 = from_html(`<div class="ssa-tabpanel"><div class="ssa-card"><div class="ssa-card-header"><div class="ssa-card-title">Category scores</div> <div class="ssa-card-action"><div class="ssa-toggles"><button>Worst</button> <button>Best</button> <button>A\u2013Z</button></div></div></div> <div class="ssa-cats"></div></div> <div class="ssa-card"><div class="ssa-card-header"><div><div class="ssa-card-title">Issues</div> <div class="ssa-card-desc"> </div></div></div> <div class="ssa-card-content"><div class="ssa-filters"><div class="ssa-toggles"><button> </button> <button> </button> <button> </button></div> <select class="ssa-select"><option>All categories</option><!></select> <input class="ssa-input" placeholder="Filter\u2026"/></div> <!></div></div></div>`);
+var root_8 = from_html(`<p class="ssa-cell-muted">No issues found on this page.</p>`);
+var root_9 = from_html(`<tr><td><span> </span></td><td class="ssa-cell-strong"> </td><td class="ssa-cell-muted"> </td></tr>`);
+var root_10 = from_html(`<table class="ssa-table"><thead><tr><th>Severity</th><th>Issue</th><th>Details</th></tr></thead><tbody></tbody></table>`);
+var root_11 = from_html(`<details class="ssa-acc-item" name="ssa-pages"><summary class="ssa-acc-trigger"><span class="ssa-page-row"><span> </span> <span class="ssa-page-name"> </span> <span class="ssa-page-count"> </span></span></summary> <div class="ssa-acc-content"><!></div></details>`);
+var root_12 = from_html(`<div class="ssa-report"><div class="ssa-card"><div class="ssa-overview"><!> <div class="ssa-overview-meta"><div class="ssa-overview-host"><span class="ssa-overview-host-name"> </span> <span> </span></div> <span class="ssa-overview-url"> </span> <span class="ssa-overview-sub"> </span> <!></div> <div class="ssa-stats"><div class="ssa-stat"><div class="ssa-stat-num ssa-stat-pass"> </div> <div class="ssa-stat-label"> </div></div> <div class="ssa-stat"><div class="ssa-stat-num ssa-stat-warn"> </div> <div class="ssa-stat-label"> </div></div> <div class="ssa-stat"><div class="ssa-stat-num ssa-stat-fail"> </div> <div class="ssa-stat-label"> </div></div></div></div></div> <div><div class="ssa-tablist"><button>Categories &amp; issues</button> <button>Pages</button></div> <!></div></div>`);
 function ReportView($$anchor, $$props) {
   push($$props, true);
   const totals = user_derived(() => statusTotals($$props.report));
   const issues = user_derived(() => buildIssues($$props.report));
   const categoryNames = user_derived(() => $$props.report.categories.map((c) => c.category));
+  let tab = state("categories");
   let sort = state("worst");
-  const sortedCategories = user_derived(() => [...$$props.report.categories].sort((a2, b) => {
-    if (get2(sort) === "az") return a2.category.localeCompare(b.category);
-    return get2(sort) === "worst" ? a2.score - b.score : b.score - a2.score;
+  const sortedCategories = user_derived(() => [...$$props.report.categories].sort((a, b) => {
+    if (get2(sort) === "az") return a.category.localeCompare(b.category);
+    return get2(sort) === "worst" ? a.score - b.score : b.score - a.score;
   }));
   let sevFilter = state(proxy(["fail", "warn", "info"]));
   let catFilter = state("all");
@@ -39929,6 +23685,13 @@ function ReportView($$anchor, $$props) {
     if (q && !`${i.title} ${i.message} ${i.ruleId}`.toLowerCase().includes(q)) return false;
     return true;
   }));
+  function toggleSev(s) {
+    set(
+      sevFilter,
+      get2(sevFilter).includes(s) ? get2(sevFilter).filter((x) => x !== s) : [...get2(sevFilter), s],
+      true
+    );
+  }
   function statusLabel(status) {
     return status === "fail" ? "Error" : status === "warn" ? "Warning" : "Info";
   }
@@ -39941,1178 +23704,397 @@ function ReportView($$anchor, $$props) {
   function openNote() {
     if (!$$props.path) return;
     const file = $$props.plugin.app.vault.getAbstractFileByPath($$props.path);
-    if (file instanceof import_obsidian4.TFile) openInObsidian($$props.plugin.app, file);
+    if (file instanceof import_obsidian5.TFile) openInObsidian($$props.plugin.app, file);
   }
-  var div = root_132();
-  var node = child(div);
-  component(node, () => Card, ($$anchor2, Card_Root) => {
-    Card_Root($$anchor2, {
-      children: ($$anchor3, $$slotProps) => {
-        var fragment = comment();
-        var node_1 = first_child(fragment);
-        component(node_1, () => Card_content, ($$anchor4, Card_Content) => {
-          Card_Content($$anchor4, {
-            class: "flex flex-wrap items-center gap-6 pt-6",
-            children: ($$anchor5, $$slotProps2) => {
-              var fragment_1 = root_2();
-              var node_2 = first_child(fragment_1);
-              ScoreGauge(node_2, {
-                get value() {
-                  return $$props.report.score;
-                }
-              });
-              var div_1 = sibling(node_2, 2);
-              var div_2 = child(div_1);
-              var span = child(div_2);
-              var text4 = child(span, true);
-              reset(span);
-              var node_3 = sibling(span, 2);
-              {
-                let $0 = user_derived(() => gradeVariant($$props.report.score));
-                Badge(node_3, {
-                  get variant() {
-                    return get2($0);
-                  },
-                  children: ($$anchor6, $$slotProps3) => {
-                    next();
-                    var text_1 = text();
-                    template_effect(($02) => set_text(text_1, `Grade ${$02 ?? ""}`), [() => grade($$props.report.score)]);
-                    append($$anchor6, text_1);
-                  },
-                  $$slots: { default: true }
-                });
-              }
-              reset(div_2);
-              var span_1 = sibling(div_2, 2);
-              var text_2 = child(span_1, true);
-              reset(span_1);
-              var span_2 = sibling(span_1, 2);
-              var text_3 = child(span_2);
-              reset(span_2);
-              var node_4 = sibling(span_2, 2);
-              {
-                var consequent = ($$anchor6) => {
-                  var div_3 = root_16();
-                  var node_5 = child(div_3);
-                  Button(node_5, {
-                    variant: "outline",
-                    size: "sm",
-                    onclick: openNote,
-                    children: ($$anchor7, $$slotProps3) => {
-                      var fragment_3 = root53();
-                      var node_6 = first_child(fragment_3);
-                      File_text(node_6, { "data-icon": "inline-start" });
-                      next();
-                      append($$anchor7, fragment_3);
-                    },
-                    $$slots: { default: true }
-                  });
-                  reset(div_3);
-                  append($$anchor6, div_3);
-                };
-                if_block(node_4, ($$render) => {
-                  if ($$props.path) $$render(consequent);
-                });
-              }
-              reset(div_1);
-              var div_4 = sibling(div_1, 2);
-              var div_5 = child(div_4);
-              var div_6 = child(div_5);
-              var text_4 = child(div_6, true);
-              reset(div_6);
-              var div_7 = sibling(div_6, 2);
-              var text_5 = child(div_7);
-              reset(div_7);
-              reset(div_5);
-              var div_8 = sibling(div_5, 2);
-              var div_9 = child(div_8);
-              var text_6 = child(div_9, true);
-              reset(div_9);
-              var div_10 = sibling(div_9, 2);
-              var text_7 = child(div_10);
-              reset(div_10);
-              reset(div_8);
-              var div_11 = sibling(div_8, 2);
-              var div_12 = child(div_11);
-              var text_8 = child(div_12, true);
-              reset(div_12);
-              var div_13 = sibling(div_12, 2);
-              var text_9 = child(div_13);
-              reset(div_13);
-              reset(div_11);
-              reset(div_4);
+  var div = root_12();
+  var div_1 = child(div);
+  var div_2 = child(div_1);
+  var node = child(div_2);
+  ScoreGauge(node, {
+    get value() {
+      return $$props.report.score;
+    }
+  });
+  var div_3 = sibling(node, 2);
+  var div_4 = child(div_3);
+  var span = child(div_4);
+  var text4 = child(span, true);
+  reset(span);
+  var span_1 = sibling(span, 2);
+  var text_1 = child(span_1);
+  reset(span_1);
+  reset(div_4);
+  var span_2 = sibling(div_4, 2);
+  var text_2 = child(span_2, true);
+  reset(span_2);
+  var span_3 = sibling(span_2, 2);
+  var text_3 = child(span_3);
+  reset(span_3);
+  var node_1 = sibling(span_3, 2);
+  {
+    var consequent = ($$anchor2) => {
+      var div_5 = root3();
+      var button = child(div_5);
+      var span_4 = child(button);
+      action(span_4, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "file-text");
+      next();
+      reset(button);
+      reset(div_5);
+      delegated("click", button, openNote);
+      append($$anchor2, div_5);
+    };
+    if_block(node_1, ($$render) => {
+      if ($$props.path) $$render(consequent);
+    });
+  }
+  reset(div_3);
+  var div_6 = sibling(div_3, 2);
+  var div_7 = child(div_6);
+  var div_8 = child(div_7);
+  var text_4 = child(div_8, true);
+  reset(div_8);
+  var div_9 = sibling(div_8, 2);
+  var text_5 = child(div_9);
+  reset(div_9);
+  reset(div_7);
+  var div_10 = sibling(div_7, 2);
+  var div_11 = child(div_10);
+  var text_6 = child(div_11, true);
+  reset(div_11);
+  var div_12 = sibling(div_11, 2);
+  var text_7 = child(div_12);
+  reset(div_12);
+  reset(div_10);
+  var div_13 = sibling(div_10, 2);
+  var div_14 = child(div_13);
+  var text_8 = child(div_14, true);
+  reset(div_14);
+  var div_15 = sibling(div_14, 2);
+  var text_9 = child(div_15);
+  reset(div_15);
+  reset(div_13);
+  reset(div_6);
+  reset(div_2);
+  reset(div_1);
+  var div_16 = sibling(div_1, 2);
+  var div_17 = child(div_16);
+  var button_1 = child(div_17);
+  let classes;
+  var button_2 = sibling(button_1, 2);
+  let classes_1;
+  reset(div_17);
+  var node_2 = sibling(div_17, 2);
+  {
+    var consequent_2 = ($$anchor2) => {
+      var div_18 = root_7();
+      var div_19 = child(div_18);
+      var div_20 = child(div_19);
+      var div_21 = sibling(child(div_20), 2);
+      var div_22 = child(div_21);
+      var button_3 = child(div_22);
+      let classes_2;
+      var button_4 = sibling(button_3, 2);
+      let classes_3;
+      var button_5 = sibling(button_4, 2);
+      let classes_4;
+      reset(div_22);
+      reset(div_21);
+      reset(div_20);
+      var div_23 = sibling(div_20, 2);
+      each(div_23, 21, () => get2(sortedCategories), (cat) => cat.category, ($$anchor3, cat) => {
+        var div_24 = root_1();
+        var span_5 = child(div_24);
+        var text_10 = child(span_5, true);
+        reset(span_5);
+        var span_6 = sibling(span_5, 2);
+        var span_7 = child(span_6);
+        reset(span_6);
+        var span_8 = sibling(span_6, 2);
+        var text_11 = child(span_8, true);
+        reset(span_8);
+        reset(div_24);
+        template_effect(() => {
+          set_text(text_10, get2(cat).category);
+          set_style(span_7, `width:${get2(cat).score ?? ""}%`);
+          set_text(text_11, get2(cat).score);
+        });
+        append($$anchor3, div_24);
+      });
+      reset(div_23);
+      reset(div_19);
+      var div_25 = sibling(div_19, 2);
+      var div_26 = child(div_25);
+      var div_27 = child(div_26);
+      var div_28 = sibling(child(div_27), 2);
+      var text_12 = child(div_28);
+      reset(div_28);
+      reset(div_27);
+      reset(div_26);
+      var div_29 = sibling(div_26, 2);
+      var div_30 = child(div_29);
+      var div_31 = child(div_30);
+      var button_6 = child(div_31);
+      let classes_5;
+      var text_13 = child(button_6);
+      reset(button_6);
+      var button_7 = sibling(button_6, 2);
+      let classes_6;
+      var text_14 = child(button_7);
+      reset(button_7);
+      var button_8 = sibling(button_7, 2);
+      let classes_7;
+      var text_15 = child(button_8);
+      reset(button_8);
+      reset(div_31);
+      var select2 = sibling(div_31, 2);
+      var option = child(select2);
+      option.value = option.__value = "all";
+      var node_3 = sibling(option);
+      each(node_3, 16, () => get2(categoryNames), (c) => c, ($$anchor3, c) => {
+        var option_1 = root_2();
+        var text_16 = child(option_1, true);
+        reset(option_1);
+        var option_1_value = {};
+        template_effect(() => {
+          set_text(text_16, c);
+          if (option_1_value !== (option_1_value = c)) {
+            option_1.value = (option_1.__value = c) ?? "";
+          }
+        });
+        append($$anchor3, option_1);
+      });
+      reset(select2);
+      var input = sibling(select2, 2);
+      remove_input_defaults(input);
+      reset(div_30);
+      var node_4 = sibling(div_30, 2);
+      {
+        var consequent_1 = ($$anchor3) => {
+          var p_1 = root_3();
+          append($$anchor3, p_1);
+        };
+        var alternate = ($$anchor3) => {
+          var div_32 = root_6();
+          each(div_32, 21, () => get2(filteredIssues), (issue) => issue.ruleId, ($$anchor4, issue) => {
+            var details = root_5();
+            var summary = child(details);
+            var span_9 = child(summary);
+            var span_10 = child(span_9);
+            var span_11 = sibling(span_10, 2);
+            var text_17 = child(span_11, true);
+            reset(span_11);
+            var span_12 = sibling(span_11, 2);
+            var text_18 = child(span_12, true);
+            reset(span_12);
+            var span_13 = sibling(span_12, 2);
+            var text_19 = child(span_13, true);
+            reset(span_13);
+            var span_14 = sibling(span_13, 2);
+            var text_20 = child(span_14);
+            reset(span_14);
+            reset(span_9);
+            reset(summary);
+            var div_33 = sibling(summary, 2);
+            var div_34 = child(div_33);
+            var p_2 = child(div_34);
+            var text_21 = child(p_2, true);
+            reset(p_2);
+            var div_35 = sibling(p_2, 2);
+            var node_5 = sibling(child(div_35), 2);
+            each(node_5, 16, () => get2(issue).pages, (p) => p, ($$anchor5, p) => {
+              var span_15 = root_4();
+              var text_22 = child(span_15, true);
+              reset(span_15);
+              template_effect(() => set_text(text_22, p));
+              append($$anchor5, span_15);
+            });
+            reset(div_35);
+            reset(div_34);
+            reset(div_33);
+            reset(details);
+            template_effect(
+              ($0, $1, $2) => {
+                set_class(span_10, 1, `ssa-dot ${$0 ?? ""}`);
+                set_text(text_17, get2(issue).title);
+                set_class(span_12, 1, `ssa-badge ssa-badge-${$1 ?? ""}`);
+                set_text(text_18, $2);
+                set_text(text_19, get2(issue).category);
+                set_text(text_20, `${get2(issue).pages.length ?? ""} page${get2(issue).pages.length === 1 ? "" : "s"}`);
+                set_text(text_21, get2(issue).message);
+              },
+              [
+                () => statusDot(get2(issue).status),
+                () => statusBadge(get2(issue).status),
+                () => statusLabel(get2(issue).status)
+              ]
+            );
+            append($$anchor4, details);
+          });
+          reset(div_32);
+          append($$anchor3, div_32);
+        };
+        if_block(node_4, ($$render) => {
+          if (get2(filteredIssues).length === 0) $$render(consequent_1);
+          else $$render(alternate, -1);
+        });
+      }
+      reset(div_29);
+      reset(div_25);
+      reset(div_18);
+      template_effect(
+        ($0, $1, $2) => {
+          classes_2 = set_class(button_3, 1, "ssa-toggle", null, classes_2, { "is-active": get2(sort) === "worst" });
+          classes_3 = set_class(button_4, 1, "ssa-toggle", null, classes_3, { "is-active": get2(sort) === "best" });
+          classes_4 = set_class(button_5, 1, "ssa-toggle", null, classes_4, { "is-active": get2(sort) === "az" });
+          set_text(text_12, `${get2(issues).length ?? ""} rules flagged across ${$$props.report.pagesScanned ?? ""} pages`);
+          classes_5 = set_class(button_6, 1, "ssa-toggle", null, classes_5, $0);
+          set_text(text_13, `Errors ${get2(totals).fail ?? ""}`);
+          classes_6 = set_class(button_7, 1, "ssa-toggle", null, classes_6, $1);
+          set_text(text_14, `Warnings ${get2(totals).warn ?? ""}`);
+          classes_7 = set_class(button_8, 1, "ssa-toggle", null, classes_7, $2);
+          set_text(text_15, `Info ${get2(totals).info ?? ""}`);
+        },
+        [
+          () => ({ "is-active": get2(sevFilter).includes("fail") }),
+          () => ({ "is-active": get2(sevFilter).includes("warn") }),
+          () => ({ "is-active": get2(sevFilter).includes("info") })
+        ]
+      );
+      delegated("click", button_3, () => set(sort, "worst"));
+      delegated("click", button_4, () => set(sort, "best"));
+      delegated("click", button_5, () => set(sort, "az"));
+      delegated("click", button_6, () => toggleSev("fail"));
+      delegated("click", button_7, () => toggleSev("warn"));
+      delegated("click", button_8, () => toggleSev("info"));
+      bind_select_value(select2, () => get2(catFilter), ($$value) => set(catFilter, $$value));
+      bind_value(input, () => get2(query), ($$value) => set(query, $$value));
+      append($$anchor2, div_18);
+    };
+    var alternate_2 = ($$anchor2) => {
+      var div_36 = root_6();
+      each(div_36, 23, () => $$props.report.pages, (page) => page.url, ($$anchor3, page) => {
+        const probs = user_derived(() => pageIssues(get2(page).findings));
+        var details_1 = root_11();
+        var summary_1 = child(details_1);
+        var span_16 = child(summary_1);
+        var span_17 = child(span_16);
+        var text_23 = child(span_17, true);
+        reset(span_17);
+        var span_18 = sibling(span_17, 2);
+        var text_24 = child(span_18, true);
+        reset(span_18);
+        var span_19 = sibling(span_18, 2);
+        var text_25 = child(span_19);
+        reset(span_19);
+        reset(span_16);
+        reset(summary_1);
+        var div_37 = sibling(summary_1, 2);
+        var node_6 = child(div_37);
+        {
+          var consequent_3 = ($$anchor4) => {
+            var p_3 = root_8();
+            append($$anchor4, p_3);
+          };
+          var alternate_1 = ($$anchor4) => {
+            var table = root_10();
+            var tbody = sibling(child(table));
+            each(tbody, 23, () => get2(probs), (f, fi) => `${f.ruleId}-${fi}`, ($$anchor5, f) => {
+              var tr = root_9();
+              var td = child(tr);
+              var span_20 = child(td);
+              var text_26 = child(span_20, true);
+              reset(span_20);
+              reset(td);
+              var td_1 = sibling(td);
+              var text_27 = child(td_1, true);
+              reset(td_1);
+              var td_2 = sibling(td_1);
+              var text_28 = child(td_2, true);
+              reset(td_2);
+              reset(tr);
               template_effect(
-                ($0, $1, $2, $3, $4) => {
-                  set_text(text4, $0);
-                  set_text(text_2, $$props.report.startUrl);
-                  set_text(text_3, `${$1 ?? ""} \xB7 ${$$props.report.pagesScanned ?? ""} pages crawled`);
-                  set_text(text_4, get2(totals).pass);
-                  set_text(text_5, `Passed \xB7 ${$2 ?? ""}%`);
-                  set_text(text_6, get2(totals).warn);
-                  set_text(text_7, `Warnings \xB7 ${$3 ?? ""}%`);
-                  set_text(text_8, get2(totals).fail);
-                  set_text(text_9, `Failed \xB7 ${$4 ?? ""}%`);
+                ($0, $1) => {
+                  set_class(span_20, 1, `ssa-badge ssa-badge-${$0 ?? ""}`);
+                  set_text(text_26, $1);
+                  set_text(text_27, get2(f).title);
+                  set_text(text_28, get2(f).message);
                 },
                 [
-                  () => hostOf($$props.report.startUrl),
-                  () => formatDate($$props.report.generatedAt),
-                  () => pct(get2(totals).pass, get2(totals).total),
-                  () => pct(get2(totals).warn, get2(totals).total),
-                  () => pct(get2(totals).fail, get2(totals).total)
+                  () => statusBadge(get2(f).status),
+                  () => statusLabel(get2(f).status)
                 ]
               );
-              append($$anchor5, fragment_1);
-            },
-            $$slots: { default: true }
+              append($$anchor5, tr);
+            });
+            reset(tbody);
+            reset(table);
+            append($$anchor4, table);
+          };
+          if_block(node_6, ($$render) => {
+            if (get2(probs).length === 0) $$render(consequent_3);
+            else $$render(alternate_1, -1);
           });
-        });
-        append($$anchor3, fragment);
-      },
-      $$slots: { default: true }
+        }
+        reset(div_37);
+        reset(details_1);
+        template_effect(
+          ($0) => {
+            set_class(span_17, 1, `ssa-badge ssa-badge-${$0 ?? ""}`);
+            set_text(text_23, get2(page).score);
+            set_text(text_24, get2(page).url);
+            set_text(text_25, `${get2(probs).length ?? ""} issue${get2(probs).length === 1 ? "" : "s"}`);
+          },
+          [() => scoreVariant(get2(page).score)]
+        );
+        append($$anchor3, details_1);
+      });
+      reset(div_36);
+      append($$anchor2, div_36);
+    };
+    if_block(node_2, ($$render) => {
+      if (get2(tab) === "categories") $$render(consequent_2);
+      else $$render(alternate_2, -1);
     });
-  });
-  var node_7 = sibling(node, 2);
-  component(node_7, () => Tabs2, ($$anchor2, Tabs_Root) => {
-    Tabs_Root($$anchor2, {
-      value: "categories",
-      children: ($$anchor3, $$slotProps) => {
-        var fragment_4 = root_4();
-        var node_8 = first_child(fragment_4);
-        component(node_8, () => Tabs_list2, ($$anchor4, Tabs_List) => {
-          Tabs_List($$anchor4, {
-            children: ($$anchor5, $$slotProps2) => {
-              var fragment_5 = root_3();
-              var node_9 = first_child(fragment_5);
-              component(node_9, () => Tabs_trigger2, ($$anchor6, Tabs_Trigger) => {
-                Tabs_Trigger($$anchor6, {
-                  value: "categories",
-                  children: ($$anchor7, $$slotProps3) => {
-                    next();
-                    var text_10 = text("Categories & issues");
-                    append($$anchor7, text_10);
-                  },
-                  $$slots: { default: true }
-                });
-              });
-              var node_10 = sibling(node_9, 2);
-              component(node_10, () => Tabs_trigger2, ($$anchor6, Tabs_Trigger_1) => {
-                Tabs_Trigger_1($$anchor6, {
-                  value: "pages",
-                  children: ($$anchor7, $$slotProps3) => {
-                    next();
-                    var text_11 = text("Pages");
-                    append($$anchor7, text_11);
-                  },
-                  $$slots: { default: true }
-                });
-              });
-              append($$anchor5, fragment_5);
-            },
-            $$slots: { default: true }
-          });
-        });
-        var node_11 = sibling(node_8, 2);
-        component(node_11, () => Tabs_content2, ($$anchor4, Tabs_Content) => {
-          Tabs_Content($$anchor4, {
-            value: "categories",
-            class: "flex flex-col gap-4",
-            children: ($$anchor5, $$slotProps2) => {
-              var fragment_6 = root_3();
-              var node_12 = first_child(fragment_6);
-              component(node_12, () => Card, ($$anchor6, Card_Root_1) => {
-                Card_Root_1($$anchor6, {
-                  children: ($$anchor7, $$slotProps3) => {
-                    var fragment_7 = root_3();
-                    var node_13 = first_child(fragment_7);
-                    component(node_13, () => Card_header, ($$anchor8, Card_Header) => {
-                      Card_Header($$anchor8, {
-                        children: ($$anchor9, $$slotProps4) => {
-                          var fragment_8 = root_3();
-                          var node_14 = first_child(fragment_8);
-                          component(node_14, () => Card_title, ($$anchor10, Card_Title) => {
-                            Card_Title($$anchor10, {
-                              children: ($$anchor11, $$slotProps5) => {
-                                next();
-                                var text_12 = text("Category scores");
-                                append($$anchor11, text_12);
-                              },
-                              $$slots: { default: true }
-                            });
-                          });
-                          var node_15 = sibling(node_14, 2);
-                          component(node_15, () => Card_action, ($$anchor10, Card_Action) => {
-                            Card_Action($$anchor10, {
-                              children: ($$anchor11, $$slotProps5) => {
-                                var fragment_9 = comment();
-                                var node_16 = first_child(fragment_9);
-                                component(node_16, () => Toggle_group2, ($$anchor12, ToggleGroup_Root) => {
-                                  ToggleGroup_Root($$anchor12, {
-                                    type: "single",
-                                    variant: "outline",
-                                    size: "sm",
-                                    get value() {
-                                      return get2(sort);
-                                    },
-                                    set value($$value) {
-                                      set(sort, $$value, true);
-                                    },
-                                    children: ($$anchor13, $$slotProps6) => {
-                                      var fragment_10 = root_4();
-                                      var node_17 = first_child(fragment_10);
-                                      component(node_17, () => Toggle_group_item2, ($$anchor14, ToggleGroup_Item) => {
-                                        ToggleGroup_Item($$anchor14, {
-                                          value: "worst",
-                                          children: ($$anchor15, $$slotProps7) => {
-                                            next();
-                                            var text_13 = text("Worst");
-                                            append($$anchor15, text_13);
-                                          },
-                                          $$slots: { default: true }
-                                        });
-                                      });
-                                      var node_18 = sibling(node_17, 2);
-                                      component(node_18, () => Toggle_group_item2, ($$anchor14, ToggleGroup_Item_1) => {
-                                        ToggleGroup_Item_1($$anchor14, {
-                                          value: "best",
-                                          children: ($$anchor15, $$slotProps7) => {
-                                            next();
-                                            var text_14 = text("Best");
-                                            append($$anchor15, text_14);
-                                          },
-                                          $$slots: { default: true }
-                                        });
-                                      });
-                                      var node_19 = sibling(node_18, 2);
-                                      component(node_19, () => Toggle_group_item2, ($$anchor14, ToggleGroup_Item_2) => {
-                                        ToggleGroup_Item_2($$anchor14, {
-                                          value: "az",
-                                          children: ($$anchor15, $$slotProps7) => {
-                                            next();
-                                            var text_15 = text("A\u2013Z");
-                                            append($$anchor15, text_15);
-                                          },
-                                          $$slots: { default: true }
-                                        });
-                                      });
-                                      append($$anchor13, fragment_10);
-                                    },
-                                    $$slots: { default: true }
-                                  });
-                                });
-                                append($$anchor11, fragment_9);
-                              },
-                              $$slots: { default: true }
-                            });
-                          });
-                          append($$anchor9, fragment_8);
-                        },
-                        $$slots: { default: true }
-                      });
-                    });
-                    var node_20 = sibling(node_13, 2);
-                    component(node_20, () => Card_content, ($$anchor8, Card_Content_1) => {
-                      Card_Content_1($$anchor8, {
-                        class: "grid gap-x-8 gap-y-3 sm:grid-cols-2",
-                        children: ($$anchor9, $$slotProps4) => {
-                          var fragment_11 = comment();
-                          var node_21 = first_child(fragment_11);
-                          each(node_21, 17, () => get2(sortedCategories), (cat) => cat.category, ($$anchor10, cat) => {
-                            var div_14 = root_5();
-                            var span_3 = child(div_14);
-                            var text_16 = child(span_3, true);
-                            reset(span_3);
-                            var span_4 = sibling(span_3, 2);
-                            var span_5 = child(span_4);
-                            reset(span_4);
-                            var span_6 = sibling(span_4, 2);
-                            var text_17 = child(span_6, true);
-                            reset(span_6);
-                            reset(div_14);
-                            template_effect(() => {
-                              set_text(text_16, get2(cat).category);
-                              set_style(span_5, `width:${get2(cat).score ?? ""}%`);
-                              set_text(text_17, get2(cat).score);
-                            });
-                            append($$anchor10, div_14);
-                          });
-                          append($$anchor9, fragment_11);
-                        },
-                        $$slots: { default: true }
-                      });
-                    });
-                    append($$anchor7, fragment_7);
-                  },
-                  $$slots: { default: true }
-                });
-              });
-              var node_22 = sibling(node_12, 2);
-              component(node_22, () => Card, ($$anchor6, Card_Root_2) => {
-                Card_Root_2($$anchor6, {
-                  children: ($$anchor7, $$slotProps3) => {
-                    var fragment_12 = root_3();
-                    var node_23 = first_child(fragment_12);
-                    component(node_23, () => Card_header, ($$anchor8, Card_Header_1) => {
-                      Card_Header_1($$anchor8, {
-                        children: ($$anchor9, $$slotProps4) => {
-                          var fragment_13 = root_3();
-                          var node_24 = first_child(fragment_13);
-                          component(node_24, () => Card_title, ($$anchor10, Card_Title_1) => {
-                            Card_Title_1($$anchor10, {
-                              children: ($$anchor11, $$slotProps5) => {
-                                next();
-                                var text_18 = text("Issues");
-                                append($$anchor11, text_18);
-                              },
-                              $$slots: { default: true }
-                            });
-                          });
-                          var node_25 = sibling(node_24, 2);
-                          component(node_25, () => Card_description, ($$anchor10, Card_Description) => {
-                            Card_Description($$anchor10, {
-                              children: ($$anchor11, $$slotProps5) => {
-                                next();
-                                var text_19 = text();
-                                template_effect(() => set_text(text_19, `${get2(issues).length ?? ""} rules flagged across ${$$props.report.pagesScanned ?? ""} pages`));
-                                append($$anchor11, text_19);
-                              },
-                              $$slots: { default: true }
-                            });
-                          });
-                          append($$anchor9, fragment_13);
-                        },
-                        $$slots: { default: true }
-                      });
-                    });
-                    var node_26 = sibling(node_23, 2);
-                    component(node_26, () => Card_content, ($$anchor8, Card_Content_2) => {
-                      Card_Content_2($$anchor8, {
-                        class: "flex flex-col gap-3",
-                        children: ($$anchor9, $$slotProps4) => {
-                          var fragment_15 = root_10();
-                          var div_15 = first_child(fragment_15);
-                          var node_27 = child(div_15);
-                          component(node_27, () => Toggle_group2, ($$anchor10, ToggleGroup_Root_1) => {
-                            ToggleGroup_Root_1($$anchor10, {
-                              type: "multiple",
-                              variant: "outline",
-                              size: "sm",
-                              get value() {
-                                return get2(sevFilter);
-                              },
-                              set value($$value) {
-                                set(sevFilter, $$value, true);
-                              },
-                              children: ($$anchor11, $$slotProps5) => {
-                                var fragment_16 = root_4();
-                                var node_28 = first_child(fragment_16);
-                                component(node_28, () => Toggle_group_item2, ($$anchor12, ToggleGroup_Item_3) => {
-                                  ToggleGroup_Item_3($$anchor12, {
-                                    value: "fail",
-                                    children: ($$anchor13, $$slotProps6) => {
-                                      next();
-                                      var text_20 = text();
-                                      template_effect(() => set_text(text_20, `Errors ${get2(totals).fail ?? ""}`));
-                                      append($$anchor13, text_20);
-                                    },
-                                    $$slots: { default: true }
-                                  });
-                                });
-                                var node_29 = sibling(node_28, 2);
-                                component(node_29, () => Toggle_group_item2, ($$anchor12, ToggleGroup_Item_4) => {
-                                  ToggleGroup_Item_4($$anchor12, {
-                                    value: "warn",
-                                    children: ($$anchor13, $$slotProps6) => {
-                                      next();
-                                      var text_21 = text();
-                                      template_effect(() => set_text(text_21, `Warnings ${get2(totals).warn ?? ""}`));
-                                      append($$anchor13, text_21);
-                                    },
-                                    $$slots: { default: true }
-                                  });
-                                });
-                                var node_30 = sibling(node_29, 2);
-                                component(node_30, () => Toggle_group_item2, ($$anchor12, ToggleGroup_Item_5) => {
-                                  ToggleGroup_Item_5($$anchor12, {
-                                    value: "info",
-                                    children: ($$anchor13, $$slotProps6) => {
-                                      next();
-                                      var text_22 = text();
-                                      template_effect(() => set_text(text_22, `Info ${get2(totals).info ?? ""}`));
-                                      append($$anchor13, text_22);
-                                    },
-                                    $$slots: { default: true }
-                                  });
-                                });
-                                append($$anchor11, fragment_16);
-                              },
-                              $$slots: { default: true }
-                            });
-                          });
-                          var node_31 = sibling(node_27, 2);
-                          component(node_31, () => Select2, ($$anchor10, Select_Root) => {
-                            Select_Root($$anchor10, {
-                              type: "single",
-                              get value() {
-                                return get2(catFilter);
-                              },
-                              set value($$value) {
-                                set(catFilter, $$value, true);
-                              },
-                              children: ($$anchor11, $$slotProps5) => {
-                                var fragment_20 = root_3();
-                                var node_32 = first_child(fragment_20);
-                                component(node_32, () => Select_trigger2, ($$anchor12, Select_Trigger) => {
-                                  Select_Trigger($$anchor12, {
-                                    class: "w-44",
-                                    children: ($$anchor13, $$slotProps6) => {
-                                      next();
-                                      var text_23 = text();
-                                      template_effect(() => set_text(text_23, get2(catFilter) === "all" ? "All categories" : get2(catFilter)));
-                                      append($$anchor13, text_23);
-                                    },
-                                    $$slots: { default: true }
-                                  });
-                                });
-                                var node_33 = sibling(node_32, 2);
-                                component(node_33, () => Select_content2, ($$anchor12, Select_Content) => {
-                                  Select_Content($$anchor12, {
-                                    portalProps: { to: ".safi-site-audit" },
-                                    children: ($$anchor13, $$slotProps6) => {
-                                      var fragment_22 = root_3();
-                                      var node_34 = first_child(fragment_22);
-                                      component(node_34, () => Select_item2, ($$anchor14, Select_Item) => {
-                                        Select_Item($$anchor14, {
-                                          value: "all",
-                                          children: ($$anchor15, $$slotProps7) => {
-                                            next();
-                                            var text_24 = text("All categories");
-                                            append($$anchor15, text_24);
-                                          },
-                                          $$slots: { default: true }
-                                        });
-                                      });
-                                      var node_35 = sibling(node_34, 2);
-                                      each(node_35, 16, () => get2(categoryNames), (c) => c, ($$anchor14, c) => {
-                                        var fragment_23 = comment();
-                                        var node_36 = first_child(fragment_23);
-                                        component(node_36, () => Select_item2, ($$anchor15, Select_Item_1) => {
-                                          Select_Item_1($$anchor15, {
-                                            get value() {
-                                              return c;
-                                            },
-                                            children: ($$anchor16, $$slotProps7) => {
-                                              next();
-                                              var text_25 = text();
-                                              template_effect(() => set_text(text_25, c));
-                                              append($$anchor16, text_25);
-                                            },
-                                            $$slots: { default: true }
-                                          });
-                                        });
-                                        append($$anchor14, fragment_23);
-                                      });
-                                      append($$anchor13, fragment_22);
-                                    },
-                                    $$slots: { default: true }
-                                  });
-                                });
-                                append($$anchor11, fragment_20);
-                              },
-                              $$slots: { default: true }
-                            });
-                          });
-                          var node_37 = sibling(node_31, 2);
-                          Input(node_37, {
-                            placeholder: "Filter\u2026",
-                            class: "h-8 w-40",
-                            get value() {
-                              return get2(query);
-                            },
-                            set value($$value) {
-                              set(query, $$value, true);
-                            }
-                          });
-                          reset(div_15);
-                          var node_38 = sibling(div_15, 2);
-                          {
-                            var consequent_1 = ($$anchor10) => {
-                              var p_1 = root_6();
-                              append($$anchor10, p_1);
-                            };
-                            var alternate = ($$anchor10) => {
-                              var fragment_25 = comment();
-                              var node_39 = first_child(fragment_25);
-                              component(node_39, () => Accordion2, ($$anchor11, Accordion_Root) => {
-                                Accordion_Root($$anchor11, {
-                                  type: "multiple",
-                                  class: "w-full",
-                                  children: ($$anchor12, $$slotProps5) => {
-                                    var fragment_26 = comment();
-                                    var node_40 = first_child(fragment_26);
-                                    each(node_40, 17, () => get2(filteredIssues), (issue) => issue.ruleId, ($$anchor13, issue) => {
-                                      var fragment_27 = comment();
-                                      var node_41 = first_child(fragment_27);
-                                      component(node_41, () => Accordion_item2, ($$anchor14, Accordion_Item) => {
-                                        Accordion_Item($$anchor14, {
-                                          get value() {
-                                            return get2(issue).ruleId;
-                                          },
-                                          children: ($$anchor15, $$slotProps6) => {
-                                            var fragment_28 = root_3();
-                                            var node_42 = first_child(fragment_28);
-                                            component(node_42, () => Accordion_trigger2, ($$anchor16, Accordion_Trigger) => {
-                                              Accordion_Trigger($$anchor16, {
-                                                children: ($$anchor17, $$slotProps7) => {
-                                                  var span_7 = root_7();
-                                                  var span_8 = child(span_7);
-                                                  var span_9 = sibling(span_8, 2);
-                                                  var text_26 = child(span_9, true);
-                                                  reset(span_9);
-                                                  var node_43 = sibling(span_9, 2);
-                                                  {
-                                                    let $0 = user_derived(() => statusBadge(get2(issue).status));
-                                                    Badge(node_43, {
-                                                      get variant() {
-                                                        return get2($0);
-                                                      },
-                                                      class: "shrink-0",
-                                                      children: ($$anchor18, $$slotProps8) => {
-                                                        next();
-                                                        var text_27 = text();
-                                                        template_effect(($02) => set_text(text_27, $02), [() => statusLabel(get2(issue).status)]);
-                                                        append($$anchor18, text_27);
-                                                      },
-                                                      $$slots: { default: true }
-                                                    });
-                                                  }
-                                                  var node_44 = sibling(node_43, 2);
-                                                  Badge(node_44, {
-                                                    variant: "outline",
-                                                    class: "shrink-0",
-                                                    children: ($$anchor18, $$slotProps8) => {
-                                                      next();
-                                                      var text_28 = text();
-                                                      template_effect(() => set_text(text_28, get2(issue).category));
-                                                      append($$anchor18, text_28);
-                                                    },
-                                                    $$slots: { default: true }
-                                                  });
-                                                  var node_45 = sibling(node_44, 2);
-                                                  Badge(node_45, {
-                                                    variant: "secondary",
-                                                    class: "ml-auto shrink-0",
-                                                    children: ($$anchor18, $$slotProps8) => {
-                                                      next();
-                                                      var text_29 = text();
-                                                      template_effect(() => set_text(text_29, `${get2(issue).pages.length ?? ""} page${get2(issue).pages.length === 1 ? "" : "s"}`));
-                                                      append($$anchor18, text_29);
-                                                    },
-                                                    $$slots: { default: true }
-                                                  });
-                                                  reset(span_7);
-                                                  template_effect(
-                                                    ($0) => {
-                                                      set_class(span_8, 1, $0);
-                                                      set_text(text_26, get2(issue).title);
-                                                    },
-                                                    [
-                                                      () => clsx2(cn("size-2 shrink-0 rounded-full", statusDot(get2(issue).status)))
-                                                    ]
-                                                  );
-                                                  append($$anchor17, span_7);
-                                                },
-                                                $$slots: { default: true }
-                                              });
-                                            });
-                                            var node_46 = sibling(node_42, 2);
-                                            component(node_46, () => Accordion_content2, ($$anchor16, Accordion_Content) => {
-                                              Accordion_Content($$anchor16, {
-                                                children: ($$anchor17, $$slotProps7) => {
-                                                  var div_16 = root_9();
-                                                  var p_2 = child(div_16);
-                                                  var text_30 = child(p_2, true);
-                                                  reset(p_2);
-                                                  var div_17 = sibling(p_2, 2);
-                                                  var node_47 = sibling(child(div_17), 2);
-                                                  each(node_47, 16, () => get2(issue).pages, (p2) => p2, ($$anchor18, p2) => {
-                                                    var span_10 = root_8();
-                                                    var text_31 = child(span_10, true);
-                                                    reset(span_10);
-                                                    template_effect(() => set_text(text_31, p2));
-                                                    append($$anchor18, span_10);
-                                                  });
-                                                  reset(div_17);
-                                                  reset(div_16);
-                                                  template_effect(() => set_text(text_30, get2(issue).message));
-                                                  append($$anchor17, div_16);
-                                                },
-                                                $$slots: { default: true }
-                                              });
-                                            });
-                                            append($$anchor15, fragment_28);
-                                          },
-                                          $$slots: { default: true }
-                                        });
-                                      });
-                                      append($$anchor13, fragment_27);
-                                    });
-                                    append($$anchor12, fragment_26);
-                                  },
-                                  $$slots: { default: true }
-                                });
-                              });
-                              append($$anchor10, fragment_25);
-                            };
-                            if_block(node_38, ($$render) => {
-                              if (get2(filteredIssues).length === 0) $$render(consequent_1);
-                              else $$render(alternate, -1);
-                            });
-                          }
-                          append($$anchor9, fragment_15);
-                        },
-                        $$slots: { default: true }
-                      });
-                    });
-                    append($$anchor7, fragment_12);
-                  },
-                  $$slots: { default: true }
-                });
-              });
-              append($$anchor5, fragment_6);
-            },
-            $$slots: { default: true }
-          });
-        });
-        var node_48 = sibling(node_11, 2);
-        component(node_48, () => Tabs_content2, ($$anchor4, Tabs_Content_1) => {
-          Tabs_Content_1($$anchor4, {
-            value: "pages",
-            children: ($$anchor5, $$slotProps2) => {
-              var fragment_32 = comment();
-              var node_49 = first_child(fragment_32);
-              component(node_49, () => Accordion2, ($$anchor6, Accordion_Root_1) => {
-                Accordion_Root_1($$anchor6, {
-                  type: "single",
-                  class: "w-full",
-                  children: ($$anchor7, $$slotProps3) => {
-                    var fragment_33 = comment();
-                    var node_50 = first_child(fragment_33);
-                    each(node_50, 19, () => $$props.report.pages, (page) => page.url, ($$anchor8, page, i) => {
-                      const probs = user_derived(() => pageIssues(get2(page).findings));
-                      var fragment_34 = comment();
-                      var node_51 = first_child(fragment_34);
-                      {
-                        let $0 = user_derived(() => `page-${get2(i)}`);
-                        component(node_51, () => Accordion_item2, ($$anchor9, Accordion_Item_1) => {
-                          Accordion_Item_1($$anchor9, {
-                            get value() {
-                              return get2($0);
-                            },
-                            children: ($$anchor10, $$slotProps4) => {
-                              var fragment_35 = root_3();
-                              var node_52 = first_child(fragment_35);
-                              component(node_52, () => Accordion_trigger2, ($$anchor11, Accordion_Trigger_1) => {
-                                Accordion_Trigger_1($$anchor11, {
-                                  children: ($$anchor12, $$slotProps5) => {
-                                    var span_11 = root_11();
-                                    var node_53 = child(span_11);
-                                    {
-                                      let $02 = user_derived(() => scoreVariant(get2(page).score));
-                                      Badge(node_53, {
-                                        get variant() {
-                                          return get2($02);
-                                        },
-                                        children: ($$anchor13, $$slotProps6) => {
-                                          next();
-                                          var text_32 = text();
-                                          template_effect(() => set_text(text_32, get2(page).score));
-                                          append($$anchor13, text_32);
-                                        },
-                                        $$slots: { default: true }
-                                      });
-                                    }
-                                    var span_12 = sibling(node_53, 2);
-                                    var text_33 = child(span_12, true);
-                                    reset(span_12);
-                                    var span_13 = sibling(span_12, 2);
-                                    var text_34 = child(span_13);
-                                    reset(span_13);
-                                    reset(span_11);
-                                    template_effect(() => {
-                                      set_text(text_33, get2(page).url);
-                                      set_text(text_34, `${get2(probs).length ?? ""} issue${get2(probs).length === 1 ? "" : "s"}`);
-                                    });
-                                    append($$anchor12, span_11);
-                                  },
-                                  $$slots: { default: true }
-                                });
-                              });
-                              var node_54 = sibling(node_52, 2);
-                              component(node_54, () => Accordion_content2, ($$anchor11, Accordion_Content_1) => {
-                                Accordion_Content_1($$anchor11, {
-                                  children: ($$anchor12, $$slotProps5) => {
-                                    var fragment_37 = comment();
-                                    var node_55 = first_child(fragment_37);
-                                    {
-                                      var consequent_2 = ($$anchor13) => {
-                                        var p_3 = root_122();
-                                        append($$anchor13, p_3);
-                                      };
-                                      var alternate_1 = ($$anchor13) => {
-                                        var fragment_38 = comment();
-                                        var node_56 = first_child(fragment_38);
-                                        component(node_56, () => Table, ($$anchor14, Table_Root) => {
-                                          Table_Root($$anchor14, {
-                                            children: ($$anchor15, $$slotProps6) => {
-                                              var fragment_39 = root_3();
-                                              var node_57 = first_child(fragment_39);
-                                              component(node_57, () => Table_header, ($$anchor16, Table_Header) => {
-                                                Table_Header($$anchor16, {
-                                                  children: ($$anchor17, $$slotProps7) => {
-                                                    var fragment_40 = comment();
-                                                    var node_58 = first_child(fragment_40);
-                                                    component(node_58, () => Table_row, ($$anchor18, Table_Row) => {
-                                                      Table_Row($$anchor18, {
-                                                        children: ($$anchor19, $$slotProps8) => {
-                                                          var fragment_41 = root_4();
-                                                          var node_59 = first_child(fragment_41);
-                                                          component(node_59, () => Table_head, ($$anchor20, Table_Head) => {
-                                                            Table_Head($$anchor20, {
-                                                              children: ($$anchor21, $$slotProps9) => {
-                                                                next();
-                                                                var text_35 = text("Severity");
-                                                                append($$anchor21, text_35);
-                                                              },
-                                                              $$slots: { default: true }
-                                                            });
-                                                          });
-                                                          var node_60 = sibling(node_59, 2);
-                                                          component(node_60, () => Table_head, ($$anchor20, Table_Head_1) => {
-                                                            Table_Head_1($$anchor20, {
-                                                              children: ($$anchor21, $$slotProps9) => {
-                                                                next();
-                                                                var text_36 = text("Issue");
-                                                                append($$anchor21, text_36);
-                                                              },
-                                                              $$slots: { default: true }
-                                                            });
-                                                          });
-                                                          var node_61 = sibling(node_60, 2);
-                                                          component(node_61, () => Table_head, ($$anchor20, Table_Head_2) => {
-                                                            Table_Head_2($$anchor20, {
-                                                              children: ($$anchor21, $$slotProps9) => {
-                                                                next();
-                                                                var text_37 = text("Details");
-                                                                append($$anchor21, text_37);
-                                                              },
-                                                              $$slots: { default: true }
-                                                            });
-                                                          });
-                                                          append($$anchor19, fragment_41);
-                                                        },
-                                                        $$slots: { default: true }
-                                                      });
-                                                    });
-                                                    append($$anchor17, fragment_40);
-                                                  },
-                                                  $$slots: { default: true }
-                                                });
-                                              });
-                                              var node_62 = sibling(node_57, 2);
-                                              component(node_62, () => Table_body, ($$anchor16, Table_Body) => {
-                                                Table_Body($$anchor16, {
-                                                  children: ($$anchor17, $$slotProps7) => {
-                                                    var fragment_42 = comment();
-                                                    var node_63 = first_child(fragment_42);
-                                                    each(node_63, 19, () => get2(probs), (f, fi) => `${f.ruleId}-${fi}`, ($$anchor18, f) => {
-                                                      var fragment_43 = comment();
-                                                      var node_64 = first_child(fragment_43);
-                                                      component(node_64, () => Table_row, ($$anchor19, Table_Row_1) => {
-                                                        Table_Row_1($$anchor19, {
-                                                          children: ($$anchor20, $$slotProps8) => {
-                                                            var fragment_44 = root_4();
-                                                            var node_65 = first_child(fragment_44);
-                                                            component(node_65, () => Table_cell, ($$anchor21, Table_Cell) => {
-                                                              Table_Cell($$anchor21, {
-                                                                children: ($$anchor22, $$slotProps9) => {
-                                                                  {
-                                                                    let $02 = user_derived(() => statusBadge(get2(f).status));
-                                                                    Badge($$anchor22, {
-                                                                      get variant() {
-                                                                        return get2($02);
-                                                                      },
-                                                                      children: ($$anchor23, $$slotProps10) => {
-                                                                        next();
-                                                                        var text_38 = text();
-                                                                        template_effect(($03) => set_text(text_38, $03), [() => statusLabel(get2(f).status)]);
-                                                                        append($$anchor23, text_38);
-                                                                      },
-                                                                      $$slots: { default: true }
-                                                                    });
-                                                                  }
-                                                                },
-                                                                $$slots: { default: true }
-                                                              });
-                                                            });
-                                                            var node_66 = sibling(node_65, 2);
-                                                            component(node_66, () => Table_cell, ($$anchor21, Table_Cell_1) => {
-                                                              Table_Cell_1($$anchor21, {
-                                                                class: "font-medium",
-                                                                children: ($$anchor22, $$slotProps9) => {
-                                                                  next();
-                                                                  var text_39 = text();
-                                                                  template_effect(() => set_text(text_39, get2(f).title));
-                                                                  append($$anchor22, text_39);
-                                                                },
-                                                                $$slots: { default: true }
-                                                              });
-                                                            });
-                                                            var node_67 = sibling(node_66, 2);
-                                                            component(node_67, () => Table_cell, ($$anchor21, Table_Cell_2) => {
-                                                              Table_Cell_2($$anchor21, {
-                                                                class: "text-muted-foreground",
-                                                                children: ($$anchor22, $$slotProps9) => {
-                                                                  next();
-                                                                  var text_40 = text();
-                                                                  template_effect(() => set_text(text_40, get2(f).message));
-                                                                  append($$anchor22, text_40);
-                                                                },
-                                                                $$slots: { default: true }
-                                                              });
-                                                            });
-                                                            append($$anchor20, fragment_44);
-                                                          },
-                                                          $$slots: { default: true }
-                                                        });
-                                                      });
-                                                      append($$anchor18, fragment_43);
-                                                    });
-                                                    append($$anchor17, fragment_42);
-                                                  },
-                                                  $$slots: { default: true }
-                                                });
-                                              });
-                                              append($$anchor15, fragment_39);
-                                            },
-                                            $$slots: { default: true }
-                                          });
-                                        });
-                                        append($$anchor13, fragment_38);
-                                      };
-                                      if_block(node_55, ($$render) => {
-                                        if (get2(probs).length === 0) $$render(consequent_2);
-                                        else $$render(alternate_1, -1);
-                                      });
-                                    }
-                                    append($$anchor12, fragment_37);
-                                  },
-                                  $$slots: { default: true }
-                                });
-                              });
-                              append($$anchor10, fragment_35);
-                            },
-                            $$slots: { default: true }
-                          });
-                        });
-                      }
-                      append($$anchor8, fragment_34);
-                    });
-                    append($$anchor7, fragment_33);
-                  },
-                  $$slots: { default: true }
-                });
-              });
-              append($$anchor5, fragment_32);
-            },
-            $$slots: { default: true }
-          });
-        });
-        append($$anchor3, fragment_4);
-      },
-      $$slots: { default: true }
-    });
-  });
+  }
+  reset(div_16);
   reset(div);
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/field/field.svelte
-var fieldVariants = tv({
-  base: "data-[invalid=true]:text-destructive gap-2 group/field flex w-full",
-  variants: {
-    orientation: {
-      vertical: "cn-field-orientation-vertical flex-col [&>*]:w-full [&>.sr-only]:w-auto",
-      horizontal: "cn-field-orientation-horizontal flex-row items-center has-[>[data-slot=field-content]]:items-start [&>[data-slot=field-label]]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
-      responsive: "cn-field-orientation-responsive flex-col @md/field-group:flex-row @md/field-group:items-center @md/field-group:has-[>[data-slot=field-content]]:items-start [&>*]:w-full @md/field-group:[&>*]:w-auto [&>.sr-only]:w-auto @md/field-group:[&>[data-slot=field-label]]:flex-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
-    }
-  },
-  defaultVariants: { orientation: "vertical" }
-});
-var rest_excludes68 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "orientation",
-  "children"
-]);
-var root54 = from_html(`<div><!></div>`);
-function Field($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), orientation = prop($$props, "orientation", 3, "vertical"), restProps = rest_props($$props, rest_excludes68);
-  var div = root54();
-  attribute_effect(
-    div,
-    ($0) => ({
-      role: "group",
-      "data-slot": "field",
-      "data-orientation": orientation(),
-      class: $0,
-      ...restProps
-    }),
+  template_effect(
+    ($0, $1, $2, $3, $4, $5, $6) => {
+      set_text(text4, $0);
+      set_class(span_1, 1, `ssa-badge ssa-badge-${$1 ?? ""}`);
+      set_text(text_1, `Grade ${$2 ?? ""}`);
+      set_text(text_2, $$props.report.startUrl);
+      set_text(text_3, `${$3 ?? ""} \xB7 ${$$props.report.pagesScanned ?? ""} pages crawled`);
+      set_text(text_4, get2(totals).pass);
+      set_text(text_5, `Passed \xB7 ${$4 ?? ""}%`);
+      set_text(text_6, get2(totals).warn);
+      set_text(text_7, `Warnings \xB7 ${$5 ?? ""}%`);
+      set_text(text_8, get2(totals).fail);
+      set_text(text_9, `Failed \xB7 ${$6 ?? ""}%`);
+      classes = set_class(button_1, 1, "ssa-tab", null, classes, { "is-active": get2(tab) === "categories" });
+      classes_1 = set_class(button_2, 1, "ssa-tab", null, classes_1, { "is-active": get2(tab) === "pages" });
+    },
     [
-      () => cn(fieldVariants({ orientation: orientation() }), $$props.class)
+      () => hostOf($$props.report.startUrl),
+      () => gradeVariant($$props.report.score),
+      () => grade($$props.report.score),
+      () => formatDate($$props.report.generatedAt),
+      () => pct(get2(totals).pass, get2(totals).total),
+      () => pct(get2(totals).warn, get2(totals).total),
+      () => pct(get2(totals).fail, get2(totals).total)
     ]
   );
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
+  delegated("click", button_1, () => set(tab, "categories"));
+  delegated("click", button_2, () => set(tab, "pages"));
   append($$anchor, div);
   pop();
 }
-
-// src/lib/components/ui/field/field-set.svelte
-var root55 = from_html(`<fieldset><!></fieldset>`);
-
-// src/lib/components/ui/field/field-legend.svelte
-var root56 = from_html(`<legend><!></legend>`);
-
-// src/lib/components/ui/field/field-group.svelte
-var rest_excludes69 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root57 = from_html(`<div><!></div>`);
-function Field_group($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes69);
-  var div = root57();
-  attribute_effect(div, ($0) => ({ "data-slot": "field-group", class: $0, ...restProps }), [
-    () => cn("gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group @container/field-group flex w-full flex-col", $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/field/field-content.svelte
-var root58 = from_html(`<div><!></div>`);
-
-// src/lib/components/ui/label/label.svelte
-var rest_excludes70 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy", "ref", "class"]);
-function Label2($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes70);
-  var fragment = comment();
-  var node = first_child(fragment);
-  {
-    let $0 = user_derived(() => cn("gap-2 text-sm leading-none font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 flex items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed", $$props.class));
-    component(node, () => exports_exports2.Root, ($$anchor2, LabelPrimitive_Root) => {
-      LabelPrimitive_Root($$anchor2, spread_props(
-        {
-          "data-slot": "label",
-          get class() {
-            return get2($0);
-          }
-        },
-        () => restProps,
-        {
-          get ref() {
-            return ref();
-          },
-          set ref($$value) {
-            ref($$value);
-          }
-        }
-      ));
-    });
-  }
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/field/field-label.svelte
-var rest_excludes71 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-function Field_label($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes71);
-  {
-    let $0 = user_derived(() => cn("has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit leading-snug", "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col", $$props.class));
-    Label2($$anchor, spread_props(
-      {
-        "data-slot": "field-label",
-        get class() {
-          return get2($0);
-        }
-      },
-      () => restProps,
-      {
-        get ref() {
-          return ref();
-        },
-        set ref($$value) {
-          ref($$value);
-        },
-        children: ($$anchor2, $$slotProps) => {
-          var fragment_1 = comment();
-          var node = first_child(fragment_1);
-          snippet(node, () => $$props.children ?? noop);
-          append($$anchor2, fragment_1);
-        },
-        $$slots: { default: true }
-      }
-    ));
-  }
-  pop();
-}
-
-// src/lib/components/ui/field/field-title.svelte
-var root59 = from_html(`<div><!></div>`);
-
-// src/lib/components/ui/field/field-description.svelte
-var rest_excludes72 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root60 = from_html(`<p><!></p>`);
-function Field_description($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes72);
-  var p2 = root60();
-  attribute_effect(p2, ($0) => ({ "data-slot": "field-description", class: $0, ...restProps }), [
-    () => cn("text-muted-foreground text-left text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal font-normal group-has-[[data-orientation=horizontal]]/field:text-balance", "last:mt-0 nth-last-2:-mt-1", "[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4", $$props.class)
-  ]);
-  var node = child(p2);
-  snippet(node, () => $$props.children ?? noop);
-  reset(p2);
-  bind_this(p2, ($$value) => ref($$value), () => ref());
-  append($$anchor, p2);
-  pop();
-}
-
-// src/lib/components/ui/field/field-separator.svelte
-var root61 = from_html(`<span class="text-muted-foreground px-2 bg-background relative mx-auto block w-fit" data-slot="field-separator-content"><!></span>`);
-var root_17 = from_html(`<div><!> <!></div>`);
-
-// src/lib/components/ui/field/field-error.svelte
-var root62 = from_html(`<li> </li>`);
-var root_18 = from_html(`<ul class="ml-4 flex list-disc flex-col gap-1"></ul>`);
-var root_22 = from_html(`<div><!></div>`);
-
-// node_modules/@lucide/svelte/dist/icons/loader-circle.svelte
-var rest_excludes73 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
-function Loader_circle($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes73);
-  const iconNode = [["path", { "d": "M21 12a9 9 0 1 1-6.219-8.56" }]];
-  Icon($$anchor, spread_props({ name: "loader-circle" }, () => props, {
-    get iconNode() {
-      return iconNode;
-    }
-  }));
-}
-
-// src/lib/components/ui/spinner/spinner.svelte
-var rest_excludes74 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "class",
-  "role",
-  "name",
-  "color",
-  "stroke",
-  "aria-label"
-]);
-function Spinner($$anchor, $$props) {
-  push($$props, true);
-  let role = prop($$props, "role", 3, "status"), ariaLabel = prop($$props, "aria-label", 3, "Loading"), restProps = rest_props($$props, rest_excludes74);
-  {
-    let $0 = user_derived(() => $$props.name === null ? void 0 : $$props.name);
-    let $1 = user_derived(() => $$props.color === null ? void 0 : $$props.color);
-    let $2 = user_derived(() => $$props.stroke === null ? void 0 : $$props.stroke);
-    let $3 = user_derived(() => cn("size-4 animate-spin", $$props.class));
-    Loader_circle($$anchor, spread_props(
-      {
-        get role() {
-          return role();
-        },
-        get name() {
-          return get2($0);
-        },
-        get color() {
-          return get2($1);
-        },
-        get stroke() {
-          return get2($2);
-        },
-        get "aria-label"() {
-          return ariaLabel();
-        },
-        get class() {
-          return get2($3);
-        }
-      },
-      () => restProps
-    ));
-  }
-  pop();
-}
-
-// node_modules/@lucide/svelte/dist/icons/play.svelte
-var rest_excludes75 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
-function Play($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes75);
-  const iconNode = [
-    [
-      "path",
-      {
-        "d": "M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"
-      }
-    ]
-  ];
-  Icon($$anchor, spread_props({ name: "play" }, () => props, {
-    get iconNode() {
-      return iconNode;
-    }
-  }));
-}
+delegate(["click"]);
 
 // src/ui/RunAuditForm.svelte
-var root63 = from_html(`<!> <!>`, 1);
-var root_19 = from_html(`<!> <!> <!>`, 1);
-var root_23 = from_html(`<!> Auditing\u2026`, 1);
-var root_32 = from_html(`<!> Run audit`, 1);
+var root4 = from_html(`<span class="ssa-spinner"></span> Auditing\u2026`, 1);
+var root_13 = from_html(`<span></span> Run audit`, 1);
+var root_22 = from_html(`<div class="ssa-card ssa-card-narrow"><div class="ssa-card-header"><div><div class="ssa-card-title">Run a new audit</div> <div class="ssa-card-desc"> </div></div></div> <div class="ssa-card-content"><div class="ssa-field-group"><div class="ssa-field"><label class="ssa-field-label" for="ssa-url">Website URL</label> <input class="ssa-input" id="ssa-url" placeholder="https://example.com"/></div> <div class="ssa-field"><label class="ssa-field-label" for="ssa-pages">Pages</label> <input class="ssa-input" id="ssa-pages" type="number" min="1"/> <div class="ssa-field-desc"> </div></div></div></div> <div class="ssa-card-footer"><button class="ssa-btn ssa-btn-primary"><!></button></div></div>`);
 function RunAuditForm($$anchor, $$props) {
   push($$props, true);
   let url = state("");
@@ -41120,412 +24102,78 @@ function RunAuditForm($$anchor, $$props) {
   function submit() {
     $$props.onSubmit(get2(url).trim(), get2(pages) ? Number(get2(pages)) : void 0);
   }
-  var fragment = comment();
-  var node = first_child(fragment);
-  component(node, () => Card, ($$anchor2, Card_Root) => {
-    Card_Root($$anchor2, {
-      class: "mx-auto max-w-xl",
-      children: ($$anchor3, $$slotProps) => {
-        var fragment_1 = root_19();
-        var node_1 = first_child(fragment_1);
-        component(node_1, () => Card_header, ($$anchor4, Card_Header) => {
-          Card_Header($$anchor4, {
-            children: ($$anchor5, $$slotProps2) => {
-              var fragment_2 = root63();
-              var node_2 = first_child(fragment_2);
-              component(node_2, () => Card_title, ($$anchor6, Card_Title) => {
-                Card_Title($$anchor6, {
-                  children: ($$anchor7, $$slotProps3) => {
-                    next();
-                    var text4 = text("Run a new audit");
-                    append($$anchor7, text4);
-                  },
-                  $$slots: { default: true }
-                });
-              });
-              var node_3 = sibling(node_2, 2);
-              component(node_3, () => Card_description, ($$anchor6, Card_Description) => {
-                Card_Description($$anchor6, {
-                  children: ($$anchor7, $$slotProps3) => {
-                    next();
-                    var text_1 = text();
-                    template_effect(() => set_text(text_1, `Crawls the site and saves the report to \u201C${$$props.folder ?? ""}\u201D.`));
-                    append($$anchor7, text_1);
-                  },
-                  $$slots: { default: true }
-                });
-              });
-              append($$anchor5, fragment_2);
-            },
-            $$slots: { default: true }
-          });
-        });
-        var node_4 = sibling(node_1, 2);
-        component(node_4, () => Card_content, ($$anchor4, Card_Content) => {
-          Card_Content($$anchor4, {
-            children: ($$anchor5, $$slotProps2) => {
-              var fragment_4 = comment();
-              var node_5 = first_child(fragment_4);
-              component(node_5, () => Field_group, ($$anchor6, Field_FieldGroup) => {
-                Field_FieldGroup($$anchor6, {
-                  children: ($$anchor7, $$slotProps3) => {
-                    var fragment_5 = root63();
-                    var node_6 = first_child(fragment_5);
-                    component(node_6, () => Field, ($$anchor8, Field_Field) => {
-                      Field_Field($$anchor8, {
-                        children: ($$anchor9, $$slotProps4) => {
-                          var fragment_6 = root63();
-                          var node_7 = first_child(fragment_6);
-                          component(node_7, () => Field_label, ($$anchor10, Field_FieldLabel) => {
-                            Field_FieldLabel($$anchor10, {
-                              for: "ssa-url",
-                              children: ($$anchor11, $$slotProps5) => {
-                                next();
-                                var text_2 = text("Website URL");
-                                append($$anchor11, text_2);
-                              },
-                              $$slots: { default: true }
-                            });
-                          });
-                          var node_8 = sibling(node_7, 2);
-                          Input(node_8, {
-                            id: "ssa-url",
-                            placeholder: "https://example.com",
-                            get disabled() {
-                              return $$props.running;
-                            },
-                            onkeydown: (e) => e.key === "Enter" && submit(),
-                            get value() {
-                              return get2(url);
-                            },
-                            set value($$value) {
-                              set(url, $$value, true);
-                            }
-                          });
-                          append($$anchor9, fragment_6);
-                        },
-                        $$slots: { default: true }
-                      });
-                    });
-                    var node_9 = sibling(node_6, 2);
-                    component(node_9, () => Field, ($$anchor8, Field_Field_1) => {
-                      Field_Field_1($$anchor8, {
-                        children: ($$anchor9, $$slotProps4) => {
-                          var fragment_7 = root_19();
-                          var node_10 = first_child(fragment_7);
-                          component(node_10, () => Field_label, ($$anchor10, Field_FieldLabel_1) => {
-                            Field_FieldLabel_1($$anchor10, {
-                              for: "ssa-pages",
-                              children: ($$anchor11, $$slotProps5) => {
-                                next();
-                                var text_3 = text("Pages");
-                                append($$anchor11, text_3);
-                              },
-                              $$slots: { default: true }
-                            });
-                          });
-                          var node_11 = sibling(node_10, 2);
-                          {
-                            let $0 = user_derived(() => String($$props.defaultPages));
-                            Input(node_11, {
-                              id: "ssa-pages",
-                              type: "number",
-                              min: "1",
-                              get placeholder() {
-                                return get2($0);
-                              },
-                              get disabled() {
-                                return $$props.running;
-                              },
-                              get value() {
-                                return get2(pages);
-                              },
-                              set value($$value) {
-                                set(pages, $$value, true);
-                              }
-                            });
-                          }
-                          var node_12 = sibling(node_11, 2);
-                          component(node_12, () => Field_description, ($$anchor10, Field_FieldDescription) => {
-                            Field_FieldDescription($$anchor10, {
-                              children: ($$anchor11, $$slotProps5) => {
-                                next();
-                                var text_4 = text();
-                                template_effect(() => set_text(text_4, `Leave empty to crawl up to ${$$props.defaultPages ?? ""} pages. Multi-page crawls can take a minute.`));
-                                append($$anchor11, text_4);
-                              },
-                              $$slots: { default: true }
-                            });
-                          });
-                          append($$anchor9, fragment_7);
-                        },
-                        $$slots: { default: true }
-                      });
-                    });
-                    append($$anchor7, fragment_5);
-                  },
-                  $$slots: { default: true }
-                });
-              });
-              append($$anchor5, fragment_4);
-            },
-            $$slots: { default: true }
-          });
-        });
-        var node_13 = sibling(node_4, 2);
-        component(node_13, () => Card_footer, ($$anchor4, Card_Footer) => {
-          Card_Footer($$anchor4, {
-            children: ($$anchor5, $$slotProps2) => {
-              Button($$anchor5, {
-                onclick: submit,
-                get disabled() {
-                  return $$props.running;
-                },
-                children: ($$anchor6, $$slotProps3) => {
-                  var fragment_10 = comment();
-                  var node_14 = first_child(fragment_10);
-                  {
-                    var consequent = ($$anchor7) => {
-                      var fragment_11 = root_23();
-                      var node_15 = first_child(fragment_11);
-                      Spinner(node_15, { "data-icon": "inline-start" });
-                      next();
-                      append($$anchor7, fragment_11);
-                    };
-                    var alternate = ($$anchor7) => {
-                      var fragment_12 = root_32();
-                      var node_16 = first_child(fragment_12);
-                      Play(node_16, { "data-icon": "inline-start" });
-                      next();
-                      append($$anchor7, fragment_12);
-                    };
-                    if_block(node_14, ($$render) => {
-                      if ($$props.running) $$render(consequent);
-                      else $$render(alternate, -1);
-                    });
-                  }
-                  append($$anchor6, fragment_10);
-                },
-                $$slots: { default: true }
-              });
-            },
-            $$slots: { default: true }
-          });
-        });
-        append($$anchor3, fragment_1);
-      },
-      $$slots: { default: true }
+  var div = root_22();
+  var div_1 = child(div);
+  var div_2 = child(div_1);
+  var div_3 = sibling(child(div_2), 2);
+  var text4 = child(div_3);
+  reset(div_3);
+  reset(div_2);
+  reset(div_1);
+  var div_4 = sibling(div_1, 2);
+  var div_5 = child(div_4);
+  var div_6 = child(div_5);
+  var input = sibling(child(div_6), 2);
+  remove_input_defaults(input);
+  reset(div_6);
+  var div_7 = sibling(div_6, 2);
+  var input_1 = sibling(child(div_7), 2);
+  remove_input_defaults(input_1);
+  var div_8 = sibling(input_1, 2);
+  var text_1 = child(div_8);
+  reset(div_8);
+  reset(div_7);
+  reset(div_5);
+  reset(div_4);
+  var div_9 = sibling(div_4, 2);
+  var button = child(div_9);
+  var node = child(button);
+  {
+    var consequent = ($$anchor2) => {
+      var fragment = root4();
+      next();
+      append($$anchor2, fragment);
+    };
+    var alternate = ($$anchor2) => {
+      var fragment_1 = root_13();
+      var span = first_child(fragment_1);
+      action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "play");
+      next();
+      append($$anchor2, fragment_1);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.running) $$render(consequent);
+      else $$render(alternate, -1);
     });
-  });
-  append($$anchor, fragment);
-  pop();
-}
-
-// src/lib/components/ui/empty/empty.svelte
-var rest_excludes76 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root64 = from_html(`<div><!></div>`);
-function Empty($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes76);
-  var div = root64();
-  attribute_effect(div, ($0) => ({ "data-slot": "empty", class: $0, ...restProps }), [
-    () => cn("gap-4 rounded-xl border-dashed p-6 flex w-full min-w-0 flex-1 flex-col items-center justify-center text-center text-balance", $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
+  }
+  reset(button);
+  reset(div_9);
   reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/empty/empty-header.svelte
-var rest_excludes77 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root65 = from_html(`<div><!></div>`);
-function Empty_header($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes77);
-  var div = root65();
-  attribute_effect(div, ($0) => ({ "data-slot": "empty-header", class: $0, ...restProps }), [
-    () => cn("gap-2 flex max-w-sm flex-col items-center", $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/empty/empty-media.svelte
-var emptyMediaVariants = tv({
-  base: "mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0",
-  variants: {
-    variant: {
-      default: "bg-transparent",
-      icon: "bg-muted text-foreground flex size-8 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*='size-'])]:size-4"
-    }
-  },
-  defaultVariants: { variant: "default" }
-});
-var rest_excludes78 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children",
-  "variant"
-]);
-var root66 = from_html(`<div><!></div>`);
-function Empty_media($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), variant = prop($$props, "variant", 3, "default"), restProps = rest_props($$props, rest_excludes78);
-  var div = root66();
-  attribute_effect(
-    div,
-    ($0) => ({
-      "data-slot": "empty-icon",
-      "data-variant": variant(),
-      class: $0,
-      ...restProps
-    }),
-    [
-      () => cn(emptyMediaVariants({ variant: variant() }), $$props.class)
-    ]
+  template_effect(
+    ($0) => {
+      set_text(text4, `Crawls the site and saves the report to \u201C${$$props.folder ?? ""}\u201D.`);
+      input.disabled = $$props.running;
+      set_attribute2(input_1, "placeholder", $0);
+      input_1.disabled = $$props.running;
+      set_text(text_1, `Leave empty to crawl up to ${$$props.defaultPages ?? ""} pages. Multi-page crawls can take a minute.`);
+      button.disabled = $$props.running;
+    },
+    [() => String($$props.defaultPages)]
   );
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
+  delegated("keydown", input, (e) => e.key === "Enter" && submit());
+  bind_value(input, () => get2(url), ($$value) => set(url, $$value));
+  bind_value(input_1, () => get2(pages), ($$value) => set(pages, $$value));
+  delegated("click", button, submit);
   append($$anchor, div);
   pop();
 }
-
-// src/lib/components/ui/empty/empty-title.svelte
-var rest_excludes79 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root67 = from_html(`<div><!></div>`);
-function Empty_title($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes79);
-  var div = root67();
-  attribute_effect(div, ($0) => ({ "data-slot": "empty-title", class: $0, ...restProps }), [
-    () => cn("text-sm font-medium tracking-tight", $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/empty/empty-description.svelte
-var rest_excludes80 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root68 = from_html(`<div><!></div>`);
-function Empty_description($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes80);
-  var div = root68();
-  attribute_effect(div, ($0) => ({ "data-slot": "empty-description", class: $0, ...restProps }), [
-    () => cn("text-sm/relaxed text-muted-foreground [&>a:hover]:text-primary text-sm/relaxed [&>a]:underline [&>a]:underline-offset-4", $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// src/lib/components/ui/empty/empty-content.svelte
-var rest_excludes81 = /* @__PURE__ */ new Set([
-  "$$slots",
-  "$$events",
-  "$$legacy",
-  "ref",
-  "class",
-  "children"
-]);
-var root69 = from_html(`<div><!></div>`);
-function Empty_content($$anchor, $$props) {
-  push($$props, true);
-  let ref = prop($$props, "ref", 15, null), restProps = rest_props($$props, rest_excludes81);
-  var div = root69();
-  attribute_effect(div, ($0) => ({ "data-slot": "empty-content", class: $0, ...restProps }), [
-    () => cn("gap-2.5 text-sm flex w-full max-w-sm min-w-0 flex-col items-center text-balance", $$props.class)
-  ]);
-  var node = child(div);
-  snippet(node, () => $$props.children ?? noop);
-  reset(div);
-  bind_this(div, ($$value) => ref($$value), () => ref());
-  append($$anchor, div);
-  pop();
-}
-
-// node_modules/@lucide/svelte/dist/icons/plus.svelte
-var rest_excludes82 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
-function Plus($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes82);
-  const iconNode = [["path", { "d": "M5 12h14" }], ["path", { "d": "M12 5v14" }]];
-  Icon($$anchor, spread_props({ name: "plus" }, () => props, {
-    get iconNode() {
-      return iconNode;
-    }
-  }));
-}
-
-// node_modules/@lucide/svelte/dist/icons/gauge.svelte
-var rest_excludes83 = /* @__PURE__ */ new Set(["$$slots", "$$events", "$$legacy"]);
-function Gauge($$anchor, $$props) {
-  let props = rest_props($$props, rest_excludes83);
-  const iconNode = [
-    ["path", { "d": "m12 14 4-4" }],
-    ["path", { "d": "M3.34 19a10 10 0 1 1 17.32 0" }]
-  ];
-  Icon($$anchor, spread_props({ name: "gauge" }, () => props, {
-    get iconNode() {
-      return iconNode;
-    }
-  }));
-}
+delegate(["keydown", "click"]);
 
 // src/ui/Dashboard.svelte
-var root70 = from_html(`<!> New`, 1);
-var root_110 = from_html(`<p class="p-2 text-sm text-muted-foreground">No audits yet.</p>`);
-var root_24 = from_html(`<span class="flex w-full justify-between items-center gap-2"><span class="truncate text-sm font-medium"> </span> <!></span> <span class="text-xs w-full flex justify-start items-center text-muted-foreground"> </span>`, 1);
-var root_33 = from_html(`<!> <!> <!>`, 1);
-var root_42 = from_html(`<!> New audit`, 1);
-var root_52 = from_html(`<!> <!>`, 1);
-var root_62 = from_html(`<div class="flex h-full min-h-0"><aside class="flex w-64 shrink-0 flex-col border-r bg-muted/30"><div class="flex items-center gap-2 border-b p-3"><!> <span class="font-semibold">Safi Site Audit</span> <!></div> <div class="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-2"><!></div></aside> <main class="min-w-0 flex-1 overflow-y-auto p-4"><!></main></div>`);
+var root5 = from_html(`<p class="ssa-empty-note">No audits yet.</p>`);
+var root_14 = from_html(`<button><span class="ssa-audit-row-top"><span class="ssa-audit-row-host"> </span> <span> </span></span> <span class="ssa-audit-row-date"> </span></button>`);
+var root_23 = from_html(`<div class="ssa-empty"><div class="ssa-empty-media"><span></span></div> <div class="ssa-empty-title">No audit selected</div> <div class="ssa-empty-desc">Pick an audit from the sidebar, or run a new one.</div> <button class="ssa-btn ssa-btn-primary ssa-mt"><span></span> New audit</button></div>`);
+var root_32 = from_html(`<div class="ssa-layout"><aside class="ssa-sidebar"><div class="ssa-sidebar-head"><span></span> <span>Safi Site Audit</span> <button class="ssa-btn ssa-btn-primary ssa-btn-sm ssa-spacer"><span></span> New</button></div> <div class="ssa-sidebar-list"><!></div></aside> <main class="ssa-main"><!></main></div>`);
 function Dashboard($$anchor, $$props) {
   push($$props, true);
   let items = state(proxy([]));
@@ -41549,7 +24197,7 @@ function Dashboard($$anchor, $$props) {
   async function open(item) {
     const report = await readAudit($$props.plugin.app, item.file);
     if (!report) {
-      new import_obsidian5.Notice("Could not read this audit's report data.");
+      new import_obsidian6.Notice("Could not read this audit's report data.");
       return;
     }
     set(selected, report, true);
@@ -41558,7 +24206,7 @@ function Dashboard($$anchor, $$props) {
   }
   async function run3(url, pages) {
     if (!url) {
-      new import_obsidian5.Notice("Enter a URL to audit.");
+      new import_obsidian6.Notice("Enter a URL to audit.");
       return;
     }
     set(running, true);
@@ -41582,101 +24230,69 @@ function Dashboard($$anchor, $$props) {
         ],
         true
       );
-      new import_obsidian5.Notice(`Audit saved: ${file.name}`);
+      new import_obsidian6.Notice(`Audit saved: ${file.name}`);
     } catch (e) {
-      new import_obsidian5.Notice(`Audit failed: ${e.message}`);
+      new import_obsidian6.Notice(`Audit failed: ${e.message}`);
     } finally {
       set(running, false);
     }
   }
-  var div = root_62();
+  var div = root_32();
   var aside = child(div);
   var div_1 = child(aside);
-  var node = child(div_1);
-  Gauge(node, { class: "size-4" });
-  var node_1 = sibling(node, 4);
-  Button(node_1, {
-    size: "sm",
-    class: "ml-auto",
-    onclick: startNew,
-    get disabled() {
-      return get2(running);
-    },
-    children: ($$anchor2, $$slotProps) => {
-      var fragment = root70();
-      var node_2 = first_child(fragment);
-      Plus(node_2, { "data-icon": "inline-start" });
-      next();
-      append($$anchor2, fragment);
-    },
-    $$slots: { default: true }
-  });
+  var span = child(div_1);
+  action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "gauge");
+  var button = sibling(span, 4);
+  var span_1 = child(button);
+  action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "plus");
+  next();
+  reset(button);
   reset(div_1);
   var div_2 = sibling(div_1, 2);
-  var node_3 = child(div_2);
+  var node = child(div_2);
   {
     var consequent = ($$anchor2) => {
-      var p2 = root_110();
-      append($$anchor2, p2);
+      var p = root5();
+      append($$anchor2, p);
     };
     var alternate = ($$anchor2) => {
-      var fragment_1 = comment();
-      var node_4 = first_child(fragment_1);
-      each(node_4, 17, () => get2(items), (item) => item.file.path, ($$anchor3, item) => {
-        {
-          let $0 = user_derived(() => get2(selectedPath) === get2(item).file.path ? "default" : "ghost");
-          Button($$anchor3, {
-            get variant() {
-              return get2($0);
-            },
-            onclick: () => open(get2(item)),
-            class: "flex flex-col justify-start items-start h-fit! py-2! px-4!",
-            children: ($$anchor4, $$slotProps) => {
-              var fragment_3 = root_24();
-              var span = first_child(fragment_3);
-              var span_1 = child(span);
-              var text4 = child(span_1, true);
-              reset(span_1);
-              var node_5 = sibling(span_1, 2);
-              {
-                let $02 = user_derived(() => scoreVariant(get2(item).score));
-                Badge(node_5, {
-                  get variant() {
-                    return get2($02);
-                  },
-                  class: "ml-auto shrink-0",
-                  children: ($$anchor5, $$slotProps2) => {
-                    next();
-                    var text_1 = text();
-                    template_effect(() => set_text(text_1, get2(item).score));
-                    append($$anchor5, text_1);
-                  },
-                  $$slots: { default: true }
-                });
-              }
-              reset(span);
-              var span_2 = sibling(span, 2);
-              var text_2 = child(span_2, true);
-              reset(span_2);
-              template_effect(
-                ($02, $1) => {
-                  set_text(text4, $02);
-                  set_text(text_2, $1);
-                },
-                [
-                  () => hostOf(get2(item).url),
-                  () => formatDate(get2(item).date)
-                ]
-              );
-              append($$anchor4, fragment_3);
-            },
-            $$slots: { default: true }
-          });
-        }
+      var fragment = comment();
+      var node_1 = first_child(fragment);
+      each(node_1, 17, () => get2(items), (item) => item.file.path, ($$anchor3, item) => {
+        var button_1 = root_14();
+        let classes;
+        var span_2 = child(button_1);
+        var span_3 = child(span_2);
+        var text4 = child(span_3, true);
+        reset(span_3);
+        var span_4 = sibling(span_3, 2);
+        var text_1 = child(span_4, true);
+        reset(span_4);
+        reset(span_2);
+        var span_5 = sibling(span_2, 2);
+        var text_2 = child(span_5, true);
+        reset(span_5);
+        reset(button_1);
+        template_effect(
+          ($0, $1, $2) => {
+            classes = set_class(button_1, 1, "ssa-audit-row", null, classes, { "is-active": get2(selectedPath) === get2(item).file.path });
+            set_text(text4, $0);
+            set_class(span_4, 1, `ssa-badge ssa-badge-${$1 ?? ""}`);
+            set_text(text_1, get2(item).score);
+            set_text(text_2, $2);
+          },
+          [
+            () => hostOf(get2(item).url),
+            () => scoreVariant(get2(item).score),
+            () => formatDate(get2(item).date)
+          ]
+        );
+        delegated("click", button_1, () => open(get2(item)));
+        append($$anchor3, button_1);
       });
-      append($$anchor2, fragment_1);
+      append($$anchor2, fragment);
     };
-    if_block(node_3, ($$render) => {
+    if_block(node, ($$render) => {
       if (get2(items).length === 0) $$render(consequent);
       else $$render(alternate, -1);
     });
@@ -41684,7 +24300,7 @@ function Dashboard($$anchor, $$props) {
   reset(div_2);
   reset(aside);
   var main = sibling(aside, 2);
-  var node_6 = child(main);
+  var node_2 = child(main);
   {
     var consequent_1 = ($$anchor2) => {
       ReportView($$anchor2, {
@@ -41714,82 +24330,21 @@ function Dashboard($$anchor, $$props) {
       });
     };
     var alternate_1 = ($$anchor2) => {
-      var fragment_7 = comment();
-      var node_7 = first_child(fragment_7);
-      component(node_7, () => Empty, ($$anchor3, Empty_Root) => {
-        Empty_Root($$anchor3, {
-          class: "h-full",
-          children: ($$anchor4, $$slotProps) => {
-            var fragment_8 = root_52();
-            var node_8 = first_child(fragment_8);
-            component(node_8, () => Empty_header, ($$anchor5, Empty_Header) => {
-              Empty_Header($$anchor5, {
-                children: ($$anchor6, $$slotProps2) => {
-                  var fragment_9 = root_33();
-                  var node_9 = first_child(fragment_9);
-                  component(node_9, () => Empty_media, ($$anchor7, Empty_Media) => {
-                    Empty_Media($$anchor7, {
-                      variant: "icon",
-                      children: ($$anchor8, $$slotProps3) => {
-                        Gauge($$anchor8, {});
-                      },
-                      $$slots: { default: true }
-                    });
-                  });
-                  var node_10 = sibling(node_9, 2);
-                  component(node_10, () => Empty_title, ($$anchor7, Empty_Title) => {
-                    Empty_Title($$anchor7, {
-                      children: ($$anchor8, $$slotProps3) => {
-                        next();
-                        var text_3 = text("No audit selected");
-                        append($$anchor8, text_3);
-                      },
-                      $$slots: { default: true }
-                    });
-                  });
-                  var node_11 = sibling(node_10, 2);
-                  component(node_11, () => Empty_description, ($$anchor7, Empty_Description) => {
-                    Empty_Description($$anchor7, {
-                      children: ($$anchor8, $$slotProps3) => {
-                        next();
-                        var text_4 = text("Pick an audit from the sidebar, or run a new one.");
-                        append($$anchor8, text_4);
-                      },
-                      $$slots: { default: true }
-                    });
-                  });
-                  append($$anchor6, fragment_9);
-                },
-                $$slots: { default: true }
-              });
-            });
-            var node_12 = sibling(node_8, 2);
-            component(node_12, () => Empty_content, ($$anchor5, Empty_Content) => {
-              Empty_Content($$anchor5, {
-                children: ($$anchor6, $$slotProps2) => {
-                  Button($$anchor6, {
-                    onclick: startNew,
-                    children: ($$anchor7, $$slotProps3) => {
-                      var fragment_12 = root_42();
-                      var node_13 = first_child(fragment_12);
-                      Plus(node_13, { "data-icon": "inline-start" });
-                      next();
-                      append($$anchor7, fragment_12);
-                    },
-                    $$slots: { default: true }
-                  });
-                },
-                $$slots: { default: true }
-              });
-            });
-            append($$anchor4, fragment_8);
-          },
-          $$slots: { default: true }
-        });
-      });
-      append($$anchor2, fragment_7);
+      var div_3 = root_23();
+      var div_4 = child(div_3);
+      var span_6 = child(div_4);
+      action(span_6, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "gauge");
+      reset(div_4);
+      var button_2 = sibling(div_4, 6);
+      var span_7 = child(button_2);
+      action(span_7, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "plus");
+      next();
+      reset(button_2);
+      reset(div_3);
+      delegated("click", button_2, startNew);
+      append($$anchor2, div_3);
     };
-    if_block(node_6, ($$render) => {
+    if_block(node_2, ($$render) => {
       if (get2(mode) === "detail" && get2(selected)) $$render(consequent_1);
       else if (get2(mode) === "new") $$render(consequent_2, 1);
       else $$render(alternate_1, -1);
@@ -41797,13 +24352,16 @@ function Dashboard($$anchor, $$props) {
   }
   reset(main);
   reset(div);
+  template_effect(() => button.disabled = get2(running));
+  delegated("click", button, startNew);
   append($$anchor, div);
   pop();
 }
+delegate(["click"]);
 
 // src/view.ts
 var VIEW_TYPE_SITE_AUDIT = "safi-site-audit-view";
-var AuditDashboardView = class extends import_obsidian6.ItemView {
+var AuditDashboardView = class extends import_obsidian7.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.plugin = plugin;
@@ -41837,7 +24395,7 @@ var AuditDashboardView = class extends import_obsidian6.ItemView {
 };
 
 // src/main.ts
-var SafiSiteAuditPlugin = class extends import_obsidian7.Plugin {
+var SafiSiteAuditPlugin = class extends import_obsidian8.Plugin {
   settings = DEFAULT_SETTINGS;
   async onload() {
     await this.loadSettings();
@@ -41864,110 +24422,3 @@ var SafiSiteAuditPlugin = class extends import_obsidian7.Plugin {
     await this.saveData(this.settings);
   }
 };
-/*! Bundled license information:
-
-tabbable/dist/index.esm.js:
-  (*!
-  * tabbable 6.5.0
-  * @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
-  *)
-
-@lucide/svelte/dist/defaultAttributes.js:
-  (**
-   * @file
-   * @license @lucide/svelte v1.21.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   *)
-
-@lucide/svelte/dist/utils/hasA11yProp.js:
-  (**
-   * @file
-   * @license @lucide/svelte v1.21.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   *)
-
-@lucide/svelte/dist/context.js:
-  (**
-   * @file
-   * @license @lucide/svelte v1.21.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   *)
-
-@lucide/svelte/dist/icons/chevron-down.js:
-  (**
-   * @file
-   * @license @lucide/svelte v1.21.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   *)
-
-@lucide/svelte/dist/icons/chevron-up.js:
-  (**
-   * @file
-   * @license @lucide/svelte v1.21.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   *)
-
-@lucide/svelte/dist/icons/check.js:
-  (**
-   * @file
-   * @license @lucide/svelte v1.21.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   *)
-
-@lucide/svelte/dist/icons/file-text.js:
-  (**
-   * @file
-   * @license @lucide/svelte v1.21.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   *)
-
-@lucide/svelte/dist/icons/loader-2.js:
-  (**
-   * @file
-   * @license @lucide/svelte v1.21.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   *)
-
-@lucide/svelte/dist/icons/play.js:
-  (**
-   * @file
-   * @license @lucide/svelte v1.21.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   *)
-
-@lucide/svelte/dist/icons/plus.js:
-  (**
-   * @file
-   * @license @lucide/svelte v1.21.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   *)
-
-@lucide/svelte/dist/icons/gauge.js:
-  (**
-   * @file
-   * @license @lucide/svelte v1.21.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   *)
-*/
