@@ -24759,7 +24759,9 @@ function IssuesPanel($$anchor, $$props) {
         template_effect(
           ($0, $1, $2, $3) => {
             set_class(span_3, 1, `ssa-mark ${$0 ?? ""}`);
+            set_attribute2(span_5, "title", get2(issue).title);
             set_text(text_4, get2(issue).title);
+            set_attribute2(span_6, "title", get2(issue).ruleId);
             set_text(text_5, `${$1 ?? ""} \xB7 ${get2(issue).ruleId ?? ""}`);
             set_text(text_6, `${get2(issue).pages.length ?? ""} `);
             set_text(text_7, get2(issue).pages.length === 1 ? "page" : "pages");

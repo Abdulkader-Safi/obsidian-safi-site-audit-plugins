@@ -931,12 +931,15 @@
 	flex-direction: column;
 	gap: 0.75rem;
 }
+/* Grouped by weight and space, not by a rule drawn under the label. */
 .ssa-metric-cat {
 	margin: 0;
-	padding-bottom: 0.4rem;
-	border-bottom: 1px solid var(--background-modifier-border);
 	font-size: var(--font-ui-small);
 	font-weight: var(--font-semibold);
+	color: var(--text-muted);
+}
+.ssa-metric-group + .ssa-metric-group {
+	margin-top: 0.75rem;
 }
 .ssa-metric-grid {
 	display: grid;

@@ -75,8 +75,10 @@
 					<summary class="ssa-row-head">
 						<span class="ssa-mark {statusTone(issue.status)}" aria-hidden="true"></span>
 						<span class="ssa-row-main">
-							<span class="ssa-row-title">{issue.title}</span>
-							<span class="ssa-row-sub">{categoryLabel(issue.category)} · {issue.ruleId}</span>
+							<span class="ssa-row-title" title={issue.title}>{issue.title}</span>
+							<span class="ssa-row-sub" title={issue.ruleId}>
+								{categoryLabel(issue.category)} · {issue.ruleId}
+							</span>
 						</span>
 						<span class="ssa-row-count">
 							{issue.pages.length}
