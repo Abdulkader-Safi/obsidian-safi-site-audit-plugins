@@ -10,7 +10,7 @@
 		type AuditListItem,
 		type SavedAudit,
 	} from "../audit-store";
-	import { runAudit } from "../audit-runner";
+	import { runAudit, type AuditProgress } from "../audit-runner";
 	import ReportView from "./ReportView.svelte";
 	import RunAuditForm from "./RunAuditForm.svelte";
 	import { formatDate, hostOf, scoreVariant } from "./helpers";
@@ -25,6 +25,7 @@
 	let selected = $state<AuditReport | null>(null);
 	let selectedPath = $state<string | null>(null);
 	let running = $state(false);
+	let progress = $state<AuditProgress | null>(null);
 
 	function refresh() {
 		items = listAudits(plugin.app, plugin.settings);
@@ -61,8 +62,11 @@
 			return;
 		}
 		running = true;
+		progress = null;
 		try {
-			const report = await runAudit({ url, maxPages: pages }, plugin.settings);
+			const report = await runAudit({ url, maxPages: pages }, plugin.settings, (p) => {
+				progress = p;
+			});
 			const { note }: SavedAudit = await saveAudit(plugin.app, plugin.settings, report);
 			// Show it immediately from the in-memory report (cache may lag), then reconcile.
 			selected = report;
@@ -77,6 +81,7 @@
 			new Notice(`Audit failed: ${(e as Error).message}`);
 		} finally {
 			running = false;
+			progress = null;
 		}
 	}
 </script>
@@ -120,6 +125,7 @@
 				defaultPages={plugin.settings.defaultMaxPages}
 				folder={plugin.settings.auditFolder}
 				{running}
+				{progress}
 				onSubmit={run}
 			/>
 		{:else}

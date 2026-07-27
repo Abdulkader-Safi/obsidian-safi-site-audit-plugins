@@ -680,3 +680,96 @@
 .ssa-mt {
 	margin-top: 0.25rem;
 }
+
+/* ---- run form ---- */
+.ssa-run {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	max-width: 34rem;
+	margin: 3rem auto 0;
+	padding: 0 0.5rem;
+}
+.ssa-run-intro {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+.ssa-run-title {
+	margin: 0;
+	font-size: 1.6rem;
+	line-height: 1.15;
+	font-weight: var(--font-bold);
+	letter-spacing: -0.01em;
+}
+.ssa-run-lede {
+	margin: 0;
+	max-width: 30rem;
+	font-size: var(--font-ui-small);
+	line-height: 1.55;
+	color: var(--text-muted);
+}
+.ssa-run-folder {
+	color: var(--text-normal);
+	font-weight: var(--font-medium);
+}
+.ssa-input-lg {
+	padding: 0.55rem 0.7rem;
+	font-size: var(--font-ui-medium);
+}
+.ssa-input-num {
+	width: 7rem;
+}
+.ssa-run-actions {
+	display: flex;
+	gap: 0.5rem;
+}
+
+/* ---- live audit progress ---- */
+.ssa-progress {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding-top: 1.25rem;
+	border-top: 1px solid var(--background-modifier-border);
+}
+.ssa-progress-head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1rem;
+}
+.ssa-progress-phase {
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-medium);
+}
+.ssa-progress-pct {
+	font-size: var(--font-ui-small);
+	color: var(--text-muted);
+	font-variant-numeric: tabular-nums;
+}
+.ssa-progress-track {
+	height: 0.35rem;
+	overflow: hidden;
+	border-radius: 999px;
+	background: var(--background-modifier-border);
+}
+.ssa-progress-fill {
+	display: block;
+	height: 100%;
+	border-radius: 999px;
+	background: var(--interactive-accent);
+	transition: width 240ms ease-out;
+}
+.ssa-progress-sub {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+	font-variant-numeric: tabular-nums;
+}
+.ssa-progress-url {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: var(--font-ui-smaller);
+	color: var(--text-faint);
+}

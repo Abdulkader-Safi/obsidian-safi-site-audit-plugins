@@ -24437,6 +24437,12 @@ function resolvePages(value2, fallback2) {
   const n = value2 && value2 > 0 ? Math.floor(value2) : fallback2;
   return Math.max(n, 1);
 }
+function progressPercent(p) {
+  if (p.phase === "done") return 100;
+  if (p.checksTotal > 0) return Math.round(33 + p.checksDone / p.checksTotal * 67);
+  if (p.pagesTotal > 0) return Math.round(Math.min(p.pagesFound / p.pagesTotal, 1) * 33);
+  return 0;
+}
 async function runAudit(opts, settings, onProgress) {
   const maxPages = resolvePages(opts.maxPages, settings.defaultMaxPages);
   const options = {
@@ -25076,41 +25082,54 @@ function ReportView($$anchor, $$props) {
 delegate(["click"]);
 
 // src/ui/RunAuditForm.svelte
-var root4 = from_html(`<span class="ssa-spinner"></span> Auditing\u2026`, 1);
+var root4 = from_html(`<span class="ssa-spinner"></span> Auditing`, 1);
 var root_13 = from_html(`<span></span> Run audit`, 1);
-var root_22 = from_html(`<div class="ssa-card ssa-card-narrow"><div class="ssa-card-header"><div><div class="ssa-card-title">Run a new audit</div> <div class="ssa-card-desc"> </div></div></div> <div class="ssa-card-content"><div class="ssa-field-group"><div class="ssa-field"><label class="ssa-field-label" for="ssa-url">Website URL</label> <input class="ssa-input" id="ssa-url" placeholder="https://example.com"/></div> <div class="ssa-field"><label class="ssa-field-label" for="ssa-pages">Pages</label> <input class="ssa-input" id="ssa-pages" type="number" min="1"/> <div class="ssa-field-desc"> </div></div></div></div> <div class="ssa-card-footer"><button class="ssa-btn ssa-btn-primary"><!></button></div></div>`);
+var root_22 = from_html(`<div class="ssa-progress-sub"> </div>`);
+var root_32 = from_html(`<div class="ssa-progress-url"> </div>`);
+var root_42 = from_html(`<div class="ssa-progress"><div class="ssa-progress-head"><span class="ssa-progress-phase"> </span> <span class="ssa-progress-pct"> </span></div> <div class="ssa-progress-track"><span class="ssa-progress-fill"></span></div> <!> <!></div>`);
+var root_52 = from_html(`<div class="ssa-run"><div class="ssa-run-intro"><h2 class="ssa-run-title">Audit a site</h2> <p class="ssa-run-lede">Crawls the site, checks every page against 94 rules, and writes the report to <span class="ssa-run-folder"> </span> as Markdown, JSON and HTML.</p></div> <div class="ssa-field-group"><div class="ssa-field"><label class="ssa-field-label" for="ssa-url">Website URL</label> <input class="ssa-input ssa-input-lg" id="ssa-url" placeholder="https://example.com"/></div> <div class="ssa-field"><label class="ssa-field-label" for="ssa-pages">Pages to crawl</label> <input class="ssa-input ssa-input-num" id="ssa-pages" type="number" min="1"/> <div class="ssa-field-desc"> </div></div></div> <div class="ssa-run-actions"><button class="ssa-btn ssa-btn-primary"><!></button></div> <!></div>`);
 function RunAuditForm($$anchor, $$props) {
   push($$props, true);
   let url = state("");
   let pages = state("");
+  const percent = user_derived(() => $$props.progress ? progressPercent($$props.progress) : 0);
+  const phaseText = user_derived(() => {
+    if (!$$props.progress) return "";
+    if ($$props.progress.phase === "crawling") {
+      return `Crawling \xB7 ${$$props.progress.pagesFound} of up to ${$$props.progress.pagesTotal} pages found`;
+    }
+    if ($$props.progress.phase === "checking") {
+      return `Checking \xB7 ${$$props.progress.pagesDone} of ${$$props.progress.pagesTotal} pages audited`;
+    }
+    return "Writing the report";
+  });
   function submit() {
     $$props.onSubmit(get2(url).trim(), get2(pages) ? Number(get2(pages)) : void 0);
   }
-  var div = root_22();
+  var div = root_52();
   var div_1 = child(div);
-  var div_2 = child(div_1);
-  var div_3 = sibling(child(div_2), 2);
-  var text5 = child(div_3);
-  reset(div_3);
-  reset(div_2);
+  var p = sibling(child(div_1), 2);
+  var span = sibling(child(p));
+  var text5 = child(span, true);
+  reset(span);
+  next();
+  reset(p);
   reset(div_1);
-  var div_4 = sibling(div_1, 2);
-  var div_5 = child(div_4);
-  var div_6 = child(div_5);
-  var input = sibling(child(div_6), 2);
+  var div_2 = sibling(div_1, 2);
+  var div_3 = child(div_2);
+  var input = sibling(child(div_3), 2);
   remove_input_defaults(input);
-  reset(div_6);
-  var div_7 = sibling(div_6, 2);
-  var input_1 = sibling(child(div_7), 2);
+  reset(div_3);
+  var div_4 = sibling(div_3, 2);
+  var input_1 = sibling(child(div_4), 2);
   remove_input_defaults(input_1);
-  var div_8 = sibling(input_1, 2);
-  var text_1 = child(div_8);
-  reset(div_8);
-  reset(div_7);
+  var div_5 = sibling(input_1, 2);
+  var text_1 = child(div_5);
   reset(div_5);
   reset(div_4);
-  var div_9 = sibling(div_4, 2);
-  var button = child(div_9);
+  reset(div_2);
+  var div_6 = sibling(div_2, 2);
+  var button = child(div_6);
   var node = child(button);
   {
     var consequent = ($$anchor2) => {
@@ -25120,8 +25139,8 @@ function RunAuditForm($$anchor, $$props) {
     };
     var alternate = ($$anchor2) => {
       var fragment_1 = root_13();
-      var span = first_child(fragment_1);
-      action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "play");
+      var span_1 = first_child(fragment_1);
+      action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "play");
       next();
       append($$anchor2, fragment_1);
     };
@@ -25131,15 +25150,71 @@ function RunAuditForm($$anchor, $$props) {
     });
   }
   reset(button);
-  reset(div_9);
+  reset(div_6);
+  var node_1 = sibling(div_6, 2);
+  {
+    var consequent_3 = ($$anchor2) => {
+      var div_7 = root_42();
+      var div_8 = child(div_7);
+      var span_2 = child(div_8);
+      var text_2 = child(span_2, true);
+      reset(span_2);
+      var span_3 = sibling(span_2, 2);
+      var text_3 = child(span_3);
+      reset(span_3);
+      reset(div_8);
+      var div_9 = sibling(div_8, 2);
+      var span_4 = child(div_9);
+      reset(div_9);
+      var node_2 = sibling(div_9, 2);
+      {
+        var consequent_1 = ($$anchor3) => {
+          var div_10 = root_22();
+          var text_4 = child(div_10);
+          reset(div_10);
+          template_effect(($0, $1) => set_text(text_4, `${$0 ?? ""} of ${$1 ?? ""} checks`), [
+            () => $$props.progress.checksDone.toLocaleString(),
+            () => $$props.progress.checksTotal.toLocaleString()
+          ]);
+          append($$anchor3, div_10);
+        };
+        if_block(node_2, ($$render) => {
+          if ($$props.progress.checksTotal > 0) $$render(consequent_1);
+        });
+      }
+      var node_3 = sibling(node_2, 2);
+      {
+        var consequent_2 = ($$anchor3) => {
+          var div_11 = root_32();
+          var text_5 = child(div_11, true);
+          reset(div_11);
+          template_effect(() => set_text(text_5, $$props.progress.url));
+          append($$anchor3, div_11);
+        };
+        if_block(node_3, ($$render) => {
+          if ($$props.progress.url) $$render(consequent_2);
+        });
+      }
+      reset(div_7);
+      template_effect(() => {
+        set_text(text_2, get2(phaseText));
+        set_text(text_3, `${get2(percent) ?? ""}%`);
+        set_style(span_4, `width:${get2(percent) ?? ""}%`);
+      });
+      append($$anchor2, div_7);
+    };
+    if_block(node_1, ($$render) => {
+      if ($$props.running && $$props.progress) $$render(consequent_3);
+    });
+  }
   reset(div);
   template_effect(
     ($0) => {
-      set_text(text5, `Crawls the site and saves the report to \u201C${$$props.folder ?? ""}\u201D.`);
+      set_text(text5, $$props.folder);
       input.disabled = $$props.running;
       set_attribute2(input_1, "placeholder", $0);
       input_1.disabled = $$props.running;
-      set_text(text_1, `Leave empty to crawl up to ${$$props.defaultPages ?? ""} pages. Multi-page crawls can take a minute.`);
+      set_text(text_1, `Empty crawls up to ${$$props.defaultPages ?? ""}. Large crawls take a few minutes.`);
       button.disabled = $$props.running;
     },
     [() => String($$props.defaultPages)]
@@ -25157,7 +25232,7 @@ delegate(["keydown", "click"]);
 var root5 = from_html(`<p class="ssa-empty-note">No audits yet.</p>`);
 var root_14 = from_html(`<button><span class="ssa-audit-row-top"><span class="ssa-audit-row-host"> </span> <span> </span></span> <span class="ssa-audit-row-date"> </span></button>`);
 var root_23 = from_html(`<div class="ssa-empty"><div class="ssa-empty-media"><span></span></div> <div class="ssa-empty-title">No audit selected</div> <div class="ssa-empty-desc">Pick an audit from the sidebar, or run a new one.</div> <button class="ssa-btn ssa-btn-primary ssa-mt"><span></span> New audit</button></div>`);
-var root_32 = from_html(`<div class="ssa-layout"><aside class="ssa-sidebar"><div class="ssa-sidebar-head"><span></span> <span>Safi Site Audit</span> <button class="ssa-btn ssa-btn-primary ssa-btn-sm ssa-spacer"><span></span> New</button></div> <div class="ssa-sidebar-list"><!></div></aside> <main class="ssa-main"><!></main></div>`);
+var root_33 = from_html(`<div class="ssa-layout"><aside class="ssa-sidebar"><div class="ssa-sidebar-head"><span></span> <span>Safi Site Audit</span> <button class="ssa-btn ssa-btn-primary ssa-btn-sm ssa-spacer"><span></span> New</button></div> <div class="ssa-sidebar-list"><!></div></aside> <main class="ssa-main"><!></main></div>`);
 function Dashboard($$anchor, $$props) {
   push($$props, true);
   let items = state(proxy([]));
@@ -25165,6 +25240,7 @@ function Dashboard($$anchor, $$props) {
   let selected = state(null);
   let selectedPath = state(null);
   let running = state(false);
+  let progress = state(null);
   function refresh() {
     set(items, listAudits($$props.plugin.app, $$props.plugin.settings), true);
   }
@@ -25194,8 +25270,11 @@ function Dashboard($$anchor, $$props) {
       return;
     }
     set(running, true);
+    set(progress, null);
     try {
-      const report = await runAudit({ url, maxPages: pages }, $$props.plugin.settings);
+      const report = await runAudit({ url, maxPages: pages }, $$props.plugin.settings, (p) => {
+        set(progress, p, true);
+      });
       const { note } = await saveAudit($$props.plugin.app, $$props.plugin.settings, report);
       set(selected, report, true);
       set(selectedPath, note.path, true);
@@ -25219,9 +25298,10 @@ function Dashboard($$anchor, $$props) {
       new import_obsidian6.Notice(`Audit failed: ${e.message}`);
     } finally {
       set(running, false);
+      set(progress, null);
     }
   }
-  var div = root_32();
+  var div = root_33();
   var aside = child(div);
   var div_1 = child(aside);
   var span = child(div_1);
@@ -25236,8 +25316,8 @@ function Dashboard($$anchor, $$props) {
   var node = child(div_2);
   {
     var consequent = ($$anchor2) => {
-      var p = root5();
-      append($$anchor2, p);
+      var p_1 = root5();
+      append($$anchor2, p_1);
     };
     var alternate = ($$anchor2) => {
       var fragment = comment();
@@ -25309,6 +25389,9 @@ function Dashboard($$anchor, $$props) {
         },
         get running() {
           return get2(running);
+        },
+        get progress() {
+          return get2(progress);
         },
         onSubmit: run3
       });
