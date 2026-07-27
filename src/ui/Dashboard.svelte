@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import { Notice, type TFile, type EventRef } from "obsidian";
+	import { Notice, type EventRef } from "obsidian";
 	import type { AuditReport } from "../scanner";
 	import type SafiSiteAuditPlugin from "../main";
 	import {
@@ -8,6 +8,7 @@
 		readAudit,
 		saveAudit,
 		type AuditListItem,
+		type SavedAudit,
 	} from "../audit-store";
 	import { runAudit } from "../audit-runner";
 	import ReportView from "./ReportView.svelte";
@@ -62,16 +63,16 @@
 		running = true;
 		try {
 			const report = await runAudit({ url, maxPages: pages }, plugin.settings);
-			const file: TFile = await saveAudit(plugin.app, plugin.settings, report);
+			const { note }: SavedAudit = await saveAudit(plugin.app, plugin.settings, report);
 			// Show it immediately from the in-memory report (cache may lag), then reconcile.
 			selected = report;
-			selectedPath = file.path;
+			selectedPath = note.path;
 			mode = "detail";
 			items = [
-				{ file, url: report.startUrl, date: report.generatedAt, score: report.score, pages: report.pagesScanned },
-				...items.filter((i) => i.file.path !== file.path),
+				{ file: note, url: report.startUrl, date: report.generatedAt, score: report.score, pages: report.pagesScanned },
+				...items.filter((i) => i.file.path !== note.path),
 			];
-			new Notice(`Audit saved: ${file.name}`);
+			new Notice(`Audit saved to ${note.parent?.path ?? plugin.settings.auditFolder}`);
 		} catch (e) {
 			new Notice(`Audit failed: ${(e as Error).message}`);
 		} finally {

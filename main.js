@@ -24260,16 +24260,13 @@ function buildNote(report) {
     "---",
     ""
   ].join("\n");
-  const body = render4(report, "md");
-  const data2 = `
-
-## Report data
-
-\`\`\`${FENCE}
-${JSON.stringify(report)}
-\`\`\`
-`;
-  return frontmatter + body + data2;
+  return frontmatter + render4(report, "md");
+}
+function buildJson(report) {
+  return JSON.stringify(report);
+}
+function buildHtml(report) {
+  return render4(report, "html");
 }
 function parseNote(content) {
   const re = new RegExp("```" + FENCE + "\\n([\\s\\S]*?)\\n```");
@@ -24281,19 +24278,24 @@ function parseNote(content) {
     return null;
   }
 }
-function auditFileName(report) {
+function siteFolderName(report) {
   let host = report.startUrl;
   try {
     host = new URL(report.startUrl).hostname || report.startUrl;
   } catch {
   }
-  const safeHost = host.replace(/[^a-z0-9.-]/gi, "-").replace(/^-+|-+$/g, "") || "site";
+  return host.replace(/[^a-z0-9.-]/gi, "-").replace(/^-+|-+$/g, "") || "site";
+}
+function runBaseName(report) {
   const d = new Date(report.generatedAt);
-  const stamp = isNaN(d.getTime()) ? "audit" : d.toISOString().slice(0, 16).replace(/[T:]/g, "-");
-  return `${safeHost}-${stamp}.md`;
+  if (isNaN(d.getTime())) return "audit";
+  return d.toISOString().slice(0, 16).replace(/[T:]/g, "-");
 }
 
 // src/audit-store.ts
+function siblingPath(notePath, ext) {
+  return notePath.replace(/\.md$/, `.${ext}`);
+}
 async function ensureFolder(app, path) {
   const p = (0, import_obsidian2.normalizePath)(path);
   if (!app.vault.getAbstractFileByPath(p)) {
@@ -24302,15 +24304,14 @@ async function ensureFolder(app, path) {
   }
 }
 function listAudits(app, settings) {
-  const folder = app.vault.getAbstractFileByPath((0, import_obsidian2.normalizePath)(settings.auditFolder));
-  if (!(folder instanceof import_obsidian2.TFolder)) return [];
+  const prefix = `${(0, import_obsidian2.normalizePath)(settings.auditFolder)}/`;
   const items = [];
-  for (const child2 of folder.children) {
-    if (!(child2 instanceof import_obsidian2.TFile) || child2.extension !== "md") continue;
-    const fm = app.metadataCache.getFileCache(child2)?.frontmatter;
+  for (const file of app.vault.getMarkdownFiles()) {
+    if (!file.path.startsWith(prefix)) continue;
+    const fm = app.metadataCache.getFileCache(file)?.frontmatter;
     if (!fm?.ssa_audit) continue;
     items.push({
-      file: child2,
+      file,
       url: fm.url ?? "",
       date: fm.date ?? "",
       score: typeof fm.score === "number" ? fm.score : 0,
@@ -24320,19 +24321,33 @@ function listAudits(app, settings) {
   items.sort((a, b) => a.date < b.date ? 1 : -1);
   return items;
 }
-async function readAudit(app, file) {
-  return parseNote(await app.vault.cachedRead(file));
+async function readAudit(app, note) {
+  const json = app.vault.getAbstractFileByPath(siblingPath(note.path, "json"));
+  if (json instanceof import_obsidian2.TFile) {
+    try {
+      return JSON.parse(await app.vault.cachedRead(json));
+    } catch {
+      return null;
+    }
+  }
+  return parseNote(await app.vault.cachedRead(note));
 }
 async function saveAudit(app, settings, report) {
+  const folder = `${settings.auditFolder}/${siteFolderName(report)}`;
   await ensureFolder(app, settings.auditFolder);
-  const base = auditFileName(report).replace(/\.md$/, "");
-  let path = (0, import_obsidian2.normalizePath)(`${settings.auditFolder}/${base}.md`);
+  await ensureFolder(app, folder);
+  const stamp = runBaseName(report);
+  let base = stamp;
   let i = 2;
-  while (app.vault.getAbstractFileByPath(path)) {
-    path = (0, import_obsidian2.normalizePath)(`${settings.auditFolder}/${base}-${i}.md`);
+  while (app.vault.getAbstractFileByPath((0, import_obsidian2.normalizePath)(`${folder}/${base}.md`))) {
+    base = `${stamp}-${i}`;
     i++;
   }
-  return app.vault.create(path, buildNote(report));
+  const path = (ext) => (0, import_obsidian2.normalizePath)(`${folder}/${base}.${ext}`);
+  const note = await app.vault.create(path("md"), buildNote(report));
+  const json = await app.vault.create(path("json"), buildJson(report));
+  const html4 = await app.vault.create(path("html"), buildHtml(report));
+  return { note, json, html: html4 };
 }
 async function openInObsidian(app, file) {
   await app.workspace.getLeaf("tab").openFile(file);
@@ -25181,25 +25196,25 @@ function Dashboard($$anchor, $$props) {
     set(running, true);
     try {
       const report = await runAudit({ url, maxPages: pages }, $$props.plugin.settings);
-      const file = await saveAudit($$props.plugin.app, $$props.plugin.settings, report);
+      const { note } = await saveAudit($$props.plugin.app, $$props.plugin.settings, report);
       set(selected, report, true);
-      set(selectedPath, file.path, true);
+      set(selectedPath, note.path, true);
       set(mode, "detail");
       set(
         items,
         [
           {
-            file,
+            file: note,
             url: report.startUrl,
             date: report.generatedAt,
             score: report.score,
             pages: report.pagesScanned
           },
-          ...get2(items).filter((i) => i.file.path !== file.path)
+          ...get2(items).filter((i) => i.file.path !== note.path)
         ],
         true
       );
-      new import_obsidian6.Notice(`Audit saved: ${file.name}`);
+      new import_obsidian6.Notice(`Audit saved to ${note.parent?.path ?? $$props.plugin.settings.auditFolder}`);
     } catch (e) {
       new import_obsidian6.Notice(`Audit failed: ${e.message}`);
     } finally {
