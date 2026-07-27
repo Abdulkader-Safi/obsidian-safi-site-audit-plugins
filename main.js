@@ -130,7 +130,7 @@ var SafiSiteAuditSettingTab = class extends import_obsidian.PluginSettingTab {
 };
 
 // src/view.ts
-var import_obsidian7 = require("obsidian");
+var import_obsidian6 = require("obsidian");
 
 // node_modules/esm-env/dev-fallback.js
 var node_env = globalThis.process?.env?.NODE_ENV;
@@ -1895,11 +1895,11 @@ var Batch = class _Batch {
     var effects = collected_effects = [];
     var render_effects = [];
     var updates = legacy_updates = [];
-    for (const root6 of roots) {
+    for (const root10 of roots) {
       try {
-        this.#traverse(root6, effects, render_effects);
+        this.#traverse(root10, effects, render_effects);
       } catch (e) {
-        reset_all(root6);
+        reset_all(root10);
         if (!this.#is_deferred()) this.discard();
         throw e;
       }
@@ -1972,9 +1972,9 @@ var Batch = class _Batch {
    * @param {Effect[]} effects
    * @param {Effect[]} render_effects
    */
-  #traverse(root6, effects, render_effects) {
-    root6.f ^= CLEAN;
-    var effect2 = root6.first;
+  #traverse(root10, effects, render_effects) {
+    root10.f ^= CLEAN;
+    var effect2 = root10.first;
     while (effect2 !== null) {
       var flags2 = effect2.f;
       var is_branch = (flags2 & (BRANCH_EFFECT | ROOT_EFFECT)) !== 0;
@@ -2216,8 +2216,8 @@ var Batch = class _Batch {
         }
         if (batch.#roots.length > 0 && !batch.#decrement_queued) {
           batch.apply();
-          for (var root6 of batch.#roots) {
-            batch.#traverse(root6, [], []);
+          for (var root10 of batch.#roots) {
+            batch.#traverse(root10, [], []);
           }
           batch.#roots = [];
         }
@@ -3701,7 +3701,7 @@ function is_dirty(reaction) {
   }
   return false;
 }
-function schedule_possible_effect_self_invalidation(signal, effect2, root6 = true) {
+function schedule_possible_effect_self_invalidation(signal, effect2, root10 = true) {
   var reactions = signal.reactions;
   if (reactions === null) return;
   if (!async_mode_flag && current_sources !== null && current_sources.has(signal)) {
@@ -3717,7 +3717,7 @@ function schedule_possible_effect_self_invalidation(signal, effect2, root6 = tru
         false
       );
     } else if (effect2 === reaction) {
-      if (root6) {
+      if (root10) {
         set_signal_status(reaction, DIRTY);
       } else if ((reaction.f & CLEAN) !== 0) {
         set_signal_status(reaction, MAYBE_DIRTY);
@@ -4797,6 +4797,9 @@ function if_block(node, fn, elseif = false) {
 var NAN = Symbol("NaN");
 
 // node_modules/svelte/src/internal/client/dom/blocks/each.js
+function index(_, i) {
+  return i;
+}
 function pause_effects(state2, to_destroy, controlled_anchor) {
   var transitions = [];
   var length = to_destroy.length;
@@ -6279,8 +6282,8 @@ if (typeof window !== "undefined") {
   ((window.__svelte ??= {}).v ??= /* @__PURE__ */ new Set()).add(PUBLIC_VERSION);
 }
 
-// src/ui/Dashboard.svelte
-var import_obsidian6 = require("obsidian");
+// src/ui/ReportView.svelte
+var import_obsidian4 = require("obsidian");
 
 // src/audit-store.ts
 var import_obsidian2 = require("obsidian");
@@ -11871,21 +11874,21 @@ function filterParsed(selector, elements, options) {
 function filterBySelector(selector, elements, options) {
   var _a5;
   if (selector.some(isTraversal)) {
-    const root6 = (_a5 = options.root) !== null && _a5 !== void 0 ? _a5 : getDocumentRoot(elements[0]);
+    const root10 = (_a5 = options.root) !== null && _a5 !== void 0 ? _a5 : getDocumentRoot(elements[0]);
     const opts = { ...options, context: elements, relativeSelector: false };
     selector.push(SCOPE_PSEUDO);
-    return findFilterElements(root6, selector, opts, true, elements.length);
+    return findFilterElements(root10, selector, opts, true, elements.length);
   }
   return findFilterElements(elements, selector, options, false, elements.length);
 }
-function select(selector, root6, options = {}, limit = Infinity) {
+function select(selector, root10, options = {}, limit = Infinity) {
   if (typeof selector === "function") {
-    return find2(root6, selector);
+    return find2(root10, selector);
   }
   const [plain, filtered] = groupSelectors(parse(selector));
-  const results = filtered.map((sel) => findFilterElements(root6, sel, options, true, limit));
+  const results = filtered.map((sel) => findFilterElements(root10, sel, options, true, limit));
   if (plain.length) {
-    results.push(findElements(root6, plain, options, limit));
+    results.push(findElements(root10, plain, options, limit));
   }
   if (results.length === 0) {
     return [];
@@ -11895,7 +11898,7 @@ function select(selector, root6, options = {}, limit = Infinity) {
   }
   return uniqueSort(results.reduce((a, b) => [...a, ...b]));
 }
-function findFilterElements(root6, selector, options, queryForSelector, totalLimit) {
+function findFilterElements(root10, selector, options, queryForSelector, totalLimit) {
   const filterIndex = selector.findIndex(isFilter);
   const sub = selector.slice(0, filterIndex);
   const filter4 = selector[filterIndex];
@@ -11903,7 +11906,7 @@ function findFilterElements(root6, selector, options, queryForSelector, totalLim
   const limit = getLimit(filter4.name, filter4.data, partLimit);
   if (limit === 0)
     return [];
-  const elemsNoLimit = sub.length === 0 && !Array.isArray(root6) ? getChildren(root6).filter(isTag2) : sub.length === 0 ? (Array.isArray(root6) ? root6 : [root6]).filter(isTag2) : queryForSelector || sub.some(isTraversal) ? findElements(root6, [sub], options, limit) : filterElements(root6, [sub], options);
+  const elemsNoLimit = sub.length === 0 && !Array.isArray(root10) ? getChildren(root10).filter(isTag2) : sub.length === 0 ? (Array.isArray(root10) ? root10 : [root10]).filter(isTag2) : queryForSelector || sub.some(isTraversal) ? findElements(root10, [sub], options, limit) : filterElements(root10, [sub], options);
   const elems = elemsNoLimit.slice(0, limit);
   let result = filterByPosition(filter4.name, elems, filter4.data, options);
   if (result.length === 0 || selector.length === filterIndex + 1) {
@@ -11940,12 +11943,12 @@ function findFilterElements(root6, selector, options, queryForSelector, totalLim
     filterElements(result, [remainingSelector], options)
   );
 }
-function findElements(root6, sel, options, limit) {
-  const query = _compileToken(sel, options, root6);
-  return find2(root6, query, limit);
+function findElements(root10, sel, options, limit) {
+  const query = _compileToken(sel, options, root10);
+  return find2(root10, query, limit);
 }
-function find2(root6, query, limit = Infinity) {
-  const elems = prepareContext(root6, esm_exports2, query.shouldTestNextSiblings);
+function find2(root10, query, limit = Infinity) {
+  const elems = prepareContext(root10, esm_exports2, query.shouldTestNextSiblings);
   return find((node) => isTag2(node) && query(node), elems, true, limit);
 }
 function filterElements(elements, sel, options) {
@@ -12150,8 +12153,8 @@ function filter3(match) {
   var _a5;
   return this._make(filterArray(this.toArray(), match, this.options.xmlMode, (_a5 = this._root) === null || _a5 === void 0 ? void 0 : _a5[0]));
 }
-function filterArray(nodes, match, xmlMode, root6) {
-  return typeof match === "string" ? filter2(match, nodes, { xmlMode, root: root6 }) : nodes.filter(getFilterFn(match));
+function filterArray(nodes, match, xmlMode, root10) {
+  return typeof match === "string" ? filter2(match, nodes, { xmlMode, root: root10 }) : nodes.filter(getFilterFn(match));
 }
 function is4(selector) {
   const nodes = this.toArray();
@@ -12267,9 +12270,9 @@ function getParse(parser) {
     if (!Array.isArray(doc) && isDocument(doc)) {
       return doc;
     }
-    const root6 = new Document([]);
-    update2(doc, root6);
-    return root6;
+    const root10 = new Document([]);
+    update2(doc, root10);
+    return root10;
   };
 }
 function update2(newChilds, parent2) {
@@ -12609,9 +12612,9 @@ function text3(str) {
 }
 function clone() {
   const clone2 = Array.prototype.map.call(this.get(), (el) => cloneNode(el, true));
-  const root6 = new Document(clone2);
+  const root10 = new Document(clone2);
   for (const node of clone2) {
-    node.parent = root6;
+    node.parent = root10;
   }
   return this._make(clone2);
 }
@@ -12780,10 +12783,10 @@ var Cheerio = class {
    * @param root - Sets the root node.
    * @param options - Options for the instance.
    */
-  constructor(elements, root6, options) {
+  constructor(elements, root10, options) {
     this.length = 0;
     this.options = options;
-    this._root = root6;
+    this._root = root10;
     if (elements) {
       for (let idx = 0; idx < elements.length; idx++) {
         this[idx] = elements[idx];
@@ -12818,11 +12821,11 @@ function getLoad(parse6, render5) {
         return render5(dom, this.options);
       }
     }
-    function initialize(selector, context, root6 = initialRoot, opts) {
+    function initialize(selector, context, root10 = initialRoot, opts) {
       if (selector && isCheerio(selector))
         return selector;
       const options2 = flattenOptions(opts, internalOpts);
-      const r = typeof root6 === "string" ? [parse6(root6, options2, false, null)] : "length" in root6 ? root6 : [root6];
+      const r = typeof root10 === "string" ? [parse6(root10, options2, false, null)] : "length" in root10 ? root10 : [root10];
       const rootInstance = isCheerio(r) ? r : new LoadedCheerio(r, null, options2);
       rootInstance._root = rootInstance;
       if (!selector) {
@@ -24352,9 +24355,1094 @@ async function saveAudit(app, settings, report) {
 async function openInObsidian(app, file) {
   await app.workspace.getLeaf("tab").openFile(file);
 }
+function openExternally(app, path) {
+  const open = app.openWithDefaultApp;
+  if (typeof open !== "function") return false;
+  void open.call(app, (0, import_obsidian2.normalizePath)(path));
+  return true;
+}
+
+// src/ui/helpers.ts
+function hostOf(url) {
+  try {
+    return new URL(url).hostname || url;
+  } catch {
+    return url;
+  }
+}
+function pathOf(url) {
+  try {
+    const u = new URL(url);
+    return (u.pathname === "/" ? "/" : u.pathname.replace(/\/$/, "")) + u.search;
+  } catch {
+    return url;
+  }
+}
+function formatDate(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  return d.toLocaleString(void 0, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+function formatDateShort(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  const today = /* @__PURE__ */ new Date();
+  const sameDay = d.getDate() === today.getDate() && d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
+  return sameDay ? d.toLocaleTimeString(void 0, { hour: "2-digit", minute: "2-digit" }) : d.toLocaleDateString(void 0, { day: "numeric", month: "short", year: "numeric" });
+}
+function grade(score) {
+  if (score >= 90) return "A";
+  if (score >= 80) return "B";
+  if (score >= 70) return "C";
+  if (score >= 60) return "D";
+  return "F";
+}
+function scoreTone(score) {
+  if (score >= 80) return "is-good";
+  if (score >= 50) return "is-mid";
+  return "is-bad";
+}
+function statusTone(status) {
+  if (status === "fail") return "is-fail";
+  if (status === "warn") return "is-warn";
+  if (status === "info") return "is-info";
+  return "is-pass";
+}
+function statusLabel(status) {
+  if (status === "fail") return "Failed";
+  if (status === "warn") return "Warning";
+  if (status === "info") return "Info";
+  return "Passed";
+}
+function categoryLabel(category) {
+  const special = {
+    "core-seo": "Core SEO",
+    eeat: "E-E-A-T",
+    "url-structure": "URL structure",
+    psi: "PageSpeed"
+  };
+  if (special[category]) return special[category];
+  const words = category.replace(/-/g, " ");
+  return words.charAt(0).toUpperCase() + words.slice(1);
+}
+function statusTotals(report) {
+  const t = { pass: 0, warn: 0, fail: 0, info: 0, total: 0 };
+  for (const page of report.pages) {
+    for (const f of page.findings) {
+      t[f.status]++;
+      t.total++;
+    }
+  }
+  return t;
+}
+var RANK = { fail: 3, warn: 2, info: 1, pass: 0 };
+function buildIssues(report) {
+  const map2 = /* @__PURE__ */ new Map();
+  for (const page of report.pages) {
+    for (const f of page.findings) {
+      if (f.status === "pass") continue;
+      let issue = map2.get(f.ruleId);
+      if (!issue) {
+        issue = {
+          ruleId: f.ruleId,
+          title: f.title,
+          category: f.category,
+          severity: f.severity,
+          status: f.status,
+          message: f.message,
+          fix: f.fix,
+          pages: []
+        };
+        map2.set(f.ruleId, issue);
+      }
+      if (RANK[f.status] > RANK[issue.status]) {
+        issue.status = f.status;
+        issue.message = f.message;
+      }
+      if (!issue.pages.includes(page.url)) issue.pages.push(page.url);
+    }
+  }
+  return [...map2.values()].sort(
+    (a, b) => RANK[b.status] - RANK[a.status] || b.pages.length - a.pages.length
+  );
+}
+function countFindings(report) {
+  let n = 0;
+  for (const page of report.pages) n += page.findings.length;
+  return n;
+}
+function pageIssueCount(page) {
+  let n = 0;
+  for (const f of page.findings) if (f.status !== "pass") n++;
+  return n;
+}
+function groupBySite(items) {
+  const map2 = /* @__PURE__ */ new Map();
+  for (const item of items) {
+    const host = hostOf(item.url);
+    const runs = map2.get(host);
+    if (runs) runs.push(item);
+    else map2.set(host, [item]);
+  }
+  return [...map2.entries()].map(([host, runs]) => ({ host, runs, latest: runs[0]?.score ?? 0 })).sort((a, b) => a.host.localeCompare(b.host));
+}
+function metricTone(status) {
+  if (status === "bad") return "is-bad";
+  if (status === "warn") return "is-mid";
+  if (status === "missing") return "is-missing";
+  return "";
+}
+function formatMetricValue(value2, unit) {
+  if (value2 === null || value2 === "") return "None";
+  const text5 = typeof value2 === "number" ? value2.toLocaleString() : value2;
+  return unit ? `${text5} ${unit}` : text5;
+}
+function groupMetrics2(metrics) {
+  const map2 = /* @__PURE__ */ new Map();
+  for (const m of metrics) {
+    const list = map2.get(m.category);
+    if (list) list.push(m);
+    else map2.set(m.category, [m]);
+  }
+  return [...map2.entries()].map(([category, list]) => ({ category, metrics: list })).sort((a, b) => a.category.localeCompare(b.category));
+}
+
+// src/ui/icon.ts
+var import_obsidian3 = require("obsidian");
+function icon(node, name) {
+  (0, import_obsidian3.setIcon)(node, name);
+  return {
+    update(next3) {
+      node.empty();
+      (0, import_obsidian3.setIcon)(node, next3);
+    }
+  };
+}
+
+// src/ui/ScoreGauge.svelte
+var root2 = from_html(`<div class="ssa-gauge" role="img"><svg aria-hidden="true"><circle fill="none" class="ssa-gauge-track"></circle><circle fill="none" stroke-linecap="round"></circle></svg> <div class="ssa-gauge-center"><span class="ssa-gauge-value"> </span> <span class="ssa-gauge-grade"> </span></div></div>`);
+function ScoreGauge($$anchor, $$props) {
+  push($$props, true);
+  let size = prop($$props, "size", 3, 92);
+  const stroke = 6;
+  const clamped = user_derived(() => Math.max(0, Math.min(100, $$props.value)));
+  const r = user_derived(() => (size() - stroke) / 2);
+  const c = user_derived(() => 2 * Math.PI * get2(r));
+  const offset = user_derived(() => get2(c) * (1 - get2(clamped) / 100));
+  const tone = user_derived(() => scoreTone(get2(clamped)));
+  var div = root2();
+  var svg = child(div);
+  var circle = child(svg);
+  set_attribute2(circle, "stroke-width", stroke);
+  var circle_1 = sibling(circle);
+  set_attribute2(circle_1, "stroke-width", stroke);
+  reset(svg);
+  var div_1 = sibling(svg, 2);
+  var span = child(div_1);
+  var text5 = child(span, true);
+  reset(span);
+  var span_1 = sibling(span, 2);
+  var text_1 = child(span_1);
+  reset(span_1);
+  reset(div_1);
+  reset(div);
+  template_effect(
+    ($0, $1, $2, $3) => {
+      set_style(div, `width:${size() ?? ""}px;height:${size() ?? ""}px`);
+      set_attribute2(div, "aria-label", `Health score ${$0 ?? ""} out of 100, grade ${$1 ?? ""}`);
+      set_attribute2(svg, "width", size());
+      set_attribute2(svg, "height", size());
+      set_attribute2(svg, "viewBox", `0 0 ${size() ?? ""} ${size() ?? ""}`);
+      set_attribute2(circle, "cx", size() / 2);
+      set_attribute2(circle, "cy", size() / 2);
+      set_attribute2(circle, "r", get2(r));
+      set_attribute2(circle_1, "cx", size() / 2);
+      set_attribute2(circle_1, "cy", size() / 2);
+      set_attribute2(circle_1, "r", get2(r));
+      set_attribute2(circle_1, "stroke-dasharray", get2(c));
+      set_attribute2(circle_1, "stroke-dashoffset", get2(offset));
+      set_class(circle_1, 0, `ssa-gauge-arc ${get2(tone) ?? ""}`);
+      set_text(text5, $2);
+      set_text(text_1, `Grade ${$3 ?? ""}`);
+    },
+    [
+      () => Math.round(get2(clamped)),
+      () => grade(get2(clamped)),
+      () => Math.round(get2(clamped)),
+      () => grade(get2(clamped))
+    ]
+  );
+  append($$anchor, div);
+  pop();
+}
+
+// src/ui/IssuesPanel.svelte
+var root3 = from_html(`<option> </option>`);
+var root_1 = from_html(`<p class="ssa-empty-line">Nothing matches these filters.</p>`);
+var root_2 = from_html(`<div class="ssa-fix"><span class="ssa-fix-label">How to fix</span> <p class="ssa-fix-text"> </p></div>`);
+var root_3 = from_html(`<li> </li>`);
+var root_4 = from_html(`<button class="ssa-link-btn"> </button>`);
+var root_5 = from_html(`<details class="ssa-row"><summary class="ssa-row-head"><span aria-hidden="true"></span> <span class="ssa-row-main"><span class="ssa-row-title"> </span> <span class="ssa-row-sub"> </span></span> <span class="ssa-row-count"> <span class="ssa-row-count-unit"> </span></span></summary> <div class="ssa-row-body"><p class="ssa-row-msg"><span> </span> </p> <!> <div class="ssa-affected"><span class="ssa-affected-label">Affected pages</span> <ul class="ssa-affected-list"></ul> <!></div></div></details>`);
+var root_6 = from_html(`<div class="ssa-list"></div>`);
+var root_7 = from_html(`<div class="ssa-panel"><div class="ssa-filters"><div class="ssa-segmented"><button><span class="ssa-seg-count"> </span> failed</button> <button><span class="ssa-seg-count"> </span> warnings</button> <button><span class="ssa-seg-count"> </span> info</button></div> <select class="ssa-select" aria-label="Filter by category"><option>Every category</option><!></select> <input class="ssa-input ssa-input-search" placeholder="Search rules"/></div> <!></div>`);
+function IssuesPanel($$anchor, $$props) {
+  push($$props, true);
+  const issues = user_derived(() => buildIssues($$props.report));
+  const totals = user_derived(() => statusTotals($$props.report));
+  const categories = user_derived(() => $$props.report.categories.map((c) => c.category));
+  let statusFilter = state(proxy(["fail", "warn", "info"]));
+  let catFilter = state("all");
+  let query = state("");
+  const filtered = user_derived(() => get2(issues).filter((i) => {
+    if (!get2(statusFilter).includes(i.status)) return false;
+    if (get2(catFilter) !== "all" && i.category !== get2(catFilter)) return false;
+    const q = get2(query).trim().toLowerCase();
+    if (q && !`${i.title} ${i.message} ${i.ruleId}`.toLowerCase().includes(q)) return false;
+    return true;
+  }));
+  function toggle(status) {
+    set(
+      statusFilter,
+      get2(statusFilter).includes(status) ? get2(statusFilter).filter((s) => s !== status) : [...get2(statusFilter), status],
+      true
+    );
+  }
+  const PAGE_PREVIEW = 12;
+  let expanded = state(proxy({}));
+  function shown(issue) {
+    return get2(expanded)[issue.ruleId] ? issue.pages : issue.pages.slice(0, PAGE_PREVIEW);
+  }
+  var div = root_7();
+  var div_1 = child(div);
+  var div_2 = child(div_1);
+  var button = child(div_2);
+  let classes;
+  var span = child(button);
+  var text5 = child(span, true);
+  reset(span);
+  next();
+  reset(button);
+  var button_1 = sibling(button, 2);
+  let classes_1;
+  var span_1 = child(button_1);
+  var text_1 = child(span_1, true);
+  reset(span_1);
+  next();
+  reset(button_1);
+  var button_2 = sibling(button_1, 2);
+  let classes_2;
+  var span_2 = child(button_2);
+  var text_2 = child(span_2, true);
+  reset(span_2);
+  next();
+  reset(button_2);
+  reset(div_2);
+  var select2 = sibling(div_2, 2);
+  var option = child(select2);
+  option.value = option.__value = "all";
+  var node = sibling(option);
+  each(node, 16, () => get2(categories), (c) => c, ($$anchor2, c) => {
+    var option_1 = root3();
+    var text_3 = child(option_1, true);
+    reset(option_1);
+    var option_1_value = {};
+    template_effect(
+      ($0) => {
+        set_text(text_3, $0);
+        if (option_1_value !== (option_1_value = c)) {
+          option_1.value = (option_1.__value = c) ?? "";
+        }
+      },
+      [() => categoryLabel(c)]
+    );
+    append($$anchor2, option_1);
+  });
+  reset(select2);
+  var input = sibling(select2, 2);
+  remove_input_defaults(input);
+  reset(div_1);
+  var node_1 = sibling(div_1, 2);
+  {
+    var consequent = ($$anchor2) => {
+      var p = root_1();
+      append($$anchor2, p);
+    };
+    var alternate = ($$anchor2) => {
+      var div_3 = root_6();
+      each(div_3, 21, () => get2(filtered), (issue) => issue.ruleId, ($$anchor3, issue) => {
+        var details = root_5();
+        var summary = child(details);
+        var span_3 = child(summary);
+        var span_4 = sibling(span_3, 2);
+        var span_5 = child(span_4);
+        var text_4 = child(span_5, true);
+        reset(span_5);
+        var span_6 = sibling(span_5, 2);
+        var text_5 = child(span_6);
+        reset(span_6);
+        reset(span_4);
+        var span_7 = sibling(span_4, 2);
+        var text_6 = child(span_7);
+        var span_8 = sibling(text_6);
+        var text_7 = child(span_8, true);
+        reset(span_8);
+        reset(span_7);
+        reset(summary);
+        var div_4 = sibling(summary, 2);
+        var p_1 = child(div_4);
+        var span_9 = child(p_1);
+        var text_8 = child(span_9, true);
+        reset(span_9);
+        var text_9 = sibling(span_9);
+        reset(p_1);
+        var node_2 = sibling(p_1, 2);
+        {
+          var consequent_1 = ($$anchor4) => {
+            var div_5 = root_2();
+            var p_2 = sibling(child(div_5), 2);
+            var text_10 = child(p_2, true);
+            reset(p_2);
+            reset(div_5);
+            template_effect(() => set_text(text_10, get2(issue).fix));
+            append($$anchor4, div_5);
+          };
+          if_block(node_2, ($$render) => {
+            if (get2(issue).fix) $$render(consequent_1);
+          });
+        }
+        var div_6 = sibling(node_2, 2);
+        var ul = sibling(child(div_6), 2);
+        each(ul, 20, () => shown(get2(issue)), (page) => page, ($$anchor4, page) => {
+          var li = root_3();
+          var text_11 = child(li, true);
+          reset(li);
+          template_effect(
+            ($0) => {
+              set_attribute2(li, "title", page);
+              set_text(text_11, $0);
+            },
+            [() => pathOf(page)]
+          );
+          append($$anchor4, li);
+        });
+        reset(ul);
+        var node_3 = sibling(ul, 2);
+        {
+          var consequent_2 = ($$anchor4) => {
+            var button_3 = root_4();
+            var text_12 = child(button_3, true);
+            reset(button_3);
+            template_effect(() => set_text(text_12, get2(expanded)[get2(issue).ruleId] ? "Show fewer" : `Show all ${get2(issue).pages.length} pages`));
+            delegated("click", button_3, () => set(
+              expanded,
+              {
+                ...get2(expanded),
+                [get2(issue).ruleId]: !get2(expanded)[get2(issue).ruleId]
+              },
+              true
+            ));
+            append($$anchor4, button_3);
+          };
+          if_block(node_3, ($$render) => {
+            if (get2(issue).pages.length > PAGE_PREVIEW) $$render(consequent_2);
+          });
+        }
+        reset(div_6);
+        reset(div_4);
+        reset(details);
+        template_effect(
+          ($0, $1, $2, $3) => {
+            set_class(span_3, 1, `ssa-mark ${$0 ?? ""}`);
+            set_text(text_4, get2(issue).title);
+            set_text(text_5, `${$1 ?? ""} \xB7 ${get2(issue).ruleId ?? ""}`);
+            set_text(text_6, `${get2(issue).pages.length ?? ""} `);
+            set_text(text_7, get2(issue).pages.length === 1 ? "page" : "pages");
+            set_class(span_9, 1, `ssa-status-word ${$2 ?? ""}`);
+            set_text(text_8, $3);
+            set_text(text_9, ` ${get2(issue).message ?? ""}`);
+          },
+          [
+            () => statusTone(get2(issue).status),
+            () => categoryLabel(get2(issue).category),
+            () => statusTone(get2(issue).status),
+            () => statusLabel(get2(issue).status)
+          ]
+        );
+        append($$anchor3, details);
+      });
+      reset(div_3);
+      append($$anchor2, div_3);
+    };
+    if_block(node_1, ($$render) => {
+      if (get2(filtered).length === 0) $$render(consequent);
+      else $$render(alternate, -1);
+    });
+  }
+  reset(div);
+  template_effect(
+    ($0, $1, $2) => {
+      classes = set_class(button, 1, "ssa-seg", null, classes, $0);
+      set_text(text5, get2(totals).fail);
+      classes_1 = set_class(button_1, 1, "ssa-seg", null, classes_1, $1);
+      set_text(text_1, get2(totals).warn);
+      classes_2 = set_class(button_2, 1, "ssa-seg", null, classes_2, $2);
+      set_text(text_2, get2(totals).info);
+    },
+    [
+      () => ({ "is-on": get2(statusFilter).includes("fail") }),
+      () => ({ "is-on": get2(statusFilter).includes("warn") }),
+      () => ({ "is-on": get2(statusFilter).includes("info") })
+    ]
+  );
+  delegated("click", button, () => toggle("fail"));
+  delegated("click", button_1, () => toggle("warn"));
+  delegated("click", button_2, () => toggle("info"));
+  bind_select_value(select2, () => get2(catFilter), ($$value) => set(catFilter, $$value));
+  bind_value(input, () => get2(query), ($$value) => set(query, $$value));
+  append($$anchor, div);
+  pop();
+}
+delegate(["click"]);
+
+// src/ui/PagesPanel.svelte
+var root4 = from_html(`<p class="ssa-empty-line">No page matches that search.</p>`);
+var root_12 = from_html(`<p class="ssa-row-msg">Every check passed on this page.</p>`);
+var root_22 = from_html(`<tr><td><span> </span></td><td><span class="ssa-cell-strong"> </span> <span class="ssa-cell-faint"> </span></td><td class="ssa-cell-muted"> </td></tr>`);
+var root_32 = from_html(`<table class="ssa-table"><thead><tr><th class="ssa-col-status">Status</th><th>Check</th><th>Result</th></tr></thead><tbody></tbody></table>`);
+var root_42 = from_html(`<details class="ssa-row"><summary class="ssa-row-head"><span> </span> <span class="ssa-row-main"><span class="ssa-row-title"> </span> <span class="ssa-row-sub"> </span></span> <span class="ssa-row-count"> <span class="ssa-row-count-unit"> </span></span></summary> <div class="ssa-row-body"><!></div></details>`);
+var root_52 = from_html(`<div class="ssa-list"></div>`);
+var root_62 = from_html(`<div class="ssa-panel"><div class="ssa-filters"><div class="ssa-segmented"><button>Lowest score</button> <button>Crawl order</button></div> <input class="ssa-input ssa-input-search" placeholder="Search pages"/></div> <!></div>`);
+function PagesPanel($$anchor, $$props) {
+  push($$props, true);
+  let query = state("");
+  let order = state("worst");
+  const pages = user_derived(() => {
+    const q = get2(query).trim().toLowerCase();
+    const list = q ? $$props.report.pages.filter((p) => p.url.toLowerCase().includes(q)) : $$props.report.pages;
+    return get2(order) === "worst" ? [...list].sort((a, b) => a.score - b.score) : list;
+  });
+  function problems(page) {
+    return page.findings.filter((f) => f.status !== "pass");
+  }
+  var div = root_62();
+  var div_1 = child(div);
+  var div_2 = child(div_1);
+  var button = child(div_2);
+  let classes;
+  var button_1 = sibling(button, 2);
+  let classes_1;
+  reset(div_2);
+  var input = sibling(div_2, 2);
+  remove_input_defaults(input);
+  reset(div_1);
+  var node = sibling(div_1, 2);
+  {
+    var consequent = ($$anchor2) => {
+      var p_1 = root4();
+      append($$anchor2, p_1);
+    };
+    var alternate_1 = ($$anchor2) => {
+      var div_3 = root_52();
+      each(div_3, 21, () => get2(pages), (page) => page.url, ($$anchor3, page) => {
+        const found = user_derived(() => problems(get2(page)));
+        var details = root_42();
+        var summary = child(details);
+        var span = child(summary);
+        var text5 = child(span, true);
+        reset(span);
+        var span_1 = sibling(span, 2);
+        var span_2 = child(span_1);
+        var text_1 = child(span_2, true);
+        reset(span_2);
+        var span_3 = sibling(span_2, 2);
+        var text_2 = child(span_3);
+        reset(span_3);
+        reset(span_1);
+        var span_4 = sibling(span_1, 2);
+        var text_3 = child(span_4);
+        var span_5 = sibling(text_3);
+        var text_4 = child(span_5, true);
+        reset(span_5);
+        reset(span_4);
+        reset(summary);
+        var div_4 = sibling(summary, 2);
+        var node_1 = child(div_4);
+        {
+          var consequent_1 = ($$anchor4) => {
+            var p_2 = root_12();
+            append($$anchor4, p_2);
+          };
+          var alternate = ($$anchor4) => {
+            var table2 = root_32();
+            var tbody = sibling(child(table2));
+            each(tbody, 23, () => get2(found), (f, i) => `${f.ruleId}-${i}`, ($$anchor5, f) => {
+              var tr = root_22();
+              var td = child(tr);
+              var span_6 = child(td);
+              var text_5 = child(span_6, true);
+              reset(span_6);
+              reset(td);
+              var td_1 = sibling(td);
+              var span_7 = child(td_1);
+              var text_6 = child(span_7, true);
+              reset(span_7);
+              var span_8 = sibling(span_7, 2);
+              var text_7 = child(span_8, true);
+              reset(span_8);
+              reset(td_1);
+              var td_2 = sibling(td_1);
+              var text_8 = child(td_2, true);
+              reset(td_2);
+              reset(tr);
+              template_effect(
+                ($0, $1, $2) => {
+                  set_class(span_6, 1, `ssa-status-word ${$0 ?? ""}`);
+                  set_text(text_5, $1);
+                  set_text(text_6, get2(f).title);
+                  set_text(text_7, $2);
+                  set_text(text_8, get2(f).message);
+                },
+                [
+                  () => statusTone(get2(f).status),
+                  () => statusLabel(get2(f).status),
+                  () => categoryLabel(get2(f).category)
+                ]
+              );
+              append($$anchor5, tr);
+            });
+            reset(tbody);
+            reset(table2);
+            append($$anchor4, table2);
+          };
+          if_block(node_1, ($$render) => {
+            if (get2(found).length === 0) $$render(consequent_1);
+            else $$render(alternate, -1);
+          });
+        }
+        reset(div_4);
+        reset(details);
+        template_effect(
+          ($0, $1, $2) => {
+            set_class(span, 1, `ssa-score-chip ${$0 ?? ""}`);
+            set_text(text5, get2(page).score);
+            set_attribute2(span_2, "title", get2(page).url);
+            set_text(text_1, $1);
+            set_text(text_2, `HTTP ${get2(page).status ?? ""}`);
+            set_text(text_3, `${$2 ?? ""} `);
+            set_text(text_4, get2(found).length === 1 ? "issue" : "issues");
+          },
+          [
+            () => scoreTone(get2(page).score),
+            () => pathOf(get2(page).url),
+            () => pageIssueCount(get2(page))
+          ]
+        );
+        append($$anchor3, details);
+      });
+      reset(div_3);
+      append($$anchor2, div_3);
+    };
+    if_block(node, ($$render) => {
+      if (get2(pages).length === 0) $$render(consequent);
+      else $$render(alternate_1, -1);
+    });
+  }
+  reset(div);
+  template_effect(() => {
+    classes = set_class(button, 1, "ssa-seg", null, classes, { "is-on": get2(order) === "worst" });
+    classes_1 = set_class(button_1, 1, "ssa-seg", null, classes_1, { "is-on": get2(order) === "crawl" });
+  });
+  delegated("click", button, () => set(order, "worst"));
+  delegated("click", button_1, () => set(order, "crawl"));
+  bind_value(input, () => get2(query), ($$value) => set(query, $$value));
+  append($$anchor, div);
+  pop();
+}
+delegate(["click"]);
+
+// src/ui/MetricsPanel.svelte
+var root5 = from_html(`<p class="ssa-empty-line">This audit has no measurements. Re-run it to collect them.</p>`);
+var root_13 = from_html(`<option> </option>`);
+var root_23 = from_html(`<span class="ssa-metric-note"> </span>`);
+var root_33 = from_html(`<div class="ssa-metric"><span class="ssa-metric-label"> </span> <span> </span> <!></div>`);
+var root_43 = from_html(`<div class="ssa-metric-grid"></div>`);
+var root_53 = from_html(`<span class="ssa-metric-table-note"> </span>`);
+var root_63 = from_html(`<th> </th>`);
+var root_72 = from_html(`<td class="ssa-cell-muted"> </td>`);
+var root_8 = from_html(`<tr></tr>`);
+var root_9 = from_html(`<div class="ssa-metric-table"><div class="ssa-metric-table-head"><span class="ssa-metric-table-label"> </span> <!></div> <div class="ssa-scroll-x"><table class="ssa-table"><thead><tr></tr></thead><tbody></tbody></table></div></div>`);
+var root_10 = from_html(`<section class="ssa-metric-group"><h3 class="ssa-metric-cat"> </h3> <!> <!></section>`);
+var root_11 = from_html(`<div class="ssa-filters"><select class="ssa-select ssa-select-wide" aria-label="Page to measure"></select> <span class="ssa-filters-note"> </span></div> <!>`, 1);
+var root_122 = from_html(`<div class="ssa-panel"><!></div>`);
+function MetricsPanel($$anchor, $$props) {
+  push($$props, true);
+  const withMetrics2 = user_derived(() => $$props.report.pages.filter((p) => (p.metrics?.length ?? 0) > 0));
+  let selectedUrl = state("");
+  const page = user_derived(() => get2(withMetrics2).find((p) => p.url === get2(selectedUrl)) ?? get2(withMetrics2)[0] ?? null);
+  const groups = user_derived(() => get2(page) ? groupMetrics2(get2(page).metrics ?? []) : []);
+  var div = root_122();
+  var node = child(div);
+  {
+    var consequent = ($$anchor2) => {
+      var p_1 = root5();
+      append($$anchor2, p_1);
+    };
+    var alternate = ($$anchor2) => {
+      var fragment = root_11();
+      var div_1 = first_child(fragment);
+      var select2 = child(div_1);
+      each(select2, 21, () => get2(withMetrics2), (p) => p.url, ($$anchor3, p) => {
+        var option = root_13();
+        var text5 = child(option, true);
+        reset(option);
+        var option_value = {};
+        template_effect(
+          ($0) => {
+            set_text(text5, $0);
+            if (option_value !== (option_value = get2(p).url)) {
+              option.value = (option.__value = get2(p).url) ?? "";
+            }
+          },
+          [() => pathOf(get2(p).url)]
+        );
+        append($$anchor3, option);
+      });
+      reset(select2);
+      var span = sibling(select2, 2);
+      var text_1 = child(span);
+      reset(span);
+      reset(div_1);
+      var node_1 = sibling(div_1, 2);
+      each(node_1, 17, () => get2(groups), (group) => group.category, ($$anchor3, group) => {
+        var section = root_10();
+        var h3 = child(section);
+        var text_2 = child(h3, true);
+        reset(h3);
+        var node_2 = sibling(h3, 2);
+        {
+          var consequent_3 = ($$anchor4) => {
+            var div_2 = root_43();
+            each(div_2, 21, () => get2(group).metrics, (m) => m.id, ($$anchor5, m) => {
+              var fragment_1 = comment();
+              var node_3 = first_child(fragment_1);
+              {
+                var consequent_2 = ($$anchor6) => {
+                  var div_3 = root_33();
+                  var span_1 = child(div_3);
+                  var text_3 = child(span_1, true);
+                  reset(span_1);
+                  var span_2 = sibling(span_1, 2);
+                  var text_4 = child(span_2, true);
+                  reset(span_2);
+                  var node_4 = sibling(span_2, 2);
+                  {
+                    var consequent_1 = ($$anchor7) => {
+                      var span_3 = root_23();
+                      var text_5 = child(span_3, true);
+                      reset(span_3);
+                      template_effect(() => set_text(text_5, get2(m).note));
+                      append($$anchor7, span_3);
+                    };
+                    if_block(node_4, ($$render) => {
+                      if (get2(m).note) $$render(consequent_1);
+                    });
+                  }
+                  reset(div_3);
+                  template_effect(
+                    ($0, $1) => {
+                      set_text(text_3, get2(m).label);
+                      set_class(span_2, 1, `ssa-metric-value ${$0 ?? ""}`);
+                      set_text(text_4, $1);
+                    },
+                    [
+                      () => metricTone(get2(m).status),
+                      () => formatMetricValue(get2(m).value, get2(m).unit)
+                    ]
+                  );
+                  append($$anchor6, div_3);
+                };
+                if_block(node_3, ($$render) => {
+                  if (get2(m).kind === "value") $$render(consequent_2);
+                });
+              }
+              append($$anchor5, fragment_1);
+            });
+            reset(div_2);
+            append($$anchor4, div_2);
+          };
+          var d = user_derived(() => get2(group).metrics.some((m) => m.kind === "value"));
+          if_block(node_2, ($$render) => {
+            if (get2(d)) $$render(consequent_3);
+          });
+        }
+        var node_5 = sibling(node_2, 2);
+        each(node_5, 17, () => get2(group).metrics, (m) => m.id, ($$anchor4, m) => {
+          var fragment_2 = comment();
+          var node_6 = first_child(fragment_2);
+          {
+            var consequent_5 = ($$anchor5) => {
+              var div_4 = root_9();
+              var div_5 = child(div_4);
+              var span_4 = child(div_5);
+              var text_6 = child(span_4, true);
+              reset(span_4);
+              var node_7 = sibling(span_4, 2);
+              {
+                var consequent_4 = ($$anchor6) => {
+                  var span_5 = root_53();
+                  var text_7 = child(span_5);
+                  reset(span_5);
+                  template_effect(($0) => set_text(text_7, `showing ${get2(m).rows.length ?? ""} of ${$0 ?? ""}`), [() => get2(m).total.toLocaleString()]);
+                  append($$anchor6, span_5);
+                };
+                if_block(node_7, ($$render) => {
+                  if (get2(m).total > get2(m).rows.length) $$render(consequent_4);
+                });
+              }
+              reset(div_5);
+              var div_6 = sibling(div_5, 2);
+              var table2 = child(div_6);
+              var thead = child(table2);
+              var tr = child(thead);
+              each(tr, 20, () => get2(m).columns, (col) => col, ($$anchor6, col) => {
+                var th = root_63();
+                var text_8 = child(th, true);
+                reset(th);
+                template_effect(() => set_text(text_8, col));
+                append($$anchor6, th);
+              });
+              reset(tr);
+              reset(thead);
+              var tbody = sibling(thead);
+              each(tbody, 21, () => get2(m).rows, index, ($$anchor6, row) => {
+                var tr_1 = root_8();
+                each(tr_1, 21, () => get2(row), index, ($$anchor7, cell) => {
+                  var td = root_72();
+                  var text_9 = child(td, true);
+                  reset(td);
+                  template_effect(() => set_text(text_9, get2(cell)));
+                  append($$anchor7, td);
+                });
+                reset(tr_1);
+                append($$anchor6, tr_1);
+              });
+              reset(tbody);
+              reset(table2);
+              reset(div_6);
+              reset(div_4);
+              template_effect(() => set_text(text_6, get2(m).label));
+              append($$anchor5, div_4);
+            };
+            if_block(node_6, ($$render) => {
+              if (get2(m).kind === "table") $$render(consequent_5);
+            });
+          }
+          append($$anchor4, fragment_2);
+        });
+        reset(section);
+        template_effect(($0) => set_text(text_2, $0), [() => categoryLabel(get2(group).category)]);
+        append($$anchor3, section);
+      });
+      template_effect(() => set_text(text_1, `${get2(page)?.metrics?.length ?? 0 ?? ""} measurements on this page`));
+      bind_select_value(select2, () => get2(selectedUrl), ($$value) => set(selectedUrl, $$value));
+      append($$anchor2, fragment);
+    };
+    if_block(node, ($$render) => {
+      if (get2(withMetrics2).length === 0) $$render(consequent);
+      else $$render(alternate, -1);
+    });
+  }
+  reset(div);
+  append($$anchor, div);
+  pop();
+}
+
+// src/ui/ReportView.svelte
+var root6 = from_html(`<button class="ssa-btn ssa-btn-outline ssa-btn-sm"><span></span> Open note</button> <button class="ssa-btn ssa-btn-outline ssa-btn-sm"><span></span> HTML report</button>`, 1);
+var root_14 = from_html(`<span class="ssa-split-seg is-pass"></span>`);
+var root_24 = from_html(`<span class="ssa-split-seg is-warn"></span>`);
+var root_34 = from_html(`<span class="ssa-split-seg is-fail"></span>`);
+var root_44 = from_html(`<span class="ssa-split-seg is-info"></span>`);
+var root_54 = from_html(`<div class="ssa-cat"><span class="ssa-cat-name"> </span> <span class="ssa-cat-track"><span></span></span> <span class="ssa-cat-score"> </span></div>`);
+var root_64 = from_html(`<div class="ssa-report"><header class="ssa-head"><div class="ssa-head-id"><h2 class="ssa-head-host"> </h2> <a class="ssa-head-url" rel="noopener"> </a> <p class="ssa-head-meta"> <span class="ssa-sep">\xB7</span> <span class="ssa-sep">\xB7</span> </p></div> <div class="ssa-head-actions"><!> <button class="ssa-btn ssa-btn-outline ssa-btn-sm"><span></span> Run again</button></div></header> <section class="ssa-score"><!> <div class="ssa-score-body"><div class="ssa-split" role="img"><!> <!> <!> <!></div> <dl class="ssa-tallies"><div class="ssa-tally"><dt>Passed</dt> <dd class="is-pass"> </dd></div> <div class="ssa-tally"><dt>Warnings</dt> <dd class="is-warn"> </dd></div> <div class="ssa-tally"><dt>Failed</dt> <dd class="is-fail"> </dd></div> <div class="ssa-tally"><dt>Info</dt> <dd class="is-info"> </dd></div></dl></div></section> <section class="ssa-cats-block"><div class="ssa-block-head"><h3 class="ssa-block-title">Category scores</h3> <div class="ssa-segmented"><button>Worst</button> <button>Best</button> <button>A\u2013Z</button></div></div> <div class="ssa-cats"></div></section> <nav class="ssa-tabs"><button>Issues</button> <button>Pages</button> <button>Measurements</button></nav> <!></div>`);
+function ReportView($$anchor, $$props) {
+  push($$props, true);
+  const totals = user_derived(() => statusTotals($$props.report));
+  const checks = user_derived(() => countFindings($$props.report));
+  let tab = state("issues");
+  let sort = state("worst");
+  const sortedCategories = user_derived(() => [...$$props.report.categories].sort((a, b) => {
+    if (get2(sort) === "az") return categoryLabel(a.category).localeCompare(categoryLabel(b.category));
+    return get2(sort) === "worst" ? a.score - b.score : b.score - a.score;
+  }));
+  function openNote() {
+    if (!$$props.path) return;
+    const file = $$props.plugin.app.vault.getAbstractFileByPath($$props.path);
+    if (file instanceof import_obsidian4.TFile) void openInObsidian($$props.plugin.app, file);
+  }
+  function openHtml() {
+    if (!$$props.path) return;
+    const html4 = siblingPath($$props.path, "html");
+    if (!$$props.plugin.app.vault.getAbstractFileByPath(html4)) {
+      new import_obsidian4.Notice("This audit has no HTML export. Run it again to create one.");
+      return;
+    }
+    if (!openExternally($$props.plugin.app, html4)) new import_obsidian4.Notice(`HTML export saved at ${html4}`);
+  }
+  var div = root_64();
+  var header = child(div);
+  var div_1 = child(header);
+  var h2 = child(div_1);
+  var text5 = child(h2, true);
+  reset(h2);
+  var a_1 = sibling(h2, 2);
+  var text_1 = child(a_1, true);
+  reset(a_1);
+  var p = sibling(a_1, 2);
+  var text_2 = child(p);
+  var text_3 = sibling(text_2, 2);
+  var text_4 = sibling(text_3, 2);
+  reset(p);
+  reset(div_1);
+  var div_2 = sibling(div_1, 2);
+  var node = child(div_2);
+  {
+    var consequent = ($$anchor2) => {
+      var fragment = root6();
+      var button = first_child(fragment);
+      var span = child(button);
+      action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "file-text");
+      next();
+      reset(button);
+      var button_1 = sibling(button, 2);
+      var span_1 = child(button_1);
+      action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "external-link");
+      next();
+      reset(button_1);
+      delegated("click", button, openNote);
+      delegated("click", button_1, openHtml);
+      append($$anchor2, fragment);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.path) $$render(consequent);
+    });
+  }
+  var button_2 = sibling(node, 2);
+  var span_2 = child(button_2);
+  action(span_2, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "refresh-cw");
+  next();
+  reset(button_2);
+  reset(div_2);
+  reset(header);
+  var section = sibling(header, 2);
+  var node_1 = child(section);
+  ScoreGauge(node_1, {
+    get value() {
+      return $$props.report.score;
+    }
+  });
+  var div_3 = sibling(node_1, 2);
+  var div_4 = child(div_3);
+  var node_2 = child(div_4);
+  {
+    var consequent_1 = ($$anchor2) => {
+      var span_3 = root_14();
+      template_effect(() => set_style(span_3, `flex-grow:${get2(totals).pass ?? ""}`));
+      append($$anchor2, span_3);
+    };
+    if_block(node_2, ($$render) => {
+      if (get2(totals).pass) $$render(consequent_1);
+    });
+  }
+  var node_3 = sibling(node_2, 2);
+  {
+    var consequent_2 = ($$anchor2) => {
+      var span_4 = root_24();
+      template_effect(() => set_style(span_4, `flex-grow:${get2(totals).warn ?? ""}`));
+      append($$anchor2, span_4);
+    };
+    if_block(node_3, ($$render) => {
+      if (get2(totals).warn) $$render(consequent_2);
+    });
+  }
+  var node_4 = sibling(node_3, 2);
+  {
+    var consequent_3 = ($$anchor2) => {
+      var span_5 = root_34();
+      template_effect(() => set_style(span_5, `flex-grow:${get2(totals).fail ?? ""}`));
+      append($$anchor2, span_5);
+    };
+    if_block(node_4, ($$render) => {
+      if (get2(totals).fail) $$render(consequent_3);
+    });
+  }
+  var node_5 = sibling(node_4, 2);
+  {
+    var consequent_4 = ($$anchor2) => {
+      var span_6 = root_44();
+      template_effect(() => set_style(span_6, `flex-grow:${get2(totals).info ?? ""}`));
+      append($$anchor2, span_6);
+    };
+    if_block(node_5, ($$render) => {
+      if (get2(totals).info) $$render(consequent_4);
+    });
+  }
+  reset(div_4);
+  var dl = sibling(div_4, 2);
+  var div_5 = child(dl);
+  var dd = sibling(child(div_5), 2);
+  var text_5 = child(dd, true);
+  reset(dd);
+  reset(div_5);
+  var div_6 = sibling(div_5, 2);
+  var dd_1 = sibling(child(div_6), 2);
+  var text_6 = child(dd_1, true);
+  reset(dd_1);
+  reset(div_6);
+  var div_7 = sibling(div_6, 2);
+  var dd_2 = sibling(child(div_7), 2);
+  var text_7 = child(dd_2, true);
+  reset(dd_2);
+  reset(div_7);
+  var div_8 = sibling(div_7, 2);
+  var dd_3 = sibling(child(div_8), 2);
+  var text_8 = child(dd_3, true);
+  reset(dd_3);
+  reset(div_8);
+  reset(dl);
+  reset(div_3);
+  reset(section);
+  var section_1 = sibling(section, 2);
+  var div_9 = child(section_1);
+  var div_10 = sibling(child(div_9), 2);
+  var button_3 = child(div_10);
+  let classes;
+  var button_4 = sibling(button_3, 2);
+  let classes_1;
+  var button_5 = sibling(button_4, 2);
+  let classes_2;
+  reset(div_10);
+  reset(div_9);
+  var div_11 = sibling(div_9, 2);
+  each(div_11, 21, () => get2(sortedCategories), (cat) => cat.category, ($$anchor2, cat) => {
+    var div_12 = root_54();
+    var span_7 = child(div_12);
+    var text_9 = child(span_7, true);
+    reset(span_7);
+    var span_8 = sibling(span_7, 2);
+    var span_9 = child(span_8);
+    reset(span_8);
+    var span_10 = sibling(span_8, 2);
+    var text_10 = child(span_10, true);
+    reset(span_10);
+    reset(div_12);
+    template_effect(
+      ($0, $1, $2) => {
+        set_attribute2(span_7, "title", $0);
+        set_text(text_9, $1);
+        set_class(span_9, 1, `ssa-cat-fill ${$2 ?? ""}`);
+        set_style(span_9, `width:${get2(cat).score ?? ""}%`);
+        set_text(text_10, get2(cat).score);
+      },
+      [
+        () => categoryLabel(get2(cat).category),
+        () => categoryLabel(get2(cat).category),
+        () => scoreTone(get2(cat).score)
+      ]
+    );
+    append($$anchor2, div_12);
+  });
+  reset(div_11);
+  reset(section_1);
+  var nav = sibling(section_1, 2);
+  var button_6 = child(nav);
+  let classes_3;
+  var button_7 = sibling(button_6, 2);
+  let classes_4;
+  var button_8 = sibling(button_7, 2);
+  let classes_5;
+  reset(nav);
+  var node_6 = sibling(nav, 2);
+  {
+    var consequent_5 = ($$anchor2) => {
+      IssuesPanel($$anchor2, {
+        get report() {
+          return $$props.report;
+        }
+      });
+    };
+    var consequent_6 = ($$anchor2) => {
+      PagesPanel($$anchor2, {
+        get report() {
+          return $$props.report;
+        }
+      });
+    };
+    var alternate = ($$anchor2) => {
+      MetricsPanel($$anchor2, {
+        get report() {
+          return $$props.report;
+        }
+      });
+    };
+    if_block(node_6, ($$render) => {
+      if (get2(tab) === "issues") $$render(consequent_5);
+      else if (get2(tab) === "pages") $$render(consequent_6, 1);
+      else $$render(alternate, -1);
+    });
+  }
+  reset(div);
+  template_effect(
+    ($0, $1, $2, $3, $4, $5, $6, $7) => {
+      set_text(text5, $0);
+      set_attribute2(a_1, "href", $$props.report.startUrl);
+      set_text(text_1, $$props.report.startUrl);
+      set_text(text_2, `${$1 ?? ""} `);
+      set_text(text_3, ` ${$2 ?? ""} pages `);
+      set_text(text_4, ` ${$3 ?? ""} checks`);
+      set_attribute2(div_4, "aria-label", `${get2(totals).pass ?? ""} passed, ${get2(totals).warn ?? ""} warnings, ${get2(totals).fail ?? ""} failed, ${get2(totals).info ?? ""} informational`);
+      set_text(text_5, $4);
+      set_text(text_6, $5);
+      set_text(text_7, $6);
+      set_text(text_8, $7);
+      classes = set_class(button_3, 1, "ssa-seg", null, classes, { "is-on": get2(sort) === "worst" });
+      classes_1 = set_class(button_4, 1, "ssa-seg", null, classes_1, { "is-on": get2(sort) === "best" });
+      classes_2 = set_class(button_5, 1, "ssa-seg", null, classes_2, { "is-on": get2(sort) === "az" });
+      classes_3 = set_class(button_6, 1, "ssa-tab", null, classes_3, { "is-on": get2(tab) === "issues" });
+      classes_4 = set_class(button_7, 1, "ssa-tab", null, classes_4, { "is-on": get2(tab) === "pages" });
+      classes_5 = set_class(button_8, 1, "ssa-tab", null, classes_5, { "is-on": get2(tab) === "metrics" });
+    },
+    [
+      () => hostOf($$props.report.startUrl),
+      () => formatDate($$props.report.generatedAt),
+      () => $$props.report.pagesScanned.toLocaleString(),
+      () => get2(checks).toLocaleString(),
+      () => get2(totals).pass.toLocaleString(),
+      () => get2(totals).warn.toLocaleString(),
+      () => get2(totals).fail.toLocaleString(),
+      () => get2(totals).info.toLocaleString()
+    ]
+  );
+  delegated("click", button_2, () => $$props.onRerun($$props.report.startUrl));
+  delegated("click", button_3, () => set(sort, "worst"));
+  delegated("click", button_4, () => set(sort, "best"));
+  delegated("click", button_5, () => set(sort, "az"));
+  delegated("click", button_6, () => set(tab, "issues"));
+  delegated("click", button_7, () => set(tab, "pages"));
+  delegated("click", button_8, () => set(tab, "metrics"));
+  append($$anchor, div);
+  pop();
+}
+delegate(["click"]);
 
 // src/fetch-shim.ts
-var import_obsidian3 = require("obsidian");
+var import_obsidian5 = require("obsidian");
 var ShimHeaders = class {
   map = {};
   constructor(h) {
@@ -24403,7 +25491,7 @@ async function shimFetch(input, init2 = {}) {
     throw: false
   };
   if (init2.body != null) param.body = init2.body;
-  const request = (0, import_obsidian3.requestUrl)(param).then((resp) => new ShimResponse(resp));
+  const request = (0, import_obsidian5.requestUrl)(param).then((resp) => new ShimResponse(resp));
   const signal = init2.signal;
   if (!signal) return request;
   const reason = () => signal.reason ?? new DOMException("Aborted", "AbortError");
@@ -24490,607 +25578,16 @@ async function runAudit(opts, settings, onProgress) {
   });
 }
 
-// src/ui/ReportView.svelte
-var import_obsidian5 = require("obsidian");
-
-// src/ui/helpers.ts
-function hostOf(url) {
-  try {
-    return new URL(url).hostname || url;
-  } catch {
-    return url;
-  }
-}
-function formatDate(iso) {
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return iso;
-  return d.toLocaleString();
-}
-function scoreVariant(score) {
-  if (score >= 80) return "default";
-  if (score >= 50) return "secondary";
-  return "destructive";
-}
-function grade(score) {
-  if (score >= 90) return "A";
-  if (score >= 80) return "B";
-  if (score >= 70) return "C";
-  if (score >= 60) return "D";
-  return "F";
-}
-function gradeVariant(score) {
-  if (score >= 80) return "default";
-  if (score >= 60) return "secondary";
-  return "destructive";
-}
-function scoreBar(score) {
-  if (score >= 80) return "is-good";
-  if (score >= 50) return "is-mid";
-  return "is-bad";
-}
-function statusDot(status) {
-  if (status === "fail") return "ssa-dot-fail";
-  if (status === "warn") return "ssa-dot-warn";
-  if (status === "info") return "ssa-dot-info";
-  return "ssa-dot-pass";
-}
-function statusTotals(report) {
-  const t = { pass: 0, warn: 0, fail: 0, info: 0, total: 0 };
-  for (const page of report.pages) {
-    for (const f of page.findings) {
-      t[f.status]++;
-      t.total++;
-    }
-  }
-  return t;
-}
-var RANK = { fail: 3, warn: 2, info: 1, pass: 0 };
-function buildIssues(report) {
-  const map2 = /* @__PURE__ */ new Map();
-  for (const page of report.pages) {
-    for (const f of page.findings) {
-      if (f.status === "pass") continue;
-      let issue = map2.get(f.ruleId);
-      if (!issue) {
-        issue = {
-          ruleId: f.ruleId,
-          title: f.title,
-          category: f.category,
-          severity: f.severity,
-          status: f.status,
-          message: f.message,
-          pages: []
-        };
-        map2.set(f.ruleId, issue);
-      }
-      if (RANK[f.status] > RANK[issue.status]) {
-        issue.status = f.status;
-        issue.message = f.message;
-      }
-      if (!issue.pages.includes(page.url)) issue.pages.push(page.url);
-    }
-  }
-  return [...map2.values()].sort(
-    (a, b) => RANK[b.status] - RANK[a.status] || b.pages.length - a.pages.length
-  );
-}
-function pct(part, whole) {
-  return whole === 0 ? 0 : Math.round(part / whole * 100);
-}
-
-// src/ui/icon.ts
-var import_obsidian4 = require("obsidian");
-function icon(node, name) {
-  (0, import_obsidian4.setIcon)(node, name);
-  return {
-    update(next3) {
-      node.empty();
-      (0, import_obsidian4.setIcon)(node, next3);
-    }
-  };
-}
-
-// src/ui/ScoreGauge.svelte
-var root2 = from_html(`<div class="ssa-gauge"><svg><circle fill="none" class="ssa-gauge-track"></circle><circle fill="none" stroke-linecap="round" style="transition: stroke-dashoffset 600ms ease"></circle></svg> <div class="ssa-gauge-center"><span class="ssa-gauge-value"> </span> <span class="ssa-gauge-label">Score</span></div></div>`);
-function ScoreGauge($$anchor, $$props) {
-  "use strict";
-  let size = prop($$props, "size", 3, 96);
-  const stroke = 8;
-  const r = user_derived(() => (size() - stroke) / 2);
-  const c = user_derived(() => 2 * Math.PI * get2(r));
-  const offset = user_derived(() => get2(c) * (1 - Math.max(0, Math.min(100, $$props.value)) / 100));
-  const color = user_derived(() => $$props.value >= 80 ? "#10b981" : $$props.value >= 50 ? "#f59e0b" : "#ef4444");
-  var div = root2();
-  var svg = child(div);
-  var circle = child(svg);
-  set_attribute2(circle, "stroke-width", stroke);
-  var circle_1 = sibling(circle);
-  set_attribute2(circle_1, "stroke-width", stroke);
-  reset(svg);
-  var div_1 = sibling(svg, 2);
-  var span = child(div_1);
-  var text5 = child(span, true);
-  reset(span);
-  next(2);
-  reset(div_1);
-  reset(div);
-  template_effect(
-    ($0) => {
-      set_style(div, `width:${size() ?? ""}px;height:${size() ?? ""}px`);
-      set_attribute2(svg, "width", size());
-      set_attribute2(svg, "height", size());
-      set_attribute2(svg, "viewBox", `0 0 ${size() ?? ""} ${size() ?? ""}`);
-      set_attribute2(circle, "cx", size() / 2);
-      set_attribute2(circle, "cy", size() / 2);
-      set_attribute2(circle, "r", get2(r));
-      set_attribute2(circle_1, "cx", size() / 2);
-      set_attribute2(circle_1, "cy", size() / 2);
-      set_attribute2(circle_1, "r", get2(r));
-      set_attribute2(circle_1, "stroke", get2(color));
-      set_attribute2(circle_1, "stroke-dasharray", get2(c));
-      set_attribute2(circle_1, "stroke-dashoffset", get2(offset));
-      set_text(text5, $0);
-    },
-    [() => Math.round($$props.value)]
-  );
-  append($$anchor, div);
-}
-
-// src/ui/ReportView.svelte
-var root3 = from_html(`<div class="ssa-mt"><button class="ssa-btn ssa-btn-outline ssa-btn-sm"><span></span> Open note</button></div>`);
-var root_1 = from_html(`<div class="ssa-cat-row"><span class="ssa-cat-name"> </span> <span class="ssa-cat-bar"><span></span></span> <span class="ssa-cat-score"> </span></div>`);
-var root_2 = from_html(`<option> </option>`);
-var root_3 = from_html(`<p class="ssa-no-results">No issues match these filters.</p>`);
-var root_4 = from_html(`<span class="ssa-page-url"> </span>`);
-var root_5 = from_html(`<details class="ssa-acc-item"><summary class="ssa-acc-trigger"><span class="ssa-issue-head"><span></span> <span class="ssa-issue-title"> </span> <span> </span> <span class="ssa-badge ssa-badge-outline"> </span> <span class="ssa-badge ssa-badge-secondary ssa-push"> </span></span></summary> <div class="ssa-acc-content"><div class="ssa-issue-body"><p class="ssa-issue-msg"> </p> <div class="ssa-pages"><span class="ssa-pages-label">Affected pages</span> <!></div></div></div></details>`);
-var root_6 = from_html(`<div class="ssa-accordion"></div>`);
-var root_7 = from_html(`<div class="ssa-tabpanel"><div class="ssa-card"><div class="ssa-card-header"><div class="ssa-card-title">Category scores</div> <div class="ssa-card-action"><div class="ssa-toggles"><button>Worst</button> <button>Best</button> <button>A\u2013Z</button></div></div></div> <div class="ssa-cats"></div></div> <div class="ssa-card"><div class="ssa-card-header"><div><div class="ssa-card-title">Issues</div> <div class="ssa-card-desc"> </div></div></div> <div class="ssa-card-content"><div class="ssa-filters"><div class="ssa-toggles"><button> </button> <button> </button> <button> </button></div> <select class="ssa-select"><option>All categories</option><!></select> <input class="ssa-input" placeholder="Filter\u2026"/></div> <!></div></div></div>`);
-var root_8 = from_html(`<p class="ssa-cell-muted">No issues found on this page.</p>`);
-var root_9 = from_html(`<tr><td><span> </span></td><td class="ssa-cell-strong"> </td><td class="ssa-cell-muted"> </td></tr>`);
-var root_10 = from_html(`<table class="ssa-table"><thead><tr><th>Severity</th><th>Issue</th><th>Details</th></tr></thead><tbody></tbody></table>`);
-var root_11 = from_html(`<details class="ssa-acc-item" name="ssa-pages"><summary class="ssa-acc-trigger"><span class="ssa-page-row"><span> </span> <span class="ssa-page-name"> </span> <span class="ssa-page-count"> </span></span></summary> <div class="ssa-acc-content"><!></div></details>`);
-var root_12 = from_html(`<div class="ssa-report"><div class="ssa-card"><div class="ssa-overview"><!> <div class="ssa-overview-meta"><div class="ssa-overview-host"><span class="ssa-overview-host-name"> </span> <span> </span></div> <span class="ssa-overview-url"> </span> <span class="ssa-overview-sub"> </span> <!></div> <div class="ssa-stats"><div class="ssa-stat"><div class="ssa-stat-num ssa-stat-pass"> </div> <div class="ssa-stat-label"> </div></div> <div class="ssa-stat"><div class="ssa-stat-num ssa-stat-warn"> </div> <div class="ssa-stat-label"> </div></div> <div class="ssa-stat"><div class="ssa-stat-num ssa-stat-fail"> </div> <div class="ssa-stat-label"> </div></div></div></div></div> <div><div class="ssa-tablist"><button>Categories &amp; issues</button> <button>Pages</button></div> <!></div></div>`);
-function ReportView($$anchor, $$props) {
-  push($$props, true);
-  const totals = user_derived(() => statusTotals($$props.report));
-  const issues = user_derived(() => buildIssues($$props.report));
-  const categoryNames = user_derived(() => $$props.report.categories.map((c) => c.category));
-  let tab = state("categories");
-  let sort = state("worst");
-  const sortedCategories = user_derived(() => [...$$props.report.categories].sort((a, b) => {
-    if (get2(sort) === "az") return a.category.localeCompare(b.category);
-    return get2(sort) === "worst" ? a.score - b.score : b.score - a.score;
-  }));
-  let sevFilter = state(proxy(["fail", "warn", "info"]));
-  let catFilter = state("all");
-  let query = state("");
-  const filteredIssues = user_derived(() => get2(issues).filter((i) => {
-    if (!get2(sevFilter).includes(i.status)) return false;
-    if (get2(catFilter) !== "all" && i.category !== get2(catFilter)) return false;
-    const q = get2(query).trim().toLowerCase();
-    if (q && !`${i.title} ${i.message} ${i.ruleId}`.toLowerCase().includes(q)) return false;
-    return true;
-  }));
-  function toggleSev(s) {
-    set(
-      sevFilter,
-      get2(sevFilter).includes(s) ? get2(sevFilter).filter((x) => x !== s) : [...get2(sevFilter), s],
-      true
-    );
-  }
-  function statusLabel(status) {
-    return status === "fail" ? "Error" : status === "warn" ? "Warning" : "Info";
-  }
-  function statusBadge(status) {
-    return status === "fail" ? "destructive" : status === "warn" ? "secondary" : "outline";
-  }
-  function pageIssues(findings) {
-    return findings.filter((f) => f.status === "fail" || f.status === "warn");
-  }
-  function openNote() {
-    if (!$$props.path) return;
-    const file = $$props.plugin.app.vault.getAbstractFileByPath($$props.path);
-    if (file instanceof import_obsidian5.TFile) openInObsidian($$props.plugin.app, file);
-  }
-  var div = root_12();
-  var div_1 = child(div);
-  var div_2 = child(div_1);
-  var node = child(div_2);
-  ScoreGauge(node, {
-    get value() {
-      return $$props.report.score;
-    }
-  });
-  var div_3 = sibling(node, 2);
-  var div_4 = child(div_3);
-  var span = child(div_4);
-  var text5 = child(span, true);
-  reset(span);
-  var span_1 = sibling(span, 2);
-  var text_1 = child(span_1);
-  reset(span_1);
-  reset(div_4);
-  var span_2 = sibling(div_4, 2);
-  var text_2 = child(span_2, true);
-  reset(span_2);
-  var span_3 = sibling(span_2, 2);
-  var text_3 = child(span_3);
-  reset(span_3);
-  var node_1 = sibling(span_3, 2);
-  {
-    var consequent = ($$anchor2) => {
-      var div_5 = root3();
-      var button = child(div_5);
-      var span_4 = child(button);
-      action(span_4, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "file-text");
-      next();
-      reset(button);
-      reset(div_5);
-      delegated("click", button, openNote);
-      append($$anchor2, div_5);
-    };
-    if_block(node_1, ($$render) => {
-      if ($$props.path) $$render(consequent);
-    });
-  }
-  reset(div_3);
-  var div_6 = sibling(div_3, 2);
-  var div_7 = child(div_6);
-  var div_8 = child(div_7);
-  var text_4 = child(div_8, true);
-  reset(div_8);
-  var div_9 = sibling(div_8, 2);
-  var text_5 = child(div_9);
-  reset(div_9);
-  reset(div_7);
-  var div_10 = sibling(div_7, 2);
-  var div_11 = child(div_10);
-  var text_6 = child(div_11, true);
-  reset(div_11);
-  var div_12 = sibling(div_11, 2);
-  var text_7 = child(div_12);
-  reset(div_12);
-  reset(div_10);
-  var div_13 = sibling(div_10, 2);
-  var div_14 = child(div_13);
-  var text_8 = child(div_14, true);
-  reset(div_14);
-  var div_15 = sibling(div_14, 2);
-  var text_9 = child(div_15);
-  reset(div_15);
-  reset(div_13);
-  reset(div_6);
-  reset(div_2);
-  reset(div_1);
-  var div_16 = sibling(div_1, 2);
-  var div_17 = child(div_16);
-  var button_1 = child(div_17);
-  let classes;
-  var button_2 = sibling(button_1, 2);
-  let classes_1;
-  reset(div_17);
-  var node_2 = sibling(div_17, 2);
-  {
-    var consequent_2 = ($$anchor2) => {
-      var div_18 = root_7();
-      var div_19 = child(div_18);
-      var div_20 = child(div_19);
-      var div_21 = sibling(child(div_20), 2);
-      var div_22 = child(div_21);
-      var button_3 = child(div_22);
-      let classes_2;
-      var button_4 = sibling(button_3, 2);
-      let classes_3;
-      var button_5 = sibling(button_4, 2);
-      let classes_4;
-      reset(div_22);
-      reset(div_21);
-      reset(div_20);
-      var div_23 = sibling(div_20, 2);
-      each(div_23, 21, () => get2(sortedCategories), (cat) => cat.category, ($$anchor3, cat) => {
-        var div_24 = root_1();
-        var span_5 = child(div_24);
-        var text_10 = child(span_5, true);
-        reset(span_5);
-        var span_6 = sibling(span_5, 2);
-        var span_7 = child(span_6);
-        reset(span_6);
-        var span_8 = sibling(span_6, 2);
-        var text_11 = child(span_8, true);
-        reset(span_8);
-        reset(div_24);
-        template_effect(
-          ($0) => {
-            set_text(text_10, get2(cat).category);
-            set_class(span_7, 1, `ssa-cat-bar-fill ${$0 ?? ""}`);
-            set_style(span_7, `width:${get2(cat).score ?? ""}%`);
-            set_text(text_11, get2(cat).score);
-          },
-          [() => scoreBar(get2(cat).score)]
-        );
-        append($$anchor3, div_24);
-      });
-      reset(div_23);
-      reset(div_19);
-      var div_25 = sibling(div_19, 2);
-      var div_26 = child(div_25);
-      var div_27 = child(div_26);
-      var div_28 = sibling(child(div_27), 2);
-      var text_12 = child(div_28);
-      reset(div_28);
-      reset(div_27);
-      reset(div_26);
-      var div_29 = sibling(div_26, 2);
-      var div_30 = child(div_29);
-      var div_31 = child(div_30);
-      var button_6 = child(div_31);
-      let classes_5;
-      var text_13 = child(button_6);
-      reset(button_6);
-      var button_7 = sibling(button_6, 2);
-      let classes_6;
-      var text_14 = child(button_7);
-      reset(button_7);
-      var button_8 = sibling(button_7, 2);
-      let classes_7;
-      var text_15 = child(button_8);
-      reset(button_8);
-      reset(div_31);
-      var select2 = sibling(div_31, 2);
-      var option = child(select2);
-      option.value = option.__value = "all";
-      var node_3 = sibling(option);
-      each(node_3, 16, () => get2(categoryNames), (c) => c, ($$anchor3, c) => {
-        var option_1 = root_2();
-        var text_16 = child(option_1, true);
-        reset(option_1);
-        var option_1_value = {};
-        template_effect(() => {
-          set_text(text_16, c);
-          if (option_1_value !== (option_1_value = c)) {
-            option_1.value = (option_1.__value = c) ?? "";
-          }
-        });
-        append($$anchor3, option_1);
-      });
-      reset(select2);
-      var input = sibling(select2, 2);
-      remove_input_defaults(input);
-      reset(div_30);
-      var node_4 = sibling(div_30, 2);
-      {
-        var consequent_1 = ($$anchor3) => {
-          var p_1 = root_3();
-          append($$anchor3, p_1);
-        };
-        var alternate = ($$anchor3) => {
-          var div_32 = root_6();
-          each(div_32, 21, () => get2(filteredIssues), (issue) => issue.ruleId, ($$anchor4, issue) => {
-            var details = root_5();
-            var summary = child(details);
-            var span_9 = child(summary);
-            var span_10 = child(span_9);
-            var span_11 = sibling(span_10, 2);
-            var text_17 = child(span_11, true);
-            reset(span_11);
-            var span_12 = sibling(span_11, 2);
-            var text_18 = child(span_12, true);
-            reset(span_12);
-            var span_13 = sibling(span_12, 2);
-            var text_19 = child(span_13, true);
-            reset(span_13);
-            var span_14 = sibling(span_13, 2);
-            var text_20 = child(span_14);
-            reset(span_14);
-            reset(span_9);
-            reset(summary);
-            var div_33 = sibling(summary, 2);
-            var div_34 = child(div_33);
-            var p_2 = child(div_34);
-            var text_21 = child(p_2, true);
-            reset(p_2);
-            var div_35 = sibling(p_2, 2);
-            var node_5 = sibling(child(div_35), 2);
-            each(node_5, 16, () => get2(issue).pages, (p) => p, ($$anchor5, p) => {
-              var span_15 = root_4();
-              var text_22 = child(span_15, true);
-              reset(span_15);
-              template_effect(() => set_text(text_22, p));
-              append($$anchor5, span_15);
-            });
-            reset(div_35);
-            reset(div_34);
-            reset(div_33);
-            reset(details);
-            template_effect(
-              ($0, $1, $2) => {
-                set_class(span_10, 1, `ssa-dot ${$0 ?? ""}`);
-                set_text(text_17, get2(issue).title);
-                set_class(span_12, 1, `ssa-badge ssa-badge-${$1 ?? ""}`);
-                set_text(text_18, $2);
-                set_text(text_19, get2(issue).category);
-                set_text(text_20, `${get2(issue).pages.length ?? ""} page${get2(issue).pages.length === 1 ? "" : "s"}`);
-                set_text(text_21, get2(issue).message);
-              },
-              [
-                () => statusDot(get2(issue).status),
-                () => statusBadge(get2(issue).status),
-                () => statusLabel(get2(issue).status)
-              ]
-            );
-            append($$anchor4, details);
-          });
-          reset(div_32);
-          append($$anchor3, div_32);
-        };
-        if_block(node_4, ($$render) => {
-          if (get2(filteredIssues).length === 0) $$render(consequent_1);
-          else $$render(alternate, -1);
-        });
-      }
-      reset(div_29);
-      reset(div_25);
-      reset(div_18);
-      template_effect(
-        ($0, $1, $2) => {
-          classes_2 = set_class(button_3, 1, "ssa-toggle", null, classes_2, { "is-active": get2(sort) === "worst" });
-          classes_3 = set_class(button_4, 1, "ssa-toggle", null, classes_3, { "is-active": get2(sort) === "best" });
-          classes_4 = set_class(button_5, 1, "ssa-toggle", null, classes_4, { "is-active": get2(sort) === "az" });
-          set_text(text_12, `${get2(issues).length ?? ""} rules flagged across ${$$props.report.pagesScanned ?? ""} pages`);
-          classes_5 = set_class(button_6, 1, "ssa-toggle", null, classes_5, $0);
-          set_text(text_13, `Errors ${get2(totals).fail ?? ""}`);
-          classes_6 = set_class(button_7, 1, "ssa-toggle", null, classes_6, $1);
-          set_text(text_14, `Warnings ${get2(totals).warn ?? ""}`);
-          classes_7 = set_class(button_8, 1, "ssa-toggle", null, classes_7, $2);
-          set_text(text_15, `Info ${get2(totals).info ?? ""}`);
-        },
-        [
-          () => ({ "is-active": get2(sevFilter).includes("fail") }),
-          () => ({ "is-active": get2(sevFilter).includes("warn") }),
-          () => ({ "is-active": get2(sevFilter).includes("info") })
-        ]
-      );
-      delegated("click", button_3, () => set(sort, "worst"));
-      delegated("click", button_4, () => set(sort, "best"));
-      delegated("click", button_5, () => set(sort, "az"));
-      delegated("click", button_6, () => toggleSev("fail"));
-      delegated("click", button_7, () => toggleSev("warn"));
-      delegated("click", button_8, () => toggleSev("info"));
-      bind_select_value(select2, () => get2(catFilter), ($$value) => set(catFilter, $$value));
-      bind_value(input, () => get2(query), ($$value) => set(query, $$value));
-      append($$anchor2, div_18);
-    };
-    var alternate_2 = ($$anchor2) => {
-      var div_36 = root_6();
-      each(div_36, 23, () => $$props.report.pages, (page) => page.url, ($$anchor3, page) => {
-        const probs = user_derived(() => pageIssues(get2(page).findings));
-        var details_1 = root_11();
-        var summary_1 = child(details_1);
-        var span_16 = child(summary_1);
-        var span_17 = child(span_16);
-        var text_23 = child(span_17, true);
-        reset(span_17);
-        var span_18 = sibling(span_17, 2);
-        var text_24 = child(span_18, true);
-        reset(span_18);
-        var span_19 = sibling(span_18, 2);
-        var text_25 = child(span_19);
-        reset(span_19);
-        reset(span_16);
-        reset(summary_1);
-        var div_37 = sibling(summary_1, 2);
-        var node_6 = child(div_37);
-        {
-          var consequent_3 = ($$anchor4) => {
-            var p_3 = root_8();
-            append($$anchor4, p_3);
-          };
-          var alternate_1 = ($$anchor4) => {
-            var table2 = root_10();
-            var tbody = sibling(child(table2));
-            each(tbody, 23, () => get2(probs), (f, fi) => `${f.ruleId}-${fi}`, ($$anchor5, f) => {
-              var tr = root_9();
-              var td = child(tr);
-              var span_20 = child(td);
-              var text_26 = child(span_20, true);
-              reset(span_20);
-              reset(td);
-              var td_1 = sibling(td);
-              var text_27 = child(td_1, true);
-              reset(td_1);
-              var td_2 = sibling(td_1);
-              var text_28 = child(td_2, true);
-              reset(td_2);
-              reset(tr);
-              template_effect(
-                ($0, $1) => {
-                  set_class(span_20, 1, `ssa-badge ssa-badge-${$0 ?? ""}`);
-                  set_text(text_26, $1);
-                  set_text(text_27, get2(f).title);
-                  set_text(text_28, get2(f).message);
-                },
-                [
-                  () => statusBadge(get2(f).status),
-                  () => statusLabel(get2(f).status)
-                ]
-              );
-              append($$anchor5, tr);
-            });
-            reset(tbody);
-            reset(table2);
-            append($$anchor4, table2);
-          };
-          if_block(node_6, ($$render) => {
-            if (get2(probs).length === 0) $$render(consequent_3);
-            else $$render(alternate_1, -1);
-          });
-        }
-        reset(div_37);
-        reset(details_1);
-        template_effect(
-          ($0) => {
-            set_class(span_17, 1, `ssa-badge ssa-badge-${$0 ?? ""}`);
-            set_text(text_23, get2(page).score);
-            set_text(text_24, get2(page).url);
-            set_text(text_25, `${get2(probs).length ?? ""} issue${get2(probs).length === 1 ? "" : "s"}`);
-          },
-          [() => scoreVariant(get2(page).score)]
-        );
-        append($$anchor3, details_1);
-      });
-      reset(div_36);
-      append($$anchor2, div_36);
-    };
-    if_block(node_2, ($$render) => {
-      if (get2(tab) === "categories") $$render(consequent_2);
-      else $$render(alternate_2, -1);
-    });
-  }
-  reset(div_16);
-  reset(div);
-  template_effect(
-    ($0, $1, $2, $3, $4, $5, $6) => {
-      set_text(text5, $0);
-      set_class(span_1, 1, `ssa-badge ssa-badge-${$1 ?? ""}`);
-      set_text(text_1, `Grade ${$2 ?? ""}`);
-      set_text(text_2, $$props.report.startUrl);
-      set_text(text_3, `${$3 ?? ""} \xB7 ${$$props.report.pagesScanned ?? ""} pages crawled`);
-      set_text(text_4, get2(totals).pass);
-      set_text(text_5, `Passed \xB7 ${$4 ?? ""}%`);
-      set_text(text_6, get2(totals).warn);
-      set_text(text_7, `Warnings \xB7 ${$5 ?? ""}%`);
-      set_text(text_8, get2(totals).fail);
-      set_text(text_9, `Failed \xB7 ${$6 ?? ""}%`);
-      classes = set_class(button_1, 1, "ssa-tab", null, classes, { "is-active": get2(tab) === "categories" });
-      classes_1 = set_class(button_2, 1, "ssa-tab", null, classes_1, { "is-active": get2(tab) === "pages" });
-    },
-    [
-      () => hostOf($$props.report.startUrl),
-      () => gradeVariant($$props.report.score),
-      () => grade($$props.report.score),
-      () => formatDate($$props.report.generatedAt),
-      () => pct(get2(totals).pass, get2(totals).total),
-      () => pct(get2(totals).warn, get2(totals).total),
-      () => pct(get2(totals).fail, get2(totals).total)
-    ]
-  );
-  delegated("click", button_1, () => set(tab, "categories"));
-  delegated("click", button_2, () => set(tab, "pages"));
-  append($$anchor, div);
-  pop();
-}
-delegate(["click"]);
-
 // src/ui/RunAuditForm.svelte
-var root4 = from_html(`<span class="ssa-spinner"></span> Auditing`, 1);
-var root_13 = from_html(`<span></span> Run audit`, 1);
-var root_22 = from_html(`<div class="ssa-progress-sub"> </div>`);
-var root_32 = from_html(`<div class="ssa-progress-url"> </div>`);
-var root_42 = from_html(`<div class="ssa-progress"><div class="ssa-progress-head"><span class="ssa-progress-phase"> </span> <span class="ssa-progress-pct"> </span></div> <div class="ssa-progress-track"><span class="ssa-progress-fill"></span></div> <!> <!></div>`);
-var root_52 = from_html(`<div class="ssa-run"><div class="ssa-run-intro"><h2 class="ssa-run-title">Audit a site</h2> <p class="ssa-run-lede">Crawls the site, checks every page against 94 rules, and writes the report to <span class="ssa-run-folder"> </span> as Markdown, JSON and HTML.</p></div> <div class="ssa-field-group"><div class="ssa-field"><label class="ssa-field-label" for="ssa-url">Website URL</label> <input class="ssa-input ssa-input-lg" id="ssa-url" placeholder="https://example.com"/></div> <div class="ssa-field"><label class="ssa-field-label" for="ssa-pages">Pages to crawl</label> <input class="ssa-input ssa-input-num" id="ssa-pages" type="number" min="1"/> <div class="ssa-field-desc"> </div></div></div> <div class="ssa-run-actions"><button class="ssa-btn ssa-btn-primary"><!></button></div> <!></div>`);
+var root7 = from_html(`<span class="ssa-spinner"></span> Auditing`, 1);
+var root_15 = from_html(`<span></span> Run audit`, 1);
+var root_25 = from_html(`<div class="ssa-progress-sub"> </div>`);
+var root_35 = from_html(`<div class="ssa-progress-url"> </div>`);
+var root_45 = from_html(`<div class="ssa-progress"><div class="ssa-progress-head"><span class="ssa-progress-phase"> </span> <span class="ssa-progress-pct"> </span></div> <div class="ssa-progress-track"><span class="ssa-progress-fill"></span></div> <!> <!></div>`);
+var root_55 = from_html(`<div class="ssa-newrun"><div class="ssa-newrun-intro"><h2 class="ssa-newrun-title">Audit a site</h2> <p class="ssa-newrun-lede">Crawls the site, checks every page against 94 rules, and writes the report to <span class="ssa-newrun-folder"> </span> as Markdown, JSON and HTML.</p></div> <div class="ssa-field-group"><div class="ssa-field"><label class="ssa-field-label" for="ssa-url">Website URL</label> <input class="ssa-input ssa-input-lg" id="ssa-url" placeholder="https://example.com"/></div> <div class="ssa-field"><label class="ssa-field-label" for="ssa-pages">Pages to crawl</label> <input class="ssa-input ssa-input-num" id="ssa-pages" type="number" min="1"/> <div class="ssa-field-desc"> </div></div></div> <div class="ssa-newrun-actions"><button class="ssa-btn ssa-btn-primary"><!></button></div> <!></div>`);
 function RunAuditForm($$anchor, $$props) {
   push($$props, true);
-  let url = state("");
+  let url = prop($$props, "url", 15, "");
   let pages = state("");
   const percent = user_derived(() => $$props.progress ? progressPercent($$props.progress) : 0);
   const phaseText = user_derived(() => {
@@ -25104,9 +25601,9 @@ function RunAuditForm($$anchor, $$props) {
     return "Writing the report";
   });
   function submit() {
-    $$props.onSubmit(get2(url).trim(), get2(pages) ? Number(get2(pages)) : void 0);
+    $$props.onSubmit(url().trim(), get2(pages) ? Number(get2(pages)) : void 0);
   }
-  var div = root_52();
+  var div = root_55();
   var div_1 = child(div);
   var p = sibling(child(div_1), 2);
   var span = sibling(child(p));
@@ -25133,12 +25630,12 @@ function RunAuditForm($$anchor, $$props) {
   var node = child(button);
   {
     var consequent = ($$anchor2) => {
-      var fragment = root4();
+      var fragment = root7();
       next();
       append($$anchor2, fragment);
     };
     var alternate = ($$anchor2) => {
-      var fragment_1 = root_13();
+      var fragment_1 = root_15();
       var span_1 = first_child(fragment_1);
       action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "play");
       next();
@@ -25154,7 +25651,7 @@ function RunAuditForm($$anchor, $$props) {
   var node_1 = sibling(div_6, 2);
   {
     var consequent_3 = ($$anchor2) => {
-      var div_7 = root_42();
+      var div_7 = root_45();
       var div_8 = child(div_7);
       var span_2 = child(div_8);
       var text_2 = child(span_2, true);
@@ -25169,7 +25666,7 @@ function RunAuditForm($$anchor, $$props) {
       var node_2 = sibling(div_9, 2);
       {
         var consequent_1 = ($$anchor3) => {
-          var div_10 = root_22();
+          var div_10 = root_25();
           var text_4 = child(div_10);
           reset(div_10);
           template_effect(($0, $1) => set_text(text_4, `${$0 ?? ""} of ${$1 ?? ""} checks`), [
@@ -25185,7 +25682,7 @@ function RunAuditForm($$anchor, $$props) {
       var node_3 = sibling(node_2, 2);
       {
         var consequent_2 = ($$anchor3) => {
-          var div_11 = root_32();
+          var div_11 = root_35();
           var text_5 = child(div_11, true);
           reset(div_11);
           template_effect(() => set_text(text_5, $$props.progress.url));
@@ -25220,7 +25717,7 @@ function RunAuditForm($$anchor, $$props) {
     [() => String($$props.defaultPages)]
   );
   delegated("keydown", input, (e) => e.key === "Enter" && submit());
-  bind_value(input, () => get2(url), ($$value) => set(url, $$value));
+  bind_value(input, url);
   bind_value(input_1, () => get2(pages), ($$value) => set(pages, $$value));
   delegated("click", button, submit);
   append($$anchor, div);
@@ -25229,81 +25726,133 @@ function RunAuditForm($$anchor, $$props) {
 delegate(["keydown", "click"]);
 
 // src/ui/Dashboard.svelte
-var root5 = from_html(`<p class="ssa-empty-note">No audits yet.</p>`);
-var root_14 = from_html(`<button><span class="ssa-audit-row-top"><span class="ssa-audit-row-host"> </span> <span> </span></span> <span class="ssa-audit-row-date"> </span></button>`);
-var root_23 = from_html(`<div class="ssa-empty"><div class="ssa-empty-media"><span></span></div> <div class="ssa-empty-title">No audit selected</div> <div class="ssa-empty-desc">Pick an audit from the sidebar, or run a new one.</div> <button class="ssa-btn ssa-btn-primary ssa-mt"><span></span> New audit</button></div>`);
-var root_33 = from_html(`<div class="ssa-layout"><aside class="ssa-sidebar"><div class="ssa-sidebar-head"><span></span> <span>Safi Site Audit</span> <button class="ssa-btn ssa-btn-primary ssa-btn-sm ssa-spacer"><span></span> New</button></div> <div class="ssa-sidebar-list"><!></div></aside> <main class="ssa-main"><!></main></div>`);
+var root8 = from_html(`<div class="ssa-blank"><h2 class="ssa-blank-title">Nothing selected</h2> <p class="ssa-blank-text">Pick a run from the sidebar, or audit a site. Every run is saved as Markdown, JSON and
+				HTML in a folder named after the site.</p> <button class="ssa-btn ssa-btn-primary"><span></span> New audit</button></div>`);
+var root_16 = from_html(`<div class="ssa-view"><!></div>`);
 function Dashboard($$anchor, $$props) {
   push($$props, true);
-  let items = state(proxy([]));
+  let plugin = prop($$props, "plugin", 7);
   let mode = state("empty");
-  let selected = state(null);
-  let selectedPath = state(null);
+  let report = state(null);
+  let path = state(null);
   let running = state(false);
   let progress = state(null);
+  let draftUrl = state("");
+  function sync() {
+    set(mode, plugin().state.mode, true);
+    set(report, plugin().state.report, true);
+    set(path, plugin().state.path, true);
+    set(running, plugin().state.running, true);
+    set(progress, plugin().state.progress, true);
+    set(draftUrl, plugin().state.draftUrl, true);
+  }
+  onMount(() => {
+    sync();
+    const ref = plugin().state.onChange(sync);
+    return () => plugin().state.offref(ref);
+  });
+  user_effect(() => {
+    plugin().state.draftUrl = get2(draftUrl);
+  });
+  var div = root_16();
+  var node = child(div);
+  {
+    var consequent = ($$anchor2) => {
+      ReportView($$anchor2, {
+        get report() {
+          return get2(report);
+        },
+        get path() {
+          return get2(path);
+        },
+        get plugin() {
+          return plugin();
+        },
+        onRerun: (url) => plugin().startNewAudit(url)
+      });
+    };
+    var consequent_1 = ($$anchor2) => {
+      RunAuditForm($$anchor2, {
+        get defaultPages() {
+          return plugin().settings.defaultMaxPages;
+        },
+        get folder() {
+          return plugin().settings.auditFolder;
+        },
+        get running() {
+          return get2(running);
+        },
+        get progress() {
+          return get2(progress);
+        },
+        onSubmit: (url, pages) => void plugin().runAndSave(url, pages),
+        get url() {
+          return get2(draftUrl);
+        },
+        set url($$value) {
+          set(draftUrl, $$value, true);
+        }
+      });
+    };
+    var alternate = ($$anchor2) => {
+      var div_1 = root8();
+      var button = sibling(child(div_1), 4);
+      var span = child(button);
+      action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "plus");
+      next();
+      reset(button);
+      reset(div_1);
+      delegated("click", button, () => plugin().startNewAudit());
+      append($$anchor2, div_1);
+    };
+    if_block(node, ($$render) => {
+      if (get2(mode) === "detail" && get2(report)) $$render(consequent);
+      else if (get2(mode) === "new") $$render(consequent_1, 1);
+      else $$render(alternate, -1);
+    });
+  }
+  reset(div);
+  append($$anchor, div);
+  pop();
+}
+delegate(["click"]);
+
+// src/ui/AuditList.svelte
+var root9 = from_html(`<div class="ssa-rail-filter"><input class="ssa-input ssa-input-sm" placeholder="Find a site"/></div>`);
+var root_17 = from_html(`<p class="ssa-rail-note">Nothing audited yet.</p>`);
+var root_26 = from_html(`<p class="ssa-rail-note"> </p>`);
+var root_36 = from_html(`<button><span class="ssa-run-date"> </span> <span class="ssa-run-pages"> </span> <span> </span></button>`);
+var root_46 = from_html(`<section class="ssa-site"><h3 class="ssa-site-host"> </h3> <!></section>`);
+var root_56 = from_html(`<div class="ssa-rail"><div class="ssa-rail-head"><span class="ssa-rail-mark"></span> <span class="ssa-rail-name">Site audits</span> <button class="ssa-btn ssa-btn-primary ssa-btn-sm ssa-rail-new"><span></span> New</button></div> <!> <div class="ssa-rail-list"><!></div></div>`);
+function AuditList($$anchor, $$props) {
+  push($$props, true);
+  let items = state(proxy([]));
+  let activePath = state(null);
+  let running = state(false);
+  let filter4 = state("");
+  const groups = user_derived(() => {
+    const q = get2(filter4).trim().toLowerCase();
+    return groupBySite(q ? get2(items).filter((i) => i.url.toLowerCase().includes(q)) : get2(items));
+  });
   function refresh() {
     set(items, listAudits($$props.plugin.app, $$props.plugin.settings), true);
   }
-  onMount(() => {
+  function sync() {
+    set(activePath, $$props.plugin.state.path, true);
+    set(running, $$props.plugin.state.running, true);
     refresh();
-    const ref = $$props.plugin.app.metadataCache.on("resolved", refresh);
-    return () => $$props.plugin.app.metadataCache.offref(ref);
+  }
+  onMount(() => {
+    sync();
+    const cacheRef = $$props.plugin.app.metadataCache.on("resolved", refresh);
+    const stateRef = $$props.plugin.state.onChange(sync);
+    return () => {
+      $$props.plugin.app.metadataCache.offref(cacheRef);
+      $$props.plugin.state.offref(stateRef);
+    };
   });
-  function startNew() {
-    set(mode, "new");
-    set(selected, null);
-    set(selectedPath, null);
-  }
-  async function open(item) {
-    const report = await readAudit($$props.plugin.app, item.file);
-    if (!report) {
-      new import_obsidian6.Notice("Could not read this audit's report data.");
-      return;
-    }
-    set(selected, report, true);
-    set(selectedPath, item.file.path, true);
-    set(mode, "detail");
-  }
-  async function run3(url, pages) {
-    if (!url) {
-      new import_obsidian6.Notice("Enter a URL to audit.");
-      return;
-    }
-    set(running, true);
-    set(progress, null);
-    try {
-      const report = await runAudit({ url, maxPages: pages }, $$props.plugin.settings, (p) => {
-        set(progress, p, true);
-      });
-      const { note } = await saveAudit($$props.plugin.app, $$props.plugin.settings, report);
-      set(selected, report, true);
-      set(selectedPath, note.path, true);
-      set(mode, "detail");
-      set(
-        items,
-        [
-          {
-            file: note,
-            url: report.startUrl,
-            date: report.generatedAt,
-            score: report.score,
-            pages: report.pagesScanned
-          },
-          ...get2(items).filter((i) => i.file.path !== note.path)
-        ],
-        true
-      );
-      new import_obsidian6.Notice(`Audit saved to ${note.parent?.path ?? $$props.plugin.settings.auditFolder}`);
-    } catch (e) {
-      new import_obsidian6.Notice(`Audit failed: ${e.message}`);
-    } finally {
-      set(running, false);
-      set(progress, null);
-    }
-  }
-  var div = root_33();
-  var aside = child(div);
-  var div_1 = child(aside);
+  var div = root_56();
+  var div_1 = child(div);
   var span = child(div_1);
   action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "gauge");
   var button = sibling(span, 4);
@@ -25312,115 +25861,91 @@ function Dashboard($$anchor, $$props) {
   next();
   reset(button);
   reset(div_1);
-  var div_2 = sibling(div_1, 2);
-  var node = child(div_2);
+  var node = sibling(div_1, 2);
   {
     var consequent = ($$anchor2) => {
-      var p_1 = root5();
+      var div_2 = root9();
+      var input = child(div_2);
+      remove_input_defaults(input);
+      reset(div_2);
+      bind_value(input, () => get2(filter4), ($$value) => set(filter4, $$value));
+      append($$anchor2, div_2);
+    };
+    if_block(node, ($$render) => {
+      if (get2(items).length > 0) $$render(consequent);
+    });
+  }
+  var div_3 = sibling(node, 2);
+  var node_1 = child(div_3);
+  {
+    var consequent_1 = ($$anchor2) => {
+      var p = root_17();
+      append($$anchor2, p);
+    };
+    var consequent_2 = ($$anchor2) => {
+      var p_1 = root_26();
+      var text5 = child(p_1);
+      reset(p_1);
+      template_effect(() => set_text(text5, `No site matches \u201C${get2(filter4) ?? ""}\u201D.`));
       append($$anchor2, p_1);
     };
     var alternate = ($$anchor2) => {
       var fragment = comment();
-      var node_1 = first_child(fragment);
-      each(node_1, 17, () => get2(items), (item) => item.file.path, ($$anchor3, item) => {
-        var button_1 = root_14();
-        let classes;
-        var span_2 = child(button_1);
-        var span_3 = child(span_2);
-        var text5 = child(span_3, true);
-        reset(span_3);
-        var span_4 = sibling(span_3, 2);
-        var text_1 = child(span_4, true);
-        reset(span_4);
-        reset(span_2);
-        var span_5 = sibling(span_2, 2);
-        var text_2 = child(span_5, true);
-        reset(span_5);
-        reset(button_1);
-        template_effect(
-          ($0, $1, $2) => {
-            classes = set_class(button_1, 1, "ssa-audit-row", null, classes, { "is-active": get2(selectedPath) === get2(item).file.path });
-            set_text(text5, $0);
-            set_class(span_4, 1, `ssa-badge ssa-badge-${$1 ?? ""}`);
-            set_text(text_1, get2(item).score);
-            set_text(text_2, $2);
-          },
-          [
-            () => hostOf(get2(item).url),
-            () => scoreVariant(get2(item).score),
-            () => formatDate(get2(item).date)
-          ]
-        );
-        delegated("click", button_1, () => open(get2(item)));
-        append($$anchor3, button_1);
+      var node_2 = first_child(fragment);
+      each(node_2, 17, () => get2(groups), (group) => group.host, ($$anchor3, group) => {
+        var section = root_46();
+        var h3 = child(section);
+        var text_1 = child(h3, true);
+        reset(h3);
+        var node_3 = sibling(h3, 2);
+        each(node_3, 17, () => get2(group).runs, (item) => item.file.path, ($$anchor4, item) => {
+          var button_1 = root_36();
+          let classes;
+          var span_2 = child(button_1);
+          var text_2 = child(span_2, true);
+          reset(span_2);
+          var span_3 = sibling(span_2, 2);
+          var text_3 = child(span_3);
+          reset(span_3);
+          var span_4 = sibling(span_3, 2);
+          var text_4 = child(span_4, true);
+          reset(span_4);
+          reset(button_1);
+          template_effect(
+            ($0, $1) => {
+              classes = set_class(button_1, 1, "ssa-run-row", null, classes, { "is-on": get2(activePath) === get2(item).file.path });
+              set_text(text_2, $0);
+              set_text(text_3, `${get2(item).pages ?? ""} pages`);
+              set_class(span_4, 1, `ssa-run-score ${$1 ?? ""}`);
+              set_text(text_4, get2(item).score);
+            },
+            [
+              () => formatDateShort(get2(item).date),
+              () => scoreTone(get2(item).score)
+            ]
+          );
+          delegated("click", button_1, () => void $$props.plugin.openAudit(get2(item)));
+          append($$anchor4, button_1);
+        });
+        reset(section);
+        template_effect(() => {
+          set_attribute2(h3, "title", get2(group).host);
+          set_text(text_1, get2(group).host);
+        });
+        append($$anchor3, section);
       });
       append($$anchor2, fragment);
     };
-    if_block(node, ($$render) => {
-      if (get2(items).length === 0) $$render(consequent);
+    if_block(node_1, ($$render) => {
+      if (get2(items).length === 0) $$render(consequent_1);
+      else if (get2(groups).length === 0) $$render(consequent_2, 1);
       else $$render(alternate, -1);
     });
   }
-  reset(div_2);
-  reset(aside);
-  var main = sibling(aside, 2);
-  var node_2 = child(main);
-  {
-    var consequent_1 = ($$anchor2) => {
-      ReportView($$anchor2, {
-        get report() {
-          return get2(selected);
-        },
-        get path() {
-          return get2(selectedPath);
-        },
-        get plugin() {
-          return $$props.plugin;
-        }
-      });
-    };
-    var consequent_2 = ($$anchor2) => {
-      RunAuditForm($$anchor2, {
-        get defaultPages() {
-          return $$props.plugin.settings.defaultMaxPages;
-        },
-        get folder() {
-          return $$props.plugin.settings.auditFolder;
-        },
-        get running() {
-          return get2(running);
-        },
-        get progress() {
-          return get2(progress);
-        },
-        onSubmit: run3
-      });
-    };
-    var alternate_1 = ($$anchor2) => {
-      var div_3 = root_23();
-      var div_4 = child(div_3);
-      var span_6 = child(div_4);
-      action(span_6, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "gauge");
-      reset(div_4);
-      var button_2 = sibling(div_4, 6);
-      var span_7 = child(button_2);
-      action(span_7, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "plus");
-      next();
-      reset(button_2);
-      reset(div_3);
-      delegated("click", button_2, startNew);
-      append($$anchor2, div_3);
-    };
-    if_block(node_2, ($$render) => {
-      if (get2(mode) === "detail" && get2(selected)) $$render(consequent_1);
-      else if (get2(mode) === "new") $$render(consequent_2, 1);
-      else $$render(alternate_1, -1);
-    });
-  }
-  reset(main);
+  reset(div_3);
   reset(div);
   template_effect(() => button.disabled = get2(running));
-  delegated("click", button, startNew);
+  delegated("click", button, () => $$props.plugin.startNewAudit());
   append($$anchor, div);
   pop();
 }
@@ -25428,25 +25953,17 @@ delegate(["click"]);
 
 // src/view.ts
 var VIEW_TYPE_SITE_AUDIT = "safi-site-audit-view";
-var AuditDashboardView = class extends import_obsidian7.ItemView {
+var VIEW_TYPE_SITE_AUDIT_LIST = "safi-site-audit-list";
+var SvelteView = class extends import_obsidian6.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.plugin = plugin;
   }
   component = null;
-  getViewType() {
-    return VIEW_TYPE_SITE_AUDIT;
-  }
-  getDisplayText() {
-    return "Site Audit";
-  }
-  getIcon() {
-    return "gauge";
-  }
   async onOpen() {
     this.contentEl.empty();
-    this.contentEl.addClass("safi-site-audit");
-    this.component = mount(Dashboard, {
+    this.contentEl.addClass(this.rootClass());
+    this.component = mount(this.root(), {
       target: this.contentEl,
       props: { plugin: this.plugin }
     });
@@ -25458,27 +25975,157 @@ var AuditDashboardView = class extends import_obsidian7.ItemView {
     }
   }
 };
+var AuditDashboardView = class extends SvelteView {
+  getViewType() {
+    return VIEW_TYPE_SITE_AUDIT;
+  }
+  getDisplayText() {
+    return "Site Audit";
+  }
+  getIcon() {
+    return "gauge";
+  }
+  rootClass() {
+    return "safi-site-audit";
+  }
+  root() {
+    return Dashboard;
+  }
+};
+var AuditListView = class extends SvelteView {
+  getViewType() {
+    return VIEW_TYPE_SITE_AUDIT_LIST;
+  }
+  getDisplayText() {
+    return "Site audits";
+  }
+  getIcon() {
+    return "gauge";
+  }
+  rootClass() {
+    return "safi-site-audit-list";
+  }
+  root() {
+    return AuditList;
+  }
+};
+
+// src/audit-state.ts
+var import_obsidian7 = require("obsidian");
+var AuditState = class extends import_obsidian7.Events {
+  mode = "empty";
+  path = null;
+  report = null;
+  /** Kept across view switches so "Run again" can prefill the form. */
+  draftUrl = "";
+  running = false;
+  progress = null;
+  showReport(path, report) {
+    this.mode = "detail";
+    this.path = path;
+    this.report = report;
+    this.changed();
+  }
+  showRunForm(url = "") {
+    if (url) this.draftUrl = url;
+    this.mode = "new";
+    this.path = null;
+    this.report = null;
+    this.changed();
+  }
+  setRunning(running, progress = null) {
+    this.running = running;
+    this.progress = progress;
+    this.changed();
+  }
+  /** Also what the list listens to when a finished run adds a note. */
+  changed() {
+    this.trigger("change");
+  }
+  onChange(cb) {
+    return this.on("change", cb);
+  }
+};
 
 // src/main.ts
 var SafiSiteAuditPlugin = class extends import_obsidian8.Plugin {
   settings = DEFAULT_SETTINGS;
+  /** Shared by the sidebar list and the dashboard tab. */
+  state = new AuditState();
   async onload() {
     await this.loadSettings();
     this.registerView(VIEW_TYPE_SITE_AUDIT, (leaf) => new AuditDashboardView(leaf, this));
-    this.addRibbonIcon("gauge", "Open Safi Site Audit", () => this.activateView());
+    this.registerView(VIEW_TYPE_SITE_AUDIT_LIST, (leaf) => new AuditListView(leaf, this));
+    this.addRibbonIcon("gauge", "Open Safi Site Audit", () => {
+      void this.openWorkspace();
+    });
     this.addCommand({
       id: "open-site-audit-dashboard",
       name: "Open dashboard",
-      callback: () => this.activateView()
+      callback: () => void this.openWorkspace()
+    });
+    this.addCommand({
+      id: "run-site-audit",
+      name: "Run a new audit",
+      callback: () => {
+        this.state.showRunForm();
+        void this.openWorkspace();
+      }
     });
     this.addSettingTab(new SafiSiteAuditSettingTab(this.app, this));
   }
-  async activateView() {
+  /** Sidebar list on the left, report in a main-area tab. */
+  async openWorkspace() {
+    await this.activateList();
+    await this.activateDashboard();
+  }
+  async activateDashboard() {
     const { workspace } = this.app;
-    const existing = workspace.getLeavesOfType(VIEW_TYPE_SITE_AUDIT)[0];
-    const leaf = existing ?? workspace.getLeaf("tab");
+    const leaf = workspace.getLeavesOfType(VIEW_TYPE_SITE_AUDIT)[0] ?? workspace.getLeaf("tab");
     await leaf.setViewState({ type: VIEW_TYPE_SITE_AUDIT, active: true });
     await workspace.revealLeaf(leaf);
+  }
+  async activateList() {
+    const { workspace } = this.app;
+    const existing = workspace.getLeavesOfType(VIEW_TYPE_SITE_AUDIT_LIST)[0];
+    const leaf = existing ?? workspace.getLeftLeaf(false);
+    if (!leaf) return;
+    await leaf.setViewState({ type: VIEW_TYPE_SITE_AUDIT_LIST, active: true });
+    await workspace.revealLeaf(leaf);
+  }
+  /** Picked from the sidebar: load the report and show it in the dashboard tab. */
+  async openAudit(item) {
+    const report = await readAudit(this.app, item.file);
+    if (!report) {
+      new import_obsidian8.Notice("Could not read this audit's report data.");
+      return;
+    }
+    this.state.showReport(item.file.path, report);
+    await this.activateDashboard();
+  }
+  startNewAudit(url = "") {
+    this.state.showRunForm(url);
+    void this.activateDashboard();
+  }
+  /** Runs the crawl, saves the three exports, and shows the result. */
+  async runAndSave(url, maxPages) {
+    if (!url) {
+      new import_obsidian8.Notice("Enter a URL to audit.");
+      return;
+    }
+    this.state.setRunning(true);
+    try {
+      const report = await runAudit({ url, maxPages }, this.settings, (progress) => {
+        this.state.setRunning(true, progress);
+      });
+      const { note } = await saveAudit(this.app, this.settings, report);
+      this.state.showReport(note.path, report);
+      new import_obsidian8.Notice(`Audit saved to ${note.parent?.path ?? this.settings.auditFolder}`);
+    } catch (e) {
+      new import_obsidian8.Notice(`Audit failed: ${e.message}`);
+    } finally {
+      this.state.setRunning(false);
+    }
   }
   async loadSettings() {
     const saved = await this.loadData();

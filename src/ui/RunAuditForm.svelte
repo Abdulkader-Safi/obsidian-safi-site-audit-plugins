@@ -5,18 +5,20 @@
 	let {
 		defaultPages,
 		folder,
+		url = $bindable(""),
 		running,
 		progress,
 		onSubmit,
 	}: {
 		defaultPages: number;
 		folder: string;
+		/** Owned by the dashboard, so "Run again" can prefill it. */
+		url?: string;
 		running: boolean;
 		progress: AuditProgress | null;
 		onSubmit: (url: string, pages: number | undefined) => void;
 	} = $props();
 
-	let url = $state("");
 	let pages = $state("");
 
 	const percent = $derived(progress ? progressPercent(progress) : 0);
@@ -36,12 +38,12 @@
 	}
 </script>
 
-<div class="ssa-run">
-	<div class="ssa-run-intro">
-		<h2 class="ssa-run-title">Audit a site</h2>
-		<p class="ssa-run-lede">
+<div class="ssa-newrun">
+	<div class="ssa-newrun-intro">
+		<h2 class="ssa-newrun-title">Audit a site</h2>
+		<p class="ssa-newrun-lede">
 			Crawls the site, checks every page against 94 rules, and writes the report to
-			<span class="ssa-run-folder">{folder}</span> as Markdown, JSON and HTML.
+			<span class="ssa-newrun-folder">{folder}</span> as Markdown, JSON and HTML.
 		</p>
 	</div>
 
@@ -74,7 +76,7 @@
 		</div>
 	</div>
 
-	<div class="ssa-run-actions">
+	<div class="ssa-newrun-actions">
 		<button class="ssa-btn ssa-btn-primary" onclick={submit} disabled={running}>
 			{#if running}
 				<span class="ssa-spinner"></span>

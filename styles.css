@@ -1,11 +1,14 @@
 /*
  * Safi Site Audit styles.
- * Hand-written, scoped under .safi-site-audit, built on Obsidian's own theme
- * variables so the dashboard follows the user's theme (light/dark/accent).
- * No Tailwind, no shadcn tokens.
+ *
+ * Everything is scoped under .safi-site-audit and built from Obsidian's own theme
+ * variables, so the dashboard inherits whatever theme, accent and font the user has
+ * installed. No colour literals, no bundled fonts, no drop shadows: depth comes from
+ * surface tone and hairline borders, the way Obsidian's own panes do it.
  */
 
-.safi-site-audit {
+.safi-site-audit,
+.safi-site-audit-list {
 	height: 100%;
 	padding: 0;
 	color: var(--text-normal);
@@ -14,140 +17,185 @@
 
 .safi-site-audit *,
 .safi-site-audit *::before,
-.safi-site-audit *::after {
+.safi-site-audit *::after,
+.safi-site-audit-list *,
+.safi-site-audit-list *::before,
+.safi-site-audit-list *::after {
 	box-sizing: border-box;
 }
 
-/* ---- layout: sidebar + main ---- */
-.ssa-layout {
+.safi-site-audit :focus-visible,
+.safi-site-audit-list :focus-visible {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: 2px;
+	border-radius: var(--radius-s);
+}
+
+/* ---------- tones ----------
+   One place decides what "good", "warning" and "failed" look like. Scoped to the
+   plugin's two view roots so the class names never leak into the rest of the app. */
+.safi-site-audit :is(.is-good, .is-pass),
+.safi-site-audit-list :is(.is-good, .is-pass) {
+	color: var(--color-green);
+}
+.safi-site-audit :is(.is-mid, .is-warn),
+.safi-site-audit-list :is(.is-mid, .is-warn) {
+	color: var(--color-yellow);
+}
+.safi-site-audit :is(.is-bad, .is-fail),
+.safi-site-audit-list :is(.is-bad, .is-fail) {
+	color: var(--color-red);
+}
+.safi-site-audit .is-info {
+	color: var(--color-blue);
+}
+.safi-site-audit .is-missing {
+	color: var(--text-faint);
+}
+
+/* ---------- the report tab ---------- */
+.ssa-view {
+	height: 100%;
+	overflow-y: auto;
+	padding: 1.5rem 1.75rem 3rem;
+	container-type: inline-size;
+}
+
+/* ---------- the sidebar list ---------- */
+.ssa-rail {
 	display: flex;
+	flex-direction: column;
 	height: 100%;
 	min-height: 0;
 }
-.ssa-sidebar {
-	display: flex;
-	flex-direction: column;
-	width: 16rem;
-	flex-shrink: 0;
-	border-right: 1px solid var(--background-modifier-border);
-	background: var(--background-secondary);
-}
-.ssa-sidebar-head {
+.ssa-rail-head {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
-	padding: 0.75rem;
-	border-bottom: 1px solid var(--background-modifier-border);
-	font-weight: var(--font-semibold);
+	padding: 0.65rem 0.5rem 0.65rem 0.25rem;
 }
-.ssa-sidebar-head .ssa-spacer {
+.ssa-rail-mark {
+	display: flex;
+	color: var(--text-muted);
+}
+.ssa-rail-mark .svg-icon {
+	width: 1.05em;
+	height: 1.05em;
+}
+.ssa-rail-name {
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-semibold);
+	letter-spacing: -0.005em;
+}
+.ssa-rail-new {
 	margin-left: auto;
 }
-.ssa-sidebar-list {
-	display: flex;
-	flex-direction: column;
-	gap: 0.4rem;
+.ssa-rail-filter {
+	padding: 0 0.25rem 0.6rem;
+}
+.ssa-rail-list {
+	flex: 1;
 	min-height: 0;
-	flex: 1;
 	overflow-y: auto;
-	padding: 0.5rem;
+	padding: 0 0 0.75rem;
 }
-.ssa-main {
-	min-width: 0;
-	flex: 1;
-	overflow-y: auto;
-	padding: 1rem;
-}
-.ssa-empty-note {
-	padding: 0.5rem;
-	font-size: var(--font-ui-small);
+.ssa-rail-note {
+	margin: 0;
+	padding: 0.5rem 0.25rem;
+	font-size: var(--font-ui-smaller);
 	color: var(--text-muted);
 }
 
-/* audit row in the sidebar */
-.ssa-audit-row {
+/* a site and its runs */
+.ssa-site + .ssa-site {
+	margin-top: 1rem;
+}
+.ssa-site-host {
+	margin: 0 0 0.25rem;
+	padding: 0 0.5rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: var(--font-ui-smaller);
+	font-weight: var(--font-semibold);
+	color: var(--text-muted);
+}
+/* Explicit areas: the date and the page count each own a row, the score spans
+   both and sits centred against them. Nothing is left to auto-placement. */
+.ssa-run-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-areas:
+		"date  score"
+		"pages score";
+	align-items: center;
+	column-gap: 0.6rem;
+	row-gap: 0.1rem;
 	width: 100%;
-	height: fit-content;
-	display: flex;
-	flex-direction: column;
-	gap: 0.15rem;
-	padding: 0.5rem 0.75rem;
+	padding: 0.4rem 0.5rem;
 	border: none;
-	border-radius: var(--radius-m);
+	border-radius: var(--radius-s);
 	background: transparent;
 	color: var(--text-normal);
 	text-align: left;
 	cursor: pointer;
 }
-.ssa-audit-row:hover {
+.ssa-run-row:hover {
 	background: var(--background-modifier-hover);
 }
-.ssa-audit-row.is-active {
+.ssa-run-row.is-on {
 	background: var(--background-modifier-active-hover, var(--background-modifier-hover));
 }
-.ssa-audit-row-top {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 0.5rem;
-	width: 100%;
+.ssa-run-row.is-on .ssa-run-date {
+	font-weight: var(--font-semibold);
 }
-.ssa-audit-row-host {
+.ssa-run-date,
+.ssa-run-pages {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-medium);
+	line-height: 1.3;
 }
-.ssa-audit-row-date {
-	width: 100%;
-	text-align: left;
+.ssa-run-date {
+	grid-area: date;
+	font-size: var(--font-ui-small);
+}
+.ssa-run-pages {
+	grid-area: pages;
 	font-size: var(--font-ui-smaller);
-	color: var(--text-muted);
+	color: var(--text-faint);
 }
-
-/* ---- card ---- */
-.ssa-card {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	padding: 1rem;
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-l);
-	background: var(--background-primary);
-}
-.ssa-card-header {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: flex-start;
-	gap: 0.5rem;
-}
-.ssa-card-title {
-	font-size: var(--font-ui-large);
-	font-weight: var(--font-semibold);
-}
-.ssa-card-desc {
+.ssa-run-score {
+	grid-area: score;
+	align-self: center;
 	font-size: var(--font-ui-small);
-	color: var(--text-muted);
-}
-.ssa-card-action {
-	margin-left: auto;
-}
-.ssa-card-content {
-	display: flex;
-	flex-direction: column;
-	gap: 0.75rem;
-}
-.ssa-card-footer {
-	display: flex;
-	gap: 0.5rem;
-}
-.ssa-card-narrow {
-	max-width: 36rem;
-	margin: 0 auto;
+	font-weight: var(--font-semibold);
+	font-variant-numeric: tabular-nums;
 }
 
-/* ---- buttons ---- */
+/* ---------- blank state ---------- */
+.ssa-blank {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.75rem;
+	max-width: 26rem;
+	margin: 4rem auto 0;
+}
+.ssa-blank-title {
+	margin: 0;
+	font-size: 1.35rem;
+	font-weight: var(--font-bold);
+	letter-spacing: -0.01em;
+}
+.ssa-blank-text {
+	margin: 0;
+	font-size: var(--font-ui-small);
+	line-height: 1.55;
+	color: var(--text-muted);
+}
+
+/* ---------- controls ---------- */
 .ssa-btn {
 	display: inline-flex;
 	align-items: center;
@@ -162,6 +210,7 @@
 	cursor: pointer;
 	background: var(--interactive-normal);
 	color: var(--text-normal);
+	transition: background-color 120ms ease;
 }
 .ssa-btn:hover {
 	background: var(--interactive-hover);
@@ -188,48 +237,23 @@
 .ssa-btn-outline:hover {
 	background: var(--background-modifier-hover);
 }
-.ssa-btn-ghost {
-	background: transparent;
-}
-.ssa-btn-ghost:hover {
-	background: var(--background-modifier-hover);
-}
 .ssa-btn-sm {
 	padding: 0.25rem 0.55rem;
 	font-size: var(--font-ui-smaller);
 }
-
-/* ---- badges ---- */
-.ssa-badge {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.25rem;
-	padding: 0.2rem 0.5rem;
-	border: 1px solid transparent;
-	border-radius: var(--radius-s);
+.ssa-link-btn {
+	padding: 0;
+	border: none;
+	background: none;
+	color: var(--text-accent);
 	font-size: var(--font-ui-smaller);
-	font-weight: var(--font-medium);
-	line-height: 1.4;
-	white-space: nowrap;
+	cursor: pointer;
 }
-.ssa-badge-default {
-	background: var(--interactive-accent);
-	color: var(--text-on-accent);
-}
-.ssa-badge-secondary {
-	background: var(--background-modifier-border);
-	color: var(--text-normal);
-}
-.ssa-badge-destructive {
-	background: var(--color-red);
-	color: var(--text-on-accent);
-}
-.ssa-badge-outline {
-	border-color: var(--background-modifier-border);
-	color: var(--text-muted);
+.ssa-link-btn:hover {
+	color: var(--text-accent-hover);
+	text-decoration: underline;
 }
 
-/* ---- inputs ---- */
 .ssa-input,
 .ssa-select {
 	width: 100%;
@@ -239,6 +263,10 @@
 	background: var(--background-primary);
 	color: var(--text-normal);
 	font-size: var(--font-ui-small);
+	font-family: inherit;
+}
+.ssa-input::placeholder {
+	color: var(--text-faint);
 }
 .ssa-input:focus,
 .ssa-select:focus {
@@ -246,13 +274,31 @@
 	border-color: var(--interactive-accent);
 	box-shadow: 0 0 0 1px var(--interactive-accent);
 }
+.ssa-input-sm {
+	padding: 0.28rem 0.5rem;
+	font-size: var(--font-ui-smaller);
+}
+.ssa-input-lg {
+	padding: 0.55rem 0.7rem;
+	font-size: var(--font-ui-medium);
+}
+.ssa-input-num {
+	width: 7rem;
+}
+.ssa-input-search {
+	width: 11rem;
+	margin-left: auto;
+}
 .ssa-select {
 	width: auto;
-	min-width: 11rem;
+	min-width: 10rem;
+	max-width: 100%;
 	cursor: pointer;
 }
+.ssa-select-wide {
+	min-width: 18rem;
+}
 
-/* ---- fields ---- */
 .ssa-field-group {
 	display: flex;
 	flex-direction: column;
@@ -272,460 +318,76 @@
 	color: var(--text-muted);
 }
 
-/* ---- tabs ---- */
-.ssa-tablist {
+/* segmented control: one row of related filters, no pill-per-word */
+.ssa-segmented {
 	display: inline-flex;
+	flex-wrap: wrap;
 	gap: 0.25rem;
 	padding: 0.2rem;
 	border-radius: var(--radius-m);
 	background: var(--background-secondary);
-	margin-bottom: 1rem;
 }
-.ssa-tab {
-	padding: 0.3rem 0.8rem;
+.ssa-seg {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.3rem;
+	padding: 0.28rem 0.6rem;
 	border: none;
 	border-radius: var(--radius-s);
 	background: transparent;
 	color: var(--text-muted);
-	font-size: var(--font-ui-small);
+	font-size: var(--font-ui-smaller);
 	font-weight: var(--font-medium);
 	cursor: pointer;
+	transition: color 120ms ease, background-color 120ms ease;
 }
-.ssa-tab:hover {
+.ssa-seg:hover {
 	color: var(--text-normal);
 }
-.ssa-tab.is-active {
+.ssa-seg.is-on {
 	background: var(--background-primary);
 	color: var(--text-normal);
 }
-.ssa-tabpanel {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-}
-
-/* ---- toggle group ---- */
-.ssa-toggles {
-	display: inline-flex;
-	gap: 0.35rem;
-}
-.ssa-toggle {
-	padding: 0.35rem 0.75rem;
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-m);
-	background: transparent;
-	color: var(--text-muted);
-	font-size: var(--font-ui-smaller);
-	font-weight: var(--font-medium);
-	cursor: pointer;
-}
-.ssa-toggle:hover {
-	background: var(--background-modifier-hover);
-}
-.ssa-toggle.is-active {
-	background: var(--interactive-accent);
-	color: var(--text-on-accent);
-}
-
-/* ---- accordion (native <details>) ---- */
-.ssa-accordion {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-}
-.ssa-acc-item {
-	border-bottom: 1px solid var(--background-modifier-border);
-}
-.ssa-acc-trigger {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	width: 100%;
-	padding: 0.65rem 0;
-	cursor: pointer;
-	list-style: none;
-	font-size: var(--font-ui-small);
-}
-.ssa-acc-trigger::-webkit-details-marker {
-	display: none;
-}
-.ssa-acc-trigger::after {
-	content: "";
-	margin-left: auto;
-	width: 0.5rem;
-	height: 0.5rem;
-	border-right: 2px solid var(--text-muted);
-	border-bottom: 2px solid var(--text-muted);
-	transform: rotate(45deg);
-	transition: transform 150ms ease;
-	flex-shrink: 0;
-}
-.ssa-acc-item[open] > .ssa-acc-trigger::after {
-	transform: rotate(-135deg);
-}
-.ssa-acc-content {
-	padding: 0 0 0.75rem;
-}
-
-/* ---- table ---- */
-.ssa-table {
-	width: 100%;
-	border-collapse: collapse;
-	font-size: var(--font-ui-small);
-}
-.ssa-table th,
-.ssa-table td {
-	padding: 0.4rem 0.6rem;
-	text-align: left;
-	border-bottom: 1px solid var(--background-modifier-border);
-	vertical-align: top;
-}
-.ssa-table th {
-	color: var(--text-muted);
-	font-weight: var(--font-medium);
-}
-.ssa-cell-strong {
-	font-weight: var(--font-medium);
-}
-.ssa-cell-muted {
-	color: var(--text-muted);
-}
-
-/* ---- spinner ---- */
-.ssa-spinner {
-	width: 1em;
-	height: 1em;
-	border: 2px solid currentColor;
-	border-right-color: transparent;
-	border-radius: 50%;
-	animation: ssa-spin 0.6s linear infinite;
-}
-@keyframes ssa-spin {
-	to {
-		transform: rotate(360deg);
-	}
-}
-
-/* ---- empty state ---- */
-.ssa-empty {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	gap: 0.75rem;
-	height: 100%;
-	text-align: center;
-}
-.ssa-empty-media {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 3rem;
-	height: 3rem;
-	border-radius: var(--radius-m);
-	background: var(--background-secondary);
-	color: var(--text-muted);
-}
-.ssa-empty-media .svg-icon {
-	width: 1.5rem;
-	height: 1.5rem;
-}
-.ssa-empty-title {
+.ssa-seg-count {
+	font-variant-numeric: tabular-nums;
 	font-weight: var(--font-semibold);
 }
-.ssa-empty-desc {
-	font-size: var(--font-ui-small);
-	color: var(--text-muted);
-}
 
-/* ---- report: overview header ---- */
-.ssa-report {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-}
-.ssa-overview {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 1.5rem;
-}
-.ssa-overview-meta {
-	display: flex;
-	flex-direction: column;
-	gap: 0.25rem;
-	min-width: 12rem;
-}
-.ssa-overview-host {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-}
-.ssa-overview-host-name {
-	font-size: var(--font-ui-large);
-	font-weight: var(--font-semibold);
-}
-.ssa-overview-url,
-.ssa-overview-sub {
-	font-size: var(--font-ui-small);
-	color: var(--text-muted);
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-.ssa-stats {
-	display: flex;
-	gap: 1.5rem;
-	margin-left: auto;
-}
-.ssa-stat {
-	text-align: center;
-}
-.ssa-stat-num {
-	font-size: 1.5rem;
-	font-weight: var(--font-bold);
-}
-.ssa-stat-label {
-	font-size: var(--font-ui-smaller);
-	color: var(--text-muted);
-}
-.ssa-stat-pass {
-	color: var(--color-green);
-}
-.ssa-stat-warn {
-	color: var(--color-yellow);
-}
-.ssa-stat-fail {
-	color: var(--color-red);
-}
-
-/* ---- category score bars ---- */
-.ssa-cats {
-	display: grid;
-	gap: 0.75rem 2rem;
-}
-@media (min-width: 40rem) {
-	.ssa-cats {
-		grid-template-columns: 1fr 1fr;
-	}
-}
-.ssa-cat-row {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-}
-.ssa-cat-name {
-	width: 9rem;
-	flex-shrink: 0;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	font-size: var(--font-ui-small);
-}
-.ssa-cat-bar {
-	height: 0.5rem;
-	flex: 1;
-	overflow: hidden;
-	border-radius: 999px;
-	background: var(--background-modifier-border);
-}
-.ssa-cat-bar-fill {
-	display: block;
-	height: 100%;
-	border-radius: 999px;
-	background: var(--color-green);
-}
-.ssa-cat-bar-fill.is-mid {
-	background: var(--color-yellow);
-}
-.ssa-cat-bar-fill.is-bad {
-	background: var(--color-red);
-}
-.ssa-cat-score {
-	width: 2rem;
-	flex-shrink: 0;
-	text-align: right;
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-medium);
-}
-
-/* ---- issue filters + rows ---- */
-.ssa-filters {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 0.6rem;
-}
-.ssa-filters .ssa-input {
-	width: 10rem;
-}
-.ssa-no-results {
-	padding: 1rem 0;
-	text-align: center;
-	font-size: var(--font-ui-small);
-	color: var(--text-muted);
-}
-.ssa-issue-head {
-	display: flex;
-	min-width: 0;
-	flex: 1;
-	align-items: center;
-	gap: 0.5rem;
-	padding-right: 0.5rem;
-	text-align: left;
-}
-.ssa-issue-title {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	font-weight: var(--font-medium);
-}
-.ssa-issue-head .ssa-push {
-	margin-left: auto;
-}
-.ssa-issue-body {
-	display: flex;
-	flex-direction: column;
-	gap: 0.75rem;
-	padding-left: 1rem;
-}
-.ssa-issue-msg {
-	font-size: var(--font-ui-small);
-	color: var(--text-muted);
-}
-.ssa-pages {
-	display: flex;
-	flex-direction: column;
-	gap: 0.25rem;
-}
-.ssa-pages-label {
-	font-size: var(--font-ui-smaller);
-	font-weight: var(--font-medium);
-	color: var(--text-muted);
-}
-.ssa-page-url {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	font-size: var(--font-ui-small);
-}
-.ssa-page-row {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	width: 100%;
-	padding-right: 0.5rem;
-}
-.ssa-page-row .ssa-page-name {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-.ssa-page-row .ssa-page-count {
-	margin-left: auto;
-	color: var(--text-muted);
-}
-
-/* status dots */
-.ssa-dot {
-	width: 0.5rem;
-	height: 0.5rem;
-	flex-shrink: 0;
-	border-radius: 50%;
-}
-.ssa-dot-fail {
-	background: var(--color-red);
-}
-.ssa-dot-warn {
-	background: var(--color-yellow);
-}
-.ssa-dot-info {
-	background: var(--color-blue);
-}
-.ssa-dot-pass {
-	background: var(--color-green);
-}
-
-/* ---- score gauge ---- */
-.ssa-gauge {
-	position: relative;
-	flex-shrink: 0;
-}
-.ssa-gauge svg {
-	transform: rotate(-90deg);
-}
-.ssa-gauge-track {
-	stroke: var(--background-modifier-border);
-}
-.ssa-gauge-center {
-	position: absolute;
-	inset: 0;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-.ssa-gauge-value {
-	font-size: 1.5rem;
-	font-weight: var(--font-bold);
-	line-height: 1;
-}
-.ssa-gauge-label {
-	font-size: 0.625rem;
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
-	color: var(--text-muted);
-}
-
-.ssa-mt {
-	margin-top: 0.25rem;
-}
-
-/* ---- run form ---- */
-.ssa-run {
+/* ---------- new run ---------- */
+.ssa-newrun {
 	display: flex;
 	flex-direction: column;
 	gap: 1.5rem;
-	max-width: 34rem;
+	max-width: 32rem;
 	margin: 3rem auto 0;
-	padding: 0 0.5rem;
 }
-.ssa-run-intro {
+.ssa-newrun-intro {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
 }
-.ssa-run-title {
+.ssa-newrun-title {
 	margin: 0;
-	font-size: 1.6rem;
+	font-size: 1.5rem;
 	line-height: 1.15;
 	font-weight: var(--font-bold);
-	letter-spacing: -0.01em;
+	letter-spacing: -0.015em;
 }
-.ssa-run-lede {
+.ssa-newrun-lede {
 	margin: 0;
-	max-width: 30rem;
 	font-size: var(--font-ui-small);
 	line-height: 1.55;
 	color: var(--text-muted);
 }
-.ssa-run-folder {
+.ssa-newrun-folder {
 	color: var(--text-normal);
 	font-weight: var(--font-medium);
 }
-.ssa-input-lg {
-	padding: 0.55rem 0.7rem;
-	font-size: var(--font-ui-medium);
-}
-.ssa-input-num {
-	width: 7rem;
-}
-.ssa-run-actions {
+.ssa-newrun-actions {
 	display: flex;
 	gap: 0.5rem;
 }
 
-/* ---- live audit progress ---- */
 .ssa-progress {
 	display: flex;
 	flex-direction: column;
@@ -761,15 +423,592 @@
 	background: var(--interactive-accent);
 	transition: width 240ms ease-out;
 }
-.ssa-progress-sub {
+.ssa-progress-sub,
+.ssa-progress-url {
 	font-size: var(--font-ui-smaller);
-	color: var(--text-muted);
 	font-variant-numeric: tabular-nums;
+	color: var(--text-muted);
 }
 .ssa-progress-url {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	color: var(--text-faint);
+}
+
+.ssa-spinner {
+	width: 1em;
+	height: 1em;
+	border: 2px solid currentColor;
+	border-right-color: transparent;
+	border-radius: 50%;
+	animation: ssa-spin 0.6s linear infinite;
+}
+@keyframes ssa-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* ---------- report header ---------- */
+.ssa-report {
+	display: flex;
+	flex-direction: column;
+	gap: 1.75rem;
+	max-width: 90rem;
+}
+.ssa-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: 1rem;
+}
+.ssa-head-id {
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+}
+.ssa-head-host {
+	margin: 0;
+	font-size: 1.5rem;
+	line-height: 1.15;
+	font-weight: var(--font-bold);
+	letter-spacing: -0.015em;
+	overflow-wrap: anywhere;
+}
+.ssa-head-url {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: var(--font-ui-small);
+	color: var(--text-muted);
+	text-decoration: none;
+}
+.ssa-head-url:hover {
+	color: var(--text-accent);
+	text-decoration: underline;
+}
+.ssa-head-meta {
+	margin: 0.15rem 0 0;
 	font-size: var(--font-ui-smaller);
 	color: var(--text-faint);
+}
+.ssa-sep {
+	padding: 0 0.15rem;
+}
+.ssa-head-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	margin-left: auto;
+	padding-top: 0.35rem;
+}
+
+/* ---------- score ---------- */
+.ssa-score {
+	display: flex;
+	align-items: center;
+	gap: 1.75rem;
+	padding: 1.25rem;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-l);
+	background: var(--background-secondary);
+}
+.ssa-score-body {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+.ssa-split {
+	display: flex;
+	height: 0.5rem;
+	overflow: hidden;
+	border-radius: 999px;
+	background: var(--background-modifier-border);
+}
+.ssa-split-seg {
+	display: block;
+	height: 100%;
+	min-width: 2px;
+	transition: flex-grow 400ms ease-out;
+}
+.ssa-split-seg.is-pass {
+	background: var(--color-green);
+}
+.ssa-split-seg.is-warn {
+	background: var(--color-yellow);
+}
+.ssa-split-seg.is-fail {
+	background: var(--color-red);
+}
+.ssa-split-seg.is-info {
+	background: var(--color-blue);
+}
+.ssa-tallies {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+	gap: 0.75rem;
+	margin: 0;
+}
+.ssa-tally {
+	display: flex;
+	flex-direction: column-reverse;
+	gap: 0.1rem;
+	min-width: 0;
+}
+.ssa-tally dt {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+}
+.ssa-tally dd {
+	margin: 0;
+	font-size: 1.25rem;
+	font-weight: var(--font-bold);
+	font-variant-numeric: tabular-nums;
+	line-height: 1.1;
+}
+
+.ssa-gauge {
+	position: relative;
+	flex-shrink: 0;
+}
+.ssa-gauge svg {
+	display: block;
+	transform: rotate(-90deg);
+}
+.ssa-gauge-track {
+	stroke: var(--background-modifier-border);
+}
+.ssa-gauge-arc {
+	transition: stroke-dashoffset 600ms ease-out;
+	stroke: var(--color-green);
+}
+.ssa-gauge-arc.is-mid {
+	stroke: var(--color-yellow);
+}
+.ssa-gauge-arc.is-bad {
+	stroke: var(--color-red);
+}
+.ssa-gauge-center {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.1rem;
+	pointer-events: none;
+}
+.ssa-gauge-value {
+	font-size: 1.6rem;
+	font-weight: var(--font-bold);
+	font-variant-numeric: tabular-nums;
+	line-height: 1;
+}
+.ssa-gauge-grade {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+	line-height: 1;
+}
+
+/* ---------- category scores ---------- */
+.ssa-block-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 0.85rem;
+}
+.ssa-block-title {
+	margin: 0;
+	font-size: var(--font-ui-medium);
+	font-weight: var(--font-semibold);
+}
+.ssa-block-head .ssa-segmented {
+	margin-left: auto;
+}
+.ssa-cats {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+	gap: 0.55rem 2rem;
+}
+/* Name, bar and score sit on the same three tracks in every row and every column,
+   so nothing goes ragged when a category name is longer than its neighbour's. */
+.ssa-cat {
+	display: grid;
+	grid-template-columns: minmax(0, 7.5rem) 1fr 2.25rem;
+	align-items: center;
+	gap: 0.75rem;
+}
+.ssa-cat-name {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: var(--font-ui-small);
+}
+.ssa-cat-track {
+	height: 0.35rem;
+	overflow: hidden;
+	border-radius: 999px;
+	background: var(--background-modifier-border);
+}
+.ssa-cat-fill {
+	display: block;
+	height: 100%;
+	border-radius: 999px;
+	background: var(--color-green);
+	transition: width 400ms ease-out;
+}
+.ssa-cat-fill.is-mid {
+	background: var(--color-yellow);
+}
+.ssa-cat-fill.is-bad {
+	background: var(--color-red);
+}
+.ssa-cat-score {
+	text-align: right;
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-medium);
+	font-variant-numeric: tabular-nums;
+}
+
+/* ---------- tabs ---------- */
+.ssa-tabs {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	display: flex;
+	gap: 1.25rem;
+	margin: 0 -1.75rem;
+	padding: 0.5rem 1.75rem 0;
+	border-bottom: 1px solid var(--background-modifier-border);
+	background: var(--background-primary);
+}
+.ssa-tab {
+	position: relative;
+	padding: 0.4rem 0 0.55rem;
+	border: none;
+	background: none;
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-medium);
+	cursor: pointer;
+}
+.ssa-tab:hover {
+	color: var(--text-normal);
+}
+.ssa-tab.is-on {
+	color: var(--text-normal);
+	font-weight: var(--font-semibold);
+}
+.ssa-tab.is-on::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -1px;
+	height: 2px;
+	border-radius: 2px 2px 0 0;
+	background: var(--interactive-accent);
+}
+
+/* ---------- panels ---------- */
+.ssa-panel {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+.ssa-filters {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.6rem;
+}
+.ssa-filters-note {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+}
+.ssa-empty-line {
+	margin: 0;
+	padding: 2rem 0;
+	text-align: center;
+	font-size: var(--font-ui-small);
+	color: var(--text-muted);
+}
+
+/* ---------- expandable rows ---------- */
+.ssa-list {
+	display: flex;
+	flex-direction: column;
+}
+.ssa-row {
+	border-top: 1px solid var(--background-modifier-border);
+}
+.ssa-row:last-child {
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+.ssa-row-head {
+	display: flex;
+	align-items: center;
+	gap: 0.65rem;
+	padding: 0.6rem 0.25rem;
+	cursor: pointer;
+	list-style: none;
+}
+.ssa-row-head::-webkit-details-marker {
+	display: none;
+}
+.ssa-row-head:hover {
+	background: var(--background-modifier-hover);
+}
+.ssa-row-head::after {
+	content: "";
+	flex-shrink: 0;
+	width: 0.45rem;
+	height: 0.45rem;
+	margin-right: 0.15rem;
+	border-right: 1.5px solid var(--text-faint);
+	border-bottom: 1.5px solid var(--text-faint);
+	transform: rotate(-45deg);
+	transition: transform 160ms ease;
+}
+.ssa-row[open] > .ssa-row-head::after {
+	transform: rotate(45deg);
+}
+.ssa-row-main {
+	display: flex;
+	flex-direction: column;
+	gap: 0.1rem;
+	min-width: 0;
+	flex: 1;
+}
+.ssa-row-title {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-medium);
+}
+.ssa-row-sub {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: var(--font-ui-smaller);
+	color: var(--text-faint);
+}
+.ssa-row-count {
+	flex-shrink: 0;
+	font-size: var(--font-ui-small);
+	font-variant-numeric: tabular-nums;
+	color: var(--text-muted);
+}
+.ssa-row-count-unit {
+	color: var(--text-faint);
+}
+.ssa-mark {
+	flex-shrink: 0;
+	width: 0.45rem;
+	height: 0.45rem;
+	border-radius: 50%;
+	background: currentColor;
+}
+.ssa-score-chip {
+	flex-shrink: 0;
+	width: 2.1rem;
+	text-align: right;
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-semibold);
+	font-variant-numeric: tabular-nums;
+}
+.ssa-status-word {
+	font-weight: var(--font-medium);
+}
+.ssa-row-body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.85rem;
+	padding: 0.25rem 0 1rem 1.1rem;
+}
+.ssa-row-msg {
+	margin: 0;
+	font-size: var(--font-ui-small);
+	line-height: 1.5;
+	color: var(--text-muted);
+}
+.ssa-fix {
+	display: flex;
+	flex-direction: column;
+	gap: 0.2rem;
+	padding: 0.6rem 0.75rem;
+	border-radius: var(--radius-m);
+	background: var(--background-secondary);
+}
+.ssa-fix-label {
+	font-size: var(--font-ui-smaller);
+	font-weight: var(--font-semibold);
+	color: var(--text-muted);
+}
+.ssa-fix-text {
+	margin: 0;
+	font-size: var(--font-ui-small);
+	line-height: 1.5;
+}
+.ssa-affected {
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+	align-items: flex-start;
+}
+.ssa-affected-label {
+	font-size: var(--font-ui-smaller);
+	font-weight: var(--font-semibold);
+	color: var(--text-muted);
+}
+.ssa-affected-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+	gap: 0.1rem 1rem;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	list-style: none;
+}
+.ssa-affected-list li {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+}
+
+/* ---------- tables ---------- */
+.ssa-scroll-x {
+	max-width: 100%;
+	overflow-x: auto;
+}
+.ssa-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: var(--font-ui-small);
+}
+.ssa-table th,
+.ssa-table td {
+	padding: 0.35rem 0.6rem 0.35rem 0;
+	text-align: left;
+	vertical-align: top;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+.ssa-table th {
+	font-size: var(--font-ui-smaller);
+	font-weight: var(--font-medium);
+	color: var(--text-faint);
+}
+.ssa-table tr:last-child td {
+	border-bottom: none;
+}
+.ssa-col-status {
+	width: 5.5rem;
+}
+.ssa-cell-strong {
+	display: block;
+	font-weight: var(--font-medium);
+}
+.ssa-cell-faint {
+	display: block;
+	font-size: var(--font-ui-smaller);
+	color: var(--text-faint);
+}
+.ssa-cell-muted {
+	color: var(--text-muted);
+}
+
+/* ---------- measurements ---------- */
+.ssa-metric-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+.ssa-metric-cat {
+	margin: 0;
+	padding-bottom: 0.4rem;
+	border-bottom: 1px solid var(--background-modifier-border);
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-semibold);
+}
+.ssa-metric-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+	gap: 0.85rem 1.25rem;
+}
+.ssa-metric {
+	display: flex;
+	flex-direction: column;
+	gap: 0.1rem;
+	min-width: 0;
+}
+.ssa-metric-label {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+}
+.ssa-metric-value {
+	font-size: var(--font-ui-medium);
+	font-weight: var(--font-semibold);
+	font-variant-numeric: tabular-nums;
+	overflow-wrap: anywhere;
+}
+.ssa-metric-note {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-faint);
+}
+.ssa-metric-table {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+.ssa-metric-table-head {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5rem;
+}
+.ssa-metric-table-label {
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-medium);
+}
+.ssa-metric-table-note {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-faint);
+}
+
+/* ---------- narrow panes ---------- */
+@container (max-width: 46rem) {
+	.ssa-view {
+		padding: 1rem 1rem 2.5rem;
+	}
+	.ssa-tabs {
+		margin: 0 -1rem;
+		padding: 0.5rem 1rem 0;
+	}
+	.ssa-score {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 1.25rem;
+	}
+	.ssa-gauge {
+		align-self: center;
+	}
+	.ssa-input-search {
+		width: 100%;
+		margin-left: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.safi-site-audit *,
+	.safi-site-audit-list * {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+	}
 }

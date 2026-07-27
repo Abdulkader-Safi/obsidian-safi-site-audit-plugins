@@ -1,263 +1,164 @@
 <script lang="ts">
-	import { TFile } from "obsidian";
-	import type { AuditReport, Finding } from "../scanner";
+	import { Notice, TFile } from "obsidian";
+	import type { AuditReport } from "../scanner";
 	import type SafiSiteAuditPlugin from "../main";
-	import { openInObsidian } from "../audit-store";
+	import { openExternally, openInObsidian, siblingPath } from "../audit-store";
 	import {
-		buildIssues,
+		categoryLabel,
+		countFindings,
 		formatDate,
-		grade,
-		gradeVariant,
 		hostOf,
-		pct,
-		scoreBar,
-		scoreVariant,
-		statusDot,
+		scoreTone,
 		statusTotals,
-		type Issue,
 	} from "./helpers";
 	import { icon } from "./icon";
 	import ScoreGauge from "./ScoreGauge.svelte";
+	import IssuesPanel from "./IssuesPanel.svelte";
+	import PagesPanel from "./PagesPanel.svelte";
+	import MetricsPanel from "./MetricsPanel.svelte";
 
 	let {
 		report,
 		path,
 		plugin,
+		onRerun,
 	}: {
 		report: AuditReport;
 		path: string | null;
 		plugin: SafiSiteAuditPlugin;
+		onRerun: (url: string) => void;
 	} = $props();
 
 	const totals = $derived(statusTotals(report));
-	const issues = $derived(buildIssues(report));
-	const categoryNames = $derived(report.categories.map((c) => c.category));
+	const checks = $derived(countFindings(report));
 
-	let tab = $state<"categories" | "pages">("categories");
-
-	// Category scores, sortable.
+	let tab = $state<"issues" | "pages" | "metrics">("issues");
 	let sort = $state<"worst" | "best" | "az">("worst");
+
 	const sortedCategories = $derived(
 		[...report.categories].sort((a, b) => {
-			if (sort === "az") return a.category.localeCompare(b.category);
+			if (sort === "az") return categoryLabel(a.category).localeCompare(categoryLabel(b.category));
 			return sort === "worst" ? a.score - b.score : b.score - a.score;
 		}),
 	);
 
-	// Issue filters.
-	let sevFilter = $state<string[]>(["fail", "warn", "info"]);
-	let catFilter = $state("all");
-	let query = $state("");
-	const filteredIssues = $derived(
-		issues.filter((i) => {
-			if (!sevFilter.includes(i.status)) return false;
-			if (catFilter !== "all" && i.category !== catFilter) return false;
-			const q = query.trim().toLowerCase();
-			if (q && !`${i.title} ${i.message} ${i.ruleId}`.toLowerCase().includes(q)) return false;
-			return true;
-		}),
-	);
-
-	function toggleSev(s: string) {
-		sevFilter = sevFilter.includes(s) ? sevFilter.filter((x) => x !== s) : [...sevFilter, s];
-	}
-
-	function statusLabel(status: Issue["status"]): string {
-		return status === "fail" ? "Error" : status === "warn" ? "Warning" : "Info";
-	}
-
-	function statusBadge(status: Issue["status"]): "destructive" | "secondary" | "outline" {
-		return status === "fail" ? "destructive" : status === "warn" ? "secondary" : "outline";
-	}
-
-	function pageIssues(findings: Finding[]): Finding[] {
-		return findings.filter((f) => f.status === "fail" || f.status === "warn");
-	}
-
 	function openNote() {
 		if (!path) return;
 		const file = plugin.app.vault.getAbstractFileByPath(path);
-		if (file instanceof TFile) openInObsidian(plugin.app, file);
+		if (file instanceof TFile) void openInObsidian(plugin.app, file);
+	}
+
+	function openHtml() {
+		if (!path) return;
+		const html = siblingPath(path, "html");
+		if (!plugin.app.vault.getAbstractFileByPath(html)) {
+			new Notice("This audit has no HTML export. Run it again to create one.");
+			return;
+		}
+		if (!openExternally(plugin.app, html)) new Notice(`HTML export saved at ${html}`);
 	}
 </script>
 
 <div class="ssa-report">
-	<!-- Overview header -->
-	<div class="ssa-card">
-		<div class="ssa-overview">
-			<ScoreGauge value={report.score} />
-			<div class="ssa-overview-meta">
-				<div class="ssa-overview-host">
-					<span class="ssa-overview-host-name">{hostOf(report.startUrl)}</span>
-					<span class="ssa-badge ssa-badge-{gradeVariant(report.score)}">Grade {grade(report.score)}</span>
-				</div>
-				<span class="ssa-overview-url">{report.startUrl}</span>
-				<span class="ssa-overview-sub">
-					{formatDate(report.generatedAt)} · {report.pagesScanned} pages crawled
-				</span>
-				{#if path}
-					<div class="ssa-mt">
-						<button class="ssa-btn ssa-btn-outline ssa-btn-sm" onclick={openNote}>
-							<span use:icon={"file-text"}></span>
-							Open note
-						</button>
-					</div>
-				{/if}
-			</div>
-			<div class="ssa-stats">
-				<div class="ssa-stat">
-					<div class="ssa-stat-num ssa-stat-pass">{totals.pass}</div>
-					<div class="ssa-stat-label">Passed · {pct(totals.pass, totals.total)}%</div>
-				</div>
-				<div class="ssa-stat">
-					<div class="ssa-stat-num ssa-stat-warn">{totals.warn}</div>
-					<div class="ssa-stat-label">Warnings · {pct(totals.warn, totals.total)}%</div>
-				</div>
-				<div class="ssa-stat">
-					<div class="ssa-stat-num ssa-stat-fail">{totals.fail}</div>
-					<div class="ssa-stat-label">Failed · {pct(totals.fail, totals.total)}%</div>
-				</div>
-			</div>
+	<header class="ssa-head">
+		<div class="ssa-head-id">
+			<h2 class="ssa-head-host">{hostOf(report.startUrl)}</h2>
+			<a class="ssa-head-url" href={report.startUrl} rel="noopener">{report.startUrl}</a>
+			<p class="ssa-head-meta">
+				{formatDate(report.generatedAt)}
+				<span class="ssa-sep">·</span>
+				{report.pagesScanned.toLocaleString()} pages
+				<span class="ssa-sep">·</span>
+				{checks.toLocaleString()} checks
+			</p>
 		</div>
-	</div>
-
-	<div>
-		<div class="ssa-tablist">
-			<button class="ssa-tab" class:is-active={tab === "categories"} onclick={() => (tab = "categories")}>
-				Categories &amp; issues
-			</button>
-			<button class="ssa-tab" class:is-active={tab === "pages"} onclick={() => (tab = "pages")}>
-				Pages
+		<div class="ssa-head-actions">
+			{#if path}
+				<button class="ssa-btn ssa-btn-outline ssa-btn-sm" onclick={openNote}>
+					<span use:icon={"file-text"}></span>
+					Open note
+				</button>
+				<button class="ssa-btn ssa-btn-outline ssa-btn-sm" onclick={openHtml}>
+					<span use:icon={"external-link"}></span>
+					HTML report
+				</button>
+			{/if}
+			<button class="ssa-btn ssa-btn-outline ssa-btn-sm" onclick={() => onRerun(report.startUrl)}>
+				<span use:icon={"refresh-cw"}></span>
+				Run again
 			</button>
 		</div>
+	</header>
 
-		{#if tab === "categories"}
-			<!-- Categories + issues (each issue lists the pages it appears on) -->
-			<div class="ssa-tabpanel">
-				<div class="ssa-card">
-					<div class="ssa-card-header">
-						<div class="ssa-card-title">Category scores</div>
-						<div class="ssa-card-action">
-							<div class="ssa-toggles">
-								<button class="ssa-toggle" class:is-active={sort === "worst"} onclick={() => (sort = "worst")}>Worst</button>
-								<button class="ssa-toggle" class:is-active={sort === "best"} onclick={() => (sort = "best")}>Best</button>
-								<button class="ssa-toggle" class:is-active={sort === "az"} onclick={() => (sort = "az")}>A–Z</button>
-							</div>
-						</div>
-					</div>
-					<div class="ssa-cats">
-						{#each sortedCategories as cat (cat.category)}
-							<div class="ssa-cat-row">
-								<span class="ssa-cat-name">{cat.category}</span>
-								<span class="ssa-cat-bar">
-									<span class="ssa-cat-bar-fill {scoreBar(cat.score)}" style="width:{cat.score}%"></span>
-								</span>
-								<span class="ssa-cat-score">{cat.score}</span>
-							</div>
-						{/each}
-					</div>
-				</div>
-
-				<div class="ssa-card">
-					<div class="ssa-card-header">
-						<div>
-							<div class="ssa-card-title">Issues</div>
-							<div class="ssa-card-desc">{issues.length} rules flagged across {report.pagesScanned} pages</div>
-						</div>
-					</div>
-					<div class="ssa-card-content">
-						<div class="ssa-filters">
-							<div class="ssa-toggles">
-								<button class="ssa-toggle" class:is-active={sevFilter.includes("fail")} onclick={() => toggleSev("fail")}>Errors {totals.fail}</button>
-								<button class="ssa-toggle" class:is-active={sevFilter.includes("warn")} onclick={() => toggleSev("warn")}>Warnings {totals.warn}</button>
-								<button class="ssa-toggle" class:is-active={sevFilter.includes("info")} onclick={() => toggleSev("info")}>Info {totals.info}</button>
-							</div>
-							<select class="ssa-select" bind:value={catFilter}>
-								<option value="all">All categories</option>
-								{#each categoryNames as c (c)}
-									<option value={c}>{c}</option>
-								{/each}
-							</select>
-							<input class="ssa-input" placeholder="Filter…" bind:value={query} />
-						</div>
-
-						{#if filteredIssues.length === 0}
-							<p class="ssa-no-results">No issues match these filters.</p>
-						{:else}
-							<div class="ssa-accordion">
-								{#each filteredIssues as issue (issue.ruleId)}
-									<details class="ssa-acc-item">
-										<summary class="ssa-acc-trigger">
-											<span class="ssa-issue-head">
-												<span class="ssa-dot {statusDot(issue.status)}"></span>
-												<span class="ssa-issue-title">{issue.title}</span>
-												<span class="ssa-badge ssa-badge-{statusBadge(issue.status)}">{statusLabel(issue.status)}</span>
-												<span class="ssa-badge ssa-badge-outline">{issue.category}</span>
-												<span class="ssa-badge ssa-badge-secondary ssa-push">
-													{issue.pages.length} page{issue.pages.length === 1 ? "" : "s"}
-												</span>
-											</span>
-										</summary>
-										<div class="ssa-acc-content">
-											<div class="ssa-issue-body">
-												<p class="ssa-issue-msg">{issue.message}</p>
-												<div class="ssa-pages">
-													<span class="ssa-pages-label">Affected pages</span>
-													{#each issue.pages as p (p)}
-														<span class="ssa-page-url">{p}</span>
-													{/each}
-												</div>
-											</div>
-										</div>
-									</details>
-								{/each}
-							</div>
-						{/if}
-					</div>
-				</div>
+	<section class="ssa-score">
+		<ScoreGauge value={report.score} />
+		<div class="ssa-score-body">
+			<div
+				class="ssa-split"
+				role="img"
+				aria-label="{totals.pass} passed, {totals.warn} warnings, {totals.fail} failed, {totals.info} informational"
+			>
+				{#if totals.pass}<span class="ssa-split-seg is-pass" style="flex-grow:{totals.pass}"></span>{/if}
+				{#if totals.warn}<span class="ssa-split-seg is-warn" style="flex-grow:{totals.warn}"></span>{/if}
+				{#if totals.fail}<span class="ssa-split-seg is-fail" style="flex-grow:{totals.fail}"></span>{/if}
+				{#if totals.info}<span class="ssa-split-seg is-info" style="flex-grow:{totals.info}"></span>{/if}
 			</div>
-		{:else}
-			<!-- Per-page view -->
-			<div class="ssa-accordion">
-				{#each report.pages as page, i (page.url)}
-					{@const probs = pageIssues(page.findings)}
-					<details class="ssa-acc-item" name="ssa-pages">
-						<summary class="ssa-acc-trigger">
-							<span class="ssa-page-row">
-								<span class="ssa-badge ssa-badge-{scoreVariant(page.score)}">{page.score}</span>
-								<span class="ssa-page-name">{page.url}</span>
-								<span class="ssa-page-count">{probs.length} issue{probs.length === 1 ? "" : "s"}</span>
-							</span>
-						</summary>
-						<div class="ssa-acc-content">
-							{#if probs.length === 0}
-								<p class="ssa-cell-muted">No issues found on this page.</p>
-							{:else}
-								<table class="ssa-table">
-									<thead>
-										<tr>
-											<th>Severity</th>
-											<th>Issue</th>
-											<th>Details</th>
-										</tr>
-									</thead>
-									<tbody>
-										{#each probs as f, fi (`${f.ruleId}-${fi}`)}
-											<tr>
-												<td>
-													<span class="ssa-badge ssa-badge-{statusBadge(f.status)}">{statusLabel(f.status)}</span>
-												</td>
-												<td class="ssa-cell-strong">{f.title}</td>
-												<td class="ssa-cell-muted">{f.message}</td>
-											</tr>
-										{/each}
-									</tbody>
-								</table>
-							{/if}
-						</div>
-					</details>
-				{/each}
+			<dl class="ssa-tallies">
+				<div class="ssa-tally">
+					<dt>Passed</dt>
+					<dd class="is-pass">{totals.pass.toLocaleString()}</dd>
+				</div>
+				<div class="ssa-tally">
+					<dt>Warnings</dt>
+					<dd class="is-warn">{totals.warn.toLocaleString()}</dd>
+				</div>
+				<div class="ssa-tally">
+					<dt>Failed</dt>
+					<dd class="is-fail">{totals.fail.toLocaleString()}</dd>
+				</div>
+				<div class="ssa-tally">
+					<dt>Info</dt>
+					<dd class="is-info">{totals.info.toLocaleString()}</dd>
+				</div>
+			</dl>
+		</div>
+	</section>
+
+	<section class="ssa-cats-block">
+		<div class="ssa-block-head">
+			<h3 class="ssa-block-title">Category scores</h3>
+			<div class="ssa-segmented">
+				<button class="ssa-seg" class:is-on={sort === "worst"} onclick={() => (sort = "worst")}>Worst</button>
+				<button class="ssa-seg" class:is-on={sort === "best"} onclick={() => (sort = "best")}>Best</button>
+				<button class="ssa-seg" class:is-on={sort === "az"} onclick={() => (sort = "az")}>A–Z</button>
 			</div>
-		{/if}
-	</div>
+		</div>
+		<div class="ssa-cats">
+			{#each sortedCategories as cat (cat.category)}
+				<div class="ssa-cat">
+					<span class="ssa-cat-name" title={categoryLabel(cat.category)}>{categoryLabel(cat.category)}</span>
+					<span class="ssa-cat-track">
+						<span class="ssa-cat-fill {scoreTone(cat.score)}" style="width:{cat.score}%"></span>
+					</span>
+					<span class="ssa-cat-score">{cat.score}</span>
+				</div>
+			{/each}
+		</div>
+	</section>
+
+	<nav class="ssa-tabs">
+		<button class="ssa-tab" class:is-on={tab === "issues"} onclick={() => (tab = "issues")}>Issues</button>
+		<button class="ssa-tab" class:is-on={tab === "pages"} onclick={() => (tab = "pages")}>Pages</button>
+		<button class="ssa-tab" class:is-on={tab === "metrics"} onclick={() => (tab = "metrics")}>
+			Measurements
+		</button>
+	</nav>
+
+	{#if tab === "issues"}
+		<IssuesPanel {report} />
+	{:else if tab === "pages"}
+		<PagesPanel {report} />
+	{:else}
+		<MetricsPanel {report} />
+	{/if}
 </div>
