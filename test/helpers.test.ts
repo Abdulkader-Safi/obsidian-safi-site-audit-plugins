@@ -13,13 +13,10 @@ test("formatDateShort always carries the date, not just the time", () => {
 	assert.ok(shown.length > 8, `expected a date and a time, got "${shown}"`);
 });
 
-test("formatDateShort keeps the year for runs from another year", () => {
+test("formatDateShort carries the year, whichever year it is", () => {
 	assert.match(formatDateShort("2020-06-28T15:30:00.000Z"), /2020/);
-});
-
-test("formatDateShort drops the year for runs from this year", () => {
 	const year = new Date().getFullYear();
-	assert.doesNotMatch(formatDateShort(`${year}-06-28T15:30:00.000Z`), new RegExp(String(year)));
+	assert.match(formatDateShort(`${year}-06-28T15:30:00.000Z`), new RegExp(String(year)));
 });
 
 test("formatDateShort passes through a date it cannot parse", () => {

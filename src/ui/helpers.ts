@@ -32,18 +32,17 @@ export function formatDate(iso: string): string {
 }
 
 /**
- * Short form for the sidebar: always the date and time, since two runs of the
- * same site on the same day are common and a bare time says nothing on its own.
- * The year is dropped for the current year to keep the line short.
+ * Short form for the sidebar: the full date and time on every row. Two runs of
+ * the same site on the same day are common, so a bare time says nothing, and the
+ * year has to be there for an audit history that spans one.
  */
 export function formatDateShort(iso: string): string {
 	const d = new Date(iso);
 	if (isNaN(d.getTime())) return iso;
-	const thisYear = d.getFullYear() === new Date().getFullYear();
 	return d.toLocaleString(undefined, {
 		day: "numeric",
 		month: "short",
-		year: thisYear ? undefined : "numeric",
+		year: "numeric",
 		hour: "2-digit",
 		minute: "2-digit",
 	});

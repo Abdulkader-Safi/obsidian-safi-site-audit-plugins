@@ -24392,11 +24392,10 @@ function formatDate(iso) {
 function formatDateShort(iso) {
   const d = new Date(iso);
   if (isNaN(d.getTime())) return iso;
-  const thisYear = d.getFullYear() === (/* @__PURE__ */ new Date()).getFullYear();
   return d.toLocaleString(void 0, {
     day: "numeric",
     month: "short",
-    year: thisYear ? void 0 : "numeric",
+    year: "numeric",
     hour: "2-digit",
     minute: "2-digit"
   });
