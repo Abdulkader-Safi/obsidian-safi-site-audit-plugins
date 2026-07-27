@@ -1013,10 +1013,22 @@
 	}
 }
 
+/* Everything in this file that moves, listed so the reduced-motion override can
+   match the base rules' specificity instead of reaching for !important. */
 @media (prefers-reduced-motion: reduce) {
-	.safi-site-audit *,
-	.safi-site-audit-list * {
-		transition-duration: 0.01ms !important;
-		animation-duration: 0.01ms !important;
+	:is(.safi-site-audit, .safi-site-audit-list)
+		:is(
+			.ssa-btn,
+			.ssa-seg,
+			.ssa-tab,
+			.ssa-spinner,
+			.ssa-progress-fill,
+			.ssa-split-seg,
+			.ssa-gauge-arc,
+			.ssa-cat-fill
+		),
+	:is(.safi-site-audit, .safi-site-audit-list) .ssa-row-head::after {
+		transition-duration: 0.01ms;
+		animation-duration: 0.01ms;
 	}
 }
