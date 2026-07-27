@@ -57,7 +57,7 @@
 				<span class="ssa-seg-count">{totals.info}</span> info
 			</button>
 		</div>
-		<select class="ssa-select" bind:value={catFilter} aria-label="Filter by category">
+		<select class="ssa-select dropdown" bind:value={catFilter} aria-label="Filter by category">
 			<option value="all">Every category</option>
 			{#each categories as c (c)}
 				<option value={c}>{categoryLabel(c)}</option>

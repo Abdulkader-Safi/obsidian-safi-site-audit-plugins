@@ -59,7 +59,7 @@
 				Pick a run from the sidebar, or audit a site. Every run is saved as Markdown, JSON and
 				HTML in a folder named after the site.
 			</p>
-			<button class="ssa-btn ssa-btn-primary" onclick={() => plugin.startNewAudit()}>
+			<button class="ssa-btn mod-cta" onclick={() => plugin.startNewAudit()}>
 				<span use:icon={"plus"}></span>
 				New audit
 			</button>

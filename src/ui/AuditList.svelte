@@ -45,19 +45,22 @@
 	<div class="ssa-rail-head">
 		<span class="ssa-rail-mark" use:icon={"gauge"}></span>
 		<span class="ssa-rail-name">Site audits</span>
+	</div>
+
+	<div class="ssa-rail-actions">
 		<button
-			class="ssa-btn ssa-btn-primary ssa-btn-sm ssa-rail-new"
+			class="ssa-btn ssa-btn-block mod-cta"
 			onclick={() => plugin.startNewAudit()}
 			disabled={running}
 		>
 			<span use:icon={"plus"}></span>
-			New
+			New audit
 		</button>
 	</div>
 
 	{#if items.length > 0}
 		<div class="ssa-rail-filter">
-			<input class="ssa-input ssa-input-sm" placeholder="Find a site" bind:value={filter} />
+			<input class="ssa-input" placeholder="Find a site" bind:value={filter} />
 		</div>
 	{/if}
 

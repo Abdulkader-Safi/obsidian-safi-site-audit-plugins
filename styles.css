@@ -71,8 +71,11 @@
 .ssa-rail-head {
 	display: flex;
 	align-items: center;
-	gap: 0.5rem;
-	padding: 0.65rem 0.5rem 0.65rem 0.25rem;
+	gap: 0.45rem;
+	padding: 0.5rem 0.25rem 0.6rem;
+}
+.ssa-rail-actions {
+	padding: 0 0.25rem 0.7rem;
 }
 .ssa-rail-mark {
 	display: flex;
@@ -86,9 +89,6 @@
 	font-size: var(--font-ui-small);
 	font-weight: var(--font-semibold);
 	letter-spacing: -0.005em;
-}
-.ssa-rail-new {
-	margin-left: auto;
 }
 .ssa-rail-filter {
 	padding: 0 0.25rem 0.6rem;
@@ -122,7 +122,7 @@
 }
 /* Explicit areas: the date and the page count each own a row, the score spans
    both and sits centred against them. Nothing is left to auto-placement. */
-.ssa-run-row {
+.safi-site-audit-list .ssa-run-row {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
 	grid-template-areas:
@@ -132,21 +132,25 @@
 	column-gap: 0.6rem;
 	row-gap: 0.1rem;
 	width: 100%;
+	height: auto;
+	margin: 0;
 	padding: 0.4rem 0.5rem;
 	border: none;
 	border-radius: var(--radius-s);
+	box-shadow: none;
 	background: transparent;
 	color: var(--text-normal);
+	font-size: var(--font-ui-small);
 	text-align: left;
 	cursor: pointer;
 }
-.ssa-run-row:hover {
+.safi-site-audit-list .ssa-run-row:hover {
 	background: var(--background-modifier-hover);
 }
-.ssa-run-row.is-on {
+.safi-site-audit-list .ssa-run-row.is-on {
 	background: var(--background-modifier-active-hover, var(--background-modifier-hover));
 }
-.ssa-run-row.is-on .ssa-run-date {
+.safi-site-audit-list .ssa-run-row.is-on .ssa-run-date {
 	font-weight: var(--font-semibold);
 }
 .ssa-run-date,
@@ -195,108 +199,95 @@
 	color: var(--text-muted);
 }
 
-/* ---------- controls ---------- */
-.ssa-btn {
+/* ---------- controls ----------
+ *
+ * Obsidian styles bare <button> and <select> elements through selectors like
+ * `button:not(.clickable-icon)`, which is specificity (0,1,1) and therefore beats
+ * any single class of ours. Two consequences shape this whole section:
+ *
+ *  1. Real buttons keep Obsidian's own chrome, and carry its own `mod-cta` /
+ *     `mod-warning` classes, so they look exactly like every other button in the
+ *     app under whatever theme is installed. We only add layout on top.
+ *  2. Controls that must NOT look like a default button (tabs, filter segments,
+ *     sidebar rows) are written as `:is(root) .class`, which is (0,2,0) and wins
+ *     cleanly, rather than fighting the cascade with !important.
+ */
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	gap: 0.4rem;
-	padding: 0.4rem 0.8rem;
-	border: 1px solid transparent;
-	border-radius: var(--radius-m);
+	min-height: 30px;
+	padding: 0.4rem 0.85rem;
 	font-size: var(--font-ui-small);
-	font-weight: var(--font-medium);
 	line-height: 1.2;
+	white-space: nowrap;
 	cursor: pointer;
-	background: var(--interactive-normal);
-	color: var(--text-normal);
-	transition: background-color 120ms ease;
 }
-.ssa-btn:hover {
-	background: var(--interactive-hover);
-}
-.ssa-btn:disabled {
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-btn:disabled {
 	opacity: 0.5;
 	cursor: not-allowed;
 }
-.ssa-btn .svg-icon {
-	width: 1em;
-	height: 1em;
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-btn .svg-icon {
+	width: 1.05em;
+	height: 1.05em;
+	flex-shrink: 0;
 }
-.ssa-btn-primary {
-	background: var(--interactive-accent);
-	color: var(--text-on-accent);
+/* Full-width, unmistakable primary action at the top of the sidebar. */
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-btn-block {
+	width: 100%;
+	min-height: 34px;
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-medium);
 }
-.ssa-btn-primary:hover {
-	background: var(--interactive-accent-hover);
-}
-.ssa-btn-outline {
-	background: transparent;
-	border-color: var(--background-modifier-border);
-}
-.ssa-btn-outline:hover {
-	background: var(--background-modifier-hover);
-}
-.ssa-btn-sm {
-	padding: 0.25rem 0.55rem;
-	font-size: var(--font-ui-smaller);
-}
-.ssa-link-btn {
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-link-btn {
 	padding: 0;
 	border: none;
-	background: none;
+	box-shadow: none;
+	background: transparent;
 	color: var(--text-accent);
 	font-size: var(--font-ui-smaller);
 	cursor: pointer;
 }
-.ssa-link-btn:hover {
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-link-btn:hover {
+	background: transparent;
 	color: var(--text-accent-hover);
 	text-decoration: underline;
 }
 
-.ssa-input,
-.ssa-select {
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-input {
 	width: 100%;
-	padding: 0.4rem 0.6rem;
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-m);
-	background: var(--background-primary);
-	color: var(--text-normal);
+	min-height: 30px;
+	padding: 0.35rem 0.6rem;
 	font-size: var(--font-ui-small);
 	font-family: inherit;
 }
-.ssa-input::placeholder {
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-input::placeholder {
 	color: var(--text-faint);
 }
-.ssa-input:focus,
-.ssa-select:focus {
-	outline: none;
-	border-color: var(--interactive-accent);
-	box-shadow: 0 0 0 1px var(--interactive-accent);
-}
-.ssa-input-sm {
-	padding: 0.28rem 0.5rem;
-	font-size: var(--font-ui-smaller);
-}
-.ssa-input-lg {
-	padding: 0.55rem 0.7rem;
+/* These modifiers have to match the base rule's specificity to win. */
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-input-lg {
+	min-height: 36px;
+	padding: 0.5rem 0.7rem;
 	font-size: var(--font-ui-medium);
 }
-.ssa-input-num {
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-input-num {
 	width: 7rem;
 }
-.ssa-input-search {
-	width: 11rem;
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-input-search {
+	width: 12rem;
 	margin-left: auto;
 }
-.ssa-select {
-	width: auto;
-	min-width: 10rem;
+/* Selects carry Obsidian's own `dropdown` class, which supplies the arrow, so a
+   dropdown always reads as a dropdown and not as a plain box. */
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-select {
+	min-height: 30px;
 	max-width: 100%;
+	font-size: var(--font-ui-small);
 	cursor: pointer;
 }
-.ssa-select-wide {
-	min-width: 18rem;
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-select-wide {
+	min-width: 16rem;
 }
 
 .ssa-field-group {
@@ -318,33 +309,40 @@
 	color: var(--text-muted);
 }
 
-/* segmented control: one row of related filters, no pill-per-word */
+/* Segmented control: one track holding flat segments, not a row of loose chips.
+   Every rule here has to outrank Obsidian's default button chrome. */
 .ssa-segmented {
 	display: inline-flex;
-	flex-wrap: wrap;
-	gap: 0.25rem;
-	padding: 0.2rem;
+	align-items: stretch;
+	padding: 2px;
 	border-radius: var(--radius-m);
-	background: var(--background-secondary);
+	background: var(--background-modifier-border);
 }
-.ssa-seg {
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-seg {
 	display: inline-flex;
-	align-items: baseline;
-	gap: 0.3rem;
-	padding: 0.28rem 0.6rem;
+	align-items: center;
+	justify-content: center;
+	gap: 0.35rem;
+	min-height: 26px;
+	margin: 0;
+	padding: 0 0.7rem;
 	border: none;
-	border-radius: var(--radius-s);
+	border-radius: calc(var(--radius-m) - 2px);
+	box-shadow: none;
 	background: transparent;
 	color: var(--text-muted);
 	font-size: var(--font-ui-smaller);
 	font-weight: var(--font-medium);
+	line-height: 1;
+	white-space: nowrap;
 	cursor: pointer;
 	transition: color 120ms ease, background-color 120ms ease;
 }
-.ssa-seg:hover {
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-seg:hover {
+	background: transparent;
 	color: var(--text-normal);
 }
-.ssa-seg.is-on {
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-seg.is-on {
 	background: var(--background-primary);
 	color: var(--text-normal);
 }
@@ -687,24 +685,33 @@
 	border-bottom: 1px solid var(--background-modifier-border);
 	background: var(--background-primary);
 }
-.ssa-tab {
+/* Tabs are type with an underline, never boxes. Obsidian's default button
+   background would otherwise make each one read as a separate button. */
+.safi-site-audit .ssa-tab {
 	position: relative;
+	margin: 0;
 	padding: 0.4rem 0 0.55rem;
 	border: none;
-	background: none;
+	border-radius: 0;
+	box-shadow: none;
+	background: transparent;
 	color: var(--text-muted);
 	font-size: var(--font-ui-small);
 	font-weight: var(--font-medium);
+	line-height: 1.3;
 	cursor: pointer;
+	transition: color 120ms ease;
 }
-.ssa-tab:hover {
+.safi-site-audit .ssa-tab:hover {
+	background: transparent;
 	color: var(--text-normal);
 }
-.ssa-tab.is-on {
+.safi-site-audit .ssa-tab.is-on {
+	background: transparent;
 	color: var(--text-normal);
 	font-weight: var(--font-semibold);
 }
-.ssa-tab.is-on::after {
+.safi-site-audit .ssa-tab.is-on::after {
 	content: "";
 	position: absolute;
 	left: 0;

@@ -74,16 +74,16 @@
 		</div>
 		<div class="ssa-head-actions">
 			{#if path}
-				<button class="ssa-btn ssa-btn-outline ssa-btn-sm" onclick={openNote}>
+				<button class="ssa-btn" onclick={openNote}>
 					<span use:icon={"file-text"}></span>
 					Open note
 				</button>
-				<button class="ssa-btn ssa-btn-outline ssa-btn-sm" onclick={openHtml}>
+				<button class="ssa-btn" onclick={openHtml}>
 					<span use:icon={"external-link"}></span>
 					HTML report
 				</button>
 			{/if}
-			<button class="ssa-btn ssa-btn-outline ssa-btn-sm" onclick={() => onRerun(report.startUrl)}>
+			<button class="ssa-btn" onclick={() => onRerun(report.startUrl)}>
 				<span use:icon={"refresh-cw"}></span>
 				Run again
 			</button>

@@ -77,7 +77,7 @@
 	</div>
 
 	<div class="ssa-newrun-actions">
-		<button class="ssa-btn ssa-btn-primary" onclick={submit} disabled={running}>
+		<button class="ssa-btn mod-cta" onclick={submit} disabled={running}>
 			{#if running}
 				<span class="ssa-spinner"></span>
 				Auditing

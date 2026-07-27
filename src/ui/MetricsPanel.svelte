@@ -20,7 +20,7 @@
 		</p>
 	{:else}
 		<div class="ssa-filters">
-			<select class="ssa-select ssa-select-wide" bind:value={selectedUrl} aria-label="Page to measure">
+			<select class="ssa-select ssa-select-wide dropdown" bind:value={selectedUrl} aria-label="Page to measure">
 				{#each withMetrics as p (p.url)}
 					<option value={p.url}>{pathOf(p.url)}</option>
 				{/each}

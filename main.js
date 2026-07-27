@@ -24590,7 +24590,7 @@ var root_3 = from_html(`<li> </li>`);
 var root_4 = from_html(`<button class="ssa-link-btn"> </button>`);
 var root_5 = from_html(`<details class="ssa-row"><summary class="ssa-row-head"><span aria-hidden="true"></span> <span class="ssa-row-main"><span class="ssa-row-title"> </span> <span class="ssa-row-sub"> </span></span> <span class="ssa-row-count"> <span class="ssa-row-count-unit"> </span></span></summary> <div class="ssa-row-body"><p class="ssa-row-msg"><span> </span> </p> <!> <div class="ssa-affected"><span class="ssa-affected-label">Affected pages</span> <ul class="ssa-affected-list"></ul> <!></div></div></details>`);
 var root_6 = from_html(`<div class="ssa-list"></div>`);
-var root_7 = from_html(`<div class="ssa-panel"><div class="ssa-filters"><div class="ssa-segmented"><button><span class="ssa-seg-count"> </span> failed</button> <button><span class="ssa-seg-count"> </span> warnings</button> <button><span class="ssa-seg-count"> </span> info</button></div> <select class="ssa-select" aria-label="Filter by category"><option>Every category</option><!></select> <input class="ssa-input ssa-input-search" placeholder="Search rules"/></div> <!></div>`);
+var root_7 = from_html(`<div class="ssa-panel"><div class="ssa-filters"><div class="ssa-segmented"><button><span class="ssa-seg-count"> </span> failed</button> <button><span class="ssa-seg-count"> </span> warnings</button> <button><span class="ssa-seg-count"> </span> info</button></div> <select class="ssa-select dropdown" aria-label="Filter by category"><option>Every category</option><!></select> <input class="ssa-input ssa-input-search" placeholder="Search rules"/></div> <!></div>`);
 function IssuesPanel($$anchor, $$props) {
   push($$props, true);
   const issues = user_derived(() => buildIssues($$props.report));
@@ -24980,7 +24980,7 @@ var root_72 = from_html(`<td class="ssa-cell-muted"> </td>`);
 var root_8 = from_html(`<tr></tr>`);
 var root_9 = from_html(`<div class="ssa-metric-table"><div class="ssa-metric-table-head"><span class="ssa-metric-table-label"> </span> <!></div> <div class="ssa-scroll-x"><table class="ssa-table"><thead><tr></tr></thead><tbody></tbody></table></div></div>`);
 var root_10 = from_html(`<section class="ssa-metric-group"><h3 class="ssa-metric-cat"> </h3> <!> <!></section>`);
-var root_11 = from_html(`<div class="ssa-filters"><select class="ssa-select ssa-select-wide" aria-label="Page to measure"></select> <span class="ssa-filters-note"> </span></div> <!>`, 1);
+var root_11 = from_html(`<div class="ssa-filters"><select class="ssa-select ssa-select-wide dropdown" aria-label="Page to measure"></select> <span class="ssa-filters-note"> </span></div> <!>`, 1);
 var root_122 = from_html(`<div class="ssa-panel"><!></div>`);
 function MetricsPanel($$anchor, $$props) {
   push($$props, true);
@@ -25166,13 +25166,13 @@ function MetricsPanel($$anchor, $$props) {
 }
 
 // src/ui/ReportView.svelte
-var root6 = from_html(`<button class="ssa-btn ssa-btn-outline ssa-btn-sm"><span></span> Open note</button> <button class="ssa-btn ssa-btn-outline ssa-btn-sm"><span></span> HTML report</button>`, 1);
+var root6 = from_html(`<button class="ssa-btn"><span></span> Open note</button> <button class="ssa-btn"><span></span> HTML report</button>`, 1);
 var root_14 = from_html(`<span class="ssa-split-seg is-pass"></span>`);
 var root_24 = from_html(`<span class="ssa-split-seg is-warn"></span>`);
 var root_34 = from_html(`<span class="ssa-split-seg is-fail"></span>`);
 var root_44 = from_html(`<span class="ssa-split-seg is-info"></span>`);
 var root_54 = from_html(`<div class="ssa-cat"><span class="ssa-cat-name"> </span> <span class="ssa-cat-track"><span></span></span> <span class="ssa-cat-score"> </span></div>`);
-var root_64 = from_html(`<div class="ssa-report"><header class="ssa-head"><div class="ssa-head-id"><h2 class="ssa-head-host"> </h2> <a class="ssa-head-url" rel="noopener"> </a> <p class="ssa-head-meta"> <span class="ssa-sep">\xB7</span> <span class="ssa-sep">\xB7</span> </p></div> <div class="ssa-head-actions"><!> <button class="ssa-btn ssa-btn-outline ssa-btn-sm"><span></span> Run again</button></div></header> <section class="ssa-score"><!> <div class="ssa-score-body"><div class="ssa-split" role="img"><!> <!> <!> <!></div> <dl class="ssa-tallies"><div class="ssa-tally"><dt>Passed</dt> <dd class="is-pass"> </dd></div> <div class="ssa-tally"><dt>Warnings</dt> <dd class="is-warn"> </dd></div> <div class="ssa-tally"><dt>Failed</dt> <dd class="is-fail"> </dd></div> <div class="ssa-tally"><dt>Info</dt> <dd class="is-info"> </dd></div></dl></div></section> <section class="ssa-cats-block"><div class="ssa-block-head"><h3 class="ssa-block-title">Category scores</h3> <div class="ssa-segmented"><button>Worst</button> <button>Best</button> <button>A\u2013Z</button></div></div> <div class="ssa-cats"></div></section> <nav class="ssa-tabs"><button>Issues</button> <button>Pages</button> <button>Measurements</button></nav> <!></div>`);
+var root_64 = from_html(`<div class="ssa-report"><header class="ssa-head"><div class="ssa-head-id"><h2 class="ssa-head-host"> </h2> <a class="ssa-head-url" rel="noopener"> </a> <p class="ssa-head-meta"> <span class="ssa-sep">\xB7</span> <span class="ssa-sep">\xB7</span> </p></div> <div class="ssa-head-actions"><!> <button class="ssa-btn"><span></span> Run again</button></div></header> <section class="ssa-score"><!> <div class="ssa-score-body"><div class="ssa-split" role="img"><!> <!> <!> <!></div> <dl class="ssa-tallies"><div class="ssa-tally"><dt>Passed</dt> <dd class="is-pass"> </dd></div> <div class="ssa-tally"><dt>Warnings</dt> <dd class="is-warn"> </dd></div> <div class="ssa-tally"><dt>Failed</dt> <dd class="is-fail"> </dd></div> <div class="ssa-tally"><dt>Info</dt> <dd class="is-info"> </dd></div></dl></div></section> <section class="ssa-cats-block"><div class="ssa-block-head"><h3 class="ssa-block-title">Category scores</h3> <div class="ssa-segmented"><button>Worst</button> <button>Best</button> <button>A\u2013Z</button></div></div> <div class="ssa-cats"></div></section> <nav class="ssa-tabs"><button>Issues</button> <button>Pages</button> <button>Measurements</button></nav> <!></div>`);
 function ReportView($$anchor, $$props) {
   push($$props, true);
   const totals = user_derived(() => statusTotals($$props.report));
@@ -25586,7 +25586,7 @@ var root_15 = from_html(`<span></span> Run audit`, 1);
 var root_25 = from_html(`<div class="ssa-progress-sub"> </div>`);
 var root_35 = from_html(`<div class="ssa-progress-url"> </div>`);
 var root_45 = from_html(`<div class="ssa-progress"><div class="ssa-progress-head"><span class="ssa-progress-phase"> </span> <span class="ssa-progress-pct"> </span></div> <div class="ssa-progress-track"><span class="ssa-progress-fill"></span></div> <!> <!></div>`);
-var root_55 = from_html(`<div class="ssa-newrun"><div class="ssa-newrun-intro"><h2 class="ssa-newrun-title">Audit a site</h2> <p class="ssa-newrun-lede">Crawls the site, checks every page against 94 rules, and writes the report to <span class="ssa-newrun-folder"> </span> as Markdown, JSON and HTML.</p></div> <div class="ssa-field-group"><div class="ssa-field"><label class="ssa-field-label" for="ssa-url">Website URL</label> <input class="ssa-input ssa-input-lg" id="ssa-url" placeholder="https://example.com"/></div> <div class="ssa-field"><label class="ssa-field-label" for="ssa-pages">Pages to crawl</label> <input class="ssa-input ssa-input-num" id="ssa-pages" type="number" min="1"/> <div class="ssa-field-desc"> </div></div></div> <div class="ssa-newrun-actions"><button class="ssa-btn ssa-btn-primary"><!></button></div> <!></div>`);
+var root_55 = from_html(`<div class="ssa-newrun"><div class="ssa-newrun-intro"><h2 class="ssa-newrun-title">Audit a site</h2> <p class="ssa-newrun-lede">Crawls the site, checks every page against 94 rules, and writes the report to <span class="ssa-newrun-folder"> </span> as Markdown, JSON and HTML.</p></div> <div class="ssa-field-group"><div class="ssa-field"><label class="ssa-field-label" for="ssa-url">Website URL</label> <input class="ssa-input ssa-input-lg" id="ssa-url" placeholder="https://example.com"/></div> <div class="ssa-field"><label class="ssa-field-label" for="ssa-pages">Pages to crawl</label> <input class="ssa-input ssa-input-num" id="ssa-pages" type="number" min="1"/> <div class="ssa-field-desc"> </div></div></div> <div class="ssa-newrun-actions"><button class="ssa-btn mod-cta"><!></button></div> <!></div>`);
 function RunAuditForm($$anchor, $$props) {
   push($$props, true);
   let url = prop($$props, "url", 15, "");
@@ -25729,7 +25729,7 @@ delegate(["keydown", "click"]);
 
 // src/ui/Dashboard.svelte
 var root8 = from_html(`<div class="ssa-blank"><h2 class="ssa-blank-title">Nothing selected</h2> <p class="ssa-blank-text">Pick a run from the sidebar, or audit a site. Every run is saved as Markdown, JSON and
-				HTML in a folder named after the site.</p> <button class="ssa-btn ssa-btn-primary"><span></span> New audit</button></div>`);
+				HTML in a folder named after the site.</p> <button class="ssa-btn mod-cta"><span></span> New audit</button></div>`);
 var root_16 = from_html(`<div class="ssa-view"><!></div>`);
 function Dashboard($$anchor, $$props) {
   push($$props, true);
@@ -25820,12 +25820,12 @@ function Dashboard($$anchor, $$props) {
 delegate(["click"]);
 
 // src/ui/AuditList.svelte
-var root9 = from_html(`<div class="ssa-rail-filter"><input class="ssa-input ssa-input-sm" placeholder="Find a site"/></div>`);
+var root9 = from_html(`<div class="ssa-rail-filter"><input class="ssa-input" placeholder="Find a site"/></div>`);
 var root_17 = from_html(`<p class="ssa-rail-note">Nothing audited yet.</p>`);
 var root_26 = from_html(`<p class="ssa-rail-note"> </p>`);
 var root_36 = from_html(`<button><span class="ssa-run-date"> </span> <span class="ssa-run-pages"> </span> <span> </span></button>`);
 var root_46 = from_html(`<section class="ssa-site"><h3 class="ssa-site-host"> </h3> <!></section>`);
-var root_56 = from_html(`<div class="ssa-rail"><div class="ssa-rail-head"><span class="ssa-rail-mark"></span> <span class="ssa-rail-name">Site audits</span> <button class="ssa-btn ssa-btn-primary ssa-btn-sm ssa-rail-new"><span></span> New</button></div> <!> <div class="ssa-rail-list"><!></div></div>`);
+var root_56 = from_html(`<div class="ssa-rail"><div class="ssa-rail-head"><span class="ssa-rail-mark"></span> <span class="ssa-rail-name">Site audits</span></div> <div class="ssa-rail-actions"><button class="ssa-btn ssa-btn-block mod-cta"><span></span> New audit</button></div> <!> <div class="ssa-rail-list"><!></div></div>`);
 function AuditList($$anchor, $$props) {
   push($$props, true);
   let items = state(proxy([]));
@@ -25857,28 +25857,31 @@ function AuditList($$anchor, $$props) {
   var div_1 = child(div);
   var span = child(div_1);
   action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "gauge");
-  var button = sibling(span, 4);
+  next(2);
+  reset(div_1);
+  var div_2 = sibling(div_1, 2);
+  var button = child(div_2);
   var span_1 = child(button);
   action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "plus");
   next();
   reset(button);
-  reset(div_1);
-  var node = sibling(div_1, 2);
+  reset(div_2);
+  var node = sibling(div_2, 2);
   {
     var consequent = ($$anchor2) => {
-      var div_2 = root9();
-      var input = child(div_2);
+      var div_3 = root9();
+      var input = child(div_3);
       remove_input_defaults(input);
-      reset(div_2);
+      reset(div_3);
       bind_value(input, () => get2(filter4), ($$value) => set(filter4, $$value));
-      append($$anchor2, div_2);
+      append($$anchor2, div_3);
     };
     if_block(node, ($$render) => {
       if (get2(items).length > 0) $$render(consequent);
     });
   }
-  var div_3 = sibling(node, 2);
-  var node_1 = child(div_3);
+  var div_4 = sibling(node, 2);
+  var node_1 = child(div_4);
   {
     var consequent_1 = ($$anchor2) => {
       var p = root_17();
@@ -25944,7 +25947,7 @@ function AuditList($$anchor, $$props) {
       else $$render(alternate, -1);
     });
   }
-  reset(div_3);
+  reset(div_4);
   reset(div);
   template_effect(() => button.disabled = get2(running));
   delegated("click", button, () => $$props.plugin.startNewAudit());
