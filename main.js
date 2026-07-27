@@ -24392,9 +24392,14 @@ function formatDate(iso) {
 function formatDateShort(iso) {
   const d = new Date(iso);
   if (isNaN(d.getTime())) return iso;
-  const today = /* @__PURE__ */ new Date();
-  const sameDay = d.getDate() === today.getDate() && d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
-  return sameDay ? d.toLocaleTimeString(void 0, { hour: "2-digit", minute: "2-digit" }) : d.toLocaleDateString(void 0, { day: "numeric", month: "short", year: "numeric" });
+  const thisYear = d.getFullYear() === (/* @__PURE__ */ new Date()).getFullYear();
+  return d.toLocaleString(void 0, {
+    day: "numeric",
+    month: "short",
+    year: thisYear ? void 0 : "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
 }
 function grade(score) {
   if (score >= 90) return "A";

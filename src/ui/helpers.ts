@@ -31,18 +31,22 @@ export function formatDate(iso: string): string {
 	});
 }
 
-/** Short form for dense lists: the time for today, the date otherwise. */
+/**
+ * Short form for the sidebar: always the date and time, since two runs of the
+ * same site on the same day are common and a bare time says nothing on its own.
+ * The year is dropped for the current year to keep the line short.
+ */
 export function formatDateShort(iso: string): string {
 	const d = new Date(iso);
 	if (isNaN(d.getTime())) return iso;
-	const today = new Date();
-	const sameDay =
-		d.getDate() === today.getDate() &&
-		d.getMonth() === today.getMonth() &&
-		d.getFullYear() === today.getFullYear();
-	return sameDay
-		? d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })
-		: d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+	const thisYear = d.getFullYear() === new Date().getFullYear();
+	return d.toLocaleString(undefined, {
+		day: "numeric",
+		month: "short",
+		year: thisYear ? undefined : "numeric",
+		hour: "2-digit",
+		minute: "2-digit",
+	});
 }
 
 export function grade(score: number): string {
