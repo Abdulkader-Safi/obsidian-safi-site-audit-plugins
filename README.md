@@ -5,7 +5,7 @@ An Obsidian plugin that runs website audits from inside your vault. It wraps the
 crawls a site and scores it across SEO, content, links, images, structured data, security,
 crawlability and more: 94 rules in 15 categories.
 
-![Safi Site Audit dashboard](Screenshot.png)
+![Safi Site Audit dashboard](Screenshot2.png)
 
 ## What it does
 

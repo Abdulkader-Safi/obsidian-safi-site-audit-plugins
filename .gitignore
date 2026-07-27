@@ -16,3 +16,6 @@ data.json
 
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store
+
+# Obsidian app.css, if ever extracted here for reference
+app.css
