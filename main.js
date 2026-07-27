@@ -89,40 +89,40 @@ var SafiSiteAuditSettingTab = class extends import_obsidian.PluginSettingTab {
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    new import_obsidian.Setting(containerEl).setName("Audit folder").setDesc("Vault folder where audit notes are saved and listed in the dashboard.").addText((text4) => {
-      text4.setPlaceholder("Site Audits").setValue(this.plugin.settings.auditFolder).onChange(async (value) => {
-        this.plugin.settings.auditFolder = value.trim() || "Site Audits";
+    new import_obsidian.Setting(containerEl).setName("Audit folder").setDesc("Vault folder where audit notes are saved and listed in the dashboard.").addText((text5) => {
+      text5.setPlaceholder("Site Audits").setValue(this.plugin.settings.auditFolder).onChange(async (value2) => {
+        this.plugin.settings.auditFolder = value2.trim() || "Site Audits";
         await this.plugin.saveSettings();
       });
-      new FolderSuggest(this.app, text4.inputEl, (path) => {
+      new FolderSuggest(this.app, text5.inputEl, (path) => {
         this.plugin.settings.auditFolder = path;
         void this.plugin.saveSettings();
       });
     });
     new import_obsidian.Setting(containerEl).setName("Default pages").setDesc("Pages to crawl when the run dialog's page field is left empty.").addText(
-      (text4) => text4.setPlaceholder("20").setValue(String(this.plugin.settings.defaultMaxPages)).onChange(async (value) => {
-        const n = Number(value);
+      (text5) => text5.setPlaceholder("20").setValue(String(this.plugin.settings.defaultMaxPages)).onChange(async (value2) => {
+        const n = Number(value2);
         this.plugin.settings.defaultMaxPages = Number.isFinite(n) && n > 0 ? Math.floor(n) : 20;
         await this.plugin.saveSettings();
       })
     );
     new import_obsidian.Setting(containerEl).setName("Concurrency").setDesc("How many pages to fetch in parallel.").addText(
-      (text4) => text4.setPlaceholder("5").setValue(String(this.plugin.settings.concurrency)).onChange(async (value) => {
-        const n = Number(value);
+      (text5) => text5.setPlaceholder("5").setValue(String(this.plugin.settings.concurrency)).onChange(async (value2) => {
+        const n = Number(value2);
         this.plugin.settings.concurrency = Number.isFinite(n) && n > 0 ? Math.floor(n) : 5;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian.Setting(containerEl).setName("PageSpeed Insights API key").setDesc("Optional. Enables Core Web Vitals and accessibility checks via Google PSI.").addText((text4) => {
-      text4.inputEl.type = "password";
-      text4.setPlaceholder("AIza\u2026").setValue(this.plugin.settings.psiKey).onChange(async (value) => {
-        this.plugin.settings.psiKey = value.trim();
+    new import_obsidian.Setting(containerEl).setName("PageSpeed Insights API key").setDesc("Optional. Enables Core Web Vitals and accessibility checks via Google PSI.").addText((text5) => {
+      text5.inputEl.type = "password";
+      text5.setPlaceholder("AIza\u2026").setValue(this.plugin.settings.psiKey).onChange(async (value2) => {
+        this.plugin.settings.psiKey = value2.trim();
         await this.plugin.saveSettings();
       });
     });
     new import_obsidian.Setting(containerEl).setName("User agent").setDesc("Optional override for the crawler's User-Agent header.").addText(
-      (text4) => text4.setPlaceholder("SafiStudioScanner/0.1").setValue(this.plugin.settings.userAgent).onChange(async (value) => {
-        this.plugin.settings.userAgent = value;
+      (text5) => text5.setPlaceholder("SafiStudioScanner/0.1").setValue(this.plugin.settings.userAgent).onChange(async (value2) => {
+        this.plugin.settings.userAgent = value2;
         await this.plugin.saveSettings();
       })
     );
@@ -130,7 +130,7 @@ var SafiSiteAuditSettingTab = class extends import_obsidian.PluginSettingTab {
 };
 
 // src/view.ts
-var import_obsidian7 = require("obsidian");
+var import_obsidian6 = require("obsidian");
 
 // node_modules/esm-env/dev-fallback.js
 var node_env = globalThis.process?.env?.NODE_ENV;
@@ -272,10 +272,10 @@ https://svelte.dev/e/derived_references_self`);
     throw new Error(`https://svelte.dev/e/derived_references_self`);
   }
 }
-function each_key_duplicate(a, b, value) {
+function each_key_duplicate(a, b, value2) {
   if (dev_fallback_default) {
     const error = new Error(`each_key_duplicate
-${value ? `Keyed each block has duplicate key \`${value}\` at indexes ${a} and ${b}` : `Keyed each block has duplicate key at indexes ${a} and ${b}`}
+${value2 ? `Keyed each block has duplicate key \`${value2}\` at indexes ${a} and ${b}` : `Keyed each block has duplicate key at indexes ${a} and ${b}`}
 https://svelte.dev/e/each_key_duplicate`);
     error.name = "Svelte error";
     throw error;
@@ -475,10 +475,10 @@ https://svelte.dev/e/derived_inert`, bold, normal);
     console.warn(`https://svelte.dev/e/derived_inert`);
   }
 }
-function hydration_attribute_changed(attribute, html4, value) {
+function hydration_attribute_changed(attribute, html4, value2) {
   if (dev_fallback_default) {
     console.warn(`%c[svelte] hydration_attribute_changed
-%cThe \`${attribute}\` attribute on \`${html4}\` changed its value between server and client renders. The client value, \`${value}\`, will be ignored in favour of the server value
+%cThe \`${attribute}\` attribute on \`${html4}\` changed its value between server and client renders. The client value, \`${value2}\`, will be ignored in favour of the server value
 https://svelte.dev/e/hydration_attribute_changed`, bold, normal);
   } else {
     console.warn(`https://svelte.dev/e/hydration_attribute_changed`);
@@ -545,8 +545,8 @@ https://svelte.dev/e/svelte_boundary_reset_noop`, bold, normal);
 
 // node_modules/svelte/src/internal/client/dom/hydration.js
 var hydrating = false;
-function set_hydrating(value) {
-  hydrating = value;
+function set_hydrating(value2) {
+  hydrating = value2;
 }
 var hydrate_node;
 function set_hydrate_node(node) {
@@ -615,14 +615,14 @@ function read_hydration_instruction(node) {
 }
 
 // node_modules/svelte/src/internal/client/reactivity/equality.js
-function equals(value) {
-  return value === this.v;
+function equals(value2) {
+  return value2 === this.v;
 }
 function safe_not_equal(a, b) {
   return a != a ? b == b : a !== b || a !== null && typeof a === "object" || typeof a === "function";
 }
-function safe_equals(value) {
-  return !safe_not_equal(value, this.v);
+function safe_equals(value2) {
+  return !safe_not_equal(value2, this.v);
 }
 
 // node_modules/svelte/src/internal/flags/index.js
@@ -637,9 +637,9 @@ function tag(source2, label) {
   tag_proxy(source2.v, label);
   return source2;
 }
-function tag_proxy(value, label) {
-  value?.[PROXY_PATH_SYMBOL]?.(label);
-  return value;
+function tag_proxy(value2, label) {
+  value2?.[PROXY_PATH_SYMBOL]?.(label);
+  return value2;
 }
 
 // node_modules/svelte/src/internal/shared/dev.js
@@ -1544,7 +1544,7 @@ function async_derived(fn, label, location) {
       deferreds.add(d);
       batch.async_deriveds.set(effect2, d);
     }
-    const handler = (value, error = void 0) => {
+    const handler = (value2, error = void 0) => {
       if (dev_fallback_default) {
         reactivity_loss_tracker = null;
       }
@@ -1559,7 +1559,7 @@ function async_derived(fn, label, location) {
         if ((signal.f & ERROR_VALUE) !== 0) {
           signal.f ^= ERROR_VALUE;
         }
-        if (dev_fallback_default && location !== void 0 && !signal.equals(value)) {
+        if (dev_fallback_default && location !== void 0 && !signal.equals(value2)) {
           recent_async_deriveds.add(signal);
           setTimeout(() => {
             if (recent_async_deriveds.has(signal) && (effect2.f & DESTROYED) === 0) {
@@ -1572,7 +1572,7 @@ function async_derived(fn, label, location) {
             }
           });
         }
-        internal_set(signal, value);
+        internal_set(signal, value2);
       }
       batch.deactivate();
     };
@@ -1626,7 +1626,7 @@ function destroy_derived_effects(derived2) {
 }
 var stack = [];
 function execute_derived(derived2) {
-  var value;
+  var value2;
   var prev_active_effect = active_effect;
   var parent2 = derived2.parent;
   if (!is_destroying_effect && parent2 !== null && derived2.v !== UNINITIALIZED && // if it was never evaluated before, it's guaranteed to fail downstream, so we try to execute instead
@@ -1645,7 +1645,7 @@ function execute_derived(derived2) {
       stack.push(derived2);
       derived2.f &= ~WAS_MARKED;
       destroy_derived_effects(derived2);
-      value = update_reaction(derived2);
+      value2 = update_reaction(derived2);
     } finally {
       set_active_effect(prev_active_effect);
       set_eager_effects(prev_eager_effects);
@@ -1655,23 +1655,23 @@ function execute_derived(derived2) {
     try {
       derived2.f &= ~WAS_MARKED;
       destroy_derived_effects(derived2);
-      value = update_reaction(derived2);
+      value2 = update_reaction(derived2);
     } finally {
       set_active_effect(prev_active_effect);
     }
   }
-  return value;
+  return value2;
 }
 function update_derived(derived2) {
-  var value = execute_derived(derived2);
-  if (!derived2.equals(value)) {
+  var value2 = execute_derived(derived2);
+  if (!derived2.equals(value2)) {
     derived2.wv = increment_write_version();
     if (!current_batch?.is_fork || derived2.deps === null) {
       if (current_batch !== null) {
-        current_batch.capture(derived2, value, true);
-        previous_batch?.capture(derived2, value, true);
+        current_batch.capture(derived2, value2, true);
+        previous_batch?.capture(derived2, value2, true);
       } else {
-        derived2.v = value;
+        derived2.v = value2;
       }
       if (derived2.deps === null) {
         set_signal_status(derived2, CLEAN);
@@ -1684,7 +1684,7 @@ function update_derived(derived2) {
   }
   if (batch_values !== null) {
     if (effect_tracking() || current_batch?.is_fork) {
-      batch_values.set(derived2, value);
+      batch_values.set(derived2, value2);
     }
   } else {
     update_derived_status(derived2);
@@ -1876,8 +1876,8 @@ var Batch = class _Batch {
       infinite_loop_guard();
     }
     if (dev_fallback_default) {
-      for (const value of this.current.keys()) {
-        source_stacks.add(value);
+      for (const value2 of this.current.keys()) {
+        source_stacks.add(value2);
       }
     }
     for (const e of this.#dirty_effects) {
@@ -1895,11 +1895,11 @@ var Batch = class _Batch {
     var effects = collected_effects = [];
     var render_effects = [];
     var updates = legacy_updates = [];
-    for (const root6 of roots) {
+    for (const root10 of roots) {
       try {
-        this.#traverse(root6, effects, render_effects);
+        this.#traverse(root10, effects, render_effects);
       } catch (e) {
-        reset_all(root6);
+        reset_all(root10);
         if (!this.#is_deferred()) this.discard();
         throw e;
       }
@@ -1972,9 +1972,9 @@ var Batch = class _Batch {
    * @param {Effect[]} effects
    * @param {Effect[]} render_effects
    */
-  #traverse(root6, effects, render_effects) {
-    root6.f ^= CLEAN;
-    var effect2 = root6.first;
+  #traverse(root10, effects, render_effects) {
+    root10.f ^= CLEAN;
+    var effect2 = root10.first;
     while (effect2 !== null) {
       var flags2 = effect2.f;
       var is_branch = (flags2 & (BRANCH_EFFECT | ROOT_EFFECT)) !== 0;
@@ -2011,8 +2011,8 @@ var Batch = class _Batch {
     var batch = this.#prev;
     while (batch !== null) {
       if (!batch.is_fork) {
-        for (const [value, [, is_derived]] of this.current) {
-          if (batch.current.has(value) && !is_derived) {
+        for (const [value2, [, is_derived]] of this.current) {
+          if (batch.current.has(value2) && !is_derived) {
             return batch;
           }
         }
@@ -2025,11 +2025,11 @@ var Batch = class _Batch {
    * @param {Batch} batch
    */
   #merge(batch) {
-    for (const [source2, value] of batch.current) {
+    for (const [source2, value2] of batch.current) {
       if (!this.previous.has(source2) && batch.previous.has(source2)) {
         this.previous.set(source2, batch.previous.get(source2));
       }
-      this.current.set(source2, value);
+      this.current.set(source2, value2);
     }
     for (const [effect2, deferred2] of batch.async_deriveds) {
       const d = this.async_deriveds.get(effect2);
@@ -2037,8 +2037,8 @@ var Batch = class _Batch {
     }
     batch.async_deriveds.clear();
     this.transfer_effects(batch.#dirty_effects, batch.#maybe_dirty_effects);
-    const mark = (value) => {
-      var reactions = value.reactions;
+    const mark = (value2) => {
+      var reactions = value2.reactions;
       if (reactions === null) return;
       for (const reaction of reactions) {
         var flags2 = reaction.f;
@@ -2083,16 +2083,16 @@ var Batch = class _Batch {
    * @param {any} value
    * @param {boolean} [is_derived]
    */
-  capture(source2, value, is_derived = false) {
+  capture(source2, value2, is_derived = false) {
     if (source2.v !== UNINITIALIZED && !this.previous.has(source2)) {
       this.previous.set(source2, source2.v);
     }
     if ((source2.f & ERROR_VALUE) === 0) {
-      this.current.set(source2, [value, is_derived]);
-      batch_values?.set(source2, value);
+      this.current.set(source2, [value2, is_derived]);
+      batch_values?.set(source2, value2);
     }
     if (!this.is_fork) {
-      source2.v = value;
+      source2.v = value2;
     }
   }
   activate() {
@@ -2145,14 +2145,14 @@ var Batch = class _Batch {
     for (let batch = first_batch; batch !== null; batch = batch.#next) {
       var is_earlier = batch.id < this.id;
       var sources = [];
-      for (const [source3, [value, is_derived]] of this.current) {
+      for (const [source3, [value2, is_derived]] of this.current) {
         if (batch.current.has(source3)) {
           var batch_value = (
             /** @type {[any, boolean]} */
             batch.current.get(source3)[0]
           );
-          if (is_earlier && value !== batch_value) {
-            batch.current.set(source3, [value, is_derived]);
+          if (is_earlier && value2 !== batch_value) {
+            batch.current.set(source3, [value2, is_derived]);
           } else {
             continue;
           }
@@ -2216,8 +2216,8 @@ var Batch = class _Batch {
         }
         if (batch.#roots.length > 0 && !batch.#decrement_queued) {
           batch.apply();
-          for (var root6 of batch.#roots) {
-            batch.#traverse(root6, [], []);
+          for (var root10 of batch.#roots) {
+            batch.#traverse(root10, [], []);
           }
           batch.#roots = [];
         }
@@ -2303,8 +2303,8 @@ var Batch = class _Batch {
       return;
     }
     batch_values = /* @__PURE__ */ new Map();
-    for (const [source2, [value]] of this.current) {
-      batch_values.set(source2, value);
+    for (const [source2, [value2]] of this.current) {
+      batch_values.set(source2, value2);
     }
     for (let batch = first_batch; batch !== null; batch = batch.#next) {
       if (batch === this || batch.is_fork) continue;
@@ -2468,11 +2468,11 @@ function flush_queued_effects(effects) {
   }
   eager_block_effects = null;
 }
-function mark_effects(value, sources, marked, checked) {
-  if (marked.has(value)) return;
-  marked.add(value);
-  if (value.reactions !== null) {
-    for (const reaction of value.reactions) {
+function mark_effects(value2, sources, marked, checked) {
+  if (marked.has(value2)) return;
+  marked.add(value2);
+  if (value2.reactions !== null) {
+    for (const reaction of value2.reactions) {
       const flags2 = reaction.f;
       if ((flags2 & DERIVED) !== 0) {
         mark_effects(
@@ -2591,13 +2591,13 @@ function mutable_source(initial_value, immutable = false, trackable = true) {
   }
   return s;
 }
-function set(source2, value, should_proxy = false) {
+function set(source2, value2, should_proxy = false) {
   if (active_reaction !== null && // since we are untracking the function inside `$inspect.with` we need to add this check
   // to ensure we error if state is set inside an inspect effect
   (!untracking || (active_reaction.f & EAGER_EFFECT) !== 0) && is_runes() && (active_reaction.f & (DERIVED | BLOCK_EFFECT | ASYNC | EAGER_EFFECT)) !== 0 && (current_sources === null || !current_sources.has(source2))) {
     state_unsafe_mutation();
   }
-  let new_value = should_proxy ? proxy(value) : value;
+  let new_value = should_proxy ? proxy(value2) : value2;
   if (dev_fallback_default) {
     tag_proxy(
       new_value,
@@ -2607,11 +2607,11 @@ function set(source2, value, should_proxy = false) {
   }
   return internal_set(source2, new_value, legacy_updates);
 }
-function internal_set(source2, value, updated_during_traversal = null) {
-  if (!source2.equals(value)) {
-    old_values.set(source2, is_destroying_effect ? value : source2.v);
+function internal_set(source2, value2, updated_during_traversal = null) {
+  if (!source2.equals(value2)) {
+    old_values.set(source2, is_destroying_effect ? value2 : source2.v);
     var batch = Batch.ensure();
-    batch.capture(source2, value);
+    batch.capture(source2, value2);
     if (dev_fallback_default) {
       if (tracing_mode_flag || active_effect !== null) {
         source2.updated ??= /* @__PURE__ */ new Map();
@@ -2661,7 +2661,7 @@ function internal_set(source2, value, updated_during_traversal = null) {
       flush_eager_effects();
     }
   }
-  return value;
+  return value2;
 }
 function flush_eager_effects() {
   eager_effects_deferred = false;
@@ -2733,16 +2733,16 @@ function mark_reactions(signal, status, updated_during_traversal) {
 
 // node_modules/svelte/src/internal/client/proxy.js
 var regex_is_valid_identifier = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/;
-function proxy(value) {
-  if (typeof value !== "object" || value === null || STATE_SYMBOL in value) {
-    return value;
+function proxy(value2) {
+  if (typeof value2 !== "object" || value2 === null || STATE_SYMBOL in value2) {
+    return value2;
   }
-  const prototype = get_prototype_of(value);
+  const prototype = get_prototype_of(value2);
   if (prototype !== object_prototype && prototype !== array_prototype) {
-    return value;
+    return value2;
   }
   var sources = /* @__PURE__ */ new Map();
-  var is_proxied_array = is_array(value);
+  var is_proxied_array = is_array(value2);
   var version = state(0);
   var stack2 = dev_fallback_default && tracing_mode_flag ? get_error("created at") : null;
   var parent_version = update_version;
@@ -2762,14 +2762,14 @@ function proxy(value) {
   if (is_proxied_array) {
     sources.set("length", state(
       /** @type {any[]} */
-      value.length,
+      value2.length,
       stack2
     ));
     if (dev_fallback_default) {
-      value = /** @type {any} */
+      value2 = /** @type {any} */
       inspectable_array(
         /** @type {any[]} */
-        value
+        value2
       );
     }
   }
@@ -2787,7 +2787,7 @@ function proxy(value) {
   }
   return new Proxy(
     /** @type {any} */
-    value,
+    value2,
     {
       defineProperty(_, prop3, descriptor) {
         if (!("value" in descriptor) || descriptor.configurable === false || descriptor.enumerable === false || descriptor.writable === false) {
@@ -2827,7 +2827,7 @@ function proxy(value) {
       },
       get(target, prop3, receiver) {
         if (prop3 === STATE_SYMBOL) {
-          return value;
+          return value2;
         }
         if (dev_fallback_default && prop3 === PROXY_PATH_SYMBOL) {
           return update_path;
@@ -2858,12 +2858,12 @@ function proxy(value) {
           if (s) descriptor.value = get2(s);
         } else if (descriptor === void 0) {
           var source2 = sources.get(prop3);
-          var value2 = source2?.v;
-          if (source2 !== void 0 && value2 !== UNINITIALIZED) {
+          var value3 = source2?.v;
+          if (source2 !== void 0 && value3 !== UNINITIALIZED) {
             return {
               enumerable: true,
               configurable: true,
-              value: value2,
+              value: value3,
               writable: true
             };
           }
@@ -2888,18 +2888,18 @@ function proxy(value) {
             });
             sources.set(prop3, s);
           }
-          var value2 = get2(s);
-          if (value2 === UNINITIALIZED) {
+          var value3 = get2(s);
+          if (value3 === UNINITIALIZED) {
             return false;
           }
         }
         return has2;
       },
-      set(target, prop3, value2, receiver) {
+      set(target, prop3, value3, receiver) {
         var s = sources.get(prop3);
         var has2 = prop3 in target;
         if (is_proxied_array && prop3 === "length") {
-          for (var i = value2; i < /** @type {Source<number>} */
+          for (var i = value3; i < /** @type {Source<number>} */
           s.v; i += 1) {
             var other_s = sources.get(i + "");
             if (other_s !== void 0) {
@@ -2919,17 +2919,17 @@ function proxy(value) {
             if (dev_fallback_default) {
               tag(s, get_label(path, prop3));
             }
-            set(s, proxy(value2));
+            set(s, proxy(value3));
             sources.set(prop3, s);
           }
         } else {
           has2 = s.v !== UNINITIALIZED;
-          var p = with_parent(() => proxy(value2));
+          var p = with_parent(() => proxy(value3));
           set(s, p);
         }
         var descriptor = Reflect.getOwnPropertyDescriptor(target, prop3);
         if (descriptor?.set) {
-          descriptor.set.call(receiver, value2);
+          descriptor.set.call(receiver, value3);
         }
         if (!has2) {
           if (is_proxied_array && typeof prop3 === "string") {
@@ -2970,14 +2970,14 @@ function get_label(path, prop3) {
   if (regex_is_valid_identifier.test(prop3)) return `${path}.${prop3}`;
   return /^\d+$/.test(prop3) ? `${path}[${prop3}]` : `${path}['${prop3}']`;
 }
-function get_proxied_value(value) {
+function get_proxied_value(value2) {
   try {
-    if (value !== null && typeof value === "object" && STATE_SYMBOL in value) {
-      return value[STATE_SYMBOL];
+    if (value2 !== null && typeof value2 === "object" && STATE_SYMBOL in value2) {
+      return value2[STATE_SYMBOL];
     }
   } catch {
   }
-  return value;
+  return value2;
 }
 function is(a, b) {
   return Object.is(get_proxied_value(a), get_proxied_value(b));
@@ -2996,16 +2996,16 @@ var ARRAY_MUTATING_METHODS = /* @__PURE__ */ new Set([
 function inspectable_array(array) {
   return new Proxy(array, {
     get(target, prop3, receiver) {
-      var value = Reflect.get(target, prop3, receiver);
+      var value2 = Reflect.get(target, prop3, receiver);
       if (!ARRAY_MUTATING_METHODS.has(
         /** @type {string} */
         prop3
       )) {
-        return value;
+        return value2;
       }
       return function(...args) {
         set_eager_effects_deferred();
-        var result = value.apply(this, args);
+        var result = value2.apply(this, args);
         flush_eager_effects();
         return result;
       };
@@ -3096,8 +3096,8 @@ function init_operations() {
     init_array_prototype_warnings();
   }
 }
-function create_text(value = "") {
-  return document.createTextNode(value);
+function create_text(value2 = "") {
+  return document.createTextNode(value2);
 }
 // @__NO_SIDE_EFFECTS__
 function get_first_child(node) {
@@ -3121,10 +3121,10 @@ function child(node, is_text) {
   if (child2 === null) {
     child2 = hydrate_node.appendChild(create_text());
   } else if (is_text && child2.nodeType !== TEXT_NODE) {
-    var text4 = create_text();
-    child2?.before(text4);
-    set_hydrate_node(text4);
-    return text4;
+    var text5 = create_text();
+    child2?.before(text5);
+    set_hydrate_node(text5);
+    return text5;
   }
   if (is_text) {
     merge_text_nodes(
@@ -3143,10 +3143,10 @@ function first_child(node, is_text = false) {
   }
   if (is_text) {
     if (hydrate_node?.nodeType !== TEXT_NODE) {
-      var text4 = create_text();
-      hydrate_node?.before(text4);
-      set_hydrate_node(text4);
-      return text4;
+      var text5 = create_text();
+      hydrate_node?.before(text5);
+      set_hydrate_node(text5);
+      return text5;
     }
     merge_text_nodes(
       /** @type {Text} */
@@ -3168,14 +3168,14 @@ function sibling(node, count = 1, is_text = false) {
   }
   if (is_text) {
     if (next_sibling?.nodeType !== TEXT_NODE) {
-      var text4 = create_text();
+      var text5 = create_text();
       if (next_sibling === null) {
-        last_sibling?.after(text4);
+        last_sibling?.after(text5);
       } else {
-        next_sibling.before(text4);
+        next_sibling.before(text5);
       }
-      set_hydrate_node(text4);
-      return text4;
+      set_hydrate_node(text5);
+      return text5;
     }
     merge_text_nodes(
       /** @type {Text} */
@@ -3209,19 +3209,19 @@ function create_element(tag2, namespace, is5) {
     is5 ? document.createElementNS(namespace, tag2, { is: is5 }) : document.createElementNS(namespace, tag2)
   );
 }
-function merge_text_nodes(text4) {
+function merge_text_nodes(text5) {
   if (
     /** @type {string} */
-    text4.nodeValue.length < 65536
+    text5.nodeValue.length < 65536
   ) {
     return;
   }
-  let next3 = text4.nextSibling;
+  let next3 = text5.nextSibling;
   while (next3 !== null && next3.nodeType === TEXT_NODE) {
     next3.remove();
-    text4.nodeValue += /** @type {string} */
+    text5.nodeValue += /** @type {string} */
     next3.nodeValue;
-    next3 = text4.nextSibling;
+    next3 = text5.nextSibling;
   }
 }
 
@@ -3631,8 +3631,8 @@ var captured_signals = null;
 // node_modules/svelte/src/internal/client/runtime.js
 var is_updating_effect = false;
 var is_destroying_effect = false;
-function set_is_destroying_effect(value) {
-  is_destroying_effect = value;
+function set_is_destroying_effect(value2) {
+  is_destroying_effect = value2;
 }
 var active_reaction = null;
 var untracking = false;
@@ -3644,22 +3644,22 @@ function set_active_effect(effect2) {
   active_effect = effect2;
 }
 var current_sources = null;
-function push_reaction_value(value) {
+function push_reaction_value(value2) {
   if (active_reaction !== null && (!async_mode_flag || (active_reaction.f & DERIVED) !== 0)) {
-    (current_sources ??= /* @__PURE__ */ new Set()).add(value);
+    (current_sources ??= /* @__PURE__ */ new Set()).add(value2);
   }
 }
 var new_deps = null;
 var skipped_deps = 0;
 var untracked_writes = null;
-function set_untracked_writes(value) {
-  untracked_writes = value;
+function set_untracked_writes(value2) {
+  untracked_writes = value2;
 }
 var write_version = 1;
 var read_version = 0;
 var update_version = read_version;
-function set_update_version(value) {
-  update_version = value;
+function set_update_version(value2) {
+  update_version = value2;
 }
 function increment_write_version() {
   return ++write_version;
@@ -3701,7 +3701,7 @@ function is_dirty(reaction) {
   }
   return false;
 }
-function schedule_possible_effect_self_invalidation(signal, effect2, root6 = true) {
+function schedule_possible_effect_self_invalidation(signal, effect2, root10 = true) {
   var reactions = signal.reactions;
   if (reactions === null) return;
   if (!async_mode_flag && current_sources !== null && current_sources.has(signal)) {
@@ -3717,7 +3717,7 @@ function schedule_possible_effect_self_invalidation(signal, effect2, root6 = tru
         false
       );
     } else if (effect2 === reaction) {
-      if (root6) {
+      if (root10) {
         set_signal_status(reaction, DIRTY);
       } else if ((reaction.f & CLEAN) !== 0) {
         set_signal_status(reaction, MAYBE_DIRTY);
@@ -4006,12 +4006,12 @@ function get2(signal) {
       signal
     );
     if (is_destroying_effect) {
-      var value = derived2.v;
+      var value2 = derived2.v;
       if ((derived2.f & CLEAN) === 0 && derived2.reactions !== null || depends_on_old_values(derived2)) {
-        value = execute_derived(derived2);
+        value2 = execute_derived(derived2);
       }
-      old_values.set(derived2, value);
-      return value;
+      old_values.set(derived2, value2);
+      return value2;
     }
     var should_connect = (derived2.f & CONNECTED) === 0 && !untracking && active_reaction !== null && (is_updating_effect || (active_reaction.f & CONNECTED) !== 0);
     var is_new = (derived2.f & REACTION_RAN) === 0;
@@ -4076,42 +4076,42 @@ function untrack(fn) {
     untracking = previous_untracking;
   }
 }
-function deep_read_state(value) {
-  if (typeof value !== "object" || !value || value instanceof EventTarget) {
+function deep_read_state(value2) {
+  if (typeof value2 !== "object" || !value2 || value2 instanceof EventTarget) {
     return;
   }
-  if (STATE_SYMBOL in value) {
-    deep_read(value);
-  } else if (!Array.isArray(value)) {
-    for (let key2 in value) {
-      const prop3 = value[key2];
+  if (STATE_SYMBOL in value2) {
+    deep_read(value2);
+  } else if (!Array.isArray(value2)) {
+    for (let key2 in value2) {
+      const prop3 = value2[key2];
       if (typeof prop3 === "object" && prop3 && STATE_SYMBOL in prop3) {
         deep_read(prop3);
       }
     }
   }
 }
-function deep_read(value, visited = /* @__PURE__ */ new Set()) {
-  if (typeof value === "object" && value !== null && // We don't want to traverse DOM elements
-  !(value instanceof EventTarget) && !visited.has(value)) {
-    visited.add(value);
-    if (value instanceof Date) {
-      value.getTime();
+function deep_read(value2, visited = /* @__PURE__ */ new Set()) {
+  if (typeof value2 === "object" && value2 !== null && // We don't want to traverse DOM elements
+  !(value2 instanceof EventTarget) && !visited.has(value2)) {
+    visited.add(value2);
+    if (value2 instanceof Date) {
+      value2.getTime();
     }
-    for (let key2 in value) {
+    for (let key2 in value2) {
       try {
-        deep_read(value[key2], visited);
+        deep_read(value2[key2], visited);
       } catch (e) {
       }
     }
-    const proto = get_prototype_of(value);
+    const proto = get_prototype_of(value2);
     if (proto !== Object.prototype && proto !== Array.prototype && proto !== Map.prototype && proto !== Set.prototype && proto !== Date.prototype) {
       const descriptors = get_descriptors(proto);
       for (let key2 in descriptors) {
         const get4 = descriptors[key2].get;
         if (get4) {
           try {
-            get4.call(value);
+            get4.call(value2);
           } catch (e) {
           }
         }
@@ -4407,12 +4407,12 @@ function append(anchor, dom) {
 
 // node_modules/svelte/src/internal/client/render.js
 var should_intro = true;
-function set_text(text4, value) {
-  var str = value == null ? "" : typeof value === "object" ? `${value}` : value;
+function set_text(text5, value2) {
+  var str = value2 == null ? "" : typeof value2 === "object" ? `${value2}` : value2;
   if (str !== /** @type {any} */
-  (text4[TEXT_CACHE] ??= text4.nodeValue)) {
-    text4[TEXT_CACHE] = str;
-    text4.nodeValue = `${str}`;
+  (text5[TEXT_CACHE] ??= text5.nodeValue)) {
+    text5[TEXT_CACHE] = str;
+    text5.nodeValue = `${str}`;
   }
 }
 function mount(component2, options) {
@@ -4797,6 +4797,9 @@ function if_block(node, fn, elseif = false) {
 var NAN = Symbol("NaN");
 
 // node_modules/svelte/src/internal/client/dom/blocks/each.js
+function index(_, i) {
+  return i;
+}
 function pause_effects(state2, to_destroy, controlled_anchor) {
   var transitions = [];
   var length = to_destroy.length;
@@ -4958,17 +4961,17 @@ function each(node, flags2, get_collection, get_key, render_fn, fallback_fn = nu
         mismatch = true;
         set_hydrating(false);
       }
-      var value = array[index3];
-      var key2 = get_key(value, index3);
+      var value2 = array[index3];
+      var key2 = get_key(value2, index3);
       if (dev_fallback_default) {
-        var key_again = get_key(value, index3);
+        var key_again = get_key(value2, index3);
         if (key2 !== key_again) {
           each_key_volatile(String(index3), String(key2), String(key_again));
         }
       }
       var item = first_run ? null : items.get(key2);
       if (item) {
-        if (item.v) internal_set(item.v, value);
+        if (item.v) internal_set(item.v, value2);
         if (item.i) internal_set(item.i, index3);
         if (defer) {
           batch.unskip_effect(item.e);
@@ -4977,7 +4980,7 @@ function each(node, flags2, get_collection, get_key, render_fn, fallback_fn = nu
         item = create_item(
           items,
           first_run ? anchor : offscreen_anchor ??= create_text(),
-          value,
+          value2,
           key2,
           index3,
           render_fn,
@@ -5050,14 +5053,14 @@ function reconcile(state2, array, anchor, flags2, get_key) {
   var to_animate;
   var matched = [];
   var stashed = [];
-  var value;
+  var value2;
   var key2;
   var effect2;
   var i;
   if (is_animated) {
     for (i = 0; i < length; i += 1) {
-      value = array[i];
-      key2 = get_key(value, i);
+      value2 = array[i];
+      key2 = get_key(value2, i);
       effect2 = /** @type {EachItem} */
       items.get(key2).e;
       if ((effect2.f & EFFECT_OFFSCREEN) === 0) {
@@ -5067,8 +5070,8 @@ function reconcile(state2, array, anchor, flags2, get_key) {
     }
   }
   for (i = 0; i < length; i += 1) {
-    value = array[i];
-    key2 = get_key(value, i);
+    value2 = array[i];
+    key2 = get_key(value2, i);
     effect2 = /** @type {EachItem} */
     items.get(key2).e;
     if (state2.outrogroups !== null) {
@@ -5203,8 +5206,8 @@ function reconcile(state2, array, anchor, flags2, get_key) {
     });
   }
 }
-function create_item(items, anchor, value, key2, index3, render_fn, flags2, get_collection) {
-  var v = (flags2 & EACH_ITEM_REACTIVE) !== 0 ? (flags2 & EACH_ITEM_IMMUTABLE) === 0 ? mutable_source(value, false, false) : source(value) : null;
+function create_item(items, anchor, value2, key2, index3, render_fn, flags2, get_collection) {
+  var v = (flags2 & EACH_ITEM_REACTIVE) !== 0 ? (flags2 & EACH_ITEM_IMMUTABLE) === 0 ? mutable_source(value2, false, false) : source(value2) : null;
   var i = (flags2 & EACH_INDEX_REACTIVE) !== 0 ? source(index3) : null;
   if (dev_fallback_default && v) {
     v.trace = () => {
@@ -5215,7 +5218,7 @@ function create_item(items, anchor, value, key2, index3, render_fn, flags2, get_
     v,
     i,
     e: branch(() => {
-      render_fn(anchor, v ?? value, i ?? index3, get_collection);
+      render_fn(anchor, v ?? value2, i ?? index3, get_collection);
       return () => {
         items.delete(key2);
       };
@@ -5281,11 +5284,11 @@ function action(dom, action2, get_value) {
         {}
       );
       render_effect(() => {
-        var value = get_value();
-        deep_read_state(value);
-        if (inited && safe_not_equal(prev2, value)) {
-          prev2 = value;
-          payload.update(value);
+        var value2 = get_value();
+        deep_read_state(value2);
+        if (inited && safe_not_equal(prev2, value2)) {
+          prev2 = value2;
+          payload.update(value2);
         }
       });
       inited = true;
@@ -5301,8 +5304,8 @@ function action(dom, action2, get_value) {
 
 // node_modules/svelte/src/internal/shared/attributes.js
 var whitespace = [..." 	\n\r\f\xA0\v\uFEFF"];
-function to_class(value, hash2, directives) {
-  var classname = value == null ? "" : "" + value;
+function to_class(value2, hash2, directives) {
+  var classname = value2 == null ? "" : "" + value2;
   if (hash2) {
     classname = classname ? classname + " " + hash2 : hash2;
   }
@@ -5330,9 +5333,9 @@ function append_styles(styles, important = false) {
   var separator = important ? " !important;" : ";";
   var css2 = "";
   for (var key2 of Object.keys(styles)) {
-    var value = styles[key2];
-    if (value != null && value !== "") {
-      css2 += " " + key2 + ": " + value + separator;
+    var value2 = styles[key2];
+    if (value2 != null && value2 !== "") {
+      css2 += " " + key2 + ": " + value2 + separator;
     }
   }
   return css2;
@@ -5343,7 +5346,7 @@ function to_css_name(name) {
   }
   return name;
 }
-function to_style(value, styles) {
+function to_style(value2, styles) {
   if (styles) {
     var new_style = "";
     var normal_styles;
@@ -5354,8 +5357,8 @@ function to_style(value, styles) {
     } else {
       normal_styles = styles;
     }
-    if (value) {
-      value = String(value).replaceAll(/\s*\/\*.*?\*\/\s*/g, "").trim();
+    if (value2) {
+      value2 = String(value2).replaceAll(/\s*\/\*.*?\*\/\s*/g, "").trim();
       var in_str = false;
       var in_apo = 0;
       var in_comment = false;
@@ -5368,18 +5371,18 @@ function to_style(value, styles) {
       }
       var start_index = 0;
       var name_index = -1;
-      const len = value.length;
+      const len = value2.length;
       for (var i = 0; i < len; i++) {
-        var c = value[i];
+        var c = value2[i];
         if (in_comment) {
-          if (c === "/" && value[i - 1] === "*") {
+          if (c === "/" && value2[i - 1] === "*") {
             in_comment = false;
           }
         } else if (in_str) {
           if (in_str === c) {
             in_str = false;
           }
-        } else if (c === "/" && value[i + 1] === "*") {
+        } else if (c === "/" && value2[i + 1] === "*") {
           in_comment = true;
         } else if (c === '"' || c === "'") {
           in_str = c;
@@ -5393,12 +5396,12 @@ function to_style(value, styles) {
             name_index = i;
           } else if (c === ";" || i === len - 1) {
             if (name_index !== -1) {
-              var name = to_css_name(value.substring(start_index, name_index).trim());
+              var name = to_css_name(value2.substring(start_index, name_index).trim());
               if (!reserved_names.includes(name)) {
                 if (c !== ";") {
                   i++;
                 }
-                var property = value.substring(start_index, i).trim();
+                var property = value2.substring(start_index, i).trim();
                 new_style += " " + property + ";";
               }
             }
@@ -5417,17 +5420,17 @@ function to_style(value, styles) {
     new_style = new_style.trim();
     return new_style === "" ? null : new_style;
   }
-  return value == null ? null : String(value);
+  return value2 == null ? null : String(value2);
 }
 
 // node_modules/svelte/src/internal/client/dom/elements/class.js
-function set_class(dom, is_html, value, hash2, prev_classes, next_classes) {
+function set_class(dom, is_html, value2, hash2, prev_classes, next_classes) {
   var prev2 = (
     /** @type {any} */
     dom[CLASS_CACHE]
   );
-  if (hydrating || prev2 !== value || prev2 === void 0) {
-    var next_class_name = to_class(value, hash2, next_classes);
+  if (hydrating || prev2 !== value2 || prev2 === void 0) {
+    var next_class_name = to_class(value2, hash2, next_classes);
     if (!hydrating || next_class_name !== dom.getAttribute("class")) {
       if (next_class_name == null) {
         dom.removeAttribute("class");
@@ -5437,7 +5440,7 @@ function set_class(dom, is_html, value, hash2, prev_classes, next_classes) {
         dom.setAttribute("class", next_class_name);
       }
     }
-    dom[CLASS_CACHE] = value;
+    dom[CLASS_CACHE] = value2;
   } else if (next_classes && prev_classes !== next_classes) {
     for (var key2 in next_classes) {
       var is_present = !!next_classes[key2];
@@ -5452,23 +5455,23 @@ function set_class(dom, is_html, value, hash2, prev_classes, next_classes) {
 // node_modules/svelte/src/internal/client/dom/elements/style.js
 function update_styles(dom, prev2 = {}, next3, priority) {
   for (var key2 in next3) {
-    var value = next3[key2];
-    if (prev2[key2] !== value) {
+    var value2 = next3[key2];
+    if (prev2[key2] !== value2) {
       if (next3[key2] == null) {
         dom.style.removeProperty(key2);
       } else {
-        dom.style.setProperty(key2, value, priority);
+        dom.style.setProperty(key2, value2, priority);
       }
     }
   }
 }
-function set_style(dom, value, prev_styles, next_styles) {
+function set_style(dom, value2, prev_styles, next_styles) {
   var prev2 = (
     /** @type {any} */
     dom[STYLE_CACHE]
   );
-  if (hydrating || prev2 !== value) {
-    var next_style_attr = to_style(value, next_styles);
+  if (hydrating || prev2 !== value2) {
+    var next_style_attr = to_style(value2, next_styles);
     if (!hydrating || next_style_attr !== dom.getAttribute("style")) {
       if (next_style_attr == null) {
         dom.removeAttribute("style");
@@ -5476,7 +5479,7 @@ function set_style(dom, value, prev_styles, next_styles) {
         dom.style.cssText = next_style_attr;
       }
     }
-    dom[STYLE_CACHE] = value;
+    dom[STYLE_CACHE] = value2;
   } else if (next_styles) {
     if (Array.isArray(next_styles)) {
       update_styles(dom, prev_styles?.[0], next_styles[0]);
@@ -5489,27 +5492,27 @@ function set_style(dom, value, prev_styles, next_styles) {
 }
 
 // node_modules/svelte/src/internal/client/dom/elements/bindings/select.js
-function select_option(select2, value, mounting = false) {
+function select_option(select2, value2, mounting = false) {
   if (select2.multiple) {
-    if (value == void 0) {
+    if (value2 == void 0) {
       return;
     }
-    if (!is_array(value)) {
+    if (!is_array(value2)) {
       return select_multiple_invalid_value();
     }
     for (var option of select2.options) {
-      option.selected = value.includes(get_option_value(option));
+      option.selected = value2.includes(get_option_value(option));
     }
     return;
   }
   for (option of select2.options) {
     var option_value = get_option_value(option);
-    if (is(option_value, value)) {
+    if (is(option_value, value2)) {
       option.selected = true;
       return;
     }
   }
-  if (!mounting || value !== void 0) {
+  if (!mounting || value2 !== void 0) {
     select2.selectedIndex = -1;
   }
 }
@@ -5537,22 +5540,22 @@ function bind_select_value(select2, get4, set2 = get4) {
   var mounting = true;
   listen_to_event_and_reset_event(select2, "change", (is_reset) => {
     var query = is_reset ? "[selected]" : ":checked";
-    var value;
+    var value2;
     if (select2.multiple) {
-      value = [].map.call(select2.querySelectorAll(query), get_option_value);
+      value2 = [].map.call(select2.querySelectorAll(query), get_option_value);
     } else {
       var selected_option = select2.querySelector(query) ?? // will fall back to first non-disabled option if no option is selected
       select2.querySelector("option:not([disabled])");
-      value = selected_option && get_option_value(selected_option);
+      value2 = selected_option && get_option_value(selected_option);
     }
-    set2(value);
-    select2.__value = value;
+    set2(value2);
+    select2.__value = value2;
     if (current_batch !== null) {
       batches.add(current_batch);
     }
   });
   effect(() => {
-    var value = get4();
+    var value2 = get4();
     if (select2 === document.activeElement) {
       var batch = (
         /** @type {Batch} */
@@ -5562,15 +5565,15 @@ function bind_select_value(select2, get4, set2 = get4) {
         return;
       }
     }
-    select_option(select2, value, mounting);
-    if (mounting && value === void 0) {
+    select_option(select2, value2, mounting);
+    if (mounting && value2 === void 0) {
       var selected_option = select2.querySelector(":checked");
       if (selected_option !== null) {
-        value = get_option_value(selected_option);
-        set2(value);
+        value2 = get_option_value(selected_option);
+        set2(value2);
       }
     }
-    select2.__value = value;
+    select2.__value = value2;
     mounting = false;
   });
   init_select(select2);
@@ -5596,9 +5599,9 @@ function remove_input_defaults(input) {
     if (already_removed) return;
     already_removed = true;
     if (input.hasAttribute("value")) {
-      var value = input.value;
+      var value2 = input.value;
       set_attribute2(input, "value", null);
-      input.value = value;
+      input.value = value2;
     }
     if (input.hasAttribute("checked")) {
       var checked = input.checked;
@@ -5610,27 +5613,27 @@ function remove_input_defaults(input) {
   queue_micro_task(remove_defaults);
   add_form_reset_listener();
 }
-function set_attribute2(element2, attribute, value, skip_warning) {
+function set_attribute2(element2, attribute, value2, skip_warning) {
   var attributes2 = get_attributes(element2);
   if (hydrating) {
     attributes2[attribute] = element2.getAttribute(attribute);
     if (attribute === "src" || attribute === "srcset" || attribute === "href" && element2.nodeName === LINK_TAG) {
       if (!skip_warning) {
-        check_src_in_dev_hydration(element2, attribute, value ?? "");
+        check_src_in_dev_hydration(element2, attribute, value2 ?? "");
       }
       return;
     }
   }
-  if (attributes2[attribute] === (attributes2[attribute] = value)) return;
+  if (attributes2[attribute] === (attributes2[attribute] = value2)) return;
   if (attribute === "loading") {
-    element2[LOADING_ATTR_SYMBOL] = value;
+    element2[LOADING_ATTR_SYMBOL] = value2;
   }
-  if (value == null) {
+  if (value2 == null) {
     element2.removeAttribute(attribute);
-  } else if (typeof value !== "string" && get_setters(element2).includes(attribute)) {
-    element2[attribute] = value;
+  } else if (typeof value2 !== "string" && get_setters(element2).includes(attribute)) {
+    element2[attribute] = value2;
   } else {
-    element2.setAttribute(attribute, value);
+    element2.setAttribute(attribute, value2);
   }
 }
 function get_attributes(element2) {
@@ -5664,14 +5667,14 @@ function get_setters(element2) {
   }
   return setters;
 }
-function check_src_in_dev_hydration(element2, attribute, value) {
+function check_src_in_dev_hydration(element2, attribute, value2) {
   if (!dev_fallback_default) return;
-  if (attribute === "srcset" && srcset_url_equal(element2, value)) return;
-  if (src_url_equal(element2.getAttribute(attribute) ?? "", value)) return;
+  if (attribute === "srcset" && srcset_url_equal(element2, value2)) return;
+  if (src_url_equal(element2.getAttribute(attribute) ?? "", value2)) return;
   hydration_attribute_changed(
     attribute,
     element2.outerHTML.replace(element2.innerHTML, element2.innerHTML && "..."),
-    String(value)
+    String(value2)
   );
 }
 function src_url_equal(element_src, url) {
@@ -5701,18 +5704,18 @@ function bind_value(input, get4, set2 = get4) {
     if (dev_fallback_default && input.type === "checkbox") {
       bind_invalid_checkbox_value();
     }
-    var value = is_reset ? input.defaultValue : input.value;
-    value = is_numberlike_input(input) ? to_number(value) : value;
-    set2(value);
+    var value2 = is_reset ? input.defaultValue : input.value;
+    value2 = is_numberlike_input(input) ? to_number(value2) : value2;
+    set2(value2);
     if (current_batch !== null) {
       batches.add(current_batch);
     }
     await tick();
-    if (value !== (value = get4())) {
+    if (value2 !== (value2 = get4())) {
       var start = input.selectionStart;
       var end2 = input.selectionEnd;
       var length = input.value.length;
-      input.value = value ?? "";
+      input.value = value2 ?? "";
       if (end2 !== null) {
         var new_length = input.value.length;
         if (start === end2 && end2 === length && new_length > length) {
@@ -5741,7 +5744,7 @@ function bind_value(input, get4, set2 = get4) {
     if (dev_fallback_default && input.type === "checkbox") {
       bind_invalid_checkbox_value();
     }
-    var value = get4();
+    var value2 = get4();
     if (input === document.activeElement) {
       var batch = (
         /** @type {Batch} */
@@ -5751,14 +5754,14 @@ function bind_value(input, get4, set2 = get4) {
         return;
       }
     }
-    if (is_numberlike_input(input) && value === to_number(input.value)) {
+    if (is_numberlike_input(input) && value2 === to_number(input.value)) {
       return;
     }
-    if (input.type === "date" && !value && !input.value) {
+    if (input.type === "date" && !value2 && !input.value) {
       return;
     }
-    if (value !== input.value) {
-      input.value = value ?? "";
+    if (value2 !== input.value) {
+      input.value = value2 ?? "";
     }
   });
 }
@@ -5766,8 +5769,8 @@ function is_numberlike_input(input) {
   var type = input.type;
   return type === "number" || type === "range";
 }
-function to_number(value) {
-  return value === "" ? null : +value;
+function to_number(value2) {
+  return value2 === "" ? null : +value2;
 }
 
 // node_modules/svelte/src/internal/client/reactivity/props.js
@@ -5830,25 +5833,25 @@ function prop(props, key2, flags2, fallback2) {
   var getter;
   if (runes) {
     getter = () => {
-      var value = (
+      var value2 = (
         /** @type {V} */
         props[key2]
       );
-      if (value === void 0) return get_fallback();
+      if (value2 === void 0) return get_fallback();
       fallback_dirty = true;
-      return value;
+      return value2;
     };
   } else {
     getter = () => {
-      var value = (
+      var value2 = (
         /** @type {V} */
         props[key2]
       );
-      if (value !== void 0) {
+      if (value2 !== void 0) {
         fallback_value = /** @type {V} */
         void 0;
       }
-      return value === void 0 ? fallback_value : value;
+      return value2 === void 0 ? fallback_value : value2;
     };
   }
   if (runes && (flags2 & PROPS_IS_UPDATED) === 0) {
@@ -5858,12 +5861,12 @@ function prop(props, key2, flags2, fallback2) {
     var legacy_parent = props.$$legacy;
     return (
       /** @type {() => V} */
-      function(value, mutation) {
+      function(value2, mutation) {
         if (arguments.length > 0) {
           if (!runes || !mutation || legacy_parent || is_store_sub) {
-            setter(mutation ? getter() : value);
+            setter(mutation ? getter() : value2);
           }
-          return value;
+          return value2;
         }
         return getter();
       }
@@ -5884,15 +5887,15 @@ function prop(props, key2, flags2, fallback2) {
   );
   return (
     /** @type {() => V} */
-    function(value, mutation) {
+    function(value2, mutation) {
       if (arguments.length > 0) {
-        const new_value = mutation ? get2(d) : runes && bindable ? proxy(value) : value;
+        const new_value = mutation ? get2(d) : runes && bindable ? proxy(value2) : value2;
         set(d, new_value);
         overridden = true;
         if (fallback_value !== void 0) {
           fallback_value = new_value;
         }
-        return value;
+        return value2;
       }
       if (is_destroying_effect && overridden || (parent_effect.f & DESTROYED) !== 0) {
         return d.v;
@@ -5918,8 +5921,8 @@ var Svelte4Component = class {
    */
   constructor(options) {
     var sources = /* @__PURE__ */ new Map();
-    var add_source = (key2, value) => {
-      var s = mutable_source(value, false, false);
+    var add_source = (key2, value2) => {
+      var s = mutable_source(value2, false, false);
       sources.set(key2, s);
       return s;
     };
@@ -5934,9 +5937,9 @@ var Svelte4Component = class {
           get2(sources.get(prop3) ?? add_source(prop3, Reflect.get(target, prop3)));
           return Reflect.has(target, prop3);
         },
-        set(target, prop3, value) {
-          set(sources.get(prop3) ?? add_source(prop3, value), value);
-          return Reflect.set(target, prop3, value);
+        set(target, prop3, value2) {
+          set(sources.get(prop3) ?? add_source(prop3, value2), value2);
+          return Reflect.set(target, prop3, value2);
         }
       }
     );
@@ -5960,8 +5963,8 @@ var Svelte4Component = class {
           return this.#instance[key2];
         },
         /** @param {any} value */
-        set(value) {
-          this.#instance[key2] = value;
+        set(value2) {
+          this.#instance[key2] = value2;
         },
         enumerable: true
       });
@@ -6177,35 +6180,35 @@ if (typeof HTMLElement === "function") {
     }
   };
 }
-function get_custom_element_value(prop3, value, props_definition, transform) {
+function get_custom_element_value(prop3, value2, props_definition, transform) {
   const type = props_definition[prop3]?.type;
-  value = type === "Boolean" && typeof value !== "boolean" ? value != null : value;
+  value2 = type === "Boolean" && typeof value2 !== "boolean" ? value2 != null : value2;
   if (!transform || !props_definition[prop3]) {
-    return value;
+    return value2;
   } else if (transform === "toAttribute") {
     switch (type) {
       case "Object":
       case "Array":
-        return value == null ? null : JSON.stringify(value);
+        return value2 == null ? null : JSON.stringify(value2);
       case "Boolean":
-        return value ? "" : null;
+        return value2 ? "" : null;
       case "Number":
-        return value == null ? null : value;
+        return value2 == null ? null : value2;
       default:
-        return value;
+        return value2;
     }
   } else {
     switch (type) {
       case "Object":
       case "Array":
-        return value && JSON.parse(value);
+        return value2 && JSON.parse(value2);
       case "Boolean":
-        return value;
+        return value2;
       // conversion already handled above
       case "Number":
-        return value != null ? +value : value;
+        return value2 != null ? +value2 : value2;
       default:
-        return value;
+        return value2;
     }
   }
 }
@@ -6224,18 +6227,18 @@ function get_custom_elements_slots(element2) {
 if (dev_fallback_default) {
   let throw_rune_error = function(rune) {
     if (!(rune in globalThis)) {
-      let value;
+      let value2;
       Object.defineProperty(globalThis, rune, {
         configurable: true,
         // eslint-disable-next-line getter-return
         get: () => {
-          if (value !== void 0) {
-            return value;
+          if (value2 !== void 0) {
+            return value2;
           }
           rune_outside_svelte(rune);
         },
         set: (v) => {
-          value = v;
+          value2 = v;
         }
       });
     }
@@ -6279,8 +6282,8 @@ if (typeof window !== "undefined") {
   ((window.__svelte ??= {}).v ??= /* @__PURE__ */ new Set()).add(PUBLIC_VERSION);
 }
 
-// src/ui/Dashboard.svelte
-var import_obsidian6 = require("obsidian");
+// src/ui/ReportView.svelte
+var import_obsidian4 = require("obsidian");
 
 // src/audit-store.ts
 var import_obsidian2 = require("obsidian");
@@ -6891,11 +6894,11 @@ var DomHandler = class {
     this.lastNode = null;
   }
   oncdatastart() {
-    const text4 = new Text3("");
-    const node = new CDATA2([text4]);
+    const text5 = new Text3("");
+    const node = new CDATA2([text5]);
     this.addNode(node);
-    text4.parent = node;
-    this.lastNode = text4;
+    text5.parent = node;
+    this.lastNode = text5;
   }
   oncdataend() {
     this.lastNode = null;
@@ -7339,8 +7342,8 @@ function determineBranch(decodeTree, current, nodeIdx, char) {
     return jumpOffset !== 0 && char === jumpOffset ? nodeIdx : -1;
   }
   if (jumpOffset) {
-    const value = char - jumpOffset;
-    return value < 0 || value >= branchCount ? -1 : decodeTree[nodeIdx + value] - 1;
+    const value2 = char - jumpOffset;
+    return value2 < 0 || value2 >= branchCount ? -1 : decodeTree[nodeIdx + value2] - 1;
   }
   let lo = nodeIdx;
   let hi = lo + branchCount - 1;
@@ -7559,8 +7562,8 @@ var unencodedElements = /* @__PURE__ */ new Set([
   "plaintext",
   "noscript"
 ]);
-function replaceQuotes(value) {
-  return value.replace(/"/g, "&quot;");
+function replaceQuotes(value2) {
+  return value2.replace(/"/g, "&quot;");
 }
 function formatAttributes(attributes2, opts) {
   var _a5;
@@ -7569,14 +7572,14 @@ function formatAttributes(attributes2, opts) {
   const encode = ((_a5 = opts.encodeEntities) !== null && _a5 !== void 0 ? _a5 : opts.decodeEntities) === false ? replaceQuotes : opts.xmlMode || opts.encodeEntities !== "utf8" ? encodeXML : escapeAttribute;
   return Object.keys(attributes2).map((key2) => {
     var _a6, _b;
-    const value = (_a6 = attributes2[key2]) !== null && _a6 !== void 0 ? _a6 : "";
+    const value2 = (_a6 = attributes2[key2]) !== null && _a6 !== void 0 ? _a6 : "";
     if (opts.xmlMode === "foreign") {
       key2 = (_b = attributeNames.get(key2)) !== null && _b !== void 0 ? _b : key2;
     }
-    if (!opts.emptyAttrs && !opts.xmlMode && value === "") {
+    if (!opts.emptyAttrs && !opts.xmlMode && value2 === "") {
       return key2;
     }
-    return `${key2}="${encode(value)}"`;
+    return `${key2}="${encode(value2)}"`;
   }).join(" ");
 }
 var singleTag = /* @__PURE__ */ new Set([
@@ -7968,19 +7971,19 @@ var Checks = {
     return (elem) => isText(elem) && elem.data === data2;
   }
 };
-function getAttribCheck(attrib, value) {
-  if (typeof value === "function") {
-    return (elem) => isTag2(elem) && value(elem.attribs[attrib]);
+function getAttribCheck(attrib, value2) {
+  if (typeof value2 === "function") {
+    return (elem) => isTag2(elem) && value2(elem.attribs[attrib]);
   }
-  return (elem) => isTag2(elem) && elem.attribs[attrib] === value;
+  return (elem) => isTag2(elem) && elem.attribs[attrib] === value2;
 }
 function combineFuncs(a, b) {
   return (elem) => a(elem) || b(elem);
 }
 function compileTest(options) {
   const funcs = Object.keys(options).map((key2) => {
-    const value = options[key2];
-    return Object.prototype.hasOwnProperty.call(Checks, key2) ? Checks[key2](value) : getAttribCheck(key2, value);
+    const value2 = options[key2];
+    return Object.prototype.hasOwnProperty.call(Checks, key2) ? Checks[key2](value2) : getAttribCheck(key2, value2);
   });
   return funcs.length === 0 ? null : funcs.reduce(combineFuncs);
 }
@@ -8205,8 +8208,8 @@ function addConditionally(obj, prop3, tagName, where, recurse = false) {
   if (val2)
     obj[prop3] = val2;
 }
-function isValidFeed(value) {
-  return value === "rss" || value === "feed" || value === "rdf:RDF";
+function isValidFeed(value2) {
+  return value2 === "rss" || value2 === "feed" || value2 === "rdf:RDF";
 }
 
 // node_modules/cheerio/dist/browser/options.js
@@ -8813,8 +8816,8 @@ function determineBranch2(decodeTree, current, nodeIndex, char) {
     return jumpOffset !== 0 && char === jumpOffset ? nodeIndex : -1;
   }
   if (jumpOffset) {
-    const value = char - jumpOffset;
-    return value < 0 || value >= branchCount ? -1 : decodeTree[nodeIndex + value] - 1;
+    const value2 = char - jumpOffset;
+    return value2 < 0 || value2 >= branchCount ? -1 : decodeTree[nodeIndex + value2] - 1;
   }
   const packedKeySlots = branchCount + 1 >> 1;
   let lo = 0;
@@ -9809,9 +9812,9 @@ var Parser = class {
     }
     this.attribvalue = "";
   }
-  getInstructionName(value) {
-    const index3 = value.search(reNameEnd);
-    let name = index3 < 0 ? value : value.substr(0, index3);
+  getInstructionName(value2) {
+    const index3 = value2.search(reNameEnd);
+    let name = index3 < 0 ? value2 : value2.substr(0, index3);
     if (this.lowerCaseTagNames) {
       name = name.toLowerCase();
     }
@@ -9820,20 +9823,20 @@ var Parser = class {
   /** @internal */
   ondeclaration(start, endIndex) {
     this.endIndex = endIndex;
-    const value = this.getSlice(start, endIndex);
+    const value2 = this.getSlice(start, endIndex);
     if (this.cbs.onprocessinginstruction) {
-      const name = this.getInstructionName(value);
-      this.cbs.onprocessinginstruction(`!${name}`, `!${value}`);
+      const name = this.getInstructionName(value2);
+      this.cbs.onprocessinginstruction(`!${name}`, `!${value2}`);
     }
     this.startIndex = endIndex + 1;
   }
   /** @internal */
   onprocessinginstruction(start, endIndex) {
     this.endIndex = endIndex;
-    const value = this.getSlice(start, endIndex);
+    const value2 = this.getSlice(start, endIndex);
     if (this.cbs.onprocessinginstruction) {
-      const name = this.getInstructionName(value);
-      this.cbs.onprocessinginstruction(`?${name}`, `?${value}`);
+      const name = this.getInstructionName(value2);
+      this.cbs.onprocessinginstruction(`?${name}`, `?${value2}`);
     }
     this.startIndex = endIndex + 1;
   }
@@ -9849,13 +9852,13 @@ var Parser = class {
   oncdata(start, endIndex, offset) {
     var _a5, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     this.endIndex = endIndex;
-    const value = this.getSlice(start, endIndex - offset);
+    const value2 = this.getSlice(start, endIndex - offset);
     if (!this.htmlMode || this.options.recognizeCDATA) {
       (_b = (_a5 = this.cbs).oncdatastart) === null || _b === void 0 ? void 0 : _b.call(_a5);
-      (_d = (_c = this.cbs).ontext) === null || _d === void 0 ? void 0 : _d.call(_c, value);
+      (_d = (_c = this.cbs).ontext) === null || _d === void 0 ? void 0 : _d.call(_c, value2);
       (_f = (_e = this.cbs).oncdataend) === null || _f === void 0 ? void 0 : _f.call(_e);
     } else {
-      (_h = (_g = this.cbs).oncomment) === null || _h === void 0 ? void 0 : _h.call(_g, `[CDATA[${value}]]`);
+      (_h = (_g = this.cbs).oncomment) === null || _h === void 0 ? void 0 : _h.call(_g, `[CDATA[${value2}]]`);
       (_k = (_j = this.cbs).oncommentend) === null || _k === void 0 ? void 0 : _k.call(_j);
     }
     this.startIndex = endIndex + 1;
@@ -10024,16 +10027,16 @@ function getAttr(elem, name, xmlMode) {
   }
   return void 0;
 }
-function setAttr(el, name, value) {
-  if (value === null) {
+function setAttr(el, name, value2) {
+  if (value2 === null) {
     removeAttribute(el, name);
   } else {
-    el.attribs[name] = `${value}`;
+    el.attribs[name] = `${value2}`;
   }
 }
-function attr2(name, value) {
-  if (typeof name === "object" || value !== void 0) {
-    if (typeof value === "function") {
+function attr2(name, value2) {
+  if (typeof name === "object" || value2 !== void 0) {
+    if (typeof value2 === "function") {
       if (typeof name !== "string") {
         {
           throw new Error("Bad combination of arguments.");
@@ -10041,7 +10044,7 @@ function attr2(name, value) {
       }
       return domEach(this, (el, i) => {
         if (isTag2(el))
-          setAttr(el, name, value.call(el, i, el.attribs[name]));
+          setAttr(el, name, value2.call(el, i, el.attribs[name]));
       });
     }
     return domEach(this, (el) => {
@@ -10053,7 +10056,7 @@ function attr2(name, value) {
           setAttr(el, objName, objValue);
         }
       } else {
-        setAttr(el, name, value);
+        setAttr(el, name, value2);
       }
     });
   }
@@ -10065,16 +10068,16 @@ function getProp(el, name, xmlMode) {
     el[name]
   ) : !xmlMode && rboolean.test(name) ? getAttr(el, name, false) !== void 0 : getAttr(el, name, xmlMode);
 }
-function setProp(el, name, value, xmlMode) {
+function setProp(el, name, value2, xmlMode) {
   if (name in el) {
-    el[name] = value;
+    el[name] = value2;
   } else {
-    setAttr(el, name, !xmlMode && rboolean.test(name) ? value ? "" : null : `${value}`);
+    setAttr(el, name, !xmlMode && rboolean.test(name) ? value2 ? "" : null : `${value2}`);
   }
 }
-function prop2(name, value) {
+function prop2(name, value2) {
   var _a5;
-  if (typeof name === "string" && value === void 0) {
+  if (typeof name === "string" && value2 === void 0) {
     const el = this[0];
     if (!el)
       return void 0;
@@ -10125,14 +10128,14 @@ function prop2(name, value) {
       }
     }
   }
-  if (typeof name === "object" || value !== void 0) {
-    if (typeof value === "function") {
+  if (typeof name === "object" || value2 !== void 0) {
+    if (typeof value2 === "function") {
       if (typeof name === "object") {
         throw new TypeError("Bad combination of arguments.");
       }
       return domEach(this, (el, i) => {
         if (isTag2(el)) {
-          setProp(el, name, value.call(el, i, getProp(el, name, this.options.xmlMode)), this.options.xmlMode);
+          setProp(el, name, value2.call(el, i, getProp(el, name, this.options.xmlMode)), this.options.xmlMode);
         }
       });
     }
@@ -10145,19 +10148,19 @@ function prop2(name, value) {
           setProp(el, key2, val2, this.options.xmlMode);
         }
       } else {
-        setProp(el, name, value, this.options.xmlMode);
+        setProp(el, name, value2, this.options.xmlMode);
       }
     });
   }
   return void 0;
 }
-function setData(elem, name, value) {
+function setData(elem, name, value2) {
   var _a5;
   (_a5 = elem.data) !== null && _a5 !== void 0 ? _a5 : elem.data = {};
   if (typeof name === "object")
     Object.assign(elem.data, name);
-  else if (typeof name === "string" && value !== void 0) {
-    elem.data[name] = value;
+  else if (typeof name === "string" && value2 !== void 0) {
+    elem.data[name] = value2;
   }
 }
 function readAllData(el) {
@@ -10183,25 +10186,25 @@ function readData(el, name) {
   }
   return void 0;
 }
-function parseDataValue(value) {
-  if (value === "null")
+function parseDataValue(value2) {
+  if (value2 === "null")
     return null;
-  if (value === "true")
+  if (value2 === "true")
     return true;
-  if (value === "false")
+  if (value2 === "false")
     return false;
-  const num = Number(value);
-  if (value === String(num))
+  const num = Number(value2);
+  if (value2 === String(num))
     return num;
-  if (rbrace.test(value)) {
+  if (rbrace.test(value2)) {
     try {
-      return JSON.parse(value);
+      return JSON.parse(value2);
     } catch {
     }
   }
-  return value;
+  return value2;
 }
-function data(name, value) {
+function data(name, value2) {
   var _a5;
   const elem = this[0];
   if (!elem || !isTag2(elem))
@@ -10211,36 +10214,36 @@ function data(name, value) {
   if (name == null) {
     return readAllData(dataEl);
   }
-  if (typeof name === "object" || value !== void 0) {
+  if (typeof name === "object" || value2 !== void 0) {
     domEach(this, (el) => {
       if (isTag2(el)) {
         if (typeof name === "object")
           setData(el, name);
         else
-          setData(el, name, value);
+          setData(el, name, value2);
       }
     });
     return this;
   }
   return readData(dataEl, name);
 }
-function val(value) {
+function val(value2) {
   const querying = arguments.length === 0;
   const element2 = this[0];
   if (!element2 || !isTag2(element2))
     return querying ? void 0 : this;
   switch (element2.name) {
     case "textarea": {
-      return this.text(value);
+      return this.text(value2);
     }
     case "select": {
       const option = this.find("option:selected");
       if (!querying) {
-        if (this.attr("multiple") == null && typeof value === "object") {
+        if (this.attr("multiple") == null && typeof value2 === "object") {
           return this;
         }
         this.find("option").removeAttr("selected");
-        const values = typeof value === "object" ? value : [value];
+        const values = typeof value2 === "object" ? value2 : [value2];
         for (const val2 of values) {
           this.find(`option[value="${val2}"]`).attr("selected", "");
         }
@@ -10251,7 +10254,7 @@ function val(value) {
     case "button":
     case "input":
     case "option": {
-      return querying ? this.attr("value") : this.attr("value", value);
+      return querying ? this.attr("value") : this.attr("value", value2);
     }
   }
   return void 0;
@@ -10289,18 +10292,18 @@ function hasClass(className) {
     return false;
   });
 }
-function addClass(value) {
-  if (typeof value === "function") {
+function addClass(value2) {
+  if (typeof value2 === "function") {
     return domEach(this, (el, i) => {
       if (isTag2(el)) {
         const className = el.attribs["class"] || "";
-        addClass.call([el], value.call(el, i, className));
+        addClass.call([el], value2.call(el, i, className));
       }
     });
   }
-  if (!value || typeof value !== "string")
+  if (!value2 || typeof value2 !== "string")
     return this;
-  const classNames = value.split(rspace);
+  const classNames = value2.split(rspace);
   const numElements = this.length;
   for (let i = 0; i < numElements; i++) {
     const el = this[i];
@@ -10354,17 +10357,17 @@ function removeClass(name) {
     }
   });
 }
-function toggleClass(value, stateVal) {
-  if (typeof value === "function") {
+function toggleClass(value2, stateVal) {
+  if (typeof value2 === "function") {
     return domEach(this, (el, i) => {
       if (isTag2(el)) {
-        toggleClass.call([el], value.call(el, i, el.attribs["class"] || "", stateVal), stateVal);
+        toggleClass.call([el], value2.call(el, i, el.attribs["class"] || "", stateVal), stateVal);
       }
     });
   }
-  if (!value || typeof value !== "string")
+  if (!value2 || typeof value2 !== "string")
     return this;
-  const classNames = value.split(rspace);
+  const classNames = value2.split(rspace);
   const numClasses = classNames.length;
   const state2 = typeof stateVal === "boolean" ? stateVal ? 1 : -1 : 0;
   const numElements = this.length;
@@ -10661,7 +10664,7 @@ function parseSelector(subselects2, selector, selectorIndex) {
           action2 = AttributeAction.Equals;
           stripWhitespace(1);
         }
-        let value = "";
+        let value2 = "";
         let ignoreCase = null;
         if (action2 !== "exists") {
           if (isQuote(selector.charCodeAt(selectorIndex))) {
@@ -10673,14 +10676,14 @@ function parseSelector(subselects2, selector, selectorIndex) {
             if (selector.charCodeAt(sectionEnd) !== quote) {
               throw new Error("Attribute value didn't end");
             }
-            value = unescapeCSS(selector.slice(selectorIndex + 1, sectionEnd));
+            value2 = unescapeCSS(selector.slice(selectorIndex + 1, sectionEnd));
             selectorIndex = sectionEnd + 1;
           } else {
             const valueStart = selectorIndex;
             while (selectorIndex < selector.length && (!isWhitespace2(selector.charCodeAt(selectorIndex)) && selector.charCodeAt(selectorIndex) !== 93 || isEscaped(selectorIndex))) {
               selectorIndex += 1;
             }
-            value = unescapeCSS(selector.slice(valueStart, selectorIndex));
+            value2 = unescapeCSS(selector.slice(valueStart, selectorIndex));
           }
           stripWhitespace(0);
           const forceIgnore = selector.charCodeAt(selectorIndex) | 32;
@@ -10700,7 +10703,7 @@ function parseSelector(subselects2, selector, selectorIndex) {
           type: SelectorType.Attribute,
           name,
           action: action2,
-          value,
+          value: value2,
           namespace,
           ignoreCase
         };
@@ -10865,8 +10868,8 @@ function getProcedure(token) {
 // node_modules/css-select/lib/esm/attributes.js
 var import_boolbase = __toESM(require_boolbase(), 1);
 var reChars = /[-[\]{}()*+?.,\\^$|#\s]/g;
-function escapeRegex(value) {
-  return value.replace(reChars, "\\$&");
+function escapeRegex(value2) {
+  return value2.replace(reChars, "\\$&");
 }
 var caseInsensitiveAttributes = /* @__PURE__ */ new Set([
   "accept",
@@ -10923,43 +10926,43 @@ var attributeRules = {
   equals(next3, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
-    let { value } = data2;
+    let { value: value2 } = data2;
     if (shouldIgnoreCase(data2, options)) {
-      value = value.toLowerCase();
+      value2 = value2.toLowerCase();
       return (elem) => {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return attr3 != null && attr3.length === value.length && attr3.toLowerCase() === value && next3(elem);
+        return attr3 != null && attr3.length === value2.length && attr3.toLowerCase() === value2 && next3(elem);
       };
     }
-    return (elem) => adapter2.getAttributeValue(elem, name) === value && next3(elem);
+    return (elem) => adapter2.getAttributeValue(elem, name) === value2 && next3(elem);
   },
   hyphen(next3, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
-    let { value } = data2;
-    const len = value.length;
+    let { value: value2 } = data2;
+    const len = value2.length;
     if (shouldIgnoreCase(data2, options)) {
-      value = value.toLowerCase();
+      value2 = value2.toLowerCase();
       return function hyphenIC(elem) {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return attr3 != null && (attr3.length === len || attr3.charAt(len) === "-") && attr3.substr(0, len).toLowerCase() === value && next3(elem);
+        return attr3 != null && (attr3.length === len || attr3.charAt(len) === "-") && attr3.substr(0, len).toLowerCase() === value2 && next3(elem);
       };
     }
     return function hyphen(elem) {
       const attr3 = adapter2.getAttributeValue(elem, name);
-      return attr3 != null && (attr3.length === len || attr3.charAt(len) === "-") && attr3.substr(0, len) === value && next3(elem);
+      return attr3 != null && (attr3.length === len || attr3.charAt(len) === "-") && attr3.substr(0, len) === value2 && next3(elem);
     };
   },
   element(next3, data2, options) {
     const { adapter: adapter2 } = options;
-    const { name, value } = data2;
-    if (/\s/.test(value)) {
+    const { name, value: value2 } = data2;
+    if (/\s/.test(value2)) {
       return import_boolbase.default.falseFunc;
     }
-    const regex = new RegExp(`(?:^|\\s)${escapeRegex(value)}(?:$|\\s)`, shouldIgnoreCase(data2, options) ? "i" : "");
+    const regex = new RegExp(`(?:^|\\s)${escapeRegex(value2)}(?:$|\\s)`, shouldIgnoreCase(data2, options) ? "i" : "");
     return function element2(elem) {
       const attr3 = adapter2.getAttributeValue(elem, name);
-      return attr3 != null && attr3.length >= value.length && regex.test(attr3) && next3(elem);
+      return attr3 != null && attr3.length >= value2.length && regex.test(attr3) && next3(elem);
     };
   },
   exists(next3, { name }, { adapter: adapter2 }) {
@@ -10968,75 +10971,75 @@ var attributeRules = {
   start(next3, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
-    let { value } = data2;
-    const len = value.length;
+    let { value: value2 } = data2;
+    const len = value2.length;
     if (len === 0) {
       return import_boolbase.default.falseFunc;
     }
     if (shouldIgnoreCase(data2, options)) {
-      value = value.toLowerCase();
+      value2 = value2.toLowerCase();
       return (elem) => {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return attr3 != null && attr3.length >= len && attr3.substr(0, len).toLowerCase() === value && next3(elem);
+        return attr3 != null && attr3.length >= len && attr3.substr(0, len).toLowerCase() === value2 && next3(elem);
       };
     }
     return (elem) => {
       var _a5;
-      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.startsWith(value)) && next3(elem);
+      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.startsWith(value2)) && next3(elem);
     };
   },
   end(next3, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
-    let { value } = data2;
-    const len = -value.length;
+    let { value: value2 } = data2;
+    const len = -value2.length;
     if (len === 0) {
       return import_boolbase.default.falseFunc;
     }
     if (shouldIgnoreCase(data2, options)) {
-      value = value.toLowerCase();
+      value2 = value2.toLowerCase();
       return (elem) => {
         var _a5;
-        return ((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.substr(len).toLowerCase()) === value && next3(elem);
+        return ((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.substr(len).toLowerCase()) === value2 && next3(elem);
       };
     }
     return (elem) => {
       var _a5;
-      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.endsWith(value)) && next3(elem);
+      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.endsWith(value2)) && next3(elem);
     };
   },
   any(next3, data2, options) {
     const { adapter: adapter2 } = options;
-    const { name, value } = data2;
-    if (value === "") {
+    const { name, value: value2 } = data2;
+    if (value2 === "") {
       return import_boolbase.default.falseFunc;
     }
     if (shouldIgnoreCase(data2, options)) {
-      const regex = new RegExp(escapeRegex(value), "i");
+      const regex = new RegExp(escapeRegex(value2), "i");
       return function anyIC(elem) {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return attr3 != null && attr3.length >= value.length && regex.test(attr3) && next3(elem);
+        return attr3 != null && attr3.length >= value2.length && regex.test(attr3) && next3(elem);
       };
     }
     return (elem) => {
       var _a5;
-      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.includes(value)) && next3(elem);
+      return !!((_a5 = adapter2.getAttributeValue(elem, name)) === null || _a5 === void 0 ? void 0 : _a5.includes(value2)) && next3(elem);
     };
   },
   not(next3, data2, options) {
     const { adapter: adapter2 } = options;
     const { name } = data2;
-    let { value } = data2;
-    if (value === "") {
+    let { value: value2 } = data2;
+    if (value2 === "") {
       return (elem) => !!adapter2.getAttributeValue(elem, name) && next3(elem);
     } else if (shouldIgnoreCase(data2, options)) {
-      value = value.toLowerCase();
+      value2 = value2.toLowerCase();
       return (elem) => {
         const attr3 = adapter2.getAttributeValue(elem, name);
-        return (attr3 == null || attr3.length !== value.length || attr3.toLowerCase() !== value) && next3(elem);
+        return (attr3 == null || attr3.length !== value2.length || attr3.toLowerCase() !== value2) && next3(elem);
       };
     }
-    return (elem) => adapter2.getAttributeValue(elem, name) !== value && next3(elem);
+    return (elem) => adapter2.getAttributeValue(elem, name) !== value2 && next3(elem);
   }
 };
 
@@ -11083,12 +11086,12 @@ function parse2(formula) {
   }
   function readNumber() {
     const start = idx;
-    let value = 0;
+    let value2 = 0;
     while (idx < formula.length && formula.charCodeAt(idx) >= ZERO && formula.charCodeAt(idx) <= NINE) {
-      value = value * 10 + (formula.charCodeAt(idx) - ZERO);
+      value2 = value2 * 10 + (formula.charCodeAt(idx) - ZERO);
       idx++;
     }
-    return idx === start ? null : value;
+    return idx === start ? null : value2;
   }
   function skipWhitespace() {
     while (idx < formula.length && whitespace2.has(formula.charCodeAt(idx))) {
@@ -11129,13 +11132,13 @@ function getChildFunc(next3, adapter2) {
   };
 }
 var filters = {
-  contains(next3, text4, { adapter: adapter2 }) {
+  contains(next3, text5, { adapter: adapter2 }) {
     return function contains2(elem) {
-      return next3(elem) && adapter2.getText(elem).includes(text4);
+      return next3(elem) && adapter2.getText(elem).includes(text5);
     };
   },
-  icontains(next3, text4, { adapter: adapter2 }) {
-    const itext = text4.toLowerCase();
+  icontains(next3, text5, { adapter: adapter2 }) {
+    const itext = text5.toLowerCase();
     return function icontains(elem) {
       return next3(elem) && adapter2.getText(elem).toLowerCase().includes(itext);
     };
@@ -11871,21 +11874,21 @@ function filterParsed(selector, elements, options) {
 function filterBySelector(selector, elements, options) {
   var _a5;
   if (selector.some(isTraversal)) {
-    const root6 = (_a5 = options.root) !== null && _a5 !== void 0 ? _a5 : getDocumentRoot(elements[0]);
+    const root10 = (_a5 = options.root) !== null && _a5 !== void 0 ? _a5 : getDocumentRoot(elements[0]);
     const opts = { ...options, context: elements, relativeSelector: false };
     selector.push(SCOPE_PSEUDO);
-    return findFilterElements(root6, selector, opts, true, elements.length);
+    return findFilterElements(root10, selector, opts, true, elements.length);
   }
   return findFilterElements(elements, selector, options, false, elements.length);
 }
-function select(selector, root6, options = {}, limit = Infinity) {
+function select(selector, root10, options = {}, limit = Infinity) {
   if (typeof selector === "function") {
-    return find2(root6, selector);
+    return find2(root10, selector);
   }
   const [plain, filtered] = groupSelectors(parse(selector));
-  const results = filtered.map((sel) => findFilterElements(root6, sel, options, true, limit));
+  const results = filtered.map((sel) => findFilterElements(root10, sel, options, true, limit));
   if (plain.length) {
-    results.push(findElements(root6, plain, options, limit));
+    results.push(findElements(root10, plain, options, limit));
   }
   if (results.length === 0) {
     return [];
@@ -11895,7 +11898,7 @@ function select(selector, root6, options = {}, limit = Infinity) {
   }
   return uniqueSort(results.reduce((a, b) => [...a, ...b]));
 }
-function findFilterElements(root6, selector, options, queryForSelector, totalLimit) {
+function findFilterElements(root10, selector, options, queryForSelector, totalLimit) {
   const filterIndex = selector.findIndex(isFilter);
   const sub = selector.slice(0, filterIndex);
   const filter4 = selector[filterIndex];
@@ -11903,7 +11906,7 @@ function findFilterElements(root6, selector, options, queryForSelector, totalLim
   const limit = getLimit(filter4.name, filter4.data, partLimit);
   if (limit === 0)
     return [];
-  const elemsNoLimit = sub.length === 0 && !Array.isArray(root6) ? getChildren(root6).filter(isTag2) : sub.length === 0 ? (Array.isArray(root6) ? root6 : [root6]).filter(isTag2) : queryForSelector || sub.some(isTraversal) ? findElements(root6, [sub], options, limit) : filterElements(root6, [sub], options);
+  const elemsNoLimit = sub.length === 0 && !Array.isArray(root10) ? getChildren(root10).filter(isTag2) : sub.length === 0 ? (Array.isArray(root10) ? root10 : [root10]).filter(isTag2) : queryForSelector || sub.some(isTraversal) ? findElements(root10, [sub], options, limit) : filterElements(root10, [sub], options);
   const elems = elemsNoLimit.slice(0, limit);
   let result = filterByPosition(filter4.name, elems, filter4.data, options);
   if (result.length === 0 || selector.length === filterIndex + 1) {
@@ -11940,12 +11943,12 @@ function findFilterElements(root6, selector, options, queryForSelector, totalLim
     filterElements(result, [remainingSelector], options)
   );
 }
-function findElements(root6, sel, options, limit) {
-  const query = _compileToken(sel, options, root6);
-  return find2(root6, query, limit);
+function findElements(root10, sel, options, limit) {
+  const query = _compileToken(sel, options, root10);
+  return find2(root10, query, limit);
 }
-function find2(root6, query, limit = Infinity) {
-  const elems = prepareContext(root6, esm_exports2, query.shouldTestNextSiblings);
+function find2(root10, query, limit = Infinity) {
+  const elems = prepareContext(root10, esm_exports2, query.shouldTestNextSiblings);
   return find((node) => isTag2(node) && query(node), elems, true, limit);
 }
 function filterElements(elements, sel, options) {
@@ -12003,18 +12006,18 @@ function _getMatcher(matchMap) {
 var _matcher = _getMatcher((fn, elems) => {
   let ret = [];
   for (let i = 0; i < elems.length; i++) {
-    const value = fn(elems[i]);
-    if (value.length > 0)
-      ret = ret.concat(value);
+    const value2 = fn(elems[i]);
+    if (value2.length > 0)
+      ret = ret.concat(value2);
   }
   return ret;
 });
 var _singleMatcher = _getMatcher((fn, elems) => {
   const ret = [];
   for (let i = 0; i < elems.length; i++) {
-    const value = fn(elems[i]);
-    if (value !== null) {
-      ret.push(value);
+    const value2 = fn(elems[i]);
+    if (value2 !== null) {
+      ret.push(value2);
     }
   }
   return ret;
@@ -12150,8 +12153,8 @@ function filter3(match) {
   var _a5;
   return this._make(filterArray(this.toArray(), match, this.options.xmlMode, (_a5 = this._root) === null || _a5 === void 0 ? void 0 : _a5[0]));
 }
-function filterArray(nodes, match, xmlMode, root6) {
-  return typeof match === "string" ? filter2(match, nodes, { xmlMode, root: root6 }) : nodes.filter(getFilterFn(match));
+function filterArray(nodes, match, xmlMode, root10) {
+  return typeof match === "string" ? filter2(match, nodes, { xmlMode, root: root10 }) : nodes.filter(getFilterFn(match));
 }
 function is4(selector) {
   const nodes = this.toArray();
@@ -12267,9 +12270,9 @@ function getParse(parser) {
     if (!Array.isArray(doc) && isDocument(doc)) {
       return doc;
     }
-    const root6 = new Document([]);
-    update2(doc, root6);
-    return root6;
+    const root10 = new Document([]);
+    update2(doc, root10);
+    return root10;
   };
 }
 function update2(newChilds, parent2) {
@@ -12609,9 +12612,9 @@ function text3(str) {
 }
 function clone() {
   const clone2 = Array.prototype.map.call(this.get(), (el) => cloneNode(el, true));
-  const root6 = new Document(clone2);
+  const root10 = new Document(clone2);
   for (const node of clone2) {
-    node.parent = root6;
+    node.parent = root10;
   }
   return this._make(clone2);
 }
@@ -12635,10 +12638,10 @@ function css(prop3, val2) {
   }
   return getCss(this[0], prop3);
 }
-function setCss(el, prop3, value, idx) {
+function setCss(el, prop3, value2, idx) {
   if (typeof prop3 === "string") {
     const styles = getCss(el);
-    const val2 = typeof value === "function" ? value.call(el, idx, styles[prop3]) : value;
+    const val2 = typeof value2 === "function" ? value2.call(el, idx, styles[prop3]) : value2;
     if (val2 === "") {
       delete styles[prop3];
     } else if (val2 != null) {
@@ -12723,9 +12726,9 @@ function serializeArray() {
     var _a5;
     const $elem = this._make(elem);
     const name = $elem.attr("name");
-    const value = (_a5 = $elem.val()) !== null && _a5 !== void 0 ? _a5 : "";
-    if (Array.isArray(value)) {
-      return value.map((val2) => (
+    const value2 = (_a5 = $elem.val()) !== null && _a5 !== void 0 ? _a5 : "";
+    if (Array.isArray(value2)) {
+      return value2.map((val2) => (
         /*
          * We trim replace any line endings (e.g. `\r` or `\r\n` with `\r\n`) to guarantee consistency across platforms
          * These can occur inside of `<textarea>'s`
@@ -12733,7 +12736,7 @@ function serializeArray() {
         { name, value: val2.replace(rCRLF, "\r\n") }
       ));
     }
-    return { name, value: value.replace(rCRLF, "\r\n") };
+    return { name, value: value2.replace(rCRLF, "\r\n") };
   }).toArray();
 }
 
@@ -12757,8 +12760,8 @@ function extract2(map2) {
   for (const key2 in map2) {
     const descr = map2[key2];
     const isArray = Array.isArray(descr);
-    const { selector, value } = getExtractDescr(isArray ? descr[0] : descr);
-    const fn = typeof value === "function" ? value : typeof value === "string" ? (el) => this._make(el).prop(value) : (el) => this._make(el).extract(value);
+    const { selector, value: value2 } = getExtractDescr(isArray ? descr[0] : descr);
+    const fn = typeof value2 === "function" ? value2 : typeof value2 === "string" ? (el) => this._make(el).prop(value2) : (el) => this._make(el).extract(value2);
     if (isArray) {
       ret[key2] = this._findBySelector(selector, Number.POSITIVE_INFINITY).map((_, el) => fn(el, key2, ret)).get();
     } else {
@@ -12780,10 +12783,10 @@ var Cheerio = class {
    * @param root - Sets the root node.
    * @param options - Options for the instance.
    */
-  constructor(elements, root6, options) {
+  constructor(elements, root10, options) {
     this.length = 0;
     this.options = options;
-    this._root = root6;
+    this._root = root10;
     if (elements) {
       for (let idx = 0; idx < elements.length; idx++) {
         this[idx] = elements[idx];
@@ -12818,11 +12821,11 @@ function getLoad(parse6, render5) {
         return render5(dom, this.options);
       }
     }
-    function initialize(selector, context, root6 = initialRoot, opts) {
+    function initialize(selector, context, root10 = initialRoot, opts) {
       if (selector && isCheerio(selector))
         return selector;
       const options2 = flattenOptions(opts, internalOpts);
-      const r = typeof root6 === "string" ? [parse6(root6, options2, false, null)] : "length" in root6 ? root6 : [root6];
+      const r = typeof root10 === "string" ? [parse6(root10, options2, false, null)] : "length" in root10 ? root10 : [root10];
       const rootInstance = isCheerio(r) ? r : new LoadedCheerio(r, null, options2);
       rootInstance._root = rootInstance;
       if (!selector) {
@@ -13613,8 +13616,8 @@ function determineBranch3(decodeTree, current, nodeIndex, char) {
     return jumpOffset !== 0 && char === jumpOffset ? nodeIndex : -1;
   }
   if (jumpOffset) {
-    const value = char - jumpOffset;
-    return value < 0 || value >= branchCount ? -1 : decodeTree[nodeIndex + value] - 1;
+    const value2 = char - jumpOffset;
+    return value2 < 0 || value2 >= branchCount ? -1 : decodeTree[nodeIndex + value2] - 1;
   }
   let lo = nodeIndex;
   let hi = lo + branchCount - 1;
@@ -17229,10 +17232,10 @@ var defaultTreeAdapter = {
       parentNode: null
     };
   },
-  createTextNode(value) {
+  createTextNode(value2) {
     return {
       nodeName: "#text",
-      value,
+      value: value2,
       parentNode: null
     };
   },
@@ -17282,22 +17285,22 @@ var defaultTreeAdapter = {
       node.parentNode = null;
     }
   },
-  insertText(parentNode, text4) {
+  insertText(parentNode, text5) {
     if (parentNode.childNodes.length > 0) {
       const prevNode = parentNode.childNodes[parentNode.childNodes.length - 1];
       if (defaultTreeAdapter.isTextNode(prevNode)) {
-        prevNode.value += text4;
+        prevNode.value += text5;
         return;
       }
     }
-    defaultTreeAdapter.appendChild(parentNode, defaultTreeAdapter.createTextNode(text4));
+    defaultTreeAdapter.appendChild(parentNode, defaultTreeAdapter.createTextNode(text5));
   },
-  insertTextBefore(parentNode, text4, referenceNode) {
+  insertTextBefore(parentNode, text5, referenceNode) {
     const prevNode = parentNode.childNodes[parentNode.childNodes.indexOf(referenceNode) - 1];
     if (prevNode && defaultTreeAdapter.isTextNode(prevNode)) {
-      prevNode.value += text4;
+      prevNode.value += text5;
     } else {
-      defaultTreeAdapter.insertBefore(parentNode, defaultTreeAdapter.createTextNode(text4), referenceNode);
+      defaultTreeAdapter.insertBefore(parentNode, defaultTreeAdapter.createTextNode(text5), referenceNode);
     }
   },
   adoptAttributes(recipient, attrs) {
@@ -17686,8 +17689,8 @@ function isHtmlIntegrationPoint(tn, ns, attrs) {
   if (ns === NS.MATHML && tn === TAG_ID.ANNOTATION_XML) {
     for (let i = 0; i < attrs.length; i++) {
       if (attrs[i].name === ATTRS.ENCODING) {
-        const value = attrs[i].value.toLowerCase();
-        return value === MIME_TYPES.TEXT_HTML || value === MIME_TYPES.APPLICATION_XML;
+        const value2 = attrs[i].value.toLowerCase();
+        return value2 === MIME_TYPES.TEXT_HTML || value2 === MIME_TYPES.APPLICATION_XML;
       }
     }
   }
@@ -20930,8 +20933,8 @@ var adapter = {
   createCommentNode(data2) {
     return new Comment3(data2);
   },
-  createTextNode(value) {
-    return new Text3(value);
+  createTextNode(value2) {
+    return new Text3(value2);
   },
   //Tree mutation
   appendChild(parentNode, newNode) {
@@ -20996,20 +20999,20 @@ var adapter = {
       node.parent = null;
     }
   },
-  insertText(parentNode, text4) {
+  insertText(parentNode, text5) {
     const lastChild = parentNode.children[parentNode.children.length - 1];
     if (lastChild && isText(lastChild)) {
-      lastChild.data += text4;
+      lastChild.data += text5;
     } else {
-      adapter.appendChild(parentNode, adapter.createTextNode(text4));
+      adapter.appendChild(parentNode, adapter.createTextNode(text5));
     }
   },
-  insertTextBefore(parentNode, text4, referenceNode) {
+  insertTextBefore(parentNode, text5, referenceNode) {
     const prevNode = parentNode.children[parentNode.children.indexOf(referenceNode) - 1];
     if (prevNode && isText(prevNode)) {
-      prevNode.data += text4;
+      prevNode.data += text5;
     } else {
-      adapter.insertBefore(parentNode, adapter.createTextNode(text4), referenceNode);
+      adapter.insertBefore(parentNode, adapter.createTextNode(text5), referenceNode);
     }
   },
   adoptAttributes(recipient, attrs) {
@@ -21186,7 +21189,7 @@ function normalize(u) {
     return u;
   }
 }
-async function crawl(startUrl, opts, pool) {
+async function crawl(startUrl, opts, pool, onPage) {
   const origin = new URL(startUrl).origin;
   const seen = /* @__PURE__ */ new Set([normalize(startUrl)]);
   let frontier = [{ url: startUrl, depth: 0 }];
@@ -21195,13 +21198,19 @@ async function crawl(startUrl, opts, pool) {
     const batch = frontier;
     frontier = [];
     const built = await Promise.all(batch.map((item) => pool(async () => {
+      const started = Date.now();
       const res = await fetchPage(item.url, opts);
-      return { ctx: buildPageContext(res, origin, item.depth), depth: item.depth };
+      return {
+        ctx: buildPageContext(res, origin, item.depth),
+        depth: item.depth,
+        ms: Date.now() - started
+      };
     })));
-    for (const { ctx, depth } of built) {
+    for (const { ctx, depth, ms } of built) {
       if (pages.length >= opts.maxPages)
         break;
       pages.push(ctx);
+      onPage?.(ctx, pages.length, ms);
       if (depth >= opts.maxDepth)
         continue;
       for (const link2 of ctx.links) {
@@ -21377,7 +21386,7 @@ async function pageSpeedInsights(urls, opts) {
 // node_modules/safi-studio-scanner/dist/runner.js
 var SEVERITY_WEIGHT = { error: 10, warning: 4, info: 1 };
 var WARN_CREDIT = 0.25;
-async function runPage(page, site, rules, checkUrl) {
+async function runPage(page, site, rules, checkUrl, collectors = [], onCheck) {
   const ctx = { page, site, checkUrl };
   const findings = [];
   for (const rule of rules) {
@@ -21399,8 +21408,45 @@ async function runPage(page, site, rules, checkUrl) {
         fix: r.fix ?? rule.fix
       });
     }
+    onCheck?.(rule.id, worstStatus(results));
   }
-  return { url: page.url, status: page.status, score: scoreFindings(findings), findings };
+  return {
+    url: page.url,
+    status: page.status,
+    score: scoreFindings(findings),
+    findings,
+    metrics: await collectPage(ctx, collectors)
+  };
+}
+var WORST = { fail: 0, warn: 1, info: 2, pass: 3 };
+function worstStatus(results) {
+  let worst = "pass";
+  for (const r of results)
+    if (WORST[r.status] < WORST[worst])
+      worst = r.status;
+  return worst;
+}
+async function collectPage(ctx, collectors) {
+  const metrics = [];
+  for (const c of collectors) {
+    if (c.requiresBrowser && !ctx.page.browser)
+      continue;
+    try {
+      for (const m of await c.collect(ctx))
+        metrics.push({ ...m, category: c.category });
+    } catch (err) {
+      metrics.push({
+        kind: "value",
+        id: c.id,
+        category: c.category,
+        label: c.id,
+        value: null,
+        status: "missing",
+        note: `Collector errored: ${err.message}`
+      });
+    }
+  }
+  return metrics;
 }
 function scoreFindings(findings) {
   let earned = 0, possible = 0;
@@ -21553,6 +21599,23 @@ var coreSeoRules = [
     }
   },
   {
+    id: "core-seo/h1-length",
+    category: "core-seo",
+    title: "H1 length",
+    severity: "info",
+    fix: "Rewrite the H1 to sit between 10 and 70 characters. One word says nothing; a sentence is not a heading.",
+    run({ page }) {
+      const h1 = page.$("h1").first().text().replace(/\s+/g, " ").trim();
+      if (!h1)
+        return [{ status: "warn", message: "No H1 to measure" }];
+      if (h1.length < 10)
+        return [{ status: "warn", message: `H1 is short (${h1.length} chars)`, evidence: h1 }];
+      if (h1.length > 70)
+        return [{ status: "warn", message: `H1 is long (${h1.length} chars)`, evidence: h1 }];
+      return [{ status: "pass", message: `H1 length good (${h1.length} chars)` }];
+    }
+  },
+  {
     id: "core-seo/canonical-present",
     category: "core-seo",
     title: "Canonical URL present",
@@ -21653,8 +21716,8 @@ var contentRules = [
     severity: "info",
     fix: "Add more substantive content. Thin pages rank poorly. Aim for at least 300 meaningful words.",
     run({ page }) {
-      const text4 = page.$("body").text().replace(/\s+/g, " ").trim();
-      const words = text4 ? text4.split(" ").length : 0;
+      const text5 = page.$("body").text().replace(/\s+/g, " ").trim();
+      const words = text5 ? text5.split(" ").length : 0;
       return [
         words < 300 ? { status: "warn", message: `Thin content (${words} words)` } : { status: "pass", message: `${words} words` }
       ];
@@ -21709,9 +21772,9 @@ var contentRules = [
     severity: "info",
     fix: "Increase real text relative to markup, or trim bloated HTML.",
     run({ page }) {
-      const text4 = page.$("body").text().replace(/\s+/g, " ").trim().length;
+      const text5 = page.$("body").text().replace(/\s+/g, " ").trim().length;
       const html4 = page.html.length || 1;
-      const ratio = text4 / html4;
+      const ratio = text5 / html4;
       return [
         ratio < 0.1 ? { status: "warn", message: `Low text ratio (${(ratio * 100).toFixed(1)}%)` } : { status: "pass", message: `Text ratio ${(ratio * 100).toFixed(1)}%` }
       ];
@@ -23017,6 +23080,555 @@ function selectRules(rules, only, skip) {
   return out;
 }
 
+// node_modules/safi-studio-scanner/dist/metrics/kit.js
+var ROW_CAP = 25;
+function value(id, label, v, opts = {}) {
+  return { kind: "value", id, label, value: v, ...opts };
+}
+function table(id, label, columns, rows, opts = {}) {
+  const { cap = ROW_CAP, ...rest } = opts;
+  return {
+    kind: "table",
+    id,
+    label,
+    columns,
+    rows: rows.slice(0, cap),
+    total: rows.length,
+    ...rest
+  };
+}
+function inRange(n, min, max) {
+  return n >= min && n <= max ? "ok" : "warn";
+}
+function upTo(n, warn, bad) {
+  if (n <= warn)
+    return "ok";
+  return n <= bad ? "warn" : "bad";
+}
+function clip(s, max = 80) {
+  const t = s.replace(/\s+/g, " ").trim();
+  return t.length > max ? `${t.slice(0, max - 1)}\u2026` : t;
+}
+
+// node_modules/safi-studio-scanner/dist/metrics/page.js
+function text4(page, sel) {
+  return page.$(sel).first().text().replace(/\s+/g, " ").trim();
+}
+function hiddenCount(page) {
+  let n = page.$("[hidden]").length;
+  page.$("[style]").each((_, el) => {
+    if (/display\s*:\s*none/i.test(page.$(el).attr("style") || ""))
+      n++;
+  });
+  return n;
+}
+function fromJsonLd(page, key2) {
+  let found = null;
+  page.$('script[type="application/ld+json"]').each((_, el) => {
+    if (found)
+      return;
+    let data2;
+    try {
+      data2 = JSON.parse(page.$(el).text());
+    } catch {
+      return;
+    }
+    const walk = (node) => {
+      if (found || !node || typeof node !== "object")
+        return;
+      if (Array.isArray(node))
+        return node.forEach(walk);
+      const obj = node;
+      if (typeof obj[key2] === "string") {
+        found = obj[key2];
+        return;
+      }
+      Object.values(obj).forEach(walk);
+    };
+    walk(data2);
+  });
+  return found;
+}
+function metaDate(page, names) {
+  for (const n of names) {
+    const v = page.$(`meta[property="${n}"]`).attr("content") ?? page.$(`meta[name="${n}"]`).attr("content") ?? page.$(`meta[itemprop="${n}"]`).attr("content");
+    if (v?.trim())
+      return v.trim();
+  }
+  return null;
+}
+function dateStatus(raw) {
+  if (!raw)
+    return "missing";
+  return Number.isNaN(Date.parse(raw)) ? "warn" : "ok";
+}
+var pageCollectors = [
+  {
+    id: "core-seo/page-basics",
+    category: "core-seo",
+    collect({ page }) {
+      const title = text4(page, "title");
+      const desc = (page.$('meta[name="description"]').attr("content") || "").trim();
+      const h1s = page.$("h1");
+      const h1 = text4(page, "h1");
+      return [
+        value("core-seo/title-chars", "Title length", title ? title.length : null, {
+          unit: "chars",
+          status: title ? inRange(title.length, 30, 60) : "missing",
+          note: "Recommended 30 to 60"
+        }),
+        value("core-seo/description-chars", "Description length", desc ? desc.length : null, {
+          unit: "chars",
+          status: desc ? inRange(desc.length, 70, 160) : "missing",
+          note: "Recommended 70 to 160"
+        }),
+        value("core-seo/h1-count", "H1 count", h1s.length, {
+          status: h1s.length === 1 ? "ok" : h1s.length === 0 ? "missing" : "warn",
+          note: "Exactly one"
+        }),
+        value("core-seo/h1-chars", "H1 length", h1 ? h1.length : null, {
+          unit: "chars",
+          status: h1 ? inRange(h1.length, 10, 70) : "missing",
+          note: "Recommended 10 to 70"
+        })
+      ];
+    }
+  },
+  {
+    id: "content/page-basics",
+    category: "content",
+    collect({ page }) {
+      const lang = page.$("html").attr("lang")?.trim() || null;
+      const hidden = hiddenCount(page);
+      return [
+        value("content/declared-language", "Declared language", lang, {
+          status: lang ? "ok" : "missing",
+          note: "The lang attribute on <html>"
+        }),
+        value("content/hidden-elements", "Hidden elements", hidden, {
+          note: "Inline display:none or the hidden attribute"
+        })
+      ];
+    }
+  },
+  {
+    id: "crawlability/response",
+    category: "crawlability",
+    collect({ page }) {
+      return [
+        value("crawlability/http-status", "HTTP status", page.status, {
+          status: page.status >= 200 && page.status < 300 ? "ok" : page.status < 400 ? "warn" : "bad"
+        }),
+        value("crawlability/response-time", "Response time", page.responseTimeMs, {
+          unit: "ms",
+          status: upTo(page.responseTimeMs, 800, 1800)
+        })
+      ];
+    }
+  },
+  {
+    id: "performance/document",
+    category: "performance",
+    collect({ page }) {
+      const kb = Math.round(page.html.length / 1e3);
+      return [
+        value("performance/html-size", "HTML size", kb, {
+          unit: "KB",
+          status: upTo(kb, 100, 200),
+          note: "Raw document, before assets"
+        })
+      ];
+    }
+  },
+  {
+    id: "eeat/dates",
+    category: "eeat",
+    collect({ page }) {
+      const published = metaDate(page, ["article:published_time", "datePublished", "date", "pubdate"]) ?? fromJsonLd(page, "datePublished");
+      const updated = metaDate(page, ["article:modified_time", "dateModified", "last-modified"]) ?? fromJsonLd(page, "dateModified") ?? page.headers["last-modified"] ?? null;
+      return [
+        value("eeat/published-date", "Published", published, { status: dateStatus(published) }),
+        value("eeat/updated-date", "Updated", updated, { status: dateStatus(updated) })
+      ];
+    }
+  }
+];
+
+// node_modules/safi-studio-scanner/dist/metrics/markup.js
+function commentCount(page) {
+  let n = 0;
+  const walk = (nodes) => {
+    for (const node of nodes) {
+      if (node.type === "comment")
+        n++;
+      if (node.children)
+        walk(node.children);
+    }
+  };
+  walk(page.$.root().toArray());
+  return n;
+}
+var markupCollectors = [
+  {
+    id: "content/markup-hygiene",
+    category: "content",
+    collect({ page }) {
+      const inlineStyles = page.$("[style]").length;
+      const bodyStyleBlocks = page.$("body style").length;
+      const comments = commentCount(page);
+      const placeholders = page.links.filter((l) => {
+        const h = l.href.trim();
+        return h === "" || h === "#" || h.toLowerCase().startsWith("javascript:void");
+      }).length;
+      return [
+        value("content/inline-styles", "Inline style attributes", inlineStyles, {
+          status: upTo(inlineStyles, 20, 100),
+          note: "Style belongs in a stylesheet"
+        }),
+        value("content/body-style-blocks", "Style blocks in body", bodyStyleBlocks, {
+          status: bodyStyleBlocks === 0 ? "ok" : "warn",
+          note: "CSS after <body> opens can restyle painted content"
+        }),
+        value("content/html-comments", "HTML comments", comments, {
+          status: upTo(comments, 30, 150),
+          note: "Comments ship to every visitor"
+        }),
+        value("content/placeholder-links", "Placeholder links", placeholders, {
+          status: placeholders === 0 ? "ok" : "warn",
+          note: 'href="#" or empty'
+        })
+      ];
+    }
+  },
+  {
+    id: "performance/script-count",
+    category: "performance",
+    collect({ page }) {
+      const scripts = page.$("script");
+      const external = page.$("script[src]").length;
+      return [
+        value("performance/script-tags", "Script tags", scripts.length, {
+          status: upTo(scripts.length, 15, 40),
+          note: `${external} external, ${scripts.length - external} inline`
+        })
+      ];
+    }
+  }
+];
+
+// node_modules/safi-studio-scanner/dist/metrics/directives.js
+function sameUrl(a, b) {
+  const norm = (u) => {
+    try {
+      const p = new URL(u);
+      return `${p.protocol}//${p.host.toLowerCase()}${p.pathname.replace(/\/$/, "")}${p.search}`;
+    } catch {
+      return u;
+    }
+  };
+  return norm(a) === norm(b);
+}
+function resolvedCanonical(page) {
+  const raw = page.$('link[rel="canonical"]').attr("href")?.trim();
+  if (!raw)
+    return null;
+  try {
+    return new URL(raw, page.finalUrl).toString();
+  } catch {
+    return raw;
+  }
+}
+var directiveCollectors = [
+  {
+    id: "crawlability/directives",
+    category: "crawlability",
+    collect({ page, site }) {
+      const robotsMeta = page.$('meta[name="robots"]').attr("content")?.trim() || null;
+      const xRobots = page.headers["x-robots-tag"]?.trim() || null;
+      const canonical = resolvedCanonical(page);
+      const blocked = /noindex/i.test(`${robotsMeta ?? ""} ${xRobots ?? ""}`);
+      const directives = site.robots.exists ? site.robots.content.split("\n").filter((l) => /^\s*[a-z-]+\s*:/i.test(l)).length : 0;
+      return [
+        value("crawlability/robots-meta", "Robots meta", robotsMeta, {
+          status: robotsMeta ? blocked ? "bad" : "ok" : "missing",
+          note: "Absent means index, follow"
+        }),
+        value("crawlability/x-robots-tag", "X-Robots-Tag", xRobots, {
+          status: xRobots ? /noindex/i.test(xRobots) ? "bad" : "ok" : "missing",
+          note: "The header form of the same directive"
+        }),
+        value("crawlability/canonical-url", "Canonical URL", canonical, {
+          status: canonical ? "ok" : "missing"
+        }),
+        value("crawlability/canonical-match", "Canonical matches this URL", canonical ? sameUrl(canonical, page.finalUrl) ? "yes" : "no" : null, {
+          status: canonical ? sameUrl(canonical, page.finalUrl) ? "ok" : "warn" : "missing",
+          note: canonical && !sameUrl(canonical, page.finalUrl) ? page.finalUrl : ""
+        }),
+        value("crawlability/robots-txt", "robots.txt", site.robots.exists ? `${directives} directives` : null, {
+          status: site.robots.exists ? "ok" : "missing",
+          note: site.robots.sitemaps.length ? `Declares ${site.robots.sitemaps.length} sitemap(s)` : "No Sitemap line"
+        }),
+        value("crawlability/sitemap-urls", "Sitemap URLs", site.sitemap.exists ? site.sitemap.urls.length : null, { status: site.sitemap.exists ? "ok" : "missing" })
+      ];
+    }
+  },
+  {
+    id: "internationalization/hreflang",
+    category: "internationalization",
+    collect({ page }) {
+      const rows = [];
+      let selfRef = false;
+      page.$('link[rel="alternate"][hreflang]').each((_, el) => {
+        const lang = page.$(el).attr("hreflang")?.trim() || "";
+        const href = page.$(el).attr("href")?.trim() || "";
+        let resolved = href;
+        try {
+          resolved = new URL(href, page.finalUrl).toString();
+        } catch {
+        }
+        if (sameUrl(resolved, page.finalUrl))
+          selfRef = true;
+        rows.push([lang, clip(resolved, 90)]);
+      });
+      const count = value("internationalization/hreflang-count", "hreflang alternates", rows.length, {
+        status: rows.length === 0 ? "missing" : selfRef ? "ok" : "warn",
+        note: rows.length === 0 ? "" : selfRef ? "Includes a self-reference" : "No self-reference"
+      });
+      if (rows.length === 0)
+        return [count];
+      return [
+        count,
+        table("internationalization/hreflang-table", "hreflang alternates", ["hreflang", "URL"], rows)
+      ];
+    }
+  }
+];
+
+// node_modules/safi-studio-scanner/dist/metrics/links.js
+function isFollowed(l) {
+  return !/\bnofollow\b/.test(l.rel);
+}
+function scope(l) {
+  return l.internal ? "internal" : "external";
+}
+function byTarget(links) {
+  const targets = /* @__PURE__ */ new Map();
+  for (const l of links) {
+    if (!l.absUrl)
+      continue;
+    let t = targets.get(l.absUrl);
+    if (!t) {
+      t = { anchors: /* @__PURE__ */ new Set(), count: 0, internal: l.internal };
+      targets.set(l.absUrl, t);
+    }
+    t.count++;
+    if (l.text)
+      t.anchors.add(l.text);
+  }
+  return [...targets.entries()].sort((a, b) => b[1].count - a[1].count || a[0].localeCompare(b[0])).map(([url, t]) => [
+    clip(url, 70),
+    t.anchors.size ? clip([...t.anchors].join(" \xB7 "), 60) : "\u2014",
+    t.count,
+    t.internal ? "internal" : "external"
+  ]);
+}
+function linkRows(links) {
+  return links.filter((l) => l.absUrl).map((l) => [clip(l.absUrl, 70), l.text ? clip(l.text, 50) : "\u2014", scope(l)]);
+}
+var linkCollectors = [
+  {
+    id: "links/inventory",
+    category: "links",
+    collect({ page }) {
+      const links = page.links;
+      const resolved = links.filter((l) => l.absUrl);
+      const internal = resolved.filter((l) => l.internal);
+      const external = resolved.filter((l) => !l.internal);
+      const dofollow = resolved.filter(isFollowed);
+      const nofollow = resolved.filter((l) => !isFollowed(l));
+      const duplicates = byTarget(resolved).filter((r) => r[2] > 1);
+      const out = [
+        value("links/total", "Links", links.length, {
+          // A malformed href resolves to nothing, so say so rather than let the
+          // internal and external counts quietly fail to add up.
+          note: `${internal.length} internal, ${external.length} external` + (resolved.length < links.length ? `, ${links.length - resolved.length} unresolved` : "")
+        }),
+        value("links/internal-count", "Internal links", internal.length),
+        value("links/external-count", "External links", external.length),
+        value("links/dofollow-count", "Dofollow links", dofollow.length),
+        value("links/nofollow-count", "Nofollow links", nofollow.length),
+        value("links/duplicate-count", "Duplicated targets", duplicates.length, {
+          status: duplicates.length === 0 ? "ok" : "warn",
+          note: "URLs linked more than once from this page"
+        })
+      ];
+      if (dofollow.length)
+        out.push(table("links/dofollow-table", "Dofollow links", ["URL", "Anchor", "Scope"], linkRows(dofollow)));
+      if (nofollow.length)
+        out.push(table("links/nofollow-table", "Nofollow links", ["URL", "Anchor", "Scope"], linkRows(nofollow)));
+      if (duplicates.length)
+        out.push(table("links/duplicate-table", "Duplicated link targets", ["URL", "Anchors used", "Count", "Scope"], duplicates));
+      return out;
+    }
+  }
+];
+
+// node_modules/safi-studio-scanner/dist/metrics/headings.js
+var LEVELS = ["h1", "h2", "h3", "h4", "h5", "h6"];
+var NOTABLE = ["img", "ul", "ol", "table", "video", "iframe", "form", "pre", "blockquote"];
+var headingCollectors = [
+  {
+    id: "content/headings",
+    category: "content",
+    collect({ page }) {
+      const counts = LEVELS.map((l) => page.$(l).length);
+      const total = counts.reduce((a, b) => a + b, 0);
+      const outline = [];
+      page.$(LEVELS.join(",")).each((_, el) => {
+        const tag2 = el.tagName.toLowerCase();
+        const level = Number(tag2[1]);
+        const $el = page.$(el);
+        const text5 = $el.text().replace(/\s+/g, " ").trim();
+        const section = $el.nextUntil(LEVELS.join(","));
+        const children2 = NOTABLE.map((sel) => {
+          const n = section.find(sel).length + section.filter(sel).length;
+          return n ? `${sel.toUpperCase()}: ${n}` : "";
+        }).filter(Boolean).join(", ");
+        outline.push([
+          tag2.toUpperCase(),
+          // Indent by level so the outline reads as a tree in a flat table.
+          `${"\u2014 ".repeat(level - 1)}${text5 ? clip(text5, 70) : "(empty)"}`,
+          children2 || "\u2014"
+        ]);
+      });
+      const out = [
+        value("content/heading-count", "Headings", total, {
+          status: total === 0 ? "missing" : "ok",
+          note: LEVELS.map((l, i) => `${l.toUpperCase()} ${counts[i]}`).join(" \xB7 ")
+        }),
+        // The same counts in a shape a consumer can read, since the note above
+        // is written for a person.
+        table("content/heading-levels", "Headings per level", ["Level", "Count"], LEVELS.map((l, i) => [l.toUpperCase(), counts[i]]))
+      ];
+      if (outline.length)
+        out.push(table("content/heading-outline", "Heading outline", ["Level", "Heading", "Contains"], outline, {
+          cap: 40
+        }));
+      return out;
+    }
+  }
+];
+
+// node_modules/safi-studio-scanner/dist/metrics/meta.js
+var OG_TAGS = [
+  "og:title",
+  "og:description",
+  "og:image",
+  "og:url",
+  "og:type",
+  "og:site_name",
+  "og:locale"
+];
+var TWITTER_TAGS = [
+  "twitter:card",
+  "twitter:title",
+  "twitter:description",
+  "twitter:image",
+  "twitter:site",
+  "twitter:creator"
+];
+var OG_REQUIRED = /* @__PURE__ */ new Set(["og:title", "og:description", "og:image"]);
+var TWITTER_REQUIRED = /* @__PURE__ */ new Set(["twitter:card"]);
+function metaContent(page, key2) {
+  const v = page.$(`meta[property="${key2}"]`).attr("content") ?? page.$(`meta[name="${key2}"]`).attr("content");
+  return v?.trim() || null;
+}
+function tagRows(page, keys, required) {
+  const missingRequired = [];
+  const rows = keys.map((key2) => {
+    const content = metaContent(page, key2);
+    if (!content && required.has(key2))
+      missingRequired.push(key2);
+    return [key2, content ? clip(content, 70) : "\u2014", content ? "present" : required.has(key2) ? "missing" : "not set"];
+  });
+  return { rows, missingRequired };
+}
+function coverageStatus(missing) {
+  return missing === 0 ? "ok" : "warn";
+}
+function isHttp(img) {
+  return img.absUrl.startsWith("http://");
+}
+var metaCollectors = [
+  {
+    id: "core-seo/open-graph",
+    category: "core-seo",
+    collect({ page }) {
+      const { rows, missingRequired } = tagRows(page, OG_TAGS, OG_REQUIRED);
+      const present = rows.filter((r) => r[2] === "present").length;
+      return [
+        value("core-seo/og-coverage", "Open Graph tags", `${present} of ${OG_TAGS.length}`, {
+          status: present === 0 ? "missing" : coverageStatus(missingRequired.length),
+          note: missingRequired.length ? `Missing ${missingRequired.join(", ")}` : ""
+        }),
+        table("core-seo/og-table", "Open Graph", ["Property", "Content", "State"], rows)
+      ];
+    }
+  },
+  {
+    id: "social-media/twitter",
+    category: "social-media",
+    collect({ page }) {
+      const { rows, missingRequired } = tagRows(page, TWITTER_TAGS, TWITTER_REQUIRED);
+      const present = rows.filter((r) => r[2] === "present").length;
+      return [
+        value("social-media/twitter-coverage", "Twitter tags", `${present} of ${TWITTER_TAGS.length}`, {
+          status: present === 0 ? "missing" : coverageStatus(missingRequired.length),
+          // Twitter falls back to Open Graph for everything but the card type,
+          // so a thin table here is not automatically a problem.
+          note: present === 0 ? "Falls back to Open Graph" : ""
+        }),
+        table("social-media/twitter-table", "Twitter card", ["Name", "Content", "State"], rows)
+      ];
+    }
+  },
+  {
+    id: "images/coverage",
+    category: "images",
+    collect({ page }) {
+      const images = page.images;
+      const withAlt = images.filter((i) => i.alt !== null && i.alt.trim() !== "").length;
+      const decorative = images.filter((i) => i.alt === "").length;
+      const withoutAlt = images.filter((i) => i.alt === null).length;
+      const http = images.filter(isHttp).length;
+      return [
+        value("images/count", "Images", images.length),
+        value("images/with-alt", "With alt text", withAlt, {
+          status: withoutAlt === 0 ? "ok" : "warn",
+          note: `${decorative} marked decorative, ${withoutAlt} with no alt attribute`
+        }),
+        value("images/without-alt", "Missing alt", withoutAlt, {
+          status: withoutAlt === 0 ? "ok" : "bad"
+        }),
+        value("images/http-count", "Loaded over HTTP", http, {
+          status: http === 0 ? "ok" : "bad",
+          note: "Insecure images break the padlock on an HTTPS page"
+        })
+      ];
+    }
+  }
+];
+
+// node_modules/safi-studio-scanner/dist/metrics/index.js
+var allCollectors = [
+  ...pageCollectors,
+  ...markupCollectors,
+  ...directiveCollectors,
+  ...linkCollectors,
+  ...headingCollectors,
+  ...metaCollectors
+];
+
 // node_modules/safi-studio-scanner/dist/audit.js
 var DEFAULTS = {
   format: "html",
@@ -23033,22 +23645,93 @@ async function audit(startUrl, options = {}) {
   const origin = new URL(startUrl).origin;
   const pool = createPool(opts.concurrency);
   const checkUrl = createLinkChecker(opts, pool);
+  const started = Date.now();
+  const emit = (event2) => {
+    try {
+      opts.onProgress?.(event2);
+    } catch {
+    }
+  };
+  emit({ type: "audit_start", url: startUrl, maxPages: opts.maxPages });
   const robots = await fetchRobots(origin, opts);
   const sitemap = await fetchSitemap(origin, robots.sitemaps, opts);
   const site = { origin, startUrl, robots, sitemap };
-  const pages = await crawl(startUrl, opts, pool);
+  const crawlStarted = Date.now();
+  const pages = await crawl(startUrl, opts, pool, (page, index3, ms) => {
+    emit({
+      type: "page_fetched",
+      url: page.url,
+      status: page.status,
+      depth: page.depth,
+      index: index3,
+      ms
+    });
+  });
   if (opts.browser) {
+    const renderStarted = Date.now();
     const rendered = await renderPages(pages.map((p) => p.finalUrl), opts);
     for (const p of pages)
       p.browser = rendered.get(p.finalUrl);
+    emit({
+      type: "render_complete",
+      provider: "browser",
+      rendered: rendered.size,
+      pages: pages.length,
+      ms: Date.now() - renderStarted
+    });
   } else if (opts.psiKey) {
+    const renderStarted = Date.now();
     const psi = await pageSpeedInsights(pages.map((p) => p.finalUrl), opts);
     for (const p of pages)
       p.browser = psi.get(p.finalUrl);
+    emit({
+      type: "render_complete",
+      provider: "psi",
+      rendered: psi.size,
+      pages: pages.length,
+      ms: Date.now() - renderStarted
+    });
   }
-  const rules = selectRules(allRules, opts.only, opts.skip);
-  const reports = await Promise.all(pages.map((p) => runPage(p, site, rules, checkUrl)));
-  return aggregate(startUrl, (/* @__PURE__ */ new Date()).toISOString(), reports);
+  const rules = selectRules(opts.rules ?? allRules, opts.only, opts.skip);
+  const collectors = selectRules(opts.collectors ?? allCollectors, opts.only, opts.skip);
+  const willRun = (browser) => browser ? rules.length : rules.filter((r) => !r.requiresBrowser).length;
+  const checksTotal = pages.reduce((n, p) => n + willRun(Boolean(p.browser)), 0);
+  emit({
+    type: "crawl_complete",
+    pages: pages.length,
+    checksTotal,
+    ms: Date.now() - crawlStarted
+  });
+  let checksDone = 0;
+  let pagesDone = 0;
+  const reports = await Promise.all(pages.map(async (p) => {
+    const pageStarted = Date.now();
+    const report2 = await runPage(p, site, rules, checkUrl, collectors, (ruleId, status) => {
+      checksDone++;
+      emit({ type: "check_complete", url: p.url, ruleId, status, checksDone, checksTotal });
+    });
+    emit({
+      type: "page_complete",
+      url: report2.url,
+      index: ++pagesDone,
+      pagesTotal: pages.length,
+      score: report2.score,
+      findings: report2.findings.length,
+      metrics: report2.metrics.length,
+      ms: Date.now() - pageStarted
+    });
+    return report2;
+  }));
+  const report = aggregate(startUrl, (/* @__PURE__ */ new Date()).toISOString(), reports);
+  emit({
+    type: "audit_complete",
+    score: report.score,
+    pages: report.pagesScanned,
+    checks: checksDone,
+    ms: Date.now() - started,
+    report
+  });
+  return report;
 }
 
 // node_modules/safi-studio-scanner/dist/report.js
@@ -23080,7 +23763,61 @@ function renderMarkdown(r) {
       lines.push(`| ${f.status} | ${f.ruleId} | ${escapePipe(f.message)} |`);
     lines.push("");
   }
+  for (const p of r.pages) {
+    if (p.metrics?.length)
+      renderMetricsMarkdown(p.url, p.metrics, lines);
+  }
   return lines.join("\n");
+}
+function renderMetricsMarkdown(url, metrics, lines) {
+  lines.push(`## Measurements for ${url}`, "");
+  for (const [cat, ms] of groupMetrics(metrics)) {
+    lines.push(`### ${CAT_NAMES[cat] || cat}`, "");
+    const values = ms.filter(isValue);
+    if (values.length) {
+      lines.push("| Metric | Value | Status | Note |", "| --- | --- | --- | --- |");
+      for (const v of values)
+        lines.push(`| ${escapePipe(v.label)} | ${escapePipe(formatValue(v))} | ${v.status ?? "-"} | ${escapePipe(v.note ?? "")} |`);
+      lines.push("");
+    }
+    for (const t of ms.filter(isTable)) {
+      lines.push(`**${escapePipe(t.label)}**${rowCaption(t)}`, "");
+      if (t.rows.length === 0) {
+        lines.push("None found.", "");
+        continue;
+      }
+      lines.push(`| ${t.columns.map(escapePipe).join(" | ")} |`, `| ${t.columns.map(() => "---").join(" | ")} |`);
+      for (const row of t.rows)
+        lines.push(`| ${row.map((c) => escapePipe(String(c))).join(" | ")} |`);
+      lines.push("");
+    }
+  }
+}
+function isValue(m) {
+  return m.kind === "value";
+}
+function isTable(m) {
+  return m.kind === "table";
+}
+function formatValue(m) {
+  if (m.value === null || m.value === "")
+    return "\u2014";
+  return m.unit ? `${m.value} ${m.unit}` : String(m.value);
+}
+function rowCaption(t) {
+  return t.rows.length < t.total ? ` (showing ${t.rows.length} of ${t.total})` : "";
+}
+function groupMetrics(metrics) {
+  const byCat = /* @__PURE__ */ new Map();
+  for (const m of metrics) {
+    if (!byCat.has(m.category))
+      byCat.set(m.category, []);
+    byCat.get(m.category).push(m);
+  }
+  return [
+    ...CAT_ORDER.filter((c) => byCat.has(c)),
+    ...[...byCat.keys()].filter((c) => !CAT_ORDER.includes(c)).sort()
+  ].map((c) => [c, byCat.get(c)]);
 }
 function escapePipe(s) {
   return s.replace(/\|/g, "\\|");
@@ -23120,6 +23857,19 @@ var CAT_ORDER = [
   "performance"
 ];
 var STATUS_RANK = { fail: 0, warn: 1, info: 2, pass: 3 };
+var FOOTER_LINKS = [
+  { label: "abdulkadersafi.com", href: "https://abdulkadersafi.com" },
+  { label: "safi-studio.com", href: "https://safi-studio.com" },
+  { label: "GitHub", href: "https://github.com/Abdulkader-Safi/Safi-Studio-Scanner" },
+  { label: "npm", href: "https://www.npmjs.com/package/safi-studio-scanner" }
+];
+function tagged(href) {
+  const u = new URL(href);
+  u.searchParams.set("utm_source", "safi-studio-scanner");
+  u.searchParams.set("utm_medium", "audit-report");
+  u.searchParams.set("utm_campaign", "report-footer");
+  return u.toString();
+}
 function buildGroups(r) {
   const byRule = /* @__PURE__ */ new Map();
   for (const p of r.pages) {
@@ -23165,6 +23915,11 @@ function renderHtml(r) {
     ...[...byCat.keys()].filter((c) => !CAT_ORDER.includes(c)).sort()
   ];
   const scoreByCat = new Map(r.categories.map((c) => [c.category, c.score]));
+  const measured = r.pages.filter((p) => p.metrics?.length);
+  const measurements = measured.length ? `<section class="measure">
+  <div class="kicker">Measurements</div>
+${measured.map((p) => renderPageMetrics(p.url, p.metrics, measured.length === 1)).join("\n")}
+</section>` : "";
   const sections = catOrder.map((cat) => {
     const groups = byCat.get(cat);
     const rows = groups.map((g, i) => renderRow(g, i + 1, r.pagesScanned)).join("\n");
@@ -23177,88 +23932,153 @@ ${rows}
 </section>`;
   }).join("\n");
   return `<!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Audit report for ${esc(r.startUrl)}</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap');
+<title>Audit report for ${esc(r.startUrl)}</title><style>
+/* The brand layer, lifted from the documentation theme so an exported report
+   and the docs read as one system.
+
+   Near-black canvas, one accent, flat surfaces. Yellow carries the score and
+   every section label; nothing else competes with it. Depth comes from a
+   surface step (#0b0e11 -> #1e2329), never from a shadow or a gradient.
+
+   Two type roles, and they do not swap:
+     nova -> headings, prose, labels, everything read as language
+     plex -> numbers only. Scores, counts, ids. Always tabular.
+
+   Dark only, because the system has no light mode. The page closes on a light
+   band the way the product does. */
 :root {
-  --bg:#0c0b0a; --surface:#16140f; --text:#f5f2ea; --muted:#8d887e;
-  --line:rgba(245,242,234,0.12); --line-strong:rgba(245,242,234,0.22); --clay:#d97a4f;
-  --pass:#7fa37a; --fail:#d0644e; --warn:#d97a4f; --info:#8d887e;
-}
-[data-theme="light"] {
-  --bg:#f4f1ea; --surface:#fbf9f3; --text:#1a1611; --muted:#6b6358;
-  --line:rgba(26,22,17,0.14); --line-strong:rgba(26,22,17,0.26); --clay:#c75c33;
-  --pass:#4f7a4a; --fail:#b3472f; --warn:#c75c33; --info:#6b6358;
+  --nova: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --plex: ui-monospace, 'SF Mono', SFMono-Regular, 'JetBrains Mono', 'Cascadia Mono', Menlo, monospace;
+
+  --primary:#fcd535; --primary-active:#f0b90b; --on-primary:#181a20;
+  --canvas:#0b0e11; --card:#1e2329; --elevated:#2b3139; --line:#2b3139;
+  --ink:#ffffff; --body:#eaecef; --muted-strong:#929aa5; --muted:#707a8a;
+  --up:#0ecb81; --down:#f6465d; --info:#3b82f6;
+
+  --soft-light:#fafafa; --line-light:#eaecef; --ink-dark:#181a20;
+  --body-light:#474d57; --muted-light:#5e6673;
 }
 * { box-sizing:border-box; }
+html { background:var(--canvas); }
 body {
-  margin:0; padding:56px clamp(20px,6vw,96px) 96px; background:var(--bg); color:var(--text);
-  font-family:Inter,system-ui,sans-serif; line-height:1.5; max-width:980px;
+  margin:0; background:var(--canvas); color:var(--body);
+  font-family:var(--nova); font-size:14px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
 }
-h1,h2 { font-family:'Space Grotesk',system-ui,sans-serif; font-weight:700; letter-spacing:-0.02em; }
-.mono { font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace; }
-.kicker {
-  font-family:'JetBrains Mono',ui-monospace,monospace; font-size:12px; font-weight:500;
-  letter-spacing:0.3em; text-transform:uppercase; color:var(--clay);
+/* One measure, centred at every width. */
+.page { max-width:1040px; margin:0 auto; padding:56px clamp(20px,5vw,48px) 96px; }
+.num { font-family:var(--plex); font-variant-numeric:tabular-nums; }
+
+/* Section labels. Accent, sentence case, no tracked-out caps: the label is
+   read as language, so it is set in the text face like everything else. */
+.kicker { font-size:13px; font-weight:500; color:var(--primary); }
+
+header { padding-top:12px; }
+header h1 {
+  font-family:var(--nova); font-size:clamp(36px,5.4vw,64px); font-weight:700;
+  line-height:1.1; letter-spacing:-1px; color:var(--ink); margin:14px 0 12px;
 }
-.topbar { display:flex; justify-content:space-between; align-items:flex-start; gap:24px; }
-.toggle {
-  font-family:'JetBrains Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.1em;
-  text-transform:uppercase; color:var(--muted); background:transparent; cursor:pointer;
-  border:1px solid var(--line-strong); border-radius:999px; padding:8px 16px;
+header a.url { color:var(--primary); text-decoration:none; word-break:break-all; font-size:15px; }
+header a.url:hover { color:var(--primary-active); }
+.score {
+  font-family:var(--plex); font-variant-numeric:tabular-nums; font-weight:700;
+  font-size:clamp(48px,7vw,72px); line-height:1; letter-spacing:-1px;
+  color:var(--primary); margin:28px 0 8px;
 }
-.toggle:hover { color:var(--text); border-color:var(--clay); }
-header h1 { font-size:clamp(40px,7vw,68px); line-height:0.95; margin:18px 0 14px; }
-header a.url { color:var(--clay); text-decoration:none; word-break:break-all; }
-header a.url:hover { text-decoration:underline; }
-.score { font-family:'Space Grotesk',system-ui,sans-serif; font-weight:700; font-size:84px; line-height:1; margin:24px 0 6px; }
-.score .slash { color:var(--muted); font-size:34px; }
-.meta { color:var(--muted); font-family:'JetBrains Mono',ui-monospace,monospace; font-size:13px; }
-.cat { margin-top:64px; }
-.cat-score { font-family:'Space Grotesk',system-ui,sans-serif; font-weight:700; font-size:30px; margin:8px 0 18px; }
-.cat-score .slash { color:var(--muted); font-size:16px; }
-.rows { border-top:1px solid var(--line); }
+.score .slash { color:var(--muted); font-size:0.4em; letter-spacing:0; }
+.meta { color:var(--muted); font-size:13px; }
+
+/* ---- category sections ---- */
+.cat { margin-top:64px; padding-top:56px; border-top:1px solid var(--line); }
+.cat-score {
+  font-family:var(--plex); font-variant-numeric:tabular-nums; font-weight:700;
+  font-size:40px; line-height:1.1; letter-spacing:-0.3px; color:var(--primary); margin:8px 0 0;
+}
+.cat-score .slash { color:var(--muted); font-size:0.4em; }
+/* Flat surface, colour-block separation. No border, no shadow. */
+.rows { background:var(--card); border-radius:12px; padding:2px 24px; margin-top:24px; }
 details.row { border-bottom:1px solid var(--line); }
+details.row:last-child { border-bottom:none; }
 details.row > summary {
-  list-style:none; cursor:pointer; display:flex; align-items:center; gap:16px;
-  padding:16px 4px;
+  list-style:none; cursor:pointer; display:flex; align-items:center; gap:16px; padding:14px 0;
 }
 details.row > summary::-webkit-details-marker { display:none; }
-.row .rn { font-family:'JetBrains Mono',ui-monospace,monospace; font-size:13px; color:var(--muted); width:24px; flex:none; }
-.row .dot { width:9px; height:9px; border-radius:50%; flex:none; }
-.row.s-pass .dot { background:var(--pass); }
-.row.s-fail .dot { background:var(--fail); }
-.row.s-warn .dot { background:var(--warn); }
+.row .rn { font-family:var(--plex); font-variant-numeric:tabular-nums; font-size:13px; color:var(--muted); width:26px; flex:none; }
+.row .dot { width:8px; height:8px; border-radius:50%; flex:none; background:var(--muted); }
+.row.s-pass .dot { background:var(--up); }
+.row.s-fail .dot { background:var(--down); }
+.row.s-warn .dot { background:var(--primary); }
 .row.s-info .dot { background:var(--info); }
-.row .rt { font-family:'Space Grotesk',system-ui,sans-serif; font-weight:500; font-size:18px; flex:1; }
-.row .rm { font-family:'JetBrains Mono',ui-monospace,monospace; font-size:12px; color:var(--muted); flex:none; }
-.row.s-fail .rm, .row.s-warn .rm { color:var(--clay); }
+.row .rt { font-size:14px; font-weight:500; color:var(--ink); flex:1; }
+.row .rm { font-size:12px; color:var(--muted); flex:none; }
+.row.s-fail .rm { color:var(--down); }
+.row.s-warn .rm { color:var(--primary); }
 .row .chev { color:var(--muted); flex:none; transition:transform .15s ease; }
 details.row[open] .chev { transform:rotate(90deg); }
-.rb { padding:4px 4px 24px 40px; }
-.rb .lbl { font-family:'JetBrains Mono',ui-monospace,monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:6px; }
-.rb .fix { border-left:2px solid var(--clay); padding:2px 0 2px 16px; margin:16px 0; }
-.rb .pages { margin:16px 0 0; padding:0; list-style:none; }
+.rb { padding:2px 0 22px 42px; }
+.rb .lbl { font-size:12px; font-weight:500; color:var(--muted); display:block; margin-bottom:6px; }
+.rb .fix { background:var(--elevated); border-radius:8px; padding:12px 16px; margin:18px 0; }
+.rb .pages { margin:18px 0 0; padding:0; list-style:none; }
 .rb .pages li { padding:10px 0; border-top:1px solid var(--line); }
-.rb .pages a { color:var(--text); text-decoration:none; word-break:break-all; }
-.rb .pages a:hover { color:var(--clay); }
-.rb .pages .msg { display:block; color:var(--muted); font-size:14px; margin-top:2px; }
-.rb .pages code { font-family:'JetBrains Mono',ui-monospace,monospace; font-size:12px; color:var(--muted); word-break:break-all; }
-.rb .ok { color:var(--muted); }
-footer { margin-top:80px; padding-top:24px; border-top:1px solid var(--line); display:flex; justify-content:space-between; color:var(--muted); font-family:'JetBrains Mono',ui-monospace,monospace; font-size:12px; }
-footer a { color:var(--muted); text-decoration:none; }
-footer a:hover { color:var(--clay); }
+.rb .pages a { color:var(--body); text-decoration:none; word-break:break-all; }
+.rb .pages a:hover { color:var(--primary); }
+.rb .pages .msg { display:block; color:var(--muted-strong); margin-top:2px; }
+.rb .pages code { font-family:var(--plex); font-size:12px; color:var(--muted); word-break:break-all; }
+.rb .ok { color:var(--muted-strong); margin:0; }
+
+/* ---- measurements ---- */
+.measure { margin-top:64px; padding-top:56px; border-top:1px solid var(--line); }
+details.mpage { background:var(--card); border-radius:12px; padding:2px 24px; margin-top:24px; }
+details.mpage > summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:16px; padding:14px 0; }
+details.mpage > summary::-webkit-details-marker { display:none; }
+details.mpage > summary .u { flex:1; word-break:break-all; color:var(--ink); font-weight:500; }
+details.mpage[open] .chev { transform:rotate(90deg); }
+details.mpage[open] > summary { border-bottom:1px solid var(--line); }
+.mbody { padding:8px 0 24px; }
+.msub { font-size:13px; font-weight:500; color:var(--primary); margin:26px 0 10px; }
+.mcap { font-size:13px; color:var(--muted-strong); margin:20px 0 8px; }
+/* The frame lives on the wrapper, not the table: a collapsed table cannot clip
+   its own corners, so a radius set there is dead CSS and the corners stay square. */
+.mwrap { overflow-x:auto; border:1px solid var(--line); border-radius:8px; }
+/* A floor, so a narrow screen scrolls the table sideways instead of crushing
+   "og:description" into three letters a line. */
+table.m { width:100%; min-width:520px; border-collapse:collapse; }
+table.m th {
+  font-size:12px; font-weight:500; color:var(--muted); text-align:left;
+  padding:12px 16px; background:var(--elevated); border-bottom:1px solid var(--line); white-space:nowrap;
+}
+table.m td { font-size:14px; color:var(--body); padding:12px 16px; border-bottom:1px solid var(--line); vertical-align:top; word-break:break-word; }
+table.m tr:last-child td { border-bottom:none; }
+table.m td.val { font-family:var(--plex); font-variant-numeric:tabular-nums; white-space:nowrap; color:var(--ink); }
+table.m td.note { color:var(--muted); font-size:13px; }
+/* Value tables share one grid across every category, so the columns read down
+   the page instead of re-sizing themselves per section. */
+table.mv { table-layout:fixed; min-width:560px; }
+table.mv th:first-child, table.mv td:first-child { width:34%; }
+table.mv th:nth-child(2), table.mv td.val { width:22%; }
+.mdot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:10px; vertical-align:1px; background:var(--muted); }
+.mdot.v-ok { background:var(--up); }
+.mdot.v-warn { background:var(--primary); }
+.mdot.v-bad { background:var(--down); }
+.mdot.v-missing { background:var(--muted); }
+
+/* ---- the closing band ---- */
+footer { background:var(--soft-light); padding:64px clamp(20px,5vw,48px); }
+.finner { max-width:1040px; margin:0 auto; text-align:center; }
+footer .colophon { font-size:15px; font-weight:600; color:var(--ink-dark); margin:0 0 6px; }
+footer .flead { font-size:13px; color:var(--muted-light); margin:0 0 26px; }
+footer .flinks { display:flex; flex-wrap:wrap; justify-content:center; gap:12px 32px; }
+footer a { font-size:13px; font-weight:500; color:var(--body-light); text-decoration:none; }
+footer a:hover { color:var(--ink-dark); }
 </style>
 </head>
 <body>
-<div class="topbar">
-  <div class="kicker">Website audit</div>
-  <button class="toggle" id="themeToggle" type="button">Light</button>
-</div>
+<div class="page">
+<div class="kicker">Website audit</div>
 <header>
   <h1>Audit report</h1>
   <a class="url" href="${esc(r.startUrl)}">${esc(r.startUrl)}</a>
@@ -23266,26 +24086,17 @@ footer a:hover { color:var(--clay); }
   <div class="meta">${r.pagesScanned} page(s) scanned &middot; ${esc(r.generatedAt)}</div>
 </header>
 ${sections}
+${measurements}
+</div>
 <footer>
-  <a href="https://abdulkadersafi.com">abdulkadersafi.com</a>
-  <span>${r.pagesScanned} page(s)</span>
+  <div class="finner">
+    <p class="colophon">MIT licensed. Built by Abdulkader Safi.</p>
+    <p class="flead">Safi Studio Scanner, the website audit engine for Node.js.</p>
+    <nav class="flinks">
+${FOOTER_LINKS.map((l) => `      <a href="${esc(tagged(l.href))}" rel="noopener">${esc(l.label)}</a>`).join("\n")}
+    </nav>
+  </div>
 </footer>
-<script>
-(function () {
-  var root = document.documentElement, btn = document.getElementById('themeToggle');
-  var saved = null;
-  try { saved = localStorage.getItem('scanner-theme'); } catch (e) {}
-  if (saved) root.setAttribute('data-theme', saved);
-  function sync() { btn.textContent = root.getAttribute('data-theme') === 'dark' ? 'Light' : 'Dark'; }
-  sync();
-  btn.addEventListener('click', function () {
-    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('scanner-theme', next); } catch (e) {}
-    sync();
-  });
-})();
-<\/script>
 </body>
 </html>`;
 }
@@ -23327,12 +24138,116 @@ ${pages}
   ${body}
     </details>`;
 }
+function renderPageMetrics(url, metrics, open) {
+  const groups = groupMetrics(metrics).map(([cat, ms]) => {
+    const values = ms.filter(isValue);
+    const valueTable = values.length ? `<div class="mwrap"><table class="m mv">
+  <tr><th>Metric</th><th>Value</th><th>Note</th></tr>
+${values.map(renderValueRow).join("\n")}
+</table></div>` : "";
+    const tables = ms.filter(isTable).map(renderMetricTable).join("\n");
+    return `<div class="msub">${esc(CAT_NAMES[cat] || cat)}</div>
+${valueTable}
+${tables}`;
+  }).join("\n");
+  return `  <details class="mpage"${open ? " open" : ""}>
+    <summary>
+      <span class="mdot"></span>
+      <span class="u">${esc(url)}</span>
+      <span class="chev">&rsaquo;</span>
+    </summary>
+    <div class="mbody">
+${groups}
+    </div>
+  </details>`;
+}
+function renderValueRow(m) {
+  const dot = m.status ? `mdot v-${m.status}` : "mdot";
+  return `  <tr><td>${esc(m.label)}</td><td class="val"><span class="${dot}"></span>${esc(formatValue(m))}</td><td class="note">${esc(m.note ?? "")}</td></tr>`;
+}
+function renderMetricTable(t) {
+  const caption = `${esc(t.label)}${rowCaption(t)}`;
+  if (t.rows.length === 0)
+    return `<div class="mcap">${caption}</div><p class="ok">None found.</p>`;
+  return `<div class="mcap">${caption}</div>
+<div class="mwrap"><table class="m">
+  <tr>${t.columns.map((c) => `<th>${esc(c)}</th>`).join("")}</tr>
+${t.rows.map((row) => `  <tr>${row.map((c) => `<td>${esc(String(c))}</td>`).join("")}</tr>`).join("\n")}
+</table></div>`;
+}
 function esc(s) {
   return s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 }
 
+// node_modules/safi-studio-scanner/dist/stream.js
+var import_node_events = require("node:events");
+var AuditStream = class {
+  #emitter = new import_node_events.EventEmitter();
+  // Events arrive faster than a consumer reads them, so they queue. `#wake`
+  // is how a waiting iterator is told there is something to take.
+  #queue = [];
+  #wake = null;
+  #ended = false;
+  #run;
+  #error = null;
+  constructor(url, options = {}) {
+    this.#emitter.setMaxListeners(0);
+    this.#run = audit(url, {
+      ...options,
+      onProgress: (event2) => {
+        options.onProgress?.(event2);
+        this.#push(event2);
+      }
+    });
+    this.#run.then(() => this.#end(null), (err) => this.#end(err));
+  }
+  #push(event2) {
+    this.#queue.push(event2);
+    this.#emitter.emit(event2.type, event2);
+    this.#emitter.emit("event", event2);
+    this.#wake?.();
+  }
+  #end(error) {
+    this.#error = error;
+    this.#ended = true;
+    this.#wake?.();
+  }
+  on(type, handler) {
+    this.#emitter.on(type, handler);
+    return this;
+  }
+  off(type, handler) {
+    this.#emitter.off(type, handler);
+    return this;
+  }
+  /** The finished report. Awaiting this alone runs the audit to completion. */
+  finalReport() {
+    return this.#run;
+  }
+  async *[Symbol.asyncIterator]() {
+    while (true) {
+      while (this.#queue.length > 0)
+        yield this.#queue.shift();
+      if (this.#ended) {
+        if (this.#error)
+          throw this.#error;
+        return;
+      }
+      await new Promise((resolve) => {
+        this.#wake = () => {
+          this.#wake = null;
+          resolve();
+        };
+      });
+    }
+  }
+};
+function auditStream(url, options = {}) {
+  return new AuditStream(url, options);
+}
+
 // src/scanner.ts
-var audit2 = audit;
+var auditStream2 = auditStream;
 var render4 = render3;
 
 // src/report-file.ts
@@ -23348,16 +24263,13 @@ function buildNote(report) {
     "---",
     ""
   ].join("\n");
-  const body = render4(report, "md");
-  const data2 = `
-
-## Report data
-
-\`\`\`${FENCE}
-${JSON.stringify(report)}
-\`\`\`
-`;
-  return frontmatter + body + data2;
+  return frontmatter + render4(report, "md");
+}
+function buildJson(report) {
+  return JSON.stringify(report);
+}
+function buildHtml(report) {
+  return render4(report, "html");
 }
 function parseNote(content) {
   const re = new RegExp("```" + FENCE + "\\n([\\s\\S]*?)\\n```");
@@ -23369,19 +24281,24 @@ function parseNote(content) {
     return null;
   }
 }
-function auditFileName(report) {
+function siteFolderName(report) {
   let host = report.startUrl;
   try {
     host = new URL(report.startUrl).hostname || report.startUrl;
   } catch {
   }
-  const safeHost = host.replace(/[^a-z0-9.-]/gi, "-").replace(/^-+|-+$/g, "") || "site";
+  return host.replace(/[^a-z0-9.-]/gi, "-").replace(/^-+|-+$/g, "") || "site";
+}
+function runBaseName(report) {
   const d = new Date(report.generatedAt);
-  const stamp = isNaN(d.getTime()) ? "audit" : d.toISOString().slice(0, 16).replace(/[T:]/g, "-");
-  return `${safeHost}-${stamp}.md`;
+  if (isNaN(d.getTime())) return "audit";
+  return d.toISOString().slice(0, 16).replace(/[T:]/g, "-");
 }
 
 // src/audit-store.ts
+function siblingPath(notePath, ext) {
+  return notePath.replace(/\.md$/, `.${ext}`);
+}
 async function ensureFolder(app, path) {
   const p = (0, import_obsidian2.normalizePath)(path);
   if (!app.vault.getAbstractFileByPath(p)) {
@@ -23390,15 +24307,14 @@ async function ensureFolder(app, path) {
   }
 }
 function listAudits(app, settings) {
-  const folder = app.vault.getAbstractFileByPath((0, import_obsidian2.normalizePath)(settings.auditFolder));
-  if (!(folder instanceof import_obsidian2.TFolder)) return [];
+  const prefix = `${(0, import_obsidian2.normalizePath)(settings.auditFolder)}/`;
   const items = [];
-  for (const child2 of folder.children) {
-    if (!(child2 instanceof import_obsidian2.TFile) || child2.extension !== "md") continue;
-    const fm = app.metadataCache.getFileCache(child2)?.frontmatter;
+  for (const file of app.vault.getMarkdownFiles()) {
+    if (!file.path.startsWith(prefix)) continue;
+    const fm = app.metadataCache.getFileCache(file)?.frontmatter;
     if (!fm?.ssa_audit) continue;
     items.push({
-      file: child2,
+      file,
       url: fm.url ?? "",
       date: fm.date ?? "",
       score: typeof fm.score === "number" ? fm.score : 0,
@@ -23408,26 +24324,1131 @@ function listAudits(app, settings) {
   items.sort((a, b) => a.date < b.date ? 1 : -1);
   return items;
 }
-async function readAudit(app, file) {
-  return parseNote(await app.vault.cachedRead(file));
+async function readAudit(app, note) {
+  const json = app.vault.getAbstractFileByPath(siblingPath(note.path, "json"));
+  if (json instanceof import_obsidian2.TFile) {
+    try {
+      return JSON.parse(await app.vault.cachedRead(json));
+    } catch {
+      return null;
+    }
+  }
+  return parseNote(await app.vault.cachedRead(note));
 }
 async function saveAudit(app, settings, report) {
+  const folder = `${settings.auditFolder}/${siteFolderName(report)}`;
   await ensureFolder(app, settings.auditFolder);
-  const base = auditFileName(report).replace(/\.md$/, "");
-  let path = (0, import_obsidian2.normalizePath)(`${settings.auditFolder}/${base}.md`);
+  await ensureFolder(app, folder);
+  const stamp = runBaseName(report);
+  let base = stamp;
   let i = 2;
-  while (app.vault.getAbstractFileByPath(path)) {
-    path = (0, import_obsidian2.normalizePath)(`${settings.auditFolder}/${base}-${i}.md`);
+  while (app.vault.getAbstractFileByPath((0, import_obsidian2.normalizePath)(`${folder}/${base}.md`))) {
+    base = `${stamp}-${i}`;
     i++;
   }
-  return app.vault.create(path, buildNote(report));
+  const path = (ext) => (0, import_obsidian2.normalizePath)(`${folder}/${base}.${ext}`);
+  const note = await app.vault.create(path("md"), buildNote(report));
+  const json = await app.vault.create(path("json"), buildJson(report));
+  const html4 = await app.vault.create(path("html"), buildHtml(report));
+  return { note, json, html: html4 };
 }
 async function openInObsidian(app, file) {
   await app.workspace.getLeaf("tab").openFile(file);
 }
+function openExternally(app, path) {
+  const open = app.openWithDefaultApp;
+  if (typeof open !== "function") return false;
+  void open.call(app, (0, import_obsidian2.normalizePath)(path));
+  return true;
+}
+
+// src/ui/helpers.ts
+function hostOf(url) {
+  try {
+    return new URL(url).hostname || url;
+  } catch {
+    return url;
+  }
+}
+function pathOf(url) {
+  try {
+    const u = new URL(url);
+    return (u.pathname === "/" ? "/" : u.pathname.replace(/\/$/, "")) + u.search;
+  } catch {
+    return url;
+  }
+}
+function formatDate(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  return d.toLocaleString(void 0, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+function formatDateShort(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  return d.toLocaleString(void 0, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+function grade(score) {
+  if (score >= 90) return "A";
+  if (score >= 80) return "B";
+  if (score >= 70) return "C";
+  if (score >= 60) return "D";
+  return "F";
+}
+function scoreTone(score) {
+  if (score >= 80) return "is-good";
+  if (score >= 50) return "is-mid";
+  return "is-bad";
+}
+function statusTone(status) {
+  if (status === "fail") return "is-fail";
+  if (status === "warn") return "is-warn";
+  if (status === "info") return "is-info";
+  return "is-pass";
+}
+function statusLabel(status) {
+  if (status === "fail") return "Failed";
+  if (status === "warn") return "Warning";
+  if (status === "info") return "Info";
+  return "Passed";
+}
+function categoryLabel(category) {
+  const special = {
+    "core-seo": "Core SEO",
+    eeat: "E-E-A-T",
+    "url-structure": "URL structure",
+    psi: "PageSpeed"
+  };
+  if (special[category]) return special[category];
+  const words = category.replace(/-/g, " ");
+  return words.charAt(0).toUpperCase() + words.slice(1);
+}
+function statusTotals(report) {
+  const t = { pass: 0, warn: 0, fail: 0, info: 0, total: 0 };
+  for (const page of report.pages) {
+    for (const f of page.findings) {
+      t[f.status]++;
+      t.total++;
+    }
+  }
+  return t;
+}
+var RANK = { fail: 3, warn: 2, info: 1, pass: 0 };
+function buildIssues(report) {
+  const map2 = /* @__PURE__ */ new Map();
+  for (const page of report.pages) {
+    for (const f of page.findings) {
+      if (f.status === "pass") continue;
+      let issue = map2.get(f.ruleId);
+      if (!issue) {
+        issue = {
+          ruleId: f.ruleId,
+          title: f.title,
+          category: f.category,
+          severity: f.severity,
+          status: f.status,
+          message: f.message,
+          fix: f.fix,
+          pages: []
+        };
+        map2.set(f.ruleId, issue);
+      }
+      if (RANK[f.status] > RANK[issue.status]) {
+        issue.status = f.status;
+        issue.message = f.message;
+      }
+      if (!issue.pages.includes(page.url)) issue.pages.push(page.url);
+    }
+  }
+  return [...map2.values()].sort(
+    (a, b) => RANK[b.status] - RANK[a.status] || b.pages.length - a.pages.length
+  );
+}
+function countFindings(report) {
+  let n = 0;
+  for (const page of report.pages) n += page.findings.length;
+  return n;
+}
+function pageIssueCount(page) {
+  let n = 0;
+  for (const f of page.findings) if (f.status !== "pass") n++;
+  return n;
+}
+function groupBySite(items) {
+  const map2 = /* @__PURE__ */ new Map();
+  for (const item of items) {
+    const host = hostOf(item.url);
+    const runs = map2.get(host);
+    if (runs) runs.push(item);
+    else map2.set(host, [item]);
+  }
+  return [...map2.entries()].map(([host, runs]) => ({ host, runs, latest: runs[0]?.score ?? 0 })).sort((a, b) => a.host.localeCompare(b.host));
+}
+function metricTone(status) {
+  if (status === "bad") return "is-bad";
+  if (status === "warn") return "is-mid";
+  if (status === "missing") return "is-missing";
+  return "";
+}
+function formatMetricValue(value2, unit) {
+  if (value2 === null || value2 === "") return "None";
+  const text5 = typeof value2 === "number" ? value2.toLocaleString() : value2;
+  return unit ? `${text5} ${unit}` : text5;
+}
+function groupMetrics2(metrics) {
+  const map2 = /* @__PURE__ */ new Map();
+  for (const m of metrics) {
+    const list = map2.get(m.category);
+    if (list) list.push(m);
+    else map2.set(m.category, [m]);
+  }
+  return [...map2.entries()].map(([category, list]) => ({ category, metrics: list })).sort((a, b) => a.category.localeCompare(b.category));
+}
+
+// src/ui/icon.ts
+var import_obsidian3 = require("obsidian");
+function icon(node, name) {
+  (0, import_obsidian3.setIcon)(node, name);
+  return {
+    update(next3) {
+      node.empty();
+      (0, import_obsidian3.setIcon)(node, next3);
+    }
+  };
+}
+
+// src/ui/ScoreGauge.svelte
+var root2 = from_html(`<div class="ssa-gauge" role="img"><svg aria-hidden="true"><circle fill="none" class="ssa-gauge-track"></circle><circle fill="none" stroke-linecap="round"></circle></svg> <div class="ssa-gauge-center"><span class="ssa-gauge-value"> </span> <span class="ssa-gauge-grade"> </span></div></div>`);
+function ScoreGauge($$anchor, $$props) {
+  push($$props, true);
+  let size = prop($$props, "size", 3, 92);
+  const stroke = 6;
+  const clamped = user_derived(() => Math.max(0, Math.min(100, $$props.value)));
+  const r = user_derived(() => (size() - stroke) / 2);
+  const c = user_derived(() => 2 * Math.PI * get2(r));
+  const offset = user_derived(() => get2(c) * (1 - get2(clamped) / 100));
+  const tone = user_derived(() => scoreTone(get2(clamped)));
+  var div = root2();
+  var svg = child(div);
+  var circle = child(svg);
+  set_attribute2(circle, "stroke-width", stroke);
+  var circle_1 = sibling(circle);
+  set_attribute2(circle_1, "stroke-width", stroke);
+  reset(svg);
+  var div_1 = sibling(svg, 2);
+  var span = child(div_1);
+  var text5 = child(span, true);
+  reset(span);
+  var span_1 = sibling(span, 2);
+  var text_1 = child(span_1);
+  reset(span_1);
+  reset(div_1);
+  reset(div);
+  template_effect(
+    ($0, $1, $2, $3) => {
+      set_style(div, `width:${size() ?? ""}px;height:${size() ?? ""}px`);
+      set_attribute2(div, "aria-label", `Health score ${$0 ?? ""} out of 100, grade ${$1 ?? ""}`);
+      set_attribute2(svg, "width", size());
+      set_attribute2(svg, "height", size());
+      set_attribute2(svg, "viewBox", `0 0 ${size() ?? ""} ${size() ?? ""}`);
+      set_attribute2(circle, "cx", size() / 2);
+      set_attribute2(circle, "cy", size() / 2);
+      set_attribute2(circle, "r", get2(r));
+      set_attribute2(circle_1, "cx", size() / 2);
+      set_attribute2(circle_1, "cy", size() / 2);
+      set_attribute2(circle_1, "r", get2(r));
+      set_attribute2(circle_1, "stroke-dasharray", get2(c));
+      set_attribute2(circle_1, "stroke-dashoffset", get2(offset));
+      set_class(circle_1, 0, `ssa-gauge-arc ${get2(tone) ?? ""}`);
+      set_text(text5, $2);
+      set_text(text_1, `Grade ${$3 ?? ""}`);
+    },
+    [
+      () => Math.round(get2(clamped)),
+      () => grade(get2(clamped)),
+      () => Math.round(get2(clamped)),
+      () => grade(get2(clamped))
+    ]
+  );
+  append($$anchor, div);
+  pop();
+}
+
+// src/ui/IssuesPanel.svelte
+var root3 = from_html(`<option> </option>`);
+var root_1 = from_html(`<p class="ssa-empty-line">Nothing matches these filters.</p>`);
+var root_2 = from_html(`<div class="ssa-fix"><span class="ssa-fix-label">How to fix</span> <p class="ssa-fix-text"> </p></div>`);
+var root_3 = from_html(`<li> </li>`);
+var root_4 = from_html(`<button class="ssa-link-btn"> </button>`);
+var root_5 = from_html(`<details class="ssa-row"><summary class="ssa-row-head"><span aria-hidden="true"></span> <span class="ssa-row-main"><span class="ssa-row-title"> </span> <span class="ssa-row-sub"> </span></span> <span class="ssa-row-count"> <span class="ssa-row-count-unit"> </span></span></summary> <div class="ssa-row-body"><p class="ssa-row-msg"><span> </span> </p> <!> <div class="ssa-affected"><span class="ssa-affected-label">Affected pages</span> <ul class="ssa-affected-list"></ul> <!></div></div></details>`);
+var root_6 = from_html(`<div class="ssa-list"></div>`);
+var root_7 = from_html(`<div class="ssa-panel"><div class="ssa-filters"><div class="ssa-segmented"><button><span class="ssa-seg-count"> </span> failed</button> <button><span class="ssa-seg-count"> </span> warnings</button> <button><span class="ssa-seg-count"> </span> info</button></div> <select class="ssa-select dropdown" aria-label="Filter by category"><option>Every category</option><!></select> <input class="ssa-input ssa-input-search" placeholder="Search rules"/></div> <!></div>`);
+function IssuesPanel($$anchor, $$props) {
+  push($$props, true);
+  const issues = user_derived(() => buildIssues($$props.report));
+  const totals = user_derived(() => statusTotals($$props.report));
+  const categories = user_derived(() => $$props.report.categories.map((c) => c.category));
+  let statusFilter = state(proxy(["fail", "warn", "info"]));
+  let catFilter = state("all");
+  let query = state("");
+  const filtered = user_derived(() => get2(issues).filter((i) => {
+    if (!get2(statusFilter).includes(i.status)) return false;
+    if (get2(catFilter) !== "all" && i.category !== get2(catFilter)) return false;
+    const q = get2(query).trim().toLowerCase();
+    if (q && !`${i.title} ${i.message} ${i.ruleId}`.toLowerCase().includes(q)) return false;
+    return true;
+  }));
+  function toggle(status) {
+    set(
+      statusFilter,
+      get2(statusFilter).includes(status) ? get2(statusFilter).filter((s) => s !== status) : [...get2(statusFilter), status],
+      true
+    );
+  }
+  const PAGE_PREVIEW = 12;
+  let expanded = state(proxy({}));
+  function shown(issue) {
+    return get2(expanded)[issue.ruleId] ? issue.pages : issue.pages.slice(0, PAGE_PREVIEW);
+  }
+  var div = root_7();
+  var div_1 = child(div);
+  var div_2 = child(div_1);
+  var button = child(div_2);
+  let classes;
+  var span = child(button);
+  var text5 = child(span, true);
+  reset(span);
+  next();
+  reset(button);
+  var button_1 = sibling(button, 2);
+  let classes_1;
+  var span_1 = child(button_1);
+  var text_1 = child(span_1, true);
+  reset(span_1);
+  next();
+  reset(button_1);
+  var button_2 = sibling(button_1, 2);
+  let classes_2;
+  var span_2 = child(button_2);
+  var text_2 = child(span_2, true);
+  reset(span_2);
+  next();
+  reset(button_2);
+  reset(div_2);
+  var select2 = sibling(div_2, 2);
+  var option = child(select2);
+  option.value = option.__value = "all";
+  var node = sibling(option);
+  each(node, 16, () => get2(categories), (c) => c, ($$anchor2, c) => {
+    var option_1 = root3();
+    var text_3 = child(option_1, true);
+    reset(option_1);
+    var option_1_value = {};
+    template_effect(
+      ($0) => {
+        set_text(text_3, $0);
+        if (option_1_value !== (option_1_value = c)) {
+          option_1.value = (option_1.__value = c) ?? "";
+        }
+      },
+      [() => categoryLabel(c)]
+    );
+    append($$anchor2, option_1);
+  });
+  reset(select2);
+  var input = sibling(select2, 2);
+  remove_input_defaults(input);
+  reset(div_1);
+  var node_1 = sibling(div_1, 2);
+  {
+    var consequent = ($$anchor2) => {
+      var p = root_1();
+      append($$anchor2, p);
+    };
+    var alternate = ($$anchor2) => {
+      var div_3 = root_6();
+      each(div_3, 21, () => get2(filtered), (issue) => issue.ruleId, ($$anchor3, issue) => {
+        var details = root_5();
+        var summary = child(details);
+        var span_3 = child(summary);
+        var span_4 = sibling(span_3, 2);
+        var span_5 = child(span_4);
+        var text_4 = child(span_5, true);
+        reset(span_5);
+        var span_6 = sibling(span_5, 2);
+        var text_5 = child(span_6);
+        reset(span_6);
+        reset(span_4);
+        var span_7 = sibling(span_4, 2);
+        var text_6 = child(span_7);
+        var span_8 = sibling(text_6);
+        var text_7 = child(span_8, true);
+        reset(span_8);
+        reset(span_7);
+        reset(summary);
+        var div_4 = sibling(summary, 2);
+        var p_1 = child(div_4);
+        var span_9 = child(p_1);
+        var text_8 = child(span_9, true);
+        reset(span_9);
+        var text_9 = sibling(span_9);
+        reset(p_1);
+        var node_2 = sibling(p_1, 2);
+        {
+          var consequent_1 = ($$anchor4) => {
+            var div_5 = root_2();
+            var p_2 = sibling(child(div_5), 2);
+            var text_10 = child(p_2, true);
+            reset(p_2);
+            reset(div_5);
+            template_effect(() => set_text(text_10, get2(issue).fix));
+            append($$anchor4, div_5);
+          };
+          if_block(node_2, ($$render) => {
+            if (get2(issue).fix) $$render(consequent_1);
+          });
+        }
+        var div_6 = sibling(node_2, 2);
+        var ul = sibling(child(div_6), 2);
+        each(ul, 20, () => shown(get2(issue)), (page) => page, ($$anchor4, page) => {
+          var li = root_3();
+          var text_11 = child(li, true);
+          reset(li);
+          template_effect(
+            ($0) => {
+              set_attribute2(li, "title", page);
+              set_text(text_11, $0);
+            },
+            [() => pathOf(page)]
+          );
+          append($$anchor4, li);
+        });
+        reset(ul);
+        var node_3 = sibling(ul, 2);
+        {
+          var consequent_2 = ($$anchor4) => {
+            var button_3 = root_4();
+            var text_12 = child(button_3, true);
+            reset(button_3);
+            template_effect(() => set_text(text_12, get2(expanded)[get2(issue).ruleId] ? "Show fewer" : `Show all ${get2(issue).pages.length} pages`));
+            delegated("click", button_3, () => set(
+              expanded,
+              {
+                ...get2(expanded),
+                [get2(issue).ruleId]: !get2(expanded)[get2(issue).ruleId]
+              },
+              true
+            ));
+            append($$anchor4, button_3);
+          };
+          if_block(node_3, ($$render) => {
+            if (get2(issue).pages.length > PAGE_PREVIEW) $$render(consequent_2);
+          });
+        }
+        reset(div_6);
+        reset(div_4);
+        reset(details);
+        template_effect(
+          ($0, $1, $2, $3) => {
+            set_class(span_3, 1, `ssa-mark ${$0 ?? ""}`);
+            set_attribute2(span_5, "title", get2(issue).title);
+            set_text(text_4, get2(issue).title);
+            set_attribute2(span_6, "title", get2(issue).ruleId);
+            set_text(text_5, `${$1 ?? ""} \xB7 ${get2(issue).ruleId ?? ""}`);
+            set_text(text_6, `${get2(issue).pages.length ?? ""} `);
+            set_text(text_7, get2(issue).pages.length === 1 ? "page" : "pages");
+            set_class(span_9, 1, `ssa-status-word ${$2 ?? ""}`);
+            set_text(text_8, $3);
+            set_text(text_9, ` ${get2(issue).message ?? ""}`);
+          },
+          [
+            () => statusTone(get2(issue).status),
+            () => categoryLabel(get2(issue).category),
+            () => statusTone(get2(issue).status),
+            () => statusLabel(get2(issue).status)
+          ]
+        );
+        append($$anchor3, details);
+      });
+      reset(div_3);
+      append($$anchor2, div_3);
+    };
+    if_block(node_1, ($$render) => {
+      if (get2(filtered).length === 0) $$render(consequent);
+      else $$render(alternate, -1);
+    });
+  }
+  reset(div);
+  template_effect(
+    ($0, $1, $2) => {
+      classes = set_class(button, 1, "ssa-seg", null, classes, $0);
+      set_text(text5, get2(totals).fail);
+      classes_1 = set_class(button_1, 1, "ssa-seg", null, classes_1, $1);
+      set_text(text_1, get2(totals).warn);
+      classes_2 = set_class(button_2, 1, "ssa-seg", null, classes_2, $2);
+      set_text(text_2, get2(totals).info);
+    },
+    [
+      () => ({ "is-on": get2(statusFilter).includes("fail") }),
+      () => ({ "is-on": get2(statusFilter).includes("warn") }),
+      () => ({ "is-on": get2(statusFilter).includes("info") })
+    ]
+  );
+  delegated("click", button, () => toggle("fail"));
+  delegated("click", button_1, () => toggle("warn"));
+  delegated("click", button_2, () => toggle("info"));
+  bind_select_value(select2, () => get2(catFilter), ($$value) => set(catFilter, $$value));
+  bind_value(input, () => get2(query), ($$value) => set(query, $$value));
+  append($$anchor, div);
+  pop();
+}
+delegate(["click"]);
+
+// src/ui/PagesPanel.svelte
+var root4 = from_html(`<p class="ssa-empty-line">No page matches that search.</p>`);
+var root_12 = from_html(`<p class="ssa-row-msg">Every check passed on this page.</p>`);
+var root_22 = from_html(`<tr><td><span> </span></td><td><span class="ssa-cell-strong"> </span> <span class="ssa-cell-faint"> </span></td><td class="ssa-cell-muted"> </td></tr>`);
+var root_32 = from_html(`<table class="ssa-table"><thead><tr><th class="ssa-col-status">Status</th><th>Check</th><th>Result</th></tr></thead><tbody></tbody></table>`);
+var root_42 = from_html(`<details class="ssa-row"><summary class="ssa-row-head"><span> </span> <span class="ssa-row-main"><span class="ssa-row-title"> </span> <span class="ssa-row-sub"> </span></span> <span class="ssa-row-count"> <span class="ssa-row-count-unit"> </span></span></summary> <div class="ssa-row-body"><!></div></details>`);
+var root_52 = from_html(`<div class="ssa-list"></div>`);
+var root_62 = from_html(`<div class="ssa-panel"><div class="ssa-filters"><div class="ssa-segmented"><button>Lowest score</button> <button>Crawl order</button></div> <input class="ssa-input ssa-input-search" placeholder="Search pages"/></div> <!></div>`);
+function PagesPanel($$anchor, $$props) {
+  push($$props, true);
+  let query = state("");
+  let order = state("worst");
+  const pages = user_derived(() => {
+    const q = get2(query).trim().toLowerCase();
+    const list = q ? $$props.report.pages.filter((p) => p.url.toLowerCase().includes(q)) : $$props.report.pages;
+    return get2(order) === "worst" ? [...list].sort((a, b) => a.score - b.score) : list;
+  });
+  function problems(page) {
+    return page.findings.filter((f) => f.status !== "pass");
+  }
+  var div = root_62();
+  var div_1 = child(div);
+  var div_2 = child(div_1);
+  var button = child(div_2);
+  let classes;
+  var button_1 = sibling(button, 2);
+  let classes_1;
+  reset(div_2);
+  var input = sibling(div_2, 2);
+  remove_input_defaults(input);
+  reset(div_1);
+  var node = sibling(div_1, 2);
+  {
+    var consequent = ($$anchor2) => {
+      var p_1 = root4();
+      append($$anchor2, p_1);
+    };
+    var alternate_1 = ($$anchor2) => {
+      var div_3 = root_52();
+      each(div_3, 21, () => get2(pages), (page) => page.url, ($$anchor3, page) => {
+        const found = user_derived(() => problems(get2(page)));
+        var details = root_42();
+        var summary = child(details);
+        var span = child(summary);
+        var text5 = child(span, true);
+        reset(span);
+        var span_1 = sibling(span, 2);
+        var span_2 = child(span_1);
+        var text_1 = child(span_2, true);
+        reset(span_2);
+        var span_3 = sibling(span_2, 2);
+        var text_2 = child(span_3);
+        reset(span_3);
+        reset(span_1);
+        var span_4 = sibling(span_1, 2);
+        var text_3 = child(span_4);
+        var span_5 = sibling(text_3);
+        var text_4 = child(span_5, true);
+        reset(span_5);
+        reset(span_4);
+        reset(summary);
+        var div_4 = sibling(summary, 2);
+        var node_1 = child(div_4);
+        {
+          var consequent_1 = ($$anchor4) => {
+            var p_2 = root_12();
+            append($$anchor4, p_2);
+          };
+          var alternate = ($$anchor4) => {
+            var table2 = root_32();
+            var tbody = sibling(child(table2));
+            each(tbody, 23, () => get2(found), (f, i) => `${f.ruleId}-${i}`, ($$anchor5, f) => {
+              var tr = root_22();
+              var td = child(tr);
+              var span_6 = child(td);
+              var text_5 = child(span_6, true);
+              reset(span_6);
+              reset(td);
+              var td_1 = sibling(td);
+              var span_7 = child(td_1);
+              var text_6 = child(span_7, true);
+              reset(span_7);
+              var span_8 = sibling(span_7, 2);
+              var text_7 = child(span_8, true);
+              reset(span_8);
+              reset(td_1);
+              var td_2 = sibling(td_1);
+              var text_8 = child(td_2, true);
+              reset(td_2);
+              reset(tr);
+              template_effect(
+                ($0, $1, $2) => {
+                  set_class(span_6, 1, `ssa-status-word ${$0 ?? ""}`);
+                  set_text(text_5, $1);
+                  set_text(text_6, get2(f).title);
+                  set_text(text_7, $2);
+                  set_text(text_8, get2(f).message);
+                },
+                [
+                  () => statusTone(get2(f).status),
+                  () => statusLabel(get2(f).status),
+                  () => categoryLabel(get2(f).category)
+                ]
+              );
+              append($$anchor5, tr);
+            });
+            reset(tbody);
+            reset(table2);
+            append($$anchor4, table2);
+          };
+          if_block(node_1, ($$render) => {
+            if (get2(found).length === 0) $$render(consequent_1);
+            else $$render(alternate, -1);
+          });
+        }
+        reset(div_4);
+        reset(details);
+        template_effect(
+          ($0, $1, $2) => {
+            set_class(span, 1, `ssa-score-chip ${$0 ?? ""}`);
+            set_text(text5, get2(page).score);
+            set_attribute2(span_2, "title", get2(page).url);
+            set_text(text_1, $1);
+            set_text(text_2, `HTTP ${get2(page).status ?? ""}`);
+            set_text(text_3, `${$2 ?? ""} `);
+            set_text(text_4, get2(found).length === 1 ? "issue" : "issues");
+          },
+          [
+            () => scoreTone(get2(page).score),
+            () => pathOf(get2(page).url),
+            () => pageIssueCount(get2(page))
+          ]
+        );
+        append($$anchor3, details);
+      });
+      reset(div_3);
+      append($$anchor2, div_3);
+    };
+    if_block(node, ($$render) => {
+      if (get2(pages).length === 0) $$render(consequent);
+      else $$render(alternate_1, -1);
+    });
+  }
+  reset(div);
+  template_effect(() => {
+    classes = set_class(button, 1, "ssa-seg", null, classes, { "is-on": get2(order) === "worst" });
+    classes_1 = set_class(button_1, 1, "ssa-seg", null, classes_1, { "is-on": get2(order) === "crawl" });
+  });
+  delegated("click", button, () => set(order, "worst"));
+  delegated("click", button_1, () => set(order, "crawl"));
+  bind_value(input, () => get2(query), ($$value) => set(query, $$value));
+  append($$anchor, div);
+  pop();
+}
+delegate(["click"]);
+
+// src/ui/MetricsPanel.svelte
+var root5 = from_html(`<p class="ssa-empty-line">This audit has no measurements. Re-run it to collect them.</p>`);
+var root_13 = from_html(`<option> </option>`);
+var root_23 = from_html(`<span class="ssa-metric-note"> </span>`);
+var root_33 = from_html(`<div class="ssa-metric"><span class="ssa-metric-label"> </span> <span> </span> <!></div>`);
+var root_43 = from_html(`<div class="ssa-metric-grid"></div>`);
+var root_53 = from_html(`<span class="ssa-metric-table-note"> </span>`);
+var root_63 = from_html(`<th> </th>`);
+var root_72 = from_html(`<td class="ssa-cell-muted"> </td>`);
+var root_8 = from_html(`<tr></tr>`);
+var root_9 = from_html(`<div class="ssa-metric-table"><div class="ssa-metric-table-head"><span class="ssa-metric-table-label"> </span> <!></div> <div class="ssa-scroll-x"><table class="ssa-table"><thead><tr></tr></thead><tbody></tbody></table></div></div>`);
+var root_10 = from_html(`<section class="ssa-metric-group"><h3 class="ssa-metric-cat"> </h3> <!> <!></section>`);
+var root_11 = from_html(`<div class="ssa-filters"><select class="ssa-select ssa-select-wide dropdown" aria-label="Page to measure"></select> <span class="ssa-filters-note"> </span></div> <!>`, 1);
+var root_122 = from_html(`<div class="ssa-panel"><!></div>`);
+function MetricsPanel($$anchor, $$props) {
+  push($$props, true);
+  const withMetrics2 = user_derived(() => $$props.report.pages.filter((p) => (p.metrics?.length ?? 0) > 0));
+  let selectedUrl = state("");
+  const page = user_derived(() => get2(withMetrics2).find((p) => p.url === get2(selectedUrl)) ?? get2(withMetrics2)[0] ?? null);
+  const groups = user_derived(() => get2(page) ? groupMetrics2(get2(page).metrics ?? []) : []);
+  var div = root_122();
+  var node = child(div);
+  {
+    var consequent = ($$anchor2) => {
+      var p_1 = root5();
+      append($$anchor2, p_1);
+    };
+    var alternate = ($$anchor2) => {
+      var fragment = root_11();
+      var div_1 = first_child(fragment);
+      var select2 = child(div_1);
+      each(select2, 21, () => get2(withMetrics2), (p) => p.url, ($$anchor3, p) => {
+        var option = root_13();
+        var text5 = child(option, true);
+        reset(option);
+        var option_value = {};
+        template_effect(
+          ($0) => {
+            set_text(text5, $0);
+            if (option_value !== (option_value = get2(p).url)) {
+              option.value = (option.__value = get2(p).url) ?? "";
+            }
+          },
+          [() => pathOf(get2(p).url)]
+        );
+        append($$anchor3, option);
+      });
+      reset(select2);
+      var span = sibling(select2, 2);
+      var text_1 = child(span);
+      reset(span);
+      reset(div_1);
+      var node_1 = sibling(div_1, 2);
+      each(node_1, 17, () => get2(groups), (group) => group.category, ($$anchor3, group) => {
+        var section = root_10();
+        var h3 = child(section);
+        var text_2 = child(h3, true);
+        reset(h3);
+        var node_2 = sibling(h3, 2);
+        {
+          var consequent_3 = ($$anchor4) => {
+            var div_2 = root_43();
+            each(div_2, 21, () => get2(group).metrics, (m) => m.id, ($$anchor5, m) => {
+              var fragment_1 = comment();
+              var node_3 = first_child(fragment_1);
+              {
+                var consequent_2 = ($$anchor6) => {
+                  var div_3 = root_33();
+                  var span_1 = child(div_3);
+                  var text_3 = child(span_1, true);
+                  reset(span_1);
+                  var span_2 = sibling(span_1, 2);
+                  var text_4 = child(span_2, true);
+                  reset(span_2);
+                  var node_4 = sibling(span_2, 2);
+                  {
+                    var consequent_1 = ($$anchor7) => {
+                      var span_3 = root_23();
+                      var text_5 = child(span_3, true);
+                      reset(span_3);
+                      template_effect(() => set_text(text_5, get2(m).note));
+                      append($$anchor7, span_3);
+                    };
+                    if_block(node_4, ($$render) => {
+                      if (get2(m).note) $$render(consequent_1);
+                    });
+                  }
+                  reset(div_3);
+                  template_effect(
+                    ($0, $1) => {
+                      set_text(text_3, get2(m).label);
+                      set_class(span_2, 1, `ssa-metric-value ${$0 ?? ""}`);
+                      set_text(text_4, $1);
+                    },
+                    [
+                      () => metricTone(get2(m).status),
+                      () => formatMetricValue(get2(m).value, get2(m).unit)
+                    ]
+                  );
+                  append($$anchor6, div_3);
+                };
+                if_block(node_3, ($$render) => {
+                  if (get2(m).kind === "value") $$render(consequent_2);
+                });
+              }
+              append($$anchor5, fragment_1);
+            });
+            reset(div_2);
+            append($$anchor4, div_2);
+          };
+          var d = user_derived(() => get2(group).metrics.some((m) => m.kind === "value"));
+          if_block(node_2, ($$render) => {
+            if (get2(d)) $$render(consequent_3);
+          });
+        }
+        var node_5 = sibling(node_2, 2);
+        each(node_5, 17, () => get2(group).metrics, (m) => m.id, ($$anchor4, m) => {
+          var fragment_2 = comment();
+          var node_6 = first_child(fragment_2);
+          {
+            var consequent_5 = ($$anchor5) => {
+              var div_4 = root_9();
+              var div_5 = child(div_4);
+              var span_4 = child(div_5);
+              var text_6 = child(span_4, true);
+              reset(span_4);
+              var node_7 = sibling(span_4, 2);
+              {
+                var consequent_4 = ($$anchor6) => {
+                  var span_5 = root_53();
+                  var text_7 = child(span_5);
+                  reset(span_5);
+                  template_effect(($0) => set_text(text_7, `showing ${get2(m).rows.length ?? ""} of ${$0 ?? ""}`), [() => get2(m).total.toLocaleString()]);
+                  append($$anchor6, span_5);
+                };
+                if_block(node_7, ($$render) => {
+                  if (get2(m).total > get2(m).rows.length) $$render(consequent_4);
+                });
+              }
+              reset(div_5);
+              var div_6 = sibling(div_5, 2);
+              var table2 = child(div_6);
+              var thead = child(table2);
+              var tr = child(thead);
+              each(tr, 20, () => get2(m).columns, (col) => col, ($$anchor6, col) => {
+                var th = root_63();
+                var text_8 = child(th, true);
+                reset(th);
+                template_effect(() => set_text(text_8, col));
+                append($$anchor6, th);
+              });
+              reset(tr);
+              reset(thead);
+              var tbody = sibling(thead);
+              each(tbody, 21, () => get2(m).rows, index, ($$anchor6, row) => {
+                var tr_1 = root_8();
+                each(tr_1, 21, () => get2(row), index, ($$anchor7, cell) => {
+                  var td = root_72();
+                  var text_9 = child(td, true);
+                  reset(td);
+                  template_effect(() => set_text(text_9, get2(cell)));
+                  append($$anchor7, td);
+                });
+                reset(tr_1);
+                append($$anchor6, tr_1);
+              });
+              reset(tbody);
+              reset(table2);
+              reset(div_6);
+              reset(div_4);
+              template_effect(() => set_text(text_6, get2(m).label));
+              append($$anchor5, div_4);
+            };
+            if_block(node_6, ($$render) => {
+              if (get2(m).kind === "table") $$render(consequent_5);
+            });
+          }
+          append($$anchor4, fragment_2);
+        });
+        reset(section);
+        template_effect(($0) => set_text(text_2, $0), [() => categoryLabel(get2(group).category)]);
+        append($$anchor3, section);
+      });
+      template_effect(() => set_text(text_1, `${get2(page)?.metrics?.length ?? 0 ?? ""} measurements on this page`));
+      bind_select_value(select2, () => get2(selectedUrl), ($$value) => set(selectedUrl, $$value));
+      append($$anchor2, fragment);
+    };
+    if_block(node, ($$render) => {
+      if (get2(withMetrics2).length === 0) $$render(consequent);
+      else $$render(alternate, -1);
+    });
+  }
+  reset(div);
+  append($$anchor, div);
+  pop();
+}
+
+// src/ui/ReportView.svelte
+var root6 = from_html(`<button class="ssa-btn"><span></span> Open note</button> <button class="ssa-btn"><span></span> HTML report</button>`, 1);
+var root_14 = from_html(`<span class="ssa-split-seg is-pass"></span>`);
+var root_24 = from_html(`<span class="ssa-split-seg is-warn"></span>`);
+var root_34 = from_html(`<span class="ssa-split-seg is-fail"></span>`);
+var root_44 = from_html(`<span class="ssa-split-seg is-info"></span>`);
+var root_54 = from_html(`<div class="ssa-cat"><span class="ssa-cat-name"> </span> <span class="ssa-cat-track"><span></span></span> <span class="ssa-cat-score"> </span></div>`);
+var root_64 = from_html(`<div class="ssa-report"><header class="ssa-head"><div class="ssa-head-id"><h2 class="ssa-head-host"> </h2> <a class="ssa-head-url" rel="noopener"> </a> <p class="ssa-head-meta"> <span class="ssa-sep">\xB7</span> <span class="ssa-sep">\xB7</span> </p></div> <div class="ssa-head-actions"><!> <button class="ssa-btn"><span></span> Run again</button></div></header> <section class="ssa-score"><!> <div class="ssa-score-body"><div class="ssa-split" role="img"><!> <!> <!> <!></div> <dl class="ssa-tallies"><div class="ssa-tally"><dt>Passed</dt> <dd class="is-pass"> </dd></div> <div class="ssa-tally"><dt>Warnings</dt> <dd class="is-warn"> </dd></div> <div class="ssa-tally"><dt>Failed</dt> <dd class="is-fail"> </dd></div> <div class="ssa-tally"><dt>Info</dt> <dd class="is-info"> </dd></div></dl></div></section> <section class="ssa-cats-block"><div class="ssa-block-head"><h3 class="ssa-block-title">Category scores</h3> <div class="ssa-segmented"><button>Worst</button> <button>Best</button> <button>A\u2013Z</button></div></div> <div class="ssa-cats"></div></section> <nav class="ssa-tabs"><button>Issues</button> <button>Pages</button> <button>Measurements</button></nav> <!></div>`);
+function ReportView($$anchor, $$props) {
+  push($$props, true);
+  const totals = user_derived(() => statusTotals($$props.report));
+  const checks = user_derived(() => countFindings($$props.report));
+  let tab = state("issues");
+  let sort = state("worst");
+  const sortedCategories = user_derived(() => [...$$props.report.categories].sort((a, b) => {
+    if (get2(sort) === "az") return categoryLabel(a.category).localeCompare(categoryLabel(b.category));
+    return get2(sort) === "worst" ? a.score - b.score : b.score - a.score;
+  }));
+  function openNote() {
+    if (!$$props.path) return;
+    const file = $$props.plugin.app.vault.getAbstractFileByPath($$props.path);
+    if (file instanceof import_obsidian4.TFile) void openInObsidian($$props.plugin.app, file);
+  }
+  function openHtml() {
+    if (!$$props.path) return;
+    const html4 = siblingPath($$props.path, "html");
+    if (!$$props.plugin.app.vault.getAbstractFileByPath(html4)) {
+      new import_obsidian4.Notice("This audit has no HTML export. Run it again to create one.");
+      return;
+    }
+    if (!openExternally($$props.plugin.app, html4)) new import_obsidian4.Notice(`HTML export saved at ${html4}`);
+  }
+  var div = root_64();
+  var header = child(div);
+  var div_1 = child(header);
+  var h2 = child(div_1);
+  var text5 = child(h2, true);
+  reset(h2);
+  var a_1 = sibling(h2, 2);
+  var text_1 = child(a_1, true);
+  reset(a_1);
+  var p = sibling(a_1, 2);
+  var text_2 = child(p);
+  var text_3 = sibling(text_2, 2);
+  var text_4 = sibling(text_3, 2);
+  reset(p);
+  reset(div_1);
+  var div_2 = sibling(div_1, 2);
+  var node = child(div_2);
+  {
+    var consequent = ($$anchor2) => {
+      var fragment = root6();
+      var button = first_child(fragment);
+      var span = child(button);
+      action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "file-text");
+      next();
+      reset(button);
+      var button_1 = sibling(button, 2);
+      var span_1 = child(button_1);
+      action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "external-link");
+      next();
+      reset(button_1);
+      delegated("click", button, openNote);
+      delegated("click", button_1, openHtml);
+      append($$anchor2, fragment);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.path) $$render(consequent);
+    });
+  }
+  var button_2 = sibling(node, 2);
+  var span_2 = child(button_2);
+  action(span_2, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "refresh-cw");
+  next();
+  reset(button_2);
+  reset(div_2);
+  reset(header);
+  var section = sibling(header, 2);
+  var node_1 = child(section);
+  ScoreGauge(node_1, {
+    get value() {
+      return $$props.report.score;
+    }
+  });
+  var div_3 = sibling(node_1, 2);
+  var div_4 = child(div_3);
+  var node_2 = child(div_4);
+  {
+    var consequent_1 = ($$anchor2) => {
+      var span_3 = root_14();
+      template_effect(() => set_style(span_3, `flex-grow:${get2(totals).pass ?? ""}`));
+      append($$anchor2, span_3);
+    };
+    if_block(node_2, ($$render) => {
+      if (get2(totals).pass) $$render(consequent_1);
+    });
+  }
+  var node_3 = sibling(node_2, 2);
+  {
+    var consequent_2 = ($$anchor2) => {
+      var span_4 = root_24();
+      template_effect(() => set_style(span_4, `flex-grow:${get2(totals).warn ?? ""}`));
+      append($$anchor2, span_4);
+    };
+    if_block(node_3, ($$render) => {
+      if (get2(totals).warn) $$render(consequent_2);
+    });
+  }
+  var node_4 = sibling(node_3, 2);
+  {
+    var consequent_3 = ($$anchor2) => {
+      var span_5 = root_34();
+      template_effect(() => set_style(span_5, `flex-grow:${get2(totals).fail ?? ""}`));
+      append($$anchor2, span_5);
+    };
+    if_block(node_4, ($$render) => {
+      if (get2(totals).fail) $$render(consequent_3);
+    });
+  }
+  var node_5 = sibling(node_4, 2);
+  {
+    var consequent_4 = ($$anchor2) => {
+      var span_6 = root_44();
+      template_effect(() => set_style(span_6, `flex-grow:${get2(totals).info ?? ""}`));
+      append($$anchor2, span_6);
+    };
+    if_block(node_5, ($$render) => {
+      if (get2(totals).info) $$render(consequent_4);
+    });
+  }
+  reset(div_4);
+  var dl = sibling(div_4, 2);
+  var div_5 = child(dl);
+  var dd = sibling(child(div_5), 2);
+  var text_5 = child(dd, true);
+  reset(dd);
+  reset(div_5);
+  var div_6 = sibling(div_5, 2);
+  var dd_1 = sibling(child(div_6), 2);
+  var text_6 = child(dd_1, true);
+  reset(dd_1);
+  reset(div_6);
+  var div_7 = sibling(div_6, 2);
+  var dd_2 = sibling(child(div_7), 2);
+  var text_7 = child(dd_2, true);
+  reset(dd_2);
+  reset(div_7);
+  var div_8 = sibling(div_7, 2);
+  var dd_3 = sibling(child(div_8), 2);
+  var text_8 = child(dd_3, true);
+  reset(dd_3);
+  reset(div_8);
+  reset(dl);
+  reset(div_3);
+  reset(section);
+  var section_1 = sibling(section, 2);
+  var div_9 = child(section_1);
+  var div_10 = sibling(child(div_9), 2);
+  var button_3 = child(div_10);
+  let classes;
+  var button_4 = sibling(button_3, 2);
+  let classes_1;
+  var button_5 = sibling(button_4, 2);
+  let classes_2;
+  reset(div_10);
+  reset(div_9);
+  var div_11 = sibling(div_9, 2);
+  each(div_11, 21, () => get2(sortedCategories), (cat) => cat.category, ($$anchor2, cat) => {
+    var div_12 = root_54();
+    var span_7 = child(div_12);
+    var text_9 = child(span_7, true);
+    reset(span_7);
+    var span_8 = sibling(span_7, 2);
+    var span_9 = child(span_8);
+    reset(span_8);
+    var span_10 = sibling(span_8, 2);
+    var text_10 = child(span_10, true);
+    reset(span_10);
+    reset(div_12);
+    template_effect(
+      ($0, $1, $2) => {
+        set_attribute2(span_7, "title", $0);
+        set_text(text_9, $1);
+        set_class(span_9, 1, `ssa-cat-fill ${$2 ?? ""}`);
+        set_style(span_9, `width:${get2(cat).score ?? ""}%`);
+        set_text(text_10, get2(cat).score);
+      },
+      [
+        () => categoryLabel(get2(cat).category),
+        () => categoryLabel(get2(cat).category),
+        () => scoreTone(get2(cat).score)
+      ]
+    );
+    append($$anchor2, div_12);
+  });
+  reset(div_11);
+  reset(section_1);
+  var nav = sibling(section_1, 2);
+  var button_6 = child(nav);
+  let classes_3;
+  var button_7 = sibling(button_6, 2);
+  let classes_4;
+  var button_8 = sibling(button_7, 2);
+  let classes_5;
+  reset(nav);
+  var node_6 = sibling(nav, 2);
+  {
+    var consequent_5 = ($$anchor2) => {
+      IssuesPanel($$anchor2, {
+        get report() {
+          return $$props.report;
+        }
+      });
+    };
+    var consequent_6 = ($$anchor2) => {
+      PagesPanel($$anchor2, {
+        get report() {
+          return $$props.report;
+        }
+      });
+    };
+    var alternate = ($$anchor2) => {
+      MetricsPanel($$anchor2, {
+        get report() {
+          return $$props.report;
+        }
+      });
+    };
+    if_block(node_6, ($$render) => {
+      if (get2(tab) === "issues") $$render(consequent_5);
+      else if (get2(tab) === "pages") $$render(consequent_6, 1);
+      else $$render(alternate, -1);
+    });
+  }
+  reset(div);
+  template_effect(
+    ($0, $1, $2, $3, $4, $5, $6, $7) => {
+      set_text(text5, $0);
+      set_attribute2(a_1, "href", $$props.report.startUrl);
+      set_text(text_1, $$props.report.startUrl);
+      set_text(text_2, `${$1 ?? ""} `);
+      set_text(text_3, ` ${$2 ?? ""} pages `);
+      set_text(text_4, ` ${$3 ?? ""} checks`);
+      set_attribute2(div_4, "aria-label", `${get2(totals).pass ?? ""} passed, ${get2(totals).warn ?? ""} warnings, ${get2(totals).fail ?? ""} failed, ${get2(totals).info ?? ""} informational`);
+      set_text(text_5, $4);
+      set_text(text_6, $5);
+      set_text(text_7, $6);
+      set_text(text_8, $7);
+      classes = set_class(button_3, 1, "ssa-seg", null, classes, { "is-on": get2(sort) === "worst" });
+      classes_1 = set_class(button_4, 1, "ssa-seg", null, classes_1, { "is-on": get2(sort) === "best" });
+      classes_2 = set_class(button_5, 1, "ssa-seg", null, classes_2, { "is-on": get2(sort) === "az" });
+      classes_3 = set_class(button_6, 1, "ssa-tab", null, classes_3, { "is-on": get2(tab) === "issues" });
+      classes_4 = set_class(button_7, 1, "ssa-tab", null, classes_4, { "is-on": get2(tab) === "pages" });
+      classes_5 = set_class(button_8, 1, "ssa-tab", null, classes_5, { "is-on": get2(tab) === "metrics" });
+    },
+    [
+      () => hostOf($$props.report.startUrl),
+      () => formatDate($$props.report.generatedAt),
+      () => $$props.report.pagesScanned.toLocaleString(),
+      () => get2(checks).toLocaleString(),
+      () => get2(totals).pass.toLocaleString(),
+      () => get2(totals).warn.toLocaleString(),
+      () => get2(totals).fail.toLocaleString(),
+      () => get2(totals).info.toLocaleString()
+    ]
+  );
+  delegated("click", button_2, () => $$props.onRerun($$props.report.startUrl));
+  delegated("click", button_3, () => set(sort, "worst"));
+  delegated("click", button_4, () => set(sort, "best"));
+  delegated("click", button_5, () => set(sort, "az"));
+  delegated("click", button_6, () => set(tab, "issues"));
+  delegated("click", button_7, () => set(tab, "pages"));
+  delegated("click", button_8, () => set(tab, "metrics"));
+  append($$anchor, div);
+  pop();
+}
+delegate(["click"]);
 
 // src/fetch-shim.ts
-var import_obsidian3 = require("obsidian");
+var import_obsidian5 = require("obsidian");
 var ShimHeaders = class {
   map = {};
   constructor(h) {
@@ -23476,7 +25497,7 @@ async function shimFetch(input, init2 = {}) {
     throw: false
   };
   if (init2.body != null) param.body = init2.body;
-  const request = (0, import_obsidian3.requestUrl)(param).then((resp) => new ShimResponse(resp));
+  const request = (0, import_obsidian5.requestUrl)(param).then((resp) => new ShimResponse(resp));
   const signal = init2.signal;
   if (!signal) return request;
   const reason = () => signal.reason ?? new DOMException("Aborted", "AbortError");
@@ -23497,659 +25518,132 @@ async function withObsidianFetch(fn) {
 }
 
 // src/audit-runner.ts
-function resolvePages(value, fallback2) {
-  const n = value && value > 0 ? Math.floor(value) : fallback2;
+var EMPTY_PROGRESS = {
+  phase: "starting",
+  pagesFound: 0,
+  pagesTotal: 0,
+  pagesDone: 0,
+  checksDone: 0,
+  checksTotal: 0,
+  url: ""
+};
+function resolvePages(value2, fallback2) {
+  const n = value2 && value2 > 0 ? Math.floor(value2) : fallback2;
   return Math.max(n, 1);
 }
-async function runAudit(opts, settings) {
+function progressPercent(p) {
+  if (p.phase === "done") return 100;
+  if (p.checksTotal > 0) return Math.round(33 + p.checksDone / p.checksTotal * 67);
+  if (p.pagesTotal > 0) return Math.round(Math.min(p.pagesFound / p.pagesTotal, 1) * 33);
+  return 0;
+}
+async function runAudit(opts, settings, onProgress) {
+  const maxPages = resolvePages(opts.maxPages, settings.defaultMaxPages);
   const options = {
     format: "md",
-    maxPages: resolvePages(opts.maxPages, settings.defaultMaxPages),
+    maxPages,
     concurrency: settings.concurrency
   };
   if (settings.userAgent.trim()) options.userAgent = settings.userAgent.trim();
   if (settings.psiKey.trim()) options.psiKey = settings.psiKey.trim();
-  return withObsidianFetch(() => audit2(opts.url, options));
-}
-
-// src/ui/ReportView.svelte
-var import_obsidian5 = require("obsidian");
-
-// src/ui/helpers.ts
-function hostOf(url) {
-  try {
-    return new URL(url).hostname || url;
-  } catch {
-    return url;
-  }
-}
-function formatDate(iso) {
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return iso;
-  return d.toLocaleString();
-}
-function scoreVariant(score) {
-  if (score >= 80) return "default";
-  if (score >= 50) return "secondary";
-  return "destructive";
-}
-function grade(score) {
-  if (score >= 90) return "A";
-  if (score >= 80) return "B";
-  if (score >= 70) return "C";
-  if (score >= 60) return "D";
-  return "F";
-}
-function gradeVariant(score) {
-  if (score >= 80) return "default";
-  if (score >= 60) return "secondary";
-  return "destructive";
-}
-function scoreBar(score) {
-  if (score >= 80) return "is-good";
-  if (score >= 50) return "is-mid";
-  return "is-bad";
-}
-function statusDot(status) {
-  if (status === "fail") return "ssa-dot-fail";
-  if (status === "warn") return "ssa-dot-warn";
-  if (status === "info") return "ssa-dot-info";
-  return "ssa-dot-pass";
-}
-function statusTotals(report) {
-  const t = { pass: 0, warn: 0, fail: 0, info: 0, total: 0 };
-  for (const page of report.pages) {
-    for (const f of page.findings) {
-      t[f.status]++;
-      t.total++;
-    }
-  }
-  return t;
-}
-var RANK = { fail: 3, warn: 2, info: 1, pass: 0 };
-function buildIssues(report) {
-  const map2 = /* @__PURE__ */ new Map();
-  for (const page of report.pages) {
-    for (const f of page.findings) {
-      if (f.status === "pass") continue;
-      let issue = map2.get(f.ruleId);
-      if (!issue) {
-        issue = {
-          ruleId: f.ruleId,
-          title: f.title,
-          category: f.category,
-          severity: f.severity,
-          status: f.status,
-          message: f.message,
-          pages: []
-        };
-        map2.set(f.ruleId, issue);
+  return withObsidianFetch(async () => {
+    const stream = auditStream2(opts.url, options);
+    const p = { ...EMPTY_PROGRESS, phase: "crawling", pagesTotal: maxPages };
+    onProgress?.({ ...p });
+    for await (const event2 of stream) {
+      switch (event2.type) {
+        case "page_fetched":
+          p.pagesFound = event2.index;
+          p.url = event2.url;
+          break;
+        case "crawl_complete":
+          p.phase = "checking";
+          p.pagesFound = event2.pages;
+          p.pagesTotal = event2.pages;
+          p.checksTotal = event2.checksTotal;
+          break;
+        case "check_complete":
+          p.checksDone = event2.checksDone;
+          p.checksTotal = event2.checksTotal;
+          break;
+        case "page_complete":
+          p.pagesDone = event2.index;
+          p.pagesTotal = event2.pagesTotal;
+          p.url = event2.url;
+          break;
+        case "audit_complete":
+          p.phase = "done";
+          p.pagesDone = event2.pages;
+          break;
+        default:
+          continue;
       }
-      if (RANK[f.status] > RANK[issue.status]) {
-        issue.status = f.status;
-        issue.message = f.message;
-      }
-      if (!issue.pages.includes(page.url)) issue.pages.push(page.url);
+      onProgress?.({ ...p });
     }
-  }
-  return [...map2.values()].sort(
-    (a, b) => RANK[b.status] - RANK[a.status] || b.pages.length - a.pages.length
-  );
-}
-function pct(part, whole) {
-  return whole === 0 ? 0 : Math.round(part / whole * 100);
-}
-
-// src/ui/icon.ts
-var import_obsidian4 = require("obsidian");
-function icon(node, name) {
-  (0, import_obsidian4.setIcon)(node, name);
-  return {
-    update(next3) {
-      node.empty();
-      (0, import_obsidian4.setIcon)(node, next3);
-    }
-  };
-}
-
-// src/ui/ScoreGauge.svelte
-var root2 = from_html(`<div class="ssa-gauge"><svg><circle fill="none" class="ssa-gauge-track"></circle><circle fill="none" stroke-linecap="round" style="transition: stroke-dashoffset 600ms ease"></circle></svg> <div class="ssa-gauge-center"><span class="ssa-gauge-value"> </span> <span class="ssa-gauge-label">Score</span></div></div>`);
-function ScoreGauge($$anchor, $$props) {
-  "use strict";
-  let size = prop($$props, "size", 3, 96);
-  const stroke = 8;
-  const r = user_derived(() => (size() - stroke) / 2);
-  const c = user_derived(() => 2 * Math.PI * get2(r));
-  const offset = user_derived(() => get2(c) * (1 - Math.max(0, Math.min(100, $$props.value)) / 100));
-  const color = user_derived(() => $$props.value >= 80 ? "#10b981" : $$props.value >= 50 ? "#f59e0b" : "#ef4444");
-  var div = root2();
-  var svg = child(div);
-  var circle = child(svg);
-  set_attribute2(circle, "stroke-width", stroke);
-  var circle_1 = sibling(circle);
-  set_attribute2(circle_1, "stroke-width", stroke);
-  reset(svg);
-  var div_1 = sibling(svg, 2);
-  var span = child(div_1);
-  var text4 = child(span, true);
-  reset(span);
-  next(2);
-  reset(div_1);
-  reset(div);
-  template_effect(
-    ($0) => {
-      set_style(div, `width:${size() ?? ""}px;height:${size() ?? ""}px`);
-      set_attribute2(svg, "width", size());
-      set_attribute2(svg, "height", size());
-      set_attribute2(svg, "viewBox", `0 0 ${size() ?? ""} ${size() ?? ""}`);
-      set_attribute2(circle, "cx", size() / 2);
-      set_attribute2(circle, "cy", size() / 2);
-      set_attribute2(circle, "r", get2(r));
-      set_attribute2(circle_1, "cx", size() / 2);
-      set_attribute2(circle_1, "cy", size() / 2);
-      set_attribute2(circle_1, "r", get2(r));
-      set_attribute2(circle_1, "stroke", get2(color));
-      set_attribute2(circle_1, "stroke-dasharray", get2(c));
-      set_attribute2(circle_1, "stroke-dashoffset", get2(offset));
-      set_text(text4, $0);
-    },
-    [() => Math.round($$props.value)]
-  );
-  append($$anchor, div);
-}
-
-// src/ui/ReportView.svelte
-var root3 = from_html(`<div class="ssa-mt"><button class="ssa-btn ssa-btn-outline ssa-btn-sm"><span></span> Open note</button></div>`);
-var root_1 = from_html(`<div class="ssa-cat-row"><span class="ssa-cat-name"> </span> <span class="ssa-cat-bar"><span></span></span> <span class="ssa-cat-score"> </span></div>`);
-var root_2 = from_html(`<option> </option>`);
-var root_3 = from_html(`<p class="ssa-no-results">No issues match these filters.</p>`);
-var root_4 = from_html(`<span class="ssa-page-url"> </span>`);
-var root_5 = from_html(`<details class="ssa-acc-item"><summary class="ssa-acc-trigger"><span class="ssa-issue-head"><span></span> <span class="ssa-issue-title"> </span> <span> </span> <span class="ssa-badge ssa-badge-outline"> </span> <span class="ssa-badge ssa-badge-secondary ssa-push"> </span></span></summary> <div class="ssa-acc-content"><div class="ssa-issue-body"><p class="ssa-issue-msg"> </p> <div class="ssa-pages"><span class="ssa-pages-label">Affected pages</span> <!></div></div></div></details>`);
-var root_6 = from_html(`<div class="ssa-accordion"></div>`);
-var root_7 = from_html(`<div class="ssa-tabpanel"><div class="ssa-card"><div class="ssa-card-header"><div class="ssa-card-title">Category scores</div> <div class="ssa-card-action"><div class="ssa-toggles"><button>Worst</button> <button>Best</button> <button>A\u2013Z</button></div></div></div> <div class="ssa-cats"></div></div> <div class="ssa-card"><div class="ssa-card-header"><div><div class="ssa-card-title">Issues</div> <div class="ssa-card-desc"> </div></div></div> <div class="ssa-card-content"><div class="ssa-filters"><div class="ssa-toggles"><button> </button> <button> </button> <button> </button></div> <select class="ssa-select"><option>All categories</option><!></select> <input class="ssa-input" placeholder="Filter\u2026"/></div> <!></div></div></div>`);
-var root_8 = from_html(`<p class="ssa-cell-muted">No issues found on this page.</p>`);
-var root_9 = from_html(`<tr><td><span> </span></td><td class="ssa-cell-strong"> </td><td class="ssa-cell-muted"> </td></tr>`);
-var root_10 = from_html(`<table class="ssa-table"><thead><tr><th>Severity</th><th>Issue</th><th>Details</th></tr></thead><tbody></tbody></table>`);
-var root_11 = from_html(`<details class="ssa-acc-item" name="ssa-pages"><summary class="ssa-acc-trigger"><span class="ssa-page-row"><span> </span> <span class="ssa-page-name"> </span> <span class="ssa-page-count"> </span></span></summary> <div class="ssa-acc-content"><!></div></details>`);
-var root_12 = from_html(`<div class="ssa-report"><div class="ssa-card"><div class="ssa-overview"><!> <div class="ssa-overview-meta"><div class="ssa-overview-host"><span class="ssa-overview-host-name"> </span> <span> </span></div> <span class="ssa-overview-url"> </span> <span class="ssa-overview-sub"> </span> <!></div> <div class="ssa-stats"><div class="ssa-stat"><div class="ssa-stat-num ssa-stat-pass"> </div> <div class="ssa-stat-label"> </div></div> <div class="ssa-stat"><div class="ssa-stat-num ssa-stat-warn"> </div> <div class="ssa-stat-label"> </div></div> <div class="ssa-stat"><div class="ssa-stat-num ssa-stat-fail"> </div> <div class="ssa-stat-label"> </div></div></div></div></div> <div><div class="ssa-tablist"><button>Categories &amp; issues</button> <button>Pages</button></div> <!></div></div>`);
-function ReportView($$anchor, $$props) {
-  push($$props, true);
-  const totals = user_derived(() => statusTotals($$props.report));
-  const issues = user_derived(() => buildIssues($$props.report));
-  const categoryNames = user_derived(() => $$props.report.categories.map((c) => c.category));
-  let tab = state("categories");
-  let sort = state("worst");
-  const sortedCategories = user_derived(() => [...$$props.report.categories].sort((a, b) => {
-    if (get2(sort) === "az") return a.category.localeCompare(b.category);
-    return get2(sort) === "worst" ? a.score - b.score : b.score - a.score;
-  }));
-  let sevFilter = state(proxy(["fail", "warn", "info"]));
-  let catFilter = state("all");
-  let query = state("");
-  const filteredIssues = user_derived(() => get2(issues).filter((i) => {
-    if (!get2(sevFilter).includes(i.status)) return false;
-    if (get2(catFilter) !== "all" && i.category !== get2(catFilter)) return false;
-    const q = get2(query).trim().toLowerCase();
-    if (q && !`${i.title} ${i.message} ${i.ruleId}`.toLowerCase().includes(q)) return false;
-    return true;
-  }));
-  function toggleSev(s) {
-    set(
-      sevFilter,
-      get2(sevFilter).includes(s) ? get2(sevFilter).filter((x) => x !== s) : [...get2(sevFilter), s],
-      true
-    );
-  }
-  function statusLabel(status) {
-    return status === "fail" ? "Error" : status === "warn" ? "Warning" : "Info";
-  }
-  function statusBadge(status) {
-    return status === "fail" ? "destructive" : status === "warn" ? "secondary" : "outline";
-  }
-  function pageIssues(findings) {
-    return findings.filter((f) => f.status === "fail" || f.status === "warn");
-  }
-  function openNote() {
-    if (!$$props.path) return;
-    const file = $$props.plugin.app.vault.getAbstractFileByPath($$props.path);
-    if (file instanceof import_obsidian5.TFile) openInObsidian($$props.plugin.app, file);
-  }
-  var div = root_12();
-  var div_1 = child(div);
-  var div_2 = child(div_1);
-  var node = child(div_2);
-  ScoreGauge(node, {
-    get value() {
-      return $$props.report.score;
-    }
+    return stream.finalReport();
   });
-  var div_3 = sibling(node, 2);
-  var div_4 = child(div_3);
-  var span = child(div_4);
-  var text4 = child(span, true);
-  reset(span);
-  var span_1 = sibling(span, 2);
-  var text_1 = child(span_1);
-  reset(span_1);
-  reset(div_4);
-  var span_2 = sibling(div_4, 2);
-  var text_2 = child(span_2, true);
-  reset(span_2);
-  var span_3 = sibling(span_2, 2);
-  var text_3 = child(span_3);
-  reset(span_3);
-  var node_1 = sibling(span_3, 2);
-  {
-    var consequent = ($$anchor2) => {
-      var div_5 = root3();
-      var button = child(div_5);
-      var span_4 = child(button);
-      action(span_4, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "file-text");
-      next();
-      reset(button);
-      reset(div_5);
-      delegated("click", button, openNote);
-      append($$anchor2, div_5);
-    };
-    if_block(node_1, ($$render) => {
-      if ($$props.path) $$render(consequent);
-    });
-  }
-  reset(div_3);
-  var div_6 = sibling(div_3, 2);
-  var div_7 = child(div_6);
-  var div_8 = child(div_7);
-  var text_4 = child(div_8, true);
-  reset(div_8);
-  var div_9 = sibling(div_8, 2);
-  var text_5 = child(div_9);
-  reset(div_9);
-  reset(div_7);
-  var div_10 = sibling(div_7, 2);
-  var div_11 = child(div_10);
-  var text_6 = child(div_11, true);
-  reset(div_11);
-  var div_12 = sibling(div_11, 2);
-  var text_7 = child(div_12);
-  reset(div_12);
-  reset(div_10);
-  var div_13 = sibling(div_10, 2);
-  var div_14 = child(div_13);
-  var text_8 = child(div_14, true);
-  reset(div_14);
-  var div_15 = sibling(div_14, 2);
-  var text_9 = child(div_15);
-  reset(div_15);
-  reset(div_13);
-  reset(div_6);
-  reset(div_2);
-  reset(div_1);
-  var div_16 = sibling(div_1, 2);
-  var div_17 = child(div_16);
-  var button_1 = child(div_17);
-  let classes;
-  var button_2 = sibling(button_1, 2);
-  let classes_1;
-  reset(div_17);
-  var node_2 = sibling(div_17, 2);
-  {
-    var consequent_2 = ($$anchor2) => {
-      var div_18 = root_7();
-      var div_19 = child(div_18);
-      var div_20 = child(div_19);
-      var div_21 = sibling(child(div_20), 2);
-      var div_22 = child(div_21);
-      var button_3 = child(div_22);
-      let classes_2;
-      var button_4 = sibling(button_3, 2);
-      let classes_3;
-      var button_5 = sibling(button_4, 2);
-      let classes_4;
-      reset(div_22);
-      reset(div_21);
-      reset(div_20);
-      var div_23 = sibling(div_20, 2);
-      each(div_23, 21, () => get2(sortedCategories), (cat) => cat.category, ($$anchor3, cat) => {
-        var div_24 = root_1();
-        var span_5 = child(div_24);
-        var text_10 = child(span_5, true);
-        reset(span_5);
-        var span_6 = sibling(span_5, 2);
-        var span_7 = child(span_6);
-        reset(span_6);
-        var span_8 = sibling(span_6, 2);
-        var text_11 = child(span_8, true);
-        reset(span_8);
-        reset(div_24);
-        template_effect(
-          ($0) => {
-            set_text(text_10, get2(cat).category);
-            set_class(span_7, 1, `ssa-cat-bar-fill ${$0 ?? ""}`);
-            set_style(span_7, `width:${get2(cat).score ?? ""}%`);
-            set_text(text_11, get2(cat).score);
-          },
-          [() => scoreBar(get2(cat).score)]
-        );
-        append($$anchor3, div_24);
-      });
-      reset(div_23);
-      reset(div_19);
-      var div_25 = sibling(div_19, 2);
-      var div_26 = child(div_25);
-      var div_27 = child(div_26);
-      var div_28 = sibling(child(div_27), 2);
-      var text_12 = child(div_28);
-      reset(div_28);
-      reset(div_27);
-      reset(div_26);
-      var div_29 = sibling(div_26, 2);
-      var div_30 = child(div_29);
-      var div_31 = child(div_30);
-      var button_6 = child(div_31);
-      let classes_5;
-      var text_13 = child(button_6);
-      reset(button_6);
-      var button_7 = sibling(button_6, 2);
-      let classes_6;
-      var text_14 = child(button_7);
-      reset(button_7);
-      var button_8 = sibling(button_7, 2);
-      let classes_7;
-      var text_15 = child(button_8);
-      reset(button_8);
-      reset(div_31);
-      var select2 = sibling(div_31, 2);
-      var option = child(select2);
-      option.value = option.__value = "all";
-      var node_3 = sibling(option);
-      each(node_3, 16, () => get2(categoryNames), (c) => c, ($$anchor3, c) => {
-        var option_1 = root_2();
-        var text_16 = child(option_1, true);
-        reset(option_1);
-        var option_1_value = {};
-        template_effect(() => {
-          set_text(text_16, c);
-          if (option_1_value !== (option_1_value = c)) {
-            option_1.value = (option_1.__value = c) ?? "";
-          }
-        });
-        append($$anchor3, option_1);
-      });
-      reset(select2);
-      var input = sibling(select2, 2);
-      remove_input_defaults(input);
-      reset(div_30);
-      var node_4 = sibling(div_30, 2);
-      {
-        var consequent_1 = ($$anchor3) => {
-          var p_1 = root_3();
-          append($$anchor3, p_1);
-        };
-        var alternate = ($$anchor3) => {
-          var div_32 = root_6();
-          each(div_32, 21, () => get2(filteredIssues), (issue) => issue.ruleId, ($$anchor4, issue) => {
-            var details = root_5();
-            var summary = child(details);
-            var span_9 = child(summary);
-            var span_10 = child(span_9);
-            var span_11 = sibling(span_10, 2);
-            var text_17 = child(span_11, true);
-            reset(span_11);
-            var span_12 = sibling(span_11, 2);
-            var text_18 = child(span_12, true);
-            reset(span_12);
-            var span_13 = sibling(span_12, 2);
-            var text_19 = child(span_13, true);
-            reset(span_13);
-            var span_14 = sibling(span_13, 2);
-            var text_20 = child(span_14);
-            reset(span_14);
-            reset(span_9);
-            reset(summary);
-            var div_33 = sibling(summary, 2);
-            var div_34 = child(div_33);
-            var p_2 = child(div_34);
-            var text_21 = child(p_2, true);
-            reset(p_2);
-            var div_35 = sibling(p_2, 2);
-            var node_5 = sibling(child(div_35), 2);
-            each(node_5, 16, () => get2(issue).pages, (p) => p, ($$anchor5, p) => {
-              var span_15 = root_4();
-              var text_22 = child(span_15, true);
-              reset(span_15);
-              template_effect(() => set_text(text_22, p));
-              append($$anchor5, span_15);
-            });
-            reset(div_35);
-            reset(div_34);
-            reset(div_33);
-            reset(details);
-            template_effect(
-              ($0, $1, $2) => {
-                set_class(span_10, 1, `ssa-dot ${$0 ?? ""}`);
-                set_text(text_17, get2(issue).title);
-                set_class(span_12, 1, `ssa-badge ssa-badge-${$1 ?? ""}`);
-                set_text(text_18, $2);
-                set_text(text_19, get2(issue).category);
-                set_text(text_20, `${get2(issue).pages.length ?? ""} page${get2(issue).pages.length === 1 ? "" : "s"}`);
-                set_text(text_21, get2(issue).message);
-              },
-              [
-                () => statusDot(get2(issue).status),
-                () => statusBadge(get2(issue).status),
-                () => statusLabel(get2(issue).status)
-              ]
-            );
-            append($$anchor4, details);
-          });
-          reset(div_32);
-          append($$anchor3, div_32);
-        };
-        if_block(node_4, ($$render) => {
-          if (get2(filteredIssues).length === 0) $$render(consequent_1);
-          else $$render(alternate, -1);
-        });
-      }
-      reset(div_29);
-      reset(div_25);
-      reset(div_18);
-      template_effect(
-        ($0, $1, $2) => {
-          classes_2 = set_class(button_3, 1, "ssa-toggle", null, classes_2, { "is-active": get2(sort) === "worst" });
-          classes_3 = set_class(button_4, 1, "ssa-toggle", null, classes_3, { "is-active": get2(sort) === "best" });
-          classes_4 = set_class(button_5, 1, "ssa-toggle", null, classes_4, { "is-active": get2(sort) === "az" });
-          set_text(text_12, `${get2(issues).length ?? ""} rules flagged across ${$$props.report.pagesScanned ?? ""} pages`);
-          classes_5 = set_class(button_6, 1, "ssa-toggle", null, classes_5, $0);
-          set_text(text_13, `Errors ${get2(totals).fail ?? ""}`);
-          classes_6 = set_class(button_7, 1, "ssa-toggle", null, classes_6, $1);
-          set_text(text_14, `Warnings ${get2(totals).warn ?? ""}`);
-          classes_7 = set_class(button_8, 1, "ssa-toggle", null, classes_7, $2);
-          set_text(text_15, `Info ${get2(totals).info ?? ""}`);
-        },
-        [
-          () => ({ "is-active": get2(sevFilter).includes("fail") }),
-          () => ({ "is-active": get2(sevFilter).includes("warn") }),
-          () => ({ "is-active": get2(sevFilter).includes("info") })
-        ]
-      );
-      delegated("click", button_3, () => set(sort, "worst"));
-      delegated("click", button_4, () => set(sort, "best"));
-      delegated("click", button_5, () => set(sort, "az"));
-      delegated("click", button_6, () => toggleSev("fail"));
-      delegated("click", button_7, () => toggleSev("warn"));
-      delegated("click", button_8, () => toggleSev("info"));
-      bind_select_value(select2, () => get2(catFilter), ($$value) => set(catFilter, $$value));
-      bind_value(input, () => get2(query), ($$value) => set(query, $$value));
-      append($$anchor2, div_18);
-    };
-    var alternate_2 = ($$anchor2) => {
-      var div_36 = root_6();
-      each(div_36, 23, () => $$props.report.pages, (page) => page.url, ($$anchor3, page) => {
-        const probs = user_derived(() => pageIssues(get2(page).findings));
-        var details_1 = root_11();
-        var summary_1 = child(details_1);
-        var span_16 = child(summary_1);
-        var span_17 = child(span_16);
-        var text_23 = child(span_17, true);
-        reset(span_17);
-        var span_18 = sibling(span_17, 2);
-        var text_24 = child(span_18, true);
-        reset(span_18);
-        var span_19 = sibling(span_18, 2);
-        var text_25 = child(span_19);
-        reset(span_19);
-        reset(span_16);
-        reset(summary_1);
-        var div_37 = sibling(summary_1, 2);
-        var node_6 = child(div_37);
-        {
-          var consequent_3 = ($$anchor4) => {
-            var p_3 = root_8();
-            append($$anchor4, p_3);
-          };
-          var alternate_1 = ($$anchor4) => {
-            var table = root_10();
-            var tbody = sibling(child(table));
-            each(tbody, 23, () => get2(probs), (f, fi) => `${f.ruleId}-${fi}`, ($$anchor5, f) => {
-              var tr = root_9();
-              var td = child(tr);
-              var span_20 = child(td);
-              var text_26 = child(span_20, true);
-              reset(span_20);
-              reset(td);
-              var td_1 = sibling(td);
-              var text_27 = child(td_1, true);
-              reset(td_1);
-              var td_2 = sibling(td_1);
-              var text_28 = child(td_2, true);
-              reset(td_2);
-              reset(tr);
-              template_effect(
-                ($0, $1) => {
-                  set_class(span_20, 1, `ssa-badge ssa-badge-${$0 ?? ""}`);
-                  set_text(text_26, $1);
-                  set_text(text_27, get2(f).title);
-                  set_text(text_28, get2(f).message);
-                },
-                [
-                  () => statusBadge(get2(f).status),
-                  () => statusLabel(get2(f).status)
-                ]
-              );
-              append($$anchor5, tr);
-            });
-            reset(tbody);
-            reset(table);
-            append($$anchor4, table);
-          };
-          if_block(node_6, ($$render) => {
-            if (get2(probs).length === 0) $$render(consequent_3);
-            else $$render(alternate_1, -1);
-          });
-        }
-        reset(div_37);
-        reset(details_1);
-        template_effect(
-          ($0) => {
-            set_class(span_17, 1, `ssa-badge ssa-badge-${$0 ?? ""}`);
-            set_text(text_23, get2(page).score);
-            set_text(text_24, get2(page).url);
-            set_text(text_25, `${get2(probs).length ?? ""} issue${get2(probs).length === 1 ? "" : "s"}`);
-          },
-          [() => scoreVariant(get2(page).score)]
-        );
-        append($$anchor3, details_1);
-      });
-      reset(div_36);
-      append($$anchor2, div_36);
-    };
-    if_block(node_2, ($$render) => {
-      if (get2(tab) === "categories") $$render(consequent_2);
-      else $$render(alternate_2, -1);
-    });
-  }
-  reset(div_16);
-  reset(div);
-  template_effect(
-    ($0, $1, $2, $3, $4, $5, $6) => {
-      set_text(text4, $0);
-      set_class(span_1, 1, `ssa-badge ssa-badge-${$1 ?? ""}`);
-      set_text(text_1, `Grade ${$2 ?? ""}`);
-      set_text(text_2, $$props.report.startUrl);
-      set_text(text_3, `${$3 ?? ""} \xB7 ${$$props.report.pagesScanned ?? ""} pages crawled`);
-      set_text(text_4, get2(totals).pass);
-      set_text(text_5, `Passed \xB7 ${$4 ?? ""}%`);
-      set_text(text_6, get2(totals).warn);
-      set_text(text_7, `Warnings \xB7 ${$5 ?? ""}%`);
-      set_text(text_8, get2(totals).fail);
-      set_text(text_9, `Failed \xB7 ${$6 ?? ""}%`);
-      classes = set_class(button_1, 1, "ssa-tab", null, classes, { "is-active": get2(tab) === "categories" });
-      classes_1 = set_class(button_2, 1, "ssa-tab", null, classes_1, { "is-active": get2(tab) === "pages" });
-    },
-    [
-      () => hostOf($$props.report.startUrl),
-      () => gradeVariant($$props.report.score),
-      () => grade($$props.report.score),
-      () => formatDate($$props.report.generatedAt),
-      () => pct(get2(totals).pass, get2(totals).total),
-      () => pct(get2(totals).warn, get2(totals).total),
-      () => pct(get2(totals).fail, get2(totals).total)
-    ]
-  );
-  delegated("click", button_1, () => set(tab, "categories"));
-  delegated("click", button_2, () => set(tab, "pages"));
-  append($$anchor, div);
-  pop();
 }
-delegate(["click"]);
 
 // src/ui/RunAuditForm.svelte
-var root4 = from_html(`<span class="ssa-spinner"></span> Auditing\u2026`, 1);
-var root_13 = from_html(`<span></span> Run audit`, 1);
-var root_22 = from_html(`<div class="ssa-card ssa-card-narrow"><div class="ssa-card-header"><div><div class="ssa-card-title">Run a new audit</div> <div class="ssa-card-desc"> </div></div></div> <div class="ssa-card-content"><div class="ssa-field-group"><div class="ssa-field"><label class="ssa-field-label" for="ssa-url">Website URL</label> <input class="ssa-input" id="ssa-url" placeholder="https://example.com"/></div> <div class="ssa-field"><label class="ssa-field-label" for="ssa-pages">Pages</label> <input class="ssa-input" id="ssa-pages" type="number" min="1"/> <div class="ssa-field-desc"> </div></div></div></div> <div class="ssa-card-footer"><button class="ssa-btn ssa-btn-primary"><!></button></div></div>`);
+var root7 = from_html(`<span class="ssa-spinner"></span> Auditing`, 1);
+var root_15 = from_html(`<span></span> Run audit`, 1);
+var root_25 = from_html(`<div class="ssa-progress-sub"> </div>`);
+var root_35 = from_html(`<div class="ssa-progress-url"> </div>`);
+var root_45 = from_html(`<div class="ssa-progress"><div class="ssa-progress-head"><span class="ssa-progress-phase"> </span> <span class="ssa-progress-pct"> </span></div> <div class="ssa-progress-track"><span class="ssa-progress-fill"></span></div> <!> <!></div>`);
+var root_55 = from_html(`<div class="ssa-newrun"><div class="ssa-newrun-intro"><h2 class="ssa-newrun-title">Audit a site</h2> <p class="ssa-newrun-lede">Crawls the site, checks every page against 94 rules, and writes the report to <span class="ssa-newrun-folder"> </span> as Markdown, JSON and HTML.</p></div> <div class="ssa-field-group"><div class="ssa-field"><label class="ssa-field-label" for="ssa-url">Website URL</label> <input class="ssa-input ssa-input-lg" id="ssa-url" placeholder="https://example.com"/></div> <div class="ssa-field"><label class="ssa-field-label" for="ssa-pages">Pages to crawl</label> <input class="ssa-input ssa-input-num" id="ssa-pages" type="number" min="1"/> <div class="ssa-field-desc"> </div></div></div> <div class="ssa-newrun-actions"><button class="ssa-btn mod-cta"><!></button></div> <!></div>`);
 function RunAuditForm($$anchor, $$props) {
   push($$props, true);
-  let url = state("");
+  let url = prop($$props, "url", 15, "");
   let pages = state("");
+  const percent = user_derived(() => $$props.progress ? progressPercent($$props.progress) : 0);
+  const phaseText = user_derived(() => {
+    if (!$$props.progress) return "";
+    if ($$props.progress.phase === "crawling") {
+      return `Crawling \xB7 ${$$props.progress.pagesFound} of up to ${$$props.progress.pagesTotal} pages found`;
+    }
+    if ($$props.progress.phase === "checking") {
+      return `Checking \xB7 ${$$props.progress.pagesDone} of ${$$props.progress.pagesTotal} pages audited`;
+    }
+    return "Writing the report";
+  });
   function submit() {
-    $$props.onSubmit(get2(url).trim(), get2(pages) ? Number(get2(pages)) : void 0);
+    $$props.onSubmit(url().trim(), get2(pages) ? Number(get2(pages)) : void 0);
   }
-  var div = root_22();
+  var div = root_55();
   var div_1 = child(div);
-  var div_2 = child(div_1);
-  var div_3 = sibling(child(div_2), 2);
-  var text4 = child(div_3);
-  reset(div_3);
-  reset(div_2);
+  var p = sibling(child(div_1), 2);
+  var span = sibling(child(p));
+  var text5 = child(span, true);
+  reset(span);
+  next();
+  reset(p);
   reset(div_1);
-  var div_4 = sibling(div_1, 2);
-  var div_5 = child(div_4);
-  var div_6 = child(div_5);
-  var input = sibling(child(div_6), 2);
+  var div_2 = sibling(div_1, 2);
+  var div_3 = child(div_2);
+  var input = sibling(child(div_3), 2);
   remove_input_defaults(input);
-  reset(div_6);
-  var div_7 = sibling(div_6, 2);
-  var input_1 = sibling(child(div_7), 2);
+  reset(div_3);
+  var div_4 = sibling(div_3, 2);
+  var input_1 = sibling(child(div_4), 2);
   remove_input_defaults(input_1);
-  var div_8 = sibling(input_1, 2);
-  var text_1 = child(div_8);
-  reset(div_8);
-  reset(div_7);
+  var div_5 = sibling(input_1, 2);
+  var text_1 = child(div_5);
   reset(div_5);
   reset(div_4);
-  var div_9 = sibling(div_4, 2);
-  var button = child(div_9);
+  reset(div_2);
+  var div_6 = sibling(div_2, 2);
+  var button = child(div_6);
   var node = child(button);
   {
     var consequent = ($$anchor2) => {
-      var fragment = root4();
+      var fragment = root7();
       next();
       append($$anchor2, fragment);
     };
     var alternate = ($$anchor2) => {
-      var fragment_1 = root_13();
-      var span = first_child(fragment_1);
-      action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "play");
+      var fragment_1 = root_15();
+      var span_1 = first_child(fragment_1);
+      action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "play");
       next();
       append($$anchor2, fragment_1);
     };
@@ -24159,21 +25653,77 @@ function RunAuditForm($$anchor, $$props) {
     });
   }
   reset(button);
-  reset(div_9);
+  reset(div_6);
+  var node_1 = sibling(div_6, 2);
+  {
+    var consequent_3 = ($$anchor2) => {
+      var div_7 = root_45();
+      var div_8 = child(div_7);
+      var span_2 = child(div_8);
+      var text_2 = child(span_2, true);
+      reset(span_2);
+      var span_3 = sibling(span_2, 2);
+      var text_3 = child(span_3);
+      reset(span_3);
+      reset(div_8);
+      var div_9 = sibling(div_8, 2);
+      var span_4 = child(div_9);
+      reset(div_9);
+      var node_2 = sibling(div_9, 2);
+      {
+        var consequent_1 = ($$anchor3) => {
+          var div_10 = root_25();
+          var text_4 = child(div_10);
+          reset(div_10);
+          template_effect(($0, $1) => set_text(text_4, `${$0 ?? ""} of ${$1 ?? ""} checks`), [
+            () => $$props.progress.checksDone.toLocaleString(),
+            () => $$props.progress.checksTotal.toLocaleString()
+          ]);
+          append($$anchor3, div_10);
+        };
+        if_block(node_2, ($$render) => {
+          if ($$props.progress.checksTotal > 0) $$render(consequent_1);
+        });
+      }
+      var node_3 = sibling(node_2, 2);
+      {
+        var consequent_2 = ($$anchor3) => {
+          var div_11 = root_35();
+          var text_5 = child(div_11, true);
+          reset(div_11);
+          template_effect(() => set_text(text_5, $$props.progress.url));
+          append($$anchor3, div_11);
+        };
+        if_block(node_3, ($$render) => {
+          if ($$props.progress.url) $$render(consequent_2);
+        });
+      }
+      reset(div_7);
+      template_effect(() => {
+        set_text(text_2, get2(phaseText));
+        set_text(text_3, `${get2(percent) ?? ""}%`);
+        set_style(span_4, `width:${get2(percent) ?? ""}%`);
+      });
+      append($$anchor2, div_7);
+    };
+    if_block(node_1, ($$render) => {
+      if ($$props.running && $$props.progress) $$render(consequent_3);
+    });
+  }
   reset(div);
   template_effect(
     ($0) => {
-      set_text(text4, `Crawls the site and saves the report to \u201C${$$props.folder ?? ""}\u201D.`);
+      set_text(text5, $$props.folder);
       input.disabled = $$props.running;
       set_attribute2(input_1, "placeholder", $0);
       input_1.disabled = $$props.running;
-      set_text(text_1, `Leave empty to crawl up to ${$$props.defaultPages ?? ""} pages. Multi-page crawls can take a minute.`);
+      set_text(text_1, `Empty crawls up to ${$$props.defaultPages ?? ""}. Large crawls take a few minutes.`);
       button.disabled = $$props.running;
     },
     [() => String($$props.defaultPages)]
   );
   delegated("keydown", input, (e) => e.key === "Enter" && submit());
-  bind_value(input, () => get2(url), ($$value) => set(url, $$value));
+  bind_value(input, url);
   bind_value(input_1, () => get2(pages), ($$value) => set(pages, $$value));
   delegated("click", button, submit);
   append($$anchor, div);
@@ -24182,190 +25732,229 @@ function RunAuditForm($$anchor, $$props) {
 delegate(["keydown", "click"]);
 
 // src/ui/Dashboard.svelte
-var root5 = from_html(`<p class="ssa-empty-note">No audits yet.</p>`);
-var root_14 = from_html(`<button><span class="ssa-audit-row-top"><span class="ssa-audit-row-host"> </span> <span> </span></span> <span class="ssa-audit-row-date"> </span></button>`);
-var root_23 = from_html(`<div class="ssa-empty"><div class="ssa-empty-media"><span></span></div> <div class="ssa-empty-title">No audit selected</div> <div class="ssa-empty-desc">Pick an audit from the sidebar, or run a new one.</div> <button class="ssa-btn ssa-btn-primary ssa-mt"><span></span> New audit</button></div>`);
-var root_32 = from_html(`<div class="ssa-layout"><aside class="ssa-sidebar"><div class="ssa-sidebar-head"><span></span> <span>Safi Site Audit</span> <button class="ssa-btn ssa-btn-primary ssa-btn-sm ssa-spacer"><span></span> New</button></div> <div class="ssa-sidebar-list"><!></div></aside> <main class="ssa-main"><!></main></div>`);
+var root8 = from_html(`<div class="ssa-blank"><h2 class="ssa-blank-title">Nothing selected</h2> <p class="ssa-blank-text">Pick a run from the sidebar, or audit a site. Every run is saved as Markdown, JSON and
+				HTML in a folder named after the site.</p> <button class="ssa-btn mod-cta"><span></span> New audit</button></div>`);
+var root_16 = from_html(`<div class="ssa-view"><!></div>`);
 function Dashboard($$anchor, $$props) {
   push($$props, true);
-  let items = state(proxy([]));
+  let plugin = prop($$props, "plugin", 7);
   let mode = state("empty");
-  let selected = state(null);
-  let selectedPath = state(null);
+  let report = state(null);
+  let path = state(null);
   let running = state(false);
-  function refresh() {
-    set(items, listAudits($$props.plugin.app, $$props.plugin.settings), true);
+  let progress = state(null);
+  let draftUrl = state("");
+  function sync() {
+    set(mode, plugin().state.mode, true);
+    set(report, plugin().state.report, true);
+    set(path, plugin().state.path, true);
+    set(running, plugin().state.running, true);
+    set(progress, plugin().state.progress, true);
+    set(draftUrl, plugin().state.draftUrl, true);
   }
   onMount(() => {
-    refresh();
-    const ref = $$props.plugin.app.metadataCache.on("resolved", refresh);
-    return () => $$props.plugin.app.metadataCache.offref(ref);
+    sync();
+    const ref = plugin().state.onChange(sync);
+    return () => plugin().state.offref(ref);
   });
-  function startNew() {
-    set(mode, "new");
-    set(selected, null);
-    set(selectedPath, null);
-  }
-  async function open(item) {
-    const report = await readAudit($$props.plugin.app, item.file);
-    if (!report) {
-      new import_obsidian6.Notice("Could not read this audit's report data.");
-      return;
-    }
-    set(selected, report, true);
-    set(selectedPath, item.file.path, true);
-    set(mode, "detail");
-  }
-  async function run3(url, pages) {
-    if (!url) {
-      new import_obsidian6.Notice("Enter a URL to audit.");
-      return;
-    }
-    set(running, true);
-    try {
-      const report = await runAudit({ url, maxPages: pages }, $$props.plugin.settings);
-      const file = await saveAudit($$props.plugin.app, $$props.plugin.settings, report);
-      set(selected, report, true);
-      set(selectedPath, file.path, true);
-      set(mode, "detail");
-      set(
-        items,
-        [
-          {
-            file,
-            url: report.startUrl,
-            date: report.generatedAt,
-            score: report.score,
-            pages: report.pagesScanned
-          },
-          ...get2(items).filter((i) => i.file.path !== file.path)
-        ],
-        true
-      );
-      new import_obsidian6.Notice(`Audit saved: ${file.name}`);
-    } catch (e) {
-      new import_obsidian6.Notice(`Audit failed: ${e.message}`);
-    } finally {
-      set(running, false);
-    }
-  }
-  var div = root_32();
-  var aside = child(div);
-  var div_1 = child(aside);
-  var span = child(div_1);
-  action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "gauge");
-  var button = sibling(span, 4);
-  var span_1 = child(button);
-  action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "plus");
-  next();
-  reset(button);
-  reset(div_1);
-  var div_2 = sibling(div_1, 2);
-  var node = child(div_2);
+  user_effect(() => {
+    plugin().state.draftUrl = get2(draftUrl);
+  });
+  var div = root_16();
+  var node = child(div);
   {
     var consequent = ($$anchor2) => {
-      var p = root5();
-      append($$anchor2, p);
-    };
-    var alternate = ($$anchor2) => {
-      var fragment = comment();
-      var node_1 = first_child(fragment);
-      each(node_1, 17, () => get2(items), (item) => item.file.path, ($$anchor3, item) => {
-        var button_1 = root_14();
-        let classes;
-        var span_2 = child(button_1);
-        var span_3 = child(span_2);
-        var text4 = child(span_3, true);
-        reset(span_3);
-        var span_4 = sibling(span_3, 2);
-        var text_1 = child(span_4, true);
-        reset(span_4);
-        reset(span_2);
-        var span_5 = sibling(span_2, 2);
-        var text_2 = child(span_5, true);
-        reset(span_5);
-        reset(button_1);
-        template_effect(
-          ($0, $1, $2) => {
-            classes = set_class(button_1, 1, "ssa-audit-row", null, classes, { "is-active": get2(selectedPath) === get2(item).file.path });
-            set_text(text4, $0);
-            set_class(span_4, 1, `ssa-badge ssa-badge-${$1 ?? ""}`);
-            set_text(text_1, get2(item).score);
-            set_text(text_2, $2);
-          },
-          [
-            () => hostOf(get2(item).url),
-            () => scoreVariant(get2(item).score),
-            () => formatDate(get2(item).date)
-          ]
-        );
-        delegated("click", button_1, () => open(get2(item)));
-        append($$anchor3, button_1);
-      });
-      append($$anchor2, fragment);
-    };
-    if_block(node, ($$render) => {
-      if (get2(items).length === 0) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  reset(div_2);
-  reset(aside);
-  var main = sibling(aside, 2);
-  var node_2 = child(main);
-  {
-    var consequent_1 = ($$anchor2) => {
       ReportView($$anchor2, {
         get report() {
-          return get2(selected);
+          return get2(report);
         },
         get path() {
-          return get2(selectedPath);
+          return get2(path);
         },
         get plugin() {
-          return $$props.plugin;
-        }
+          return plugin();
+        },
+        onRerun: (url) => plugin().startNewAudit(url)
       });
     };
-    var consequent_2 = ($$anchor2) => {
+    var consequent_1 = ($$anchor2) => {
       RunAuditForm($$anchor2, {
         get defaultPages() {
-          return $$props.plugin.settings.defaultMaxPages;
+          return plugin().settings.defaultMaxPages;
         },
         get folder() {
-          return $$props.plugin.settings.auditFolder;
+          return plugin().settings.auditFolder;
         },
         get running() {
           return get2(running);
         },
-        onSubmit: run3
+        get progress() {
+          return get2(progress);
+        },
+        onSubmit: (url, pages) => void plugin().runAndSave(url, pages),
+        get url() {
+          return get2(draftUrl);
+        },
+        set url($$value) {
+          set(draftUrl, $$value, true);
+        }
       });
     };
-    var alternate_1 = ($$anchor2) => {
-      var div_3 = root_23();
-      var div_4 = child(div_3);
-      var span_6 = child(div_4);
-      action(span_6, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "gauge");
-      reset(div_4);
-      var button_2 = sibling(div_4, 6);
-      var span_7 = child(button_2);
-      action(span_7, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "plus");
+    var alternate = ($$anchor2) => {
+      var div_1 = root8();
+      var button = sibling(child(div_1), 4);
+      var span = child(button);
+      action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "plus");
       next();
-      reset(button_2);
-      reset(div_3);
-      delegated("click", button_2, startNew);
-      append($$anchor2, div_3);
+      reset(button);
+      reset(div_1);
+      delegated("click", button, () => plugin().startNewAudit());
+      append($$anchor2, div_1);
     };
-    if_block(node_2, ($$render) => {
-      if (get2(mode) === "detail" && get2(selected)) $$render(consequent_1);
-      else if (get2(mode) === "new") $$render(consequent_2, 1);
-      else $$render(alternate_1, -1);
+    if_block(node, ($$render) => {
+      if (get2(mode) === "detail" && get2(report)) $$render(consequent);
+      else if (get2(mode) === "new") $$render(consequent_1, 1);
+      else $$render(alternate, -1);
     });
   }
-  reset(main);
+  reset(div);
+  append($$anchor, div);
+  pop();
+}
+delegate(["click"]);
+
+// src/ui/AuditList.svelte
+var root9 = from_html(`<div class="ssa-rail-filter"><input class="ssa-input" placeholder="Find a site"/></div>`);
+var root_17 = from_html(`<p class="ssa-rail-note">Nothing audited yet.</p>`);
+var root_26 = from_html(`<p class="ssa-rail-note"> </p>`);
+var root_36 = from_html(`<button><span class="ssa-run-date"> </span> <span class="ssa-run-pages"> </span> <span> </span></button>`);
+var root_46 = from_html(`<section class="ssa-site"><h3 class="ssa-site-host"> </h3> <!></section>`);
+var root_56 = from_html(`<div class="ssa-rail"><div class="ssa-rail-head"><span class="ssa-rail-mark"></span> <span class="ssa-rail-name">Site audits</span></div> <div class="ssa-rail-actions"><button class="ssa-btn ssa-btn-block mod-cta"><span></span> New audit</button></div> <!> <div class="ssa-rail-list"><!></div></div>`);
+function AuditList($$anchor, $$props) {
+  push($$props, true);
+  let items = state(proxy([]));
+  let activePath = state(null);
+  let running = state(false);
+  let filter4 = state("");
+  const groups = user_derived(() => {
+    const q = get2(filter4).trim().toLowerCase();
+    return groupBySite(q ? get2(items).filter((i) => i.url.toLowerCase().includes(q)) : get2(items));
+  });
+  function refresh() {
+    set(items, listAudits($$props.plugin.app, $$props.plugin.settings), true);
+  }
+  function sync() {
+    set(activePath, $$props.plugin.state.path, true);
+    set(running, $$props.plugin.state.running, true);
+    refresh();
+  }
+  onMount(() => {
+    sync();
+    const cacheRef = $$props.plugin.app.metadataCache.on("resolved", refresh);
+    const stateRef = $$props.plugin.state.onChange(sync);
+    return () => {
+      $$props.plugin.app.metadataCache.offref(cacheRef);
+      $$props.plugin.state.offref(stateRef);
+    };
+  });
+  var div = root_56();
+  var div_1 = child(div);
+  var span = child(div_1);
+  action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "gauge");
+  next(2);
+  reset(div_1);
+  var div_2 = sibling(div_1, 2);
+  var button = child(div_2);
+  var span_1 = child(button);
+  action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "plus");
+  next();
+  reset(button);
+  reset(div_2);
+  var node = sibling(div_2, 2);
+  {
+    var consequent = ($$anchor2) => {
+      var div_3 = root9();
+      var input = child(div_3);
+      remove_input_defaults(input);
+      reset(div_3);
+      bind_value(input, () => get2(filter4), ($$value) => set(filter4, $$value));
+      append($$anchor2, div_3);
+    };
+    if_block(node, ($$render) => {
+      if (get2(items).length > 0) $$render(consequent);
+    });
+  }
+  var div_4 = sibling(node, 2);
+  var node_1 = child(div_4);
+  {
+    var consequent_1 = ($$anchor2) => {
+      var p = root_17();
+      append($$anchor2, p);
+    };
+    var consequent_2 = ($$anchor2) => {
+      var p_1 = root_26();
+      var text5 = child(p_1);
+      reset(p_1);
+      template_effect(() => set_text(text5, `No site matches \u201C${get2(filter4) ?? ""}\u201D.`));
+      append($$anchor2, p_1);
+    };
+    var alternate = ($$anchor2) => {
+      var fragment = comment();
+      var node_2 = first_child(fragment);
+      each(node_2, 17, () => get2(groups), (group) => group.host, ($$anchor3, group) => {
+        var section = root_46();
+        var h3 = child(section);
+        var text_1 = child(h3, true);
+        reset(h3);
+        var node_3 = sibling(h3, 2);
+        each(node_3, 17, () => get2(group).runs, (item) => item.file.path, ($$anchor4, item) => {
+          var button_1 = root_36();
+          let classes;
+          var span_2 = child(button_1);
+          var text_2 = child(span_2, true);
+          reset(span_2);
+          var span_3 = sibling(span_2, 2);
+          var text_3 = child(span_3);
+          reset(span_3);
+          var span_4 = sibling(span_3, 2);
+          var text_4 = child(span_4, true);
+          reset(span_4);
+          reset(button_1);
+          template_effect(
+            ($0, $1) => {
+              classes = set_class(button_1, 1, "ssa-run-row", null, classes, { "is-on": get2(activePath) === get2(item).file.path });
+              set_text(text_2, $0);
+              set_text(text_3, `${get2(item).pages ?? ""} pages`);
+              set_class(span_4, 1, `ssa-run-score ${$1 ?? ""}`);
+              set_text(text_4, get2(item).score);
+            },
+            [
+              () => formatDateShort(get2(item).date),
+              () => scoreTone(get2(item).score)
+            ]
+          );
+          delegated("click", button_1, () => void $$props.plugin.openAudit(get2(item)));
+          append($$anchor4, button_1);
+        });
+        reset(section);
+        template_effect(() => {
+          set_attribute2(h3, "title", get2(group).host);
+          set_text(text_1, get2(group).host);
+        });
+        append($$anchor3, section);
+      });
+      append($$anchor2, fragment);
+    };
+    if_block(node_1, ($$render) => {
+      if (get2(items).length === 0) $$render(consequent_1);
+      else if (get2(groups).length === 0) $$render(consequent_2, 1);
+      else $$render(alternate, -1);
+    });
+  }
+  reset(div_4);
   reset(div);
   template_effect(() => button.disabled = get2(running));
-  delegated("click", button, startNew);
+  delegated("click", button, () => $$props.plugin.startNewAudit());
   append($$anchor, div);
   pop();
 }
@@ -24373,25 +25962,17 @@ delegate(["click"]);
 
 // src/view.ts
 var VIEW_TYPE_SITE_AUDIT = "safi-site-audit-view";
-var AuditDashboardView = class extends import_obsidian7.ItemView {
+var VIEW_TYPE_SITE_AUDIT_LIST = "safi-site-audit-list";
+var SvelteView = class extends import_obsidian6.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.plugin = plugin;
   }
   component = null;
-  getViewType() {
-    return VIEW_TYPE_SITE_AUDIT;
-  }
-  getDisplayText() {
-    return "Site Audit";
-  }
-  getIcon() {
-    return "gauge";
-  }
   async onOpen() {
     this.contentEl.empty();
-    this.contentEl.addClass("safi-site-audit");
-    this.component = mount(Dashboard, {
+    this.contentEl.addClass(this.rootClass());
+    this.component = mount(this.root(), {
       target: this.contentEl,
       props: { plugin: this.plugin }
     });
@@ -24403,27 +25984,157 @@ var AuditDashboardView = class extends import_obsidian7.ItemView {
     }
   }
 };
+var AuditDashboardView = class extends SvelteView {
+  getViewType() {
+    return VIEW_TYPE_SITE_AUDIT;
+  }
+  getDisplayText() {
+    return "Site Audit";
+  }
+  getIcon() {
+    return "gauge";
+  }
+  rootClass() {
+    return "safi-site-audit";
+  }
+  root() {
+    return Dashboard;
+  }
+};
+var AuditListView = class extends SvelteView {
+  getViewType() {
+    return VIEW_TYPE_SITE_AUDIT_LIST;
+  }
+  getDisplayText() {
+    return "Site audits";
+  }
+  getIcon() {
+    return "gauge";
+  }
+  rootClass() {
+    return "safi-site-audit-list";
+  }
+  root() {
+    return AuditList;
+  }
+};
+
+// src/audit-state.ts
+var import_obsidian7 = require("obsidian");
+var AuditState = class extends import_obsidian7.Events {
+  mode = "empty";
+  path = null;
+  report = null;
+  /** Kept across view switches so "Run again" can prefill the form. */
+  draftUrl = "";
+  running = false;
+  progress = null;
+  showReport(path, report) {
+    this.mode = "detail";
+    this.path = path;
+    this.report = report;
+    this.changed();
+  }
+  showRunForm(url = "") {
+    if (url) this.draftUrl = url;
+    this.mode = "new";
+    this.path = null;
+    this.report = null;
+    this.changed();
+  }
+  setRunning(running, progress = null) {
+    this.running = running;
+    this.progress = progress;
+    this.changed();
+  }
+  /** Also what the list listens to when a finished run adds a note. */
+  changed() {
+    this.trigger("change");
+  }
+  onChange(cb) {
+    return this.on("change", cb);
+  }
+};
 
 // src/main.ts
 var SafiSiteAuditPlugin = class extends import_obsidian8.Plugin {
   settings = DEFAULT_SETTINGS;
+  /** Shared by the sidebar list and the dashboard tab. */
+  state = new AuditState();
   async onload() {
     await this.loadSettings();
     this.registerView(VIEW_TYPE_SITE_AUDIT, (leaf) => new AuditDashboardView(leaf, this));
-    this.addRibbonIcon("gauge", "Open Safi Site Audit", () => this.activateView());
+    this.registerView(VIEW_TYPE_SITE_AUDIT_LIST, (leaf) => new AuditListView(leaf, this));
+    this.addRibbonIcon("gauge", "Open Safi Site Audit", () => {
+      void this.openWorkspace();
+    });
     this.addCommand({
       id: "open-site-audit-dashboard",
       name: "Open dashboard",
-      callback: () => this.activateView()
+      callback: () => void this.openWorkspace()
+    });
+    this.addCommand({
+      id: "run-site-audit",
+      name: "Run a new audit",
+      callback: () => {
+        this.state.showRunForm();
+        void this.openWorkspace();
+      }
     });
     this.addSettingTab(new SafiSiteAuditSettingTab(this.app, this));
   }
-  async activateView() {
+  /** Sidebar list on the left, report in a main-area tab. */
+  async openWorkspace() {
+    await this.activateList();
+    await this.activateDashboard();
+  }
+  async activateDashboard() {
     const { workspace } = this.app;
-    const existing = workspace.getLeavesOfType(VIEW_TYPE_SITE_AUDIT)[0];
-    const leaf = existing ?? workspace.getLeaf("tab");
+    const leaf = workspace.getLeavesOfType(VIEW_TYPE_SITE_AUDIT)[0] ?? workspace.getLeaf("tab");
     await leaf.setViewState({ type: VIEW_TYPE_SITE_AUDIT, active: true });
     await workspace.revealLeaf(leaf);
+  }
+  async activateList() {
+    const { workspace } = this.app;
+    const existing = workspace.getLeavesOfType(VIEW_TYPE_SITE_AUDIT_LIST)[0];
+    const leaf = existing ?? workspace.getLeftLeaf(false);
+    if (!leaf) return;
+    await leaf.setViewState({ type: VIEW_TYPE_SITE_AUDIT_LIST, active: true });
+    await workspace.revealLeaf(leaf);
+  }
+  /** Picked from the sidebar: load the report and show it in the dashboard tab. */
+  async openAudit(item) {
+    const report = await readAudit(this.app, item.file);
+    if (!report) {
+      new import_obsidian8.Notice("Could not read this audit's report data.");
+      return;
+    }
+    this.state.showReport(item.file.path, report);
+    await this.activateDashboard();
+  }
+  startNewAudit(url = "") {
+    this.state.showRunForm(url);
+    void this.activateDashboard();
+  }
+  /** Runs the crawl, saves the three exports, and shows the result. */
+  async runAndSave(url, maxPages) {
+    if (!url) {
+      new import_obsidian8.Notice("Enter a URL to audit.");
+      return;
+    }
+    this.state.setRunning(true);
+    try {
+      const report = await runAudit({ url, maxPages }, this.settings, (progress) => {
+        this.state.setRunning(true, progress);
+      });
+      const { note } = await saveAudit(this.app, this.settings, report);
+      this.state.showReport(note.path, report);
+      new import_obsidian8.Notice(`Audit saved to ${note.parent?.path ?? this.settings.auditFolder}`);
+    } catch (e) {
+      new import_obsidian8.Notice(`Audit failed: ${e.message}`);
+    } finally {
+      this.state.setRunning(false);
+    }
   }
   async loadSettings() {
     const saved = await this.loadData();

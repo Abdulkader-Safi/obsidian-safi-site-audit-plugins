@@ -1,31 +1,38 @@
 <script lang="ts">
-	let { value, size = 96 }: { value: number; size?: number } = $props();
+	import { grade, scoreTone } from "./helpers";
 
-	const stroke = 8;
+	let { value, size = 92 }: { value: number; size?: number } = $props();
+
+	const stroke = 6;
+	const clamped = $derived(Math.max(0, Math.min(100, value)));
 	const r = $derived((size - stroke) / 2);
 	const c = $derived(2 * Math.PI * r);
-	const offset = $derived(c * (1 - Math.max(0, Math.min(100, value)) / 100));
-	const color = $derived(value >= 80 ? "#10b981" : value >= 50 ? "#f59e0b" : "#ef4444");
+	const offset = $derived(c * (1 - clamped / 100));
+	const tone = $derived(scoreTone(clamped));
 </script>
 
-<div class="ssa-gauge" style="width:{size}px;height:{size}px">
-	<svg width={size} height={size} viewBox="0 0 {size} {size}">
+<div
+	class="ssa-gauge"
+	style="width:{size}px;height:{size}px"
+	role="img"
+	aria-label="Health score {Math.round(clamped)} out of 100, grade {grade(clamped)}"
+>
+	<svg width={size} height={size} viewBox="0 0 {size} {size}" aria-hidden="true">
 		<circle cx={size / 2} cy={size / 2} {r} fill="none" stroke-width={stroke} class="ssa-gauge-track" />
 		<circle
 			cx={size / 2}
 			cy={size / 2}
 			{r}
 			fill="none"
-			stroke={color}
 			stroke-width={stroke}
 			stroke-linecap="round"
 			stroke-dasharray={c}
 			stroke-dashoffset={offset}
-			style="transition: stroke-dashoffset 600ms ease"
+			class="ssa-gauge-arc {tone}"
 		/>
 	</svg>
 	<div class="ssa-gauge-center">
-		<span class="ssa-gauge-value">{Math.round(value)}</span>
-		<span class="ssa-gauge-label">Score</span>
+		<span class="ssa-gauge-value">{Math.round(clamped)}</span>
+		<span class="ssa-gauge-grade">Grade {grade(clamped)}</span>
 	</div>
 </div>

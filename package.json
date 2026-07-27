@@ -1,6 +1,6 @@
 {
 	"name": "safi-site-audit",
-	"version": "0.5.2",
+	"version": "0.6.0",
 	"description": "Obsidian plugin that runs website audits and saves them as Markdown notes.",
 	"type": "module",
 	"license": "MIT",
@@ -11,7 +11,7 @@
 		"version": "node version-bump.mjs && git add manifest.json versions.json"
 	},
 	"dependencies": {
-		"safi-studio-scanner": "github:Abdulkader-Safi/Safi-Studio-Scanner#v1.0.0"
+		"safi-studio-scanner": "^1.0.2"
 	},
 	"devDependencies": {
 		"@types/node": "^22.0.0",
