@@ -217,7 +217,7 @@
 	align-items: center;
 	justify-content: center;
 	gap: 0.4rem;
-	min-height: 30px;
+	min-height: var(--input-height);
 	padding: 0.4rem 0.85rem;
 	font-size: var(--font-ui-small);
 	line-height: 1.2;
@@ -236,7 +236,7 @@
 /* Full-width, unmistakable primary action at the top of the sidebar. */
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-btn-block {
 	width: 100%;
-	min-height: 34px;
+	min-height: calc(var(--input-height) + 4px);
 	font-size: var(--font-ui-small);
 	font-weight: var(--font-medium);
 }
@@ -257,7 +257,7 @@
 
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-input {
 	width: 100%;
-	min-height: 30px;
+	min-height: var(--input-height);
 	padding: 0.35rem 0.6rem;
 	font-size: var(--font-ui-small);
 	font-family: inherit;
@@ -267,7 +267,7 @@
 }
 /* These modifiers have to match the base rule's specificity to win. */
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-input-lg {
-	min-height: 36px;
+	min-height: calc(var(--input-height) + 6px);
 	padding: 0.5rem 0.7rem;
 	font-size: var(--font-ui-medium);
 }
@@ -281,9 +281,7 @@
 /* Selects carry Obsidian's own `dropdown` class, which supplies the arrow, so a
    dropdown always reads as a dropdown and not as a plain box. */
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-select {
-	min-height: 30px;
 	max-width: 100%;
-	font-size: var(--font-ui-small);
 	cursor: pointer;
 }
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-select-wide {
@@ -323,7 +321,7 @@
 	align-items: center;
 	justify-content: center;
 	gap: 0.35rem;
-	min-height: 26px;
+	min-height: calc(var(--input-height) - 4px);
 	margin: 0;
 	padding: 0 0.7rem;
 	border: none;
