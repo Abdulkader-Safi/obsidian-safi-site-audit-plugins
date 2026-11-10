@@ -69,7 +69,7 @@ var FolderSuggest = class extends import_obsidian.AbstractInputSuggest {
   }
   getSuggestions(query) {
     const lower = query.toLowerCase();
-    return this.app.vault.getAllLoadedFiles().filter((f) => f instanceof import_obsidian.TFolder && f.path.toLowerCase().contains(lower));
+    return this.app.vault.getAllFolders().filter((f) => f.path.toLowerCase().contains(lower));
   }
   renderSuggestion(folder, el) {
     el.setText(folder.path);
@@ -86,46 +86,93 @@ var SafiSiteAuditSettingTab = class extends import_obsidian.PluginSettingTab {
     super(app, plugin);
     this.plugin = plugin;
   }
+  positiveInt(value2, fallback2) {
+    const n = Number(value2);
+    return Number.isFinite(n) && n > 0 ? Math.floor(n) : fallback2;
+  }
+  rows() {
+    const s = this.plugin.settings;
+    const save2 = () => this.plugin.saveSettings();
+    return [
+      {
+        name: "Audit folder",
+        desc: "Vault folder where audit notes are saved and listed in the dashboard.",
+        aliases: ["location", "path"],
+        build: (setting) => setting.addText((text5) => {
+          text5.setPlaceholder("Site Audits").setValue(s.auditFolder).onChange(async (value2) => {
+            s.auditFolder = value2.trim() || "Site Audits";
+            await save2();
+          });
+          new FolderSuggest(this.app, text5.inputEl, (path) => {
+            s.auditFolder = path;
+            void save2();
+          });
+        })
+      },
+      {
+        name: "Default pages",
+        desc: "Pages to crawl when the run dialog's page field is left empty.",
+        aliases: ["max pages", "crawl limit"],
+        build: (setting) => setting.addText(
+          (text5) => text5.setPlaceholder("20").setValue(String(s.defaultMaxPages)).onChange(async (value2) => {
+            s.defaultMaxPages = this.positiveInt(value2, 20);
+            await save2();
+          })
+        )
+      },
+      {
+        name: "Concurrency",
+        desc: "How many pages to fetch in parallel.",
+        aliases: ["parallel", "speed"],
+        build: (setting) => setting.addText(
+          (text5) => text5.setPlaceholder("5").setValue(String(s.concurrency)).onChange(async (value2) => {
+            s.concurrency = this.positiveInt(value2, 5);
+            await save2();
+          })
+        )
+      },
+      {
+        name: "PageSpeed Insights API key",
+        desc: "Optional. Enables Core Web Vitals and accessibility checks via Google PSI.",
+        aliases: ["psi", "core web vitals", "google"],
+        build: (setting) => setting.addText((text5) => {
+          text5.inputEl.type = "password";
+          text5.setPlaceholder("AIza...").setValue(s.psiKey).onChange(async (value2) => {
+            s.psiKey = value2.trim();
+            await save2();
+          });
+        })
+      },
+      {
+        name: "User agent",
+        desc: "Optional override for the crawler's User-Agent header.",
+        aliases: ["crawler", "header"],
+        build: (setting) => setting.addText(
+          (text5) => text5.setPlaceholder("SafiStudioScanner/0.1").setValue(s.userAgent).onChange(async (value2) => {
+            s.userAgent = value2;
+            await save2();
+          })
+        )
+      }
+    ];
+  }
+  // Obsidian 1.13+ renders the tab from these, and indexes them for settings search.
+  getSettingDefinitions() {
+    return this.rows().map(({ name, desc, aliases: aliases2, build }) => ({
+      name,
+      desc,
+      aliases: aliases2,
+      render: (setting) => build(setting)
+    }));
+  }
+  // ponytail: fallback for Obsidian 1.7.2 to 1.12, which never call getSettingDefinitions.
+  // Drop it once minAppVersion reaches 1.13.0.
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    new import_obsidian.Setting(containerEl).setName("Audit folder").setDesc("Vault folder where audit notes are saved and listed in the dashboard.").addText((text5) => {
-      text5.setPlaceholder("Site Audits").setValue(this.plugin.settings.auditFolder).onChange(async (value2) => {
-        this.plugin.settings.auditFolder = value2.trim() || "Site Audits";
-        await this.plugin.saveSettings();
-      });
-      new FolderSuggest(this.app, text5.inputEl, (path) => {
-        this.plugin.settings.auditFolder = path;
-        void this.plugin.saveSettings();
-      });
-    });
-    new import_obsidian.Setting(containerEl).setName("Default pages").setDesc("Pages to crawl when the run dialog's page field is left empty.").addText(
-      (text5) => text5.setPlaceholder("20").setValue(String(this.plugin.settings.defaultMaxPages)).onChange(async (value2) => {
-        const n = Number(value2);
-        this.plugin.settings.defaultMaxPages = Number.isFinite(n) && n > 0 ? Math.floor(n) : 20;
-        await this.plugin.saveSettings();
-      })
-    );
-    new import_obsidian.Setting(containerEl).setName("Concurrency").setDesc("How many pages to fetch in parallel.").addText(
-      (text5) => text5.setPlaceholder("5").setValue(String(this.plugin.settings.concurrency)).onChange(async (value2) => {
-        const n = Number(value2);
-        this.plugin.settings.concurrency = Number.isFinite(n) && n > 0 ? Math.floor(n) : 5;
-        await this.plugin.saveSettings();
-      })
-    );
-    new import_obsidian.Setting(containerEl).setName("PageSpeed Insights API key").setDesc("Optional. Enables Core Web Vitals and accessibility checks via Google PSI.").addText((text5) => {
-      text5.inputEl.type = "password";
-      text5.setPlaceholder("AIza\u2026").setValue(this.plugin.settings.psiKey).onChange(async (value2) => {
-        this.plugin.settings.psiKey = value2.trim();
-        await this.plugin.saveSettings();
-      });
-    });
-    new import_obsidian.Setting(containerEl).setName("User agent").setDesc("Optional override for the crawler's User-Agent header.").addText(
-      (text5) => text5.setPlaceholder("SafiStudioScanner/0.1").setValue(this.plugin.settings.userAgent).onChange(async (value2) => {
-        this.plugin.settings.userAgent = value2;
-        await this.plugin.saveSettings();
-      })
-    );
+    for (const row of this.rows()) {
+      row.build(new import_obsidian.Setting(containerEl).setName(row.name).setDesc(row.desc));
+    }
   }
 };
 
@@ -5861,7 +5908,7 @@ function prop(props, key2, flags2, fallback2) {
     var legacy_parent = props.$$legacy;
     return (
       /** @type {() => V} */
-      function(value2, mutation) {
+      (function(value2, mutation) {
         if (arguments.length > 0) {
           if (!runes || !mutation || legacy_parent || is_store_sub) {
             setter(mutation ? getter() : value2);
@@ -5869,7 +5916,7 @@ function prop(props, key2, flags2, fallback2) {
           return value2;
         }
         return getter();
-      }
+      })
     );
   }
   var overridden = false;
@@ -5887,7 +5934,7 @@ function prop(props, key2, flags2, fallback2) {
   );
   return (
     /** @type {() => V} */
-    function(value2, mutation) {
+    (function(value2, mutation) {
       if (arguments.length > 0) {
         const new_value = mutation ? get2(d) : runes && bindable ? proxy(value2) : value2;
         set(d, new_value);
@@ -5901,7 +5948,7 @@ function prop(props, key2, flags2, fallback2) {
         return d.v;
       }
       return get2(d);
-    }
+    })
   );
 }
 
@@ -8409,7 +8456,7 @@ var decodeMap2 = /* @__PURE__ */ new Map([
 ]);
 var fromCodePoint2 = (
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, n/no-unsupported-features/es-builtins
-  (_a2 = String.fromCodePoint) !== null && _a2 !== void 0 ? _a2 : (codePoint) => {
+  (_a2 = String.fromCodePoint) !== null && _a2 !== void 0 ? _a2 : ((codePoint) => {
     let output = "";
     if (codePoint > 65535) {
       codePoint -= 65536;
@@ -8418,7 +8465,7 @@ var fromCodePoint2 = (
     }
     output += String.fromCharCode(codePoint);
     return output;
-  }
+  })
 );
 function replaceCodePoint2(codePoint) {
   var _a5;
@@ -10002,7 +10049,7 @@ function parseDocument(data2, options) {
 var _a3;
 var hasOwn = (
   // @ts-expect-error `hasOwn` is a standard object method
-  (_a3 = Object.hasOwn) !== null && _a3 !== void 0 ? _a3 : (object, prop3) => Object.prototype.hasOwnProperty.call(object, prop3)
+  (_a3 = Object.hasOwn) !== null && _a3 !== void 0 ? _a3 : ((object, prop3) => Object.prototype.hasOwnProperty.call(object, prop3))
 );
 var rspace = /\s+/;
 var dataAttrPrefix = "data-";
@@ -24593,10 +24640,14 @@ async function ensureFolder(app, path) {
   }
 }
 function listAudits(app, settings) {
-  const prefix = `${(0, import_obsidian2.normalizePath)(settings.auditFolder)}/`;
+  const root10 = app.vault.getFolderByPath((0, import_obsidian2.normalizePath)(settings.auditFolder));
   const items = [];
-  for (const file of app.vault.getMarkdownFiles()) {
-    if (!file.path.startsWith(prefix)) continue;
+  if (!root10) return items;
+  const notes = [];
+  import_obsidian2.Vault.recurseChildren(root10, (f) => {
+    if (f instanceof import_obsidian2.TFile && f.extension === "md") notes.push(f);
+  });
+  for (const file of notes) {
     const fm = app.metadataCache.getFileCache(file)?.frontmatter;
     if (!fm?.ssa_audit) continue;
     items.push({
