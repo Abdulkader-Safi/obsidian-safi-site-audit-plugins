@@ -4803,23 +4803,23 @@ function index(_, i) {
 function pause_effects(state2, to_destroy, controlled_anchor) {
   var transitions = [];
   var length = to_destroy.length;
-  var group;
+  var group2;
   var remaining = to_destroy.length;
   for (var i = 0; i < length; i++) {
     let effect2 = to_destroy[i];
     pause_effect(
       effect2,
       () => {
-        if (group) {
-          group.pending.delete(effect2);
-          group.done.add(effect2);
-          if (group.pending.size === 0) {
+        if (group2) {
+          group2.pending.delete(effect2);
+          group2.done.add(effect2);
+          if (group2.pending.size === 0) {
             var groups = (
               /** @type {Set<EachOutroGroup>} */
               state2.outrogroups
             );
-            destroy_effects(state2, array_from(group.done));
-            groups.delete(group);
+            destroy_effects(state2, array_from(group2.done));
+            groups.delete(group2);
             if (groups.size === 0) {
               state2.outrogroups = null;
             }
@@ -4848,11 +4848,11 @@ function pause_effects(state2, to_destroy, controlled_anchor) {
     }
     destroy_effects(state2, to_destroy, !fast_path);
   } else {
-    group = {
+    group2 = {
       pending: new Set(to_destroy),
       done: /* @__PURE__ */ new Set()
     };
-    (state2.outrogroups ??= /* @__PURE__ */ new Set()).add(group);
+    (state2.outrogroups ??= /* @__PURE__ */ new Set()).add(group2);
   }
 }
 function destroy_effects(state2, to_destroy, remove_dom = true) {
@@ -5075,9 +5075,9 @@ function reconcile(state2, array, anchor, flags2, get_key) {
     effect2 = /** @type {EachItem} */
     items.get(key2).e;
     if (state2.outrogroups !== null) {
-      for (const group of state2.outrogroups) {
-        group.pending.delete(effect2);
-        group.done.delete(effect2);
+      for (const group2 of state2.outrogroups) {
+        group2.pending.delete(effect2);
+        group2.done.delete(effect2);
       }
     }
     if ((effect2.f & INERT) !== 0) {
@@ -5158,10 +5158,10 @@ function reconcile(state2, array, anchor, flags2, get_key) {
     current = skip_to_branch(effect2.next);
   }
   if (state2.outrogroups !== null) {
-    for (const group of state2.outrogroups) {
-      if (group.pending.size === 0) {
-        destroy_effects(state2, array_from(group.done));
-        state2.outrogroups?.delete(group);
+    for (const group2 of state2.outrogroups) {
+      if (group2.pending.size === 0) {
+        destroy_effects(state2, array_from(group2.done));
+        state2.outrogroups?.delete(group2);
       }
     }
     if (state2.outrogroups.size === 0) {
@@ -6363,9 +6363,9 @@ async function fetchPage(url, opts) {
   }
 }
 function createLinkChecker(opts, pool) {
-  const cache = /* @__PURE__ */ new Map();
+  const cache2 = /* @__PURE__ */ new Map();
   return function checkUrl(url) {
-    const hit = cache.get(url);
+    const hit = cache2.get(url);
     if (hit)
       return hit;
     const p = pool(async () => {
@@ -6405,7 +6405,7 @@ function createLinkChecker(opts, pool) {
         };
       }
     });
-    cache.set(url, p);
+    cache2.set(url, p);
     return p;
   };
 }
@@ -21687,7 +21687,181 @@ var coreSeoRules = [
   }
 ];
 
+// node_modules/safi-studio-scanner/dist/text.js
+var EN_STOP = new Set("a about above after again against all also am an and any are aren't as at be because been before being below between both but by can can't cannot could couldn't did didn't do does doesn't doing don't down during each even ever few for from further get gets got had hadn't has hasn't have haven't having he he'd he'll he's her here here's hers herself him himself his how how's however i i'd i'll i'm i've if in into is isn't it it's its itself just let's like may me might more most much must mustn't my myself no nor not now of off on once one only or other ought our ours ourselves out over own per same shall shan't she she'd she'll she's should shouldn't so some such than that that's the their theirs them themselves then there there's these they they'd they'll they're they've this those through thus to too under until up upon us very via was wasn't we we'd we'll we're we've were weren't what what's when when's where where's whether which while who who's whom why why's will with within without won't would wouldn't yet you you'd you'll you're you've your yours yourself yourselves".split(" "));
+var EN_FILLER = new Set("actually absolutely basically certainly clearly completely definitely essentially extremely generally highly honestly indeed just literally mostly obviously particularly quite rather really simply somewhat totally truly usually various virtually".split(" "));
+var STOP_WORDS = { en: EN_STOP };
+var NOISE = "script,style,noscript,template,svg,canvas,iframe,nav,aside,form,select,button,[hidden],[aria-hidden=true]";
+var CHROME = "body > header, body > footer, [role=banner], [role=contentinfo], [role=navigation]";
+var BLOCKS = "address,article,blockquote,br,dd,div,dl,dt,figcaption,figure,h1,h2,h3,h4,h5,h6,header,footer,hr,li,main,ol,p,pre,section,table,td,th,tr,ul";
+var cache = /* @__PURE__ */ new WeakMap();
+function analyzeText(page) {
+  let a = cache.get(page);
+  if (!a)
+    cache.set(page, a = analyze2(page));
+  return a;
+}
+function baseLang(page) {
+  return (page.$("html").attr("lang") || "en").trim().toLowerCase().split(/[-_]/)[0] || "en";
+}
+function stopWordsFor(lang) {
+  return STOP_WORDS[lang] ?? null;
+}
+function mainText(page) {
+  const pick = ["main", "[role=main]", "article"].find((s) => page.$(s).length === 1);
+  const source2 = pick === "[role=main]" ? "main" : pick ?? "body";
+  const $2 = load(page.$.html(page.$(pick ?? "body").first()) || "");
+  $2(NOISE).remove();
+  $2("[style]").each((_, el) => {
+    if (/display\s*:\s*none|visibility\s*:\s*hidden/i.test($2(el).attr("style") || ""))
+      $2(el).remove();
+  });
+  if (source2 === "body")
+    $2(CHROME).remove();
+  $2(BLOCKS).after("\n");
+  return { text: $2.root().text(), source: source2 };
+}
+function tokenize(text5, lang = "en") {
+  return tokenSpans(text5, lang).map((t) => t.word);
+}
+function tokenSpans(text5, lang) {
+  const seg = new Intl.Segmenter(lang, { granularity: "word" });
+  const out = [];
+  for (const s of seg.segment(text5)) {
+    if (!s.isWordLike || !/\p{L}/u.test(s.segment))
+      continue;
+    out.push({
+      word: s.segment.toLocaleLowerCase(lang).replace(/’/g, "'"),
+      start: s.index,
+      end: s.index + s.segment.length
+    });
+  }
+  return out;
+}
+function lemma(word, lang = "en") {
+  if (lang !== "en")
+    return word;
+  let w = word.replace(/'s$/, "");
+  if (w.length <= 3)
+    return w;
+  if (w.endsWith("ies") && w.length > 4)
+    return `${w.slice(0, -3)}y`;
+  if (/(ss|us|is)$/.test(w))
+    return w;
+  if (/(ches|shes|sses|xes|zes)$/.test(w))
+    return w.slice(0, -2);
+  if (w.endsWith("s"))
+    w = w.slice(0, -1);
+  return w;
+}
+function syllables(word) {
+  let w = word.toLowerCase().replace(/[^a-z]/g, "");
+  if (w.length <= 3)
+    return 1;
+  w = w.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, "").replace(/^y/, "");
+  return Math.max(1, w.match(/[aeiouy]{1,2}/g)?.length ?? 1);
+}
+function group(items, total, weight = 1) {
+  const groups = /* @__PURE__ */ new Map();
+  for (const { key: key2, surface } of items) {
+    const g = groups.get(key2) ?? { count: 0, forms: /* @__PURE__ */ new Map() };
+    g.count++;
+    g.forms.set(surface, (g.forms.get(surface) ?? 0) + 1);
+    groups.set(key2, g);
+  }
+  return [...groups].map(([key2, g]) => ({
+    key: key2,
+    // Most written form wins; on a tie the shorter one, which is usually the base form.
+    phrase: [...g.forms].sort((a, b) => b[1] - a[1] || a[0].length - b[0].length)[0][0],
+    count: g.count,
+    percent: total ? round(g.count * weight * 100 / total) : 0
+  })).sort((a, b) => b.count - a.count || a.phrase.localeCompare(b.phrase));
+}
+function round(n, places = 1) {
+  const f = 10 ** places;
+  return Math.round(n * f) / f;
+}
+function analyze2(page) {
+  const lang = baseLang(page);
+  const { text: text5, source: source2 } = mainText(page);
+  const stop = stopWordsFor(lang);
+  const seg = new Intl.Segmenter(lang, { granularity: "sentence" });
+  const sentences = [];
+  for (const block2 of text5.split("\n")) {
+    for (const s of seg.segment(block2)) {
+      const t = tokenize(s.segment, lang);
+      if (t.length)
+        sentences.push(t);
+    }
+  }
+  const words = sentences.flat();
+  const total = words.length;
+  const isStop = (w) => stop?.has(w) ?? false;
+  const ngrams = { 1: [], 2: [], 3: [] };
+  for (const n of [1, 2, 3]) {
+    const items = [];
+    for (const s of sentences) {
+      for (let i = 0; i + n <= s.length; i++) {
+        const gram = s.slice(i, i + n);
+        if (isStop(gram[0]) || isStop(gram[n - 1]))
+          continue;
+        if (n === 1 && gram[0].length < 2)
+          continue;
+        items.push({ key: gram.map((w) => lemma(w, lang)).join(" "), surface: gram.join(" ") });
+      }
+    }
+    ngrams[n] = group(items, total, n).filter((p) => p.count > 1);
+  }
+  const english = lang === "en";
+  const syl = english ? words.reduce((sum, w) => sum + syllables(w), 0) : null;
+  const complex = english ? words.filter((w) => syllables(w) >= 3).length : null;
+  const stopHits = stop ? words.filter((w) => stop.has(w)) : [];
+  return {
+    lang,
+    source: source2,
+    words,
+    sentences,
+    chars: text5.replace(/\s/g, "").length,
+    uniqueWords: new Set(words.map((w) => lemma(w, lang))).size,
+    stopWords: stop ? stopHits.length : null,
+    waterWords: stop ? stopHits.length + (english ? words.filter((w) => EN_FILLER.has(w)).length : 0) : null,
+    syllables: syl,
+    complexWords: complex,
+    stopWordTable: group(stopHits.map((w) => ({ key: w, surface: w })), total),
+    ngrams
+  };
+}
+function fleschLabel(ease) {
+  if (ease >= 60)
+    return "Easy";
+  if (ease >= 30)
+    return "Medium";
+  return "Difficult";
+}
+function readability(a) {
+  if (a.syllables === null || a.complexWords === null || !a.words.length || !a.sentences.length)
+    return null;
+  const wps = a.words.length / a.sentences.length;
+  const spw = a.syllables / a.words.length;
+  const ease = round(206.835 - 1.015 * wps - 84.6 * spw);
+  return {
+    fleschEase: ease,
+    fleschLabel: fleschLabel(ease),
+    fleschKincaidGrade: round(0.39 * wps + 11.8 * spw - 15.59),
+    gunningFog: round(0.4 * (wps + 100 * a.complexWords / a.words.length))
+  };
+}
+function keywordSpans(text5, keys, lang = "en") {
+  const want = new Set(keys);
+  return tokenSpans(text5, lang).filter((t) => want.has(lemma(t.word, lang))).map((t) => [t.start, t.end]);
+}
+function keysIn(text5, lang = "en") {
+  return new Set(tokenize(text5, lang).map((w) => lemma(w, lang)));
+}
+
 // node_modules/safi-studio-scanner/dist/rules/content.js
+var MIN_WORDS_FOR_STUFFING = 100;
+var STUFFING_PERCENT = 5;
 var contentRules = [
   {
     id: "content/heading-hierarchy",
@@ -21747,21 +21921,12 @@ var contentRules = [
     severity: "info",
     fix: "Reduce the repetition of the flagged word and write naturally.",
     run({ page }) {
-      const words = page.$("body").text().toLowerCase().match(/[a-z']{4,}/g) || [];
-      if (words.length < 100)
+      const a = analyzeText(page);
+      if (a.words.length < MIN_WORDS_FOR_STUFFING)
         return [{ status: "pass", message: "Not enough text to flag stuffing" }];
-      const counts = /* @__PURE__ */ new Map();
-      for (const w of words)
-        counts.set(w, (counts.get(w) || 0) + 1);
-      let top = "", topN = 0;
-      for (const [w, n] of counts)
-        if (n > topN) {
-          top = w;
-          topN = n;
-        }
-      const density = topN / words.length;
+      const top = [1, 2, 3].map((n) => a.ngrams[n][0]).filter((p) => p !== void 0).sort((x, y) => y.percent - x.percent)[0];
       return [
-        density > 0.05 ? { status: "warn", message: `"${top}" is ${(density * 100).toFixed(1)}% of words` } : { status: "pass", message: "No keyword over-repetition" }
+        top && top.percent > STUFFING_PERCENT ? { status: "warn", message: `"${top.phrase}" is ${top.percent}% of words` } : { status: "pass", message: "No keyword over-repetition" }
       ];
     }
   },
@@ -23619,6 +23784,126 @@ var metaCollectors = [
   }
 ];
 
+// node_modules/safi-studio-scanner/dist/metrics/text.js
+var TOP_KEYWORDS = 10;
+var ENGLISH_ONLY = "Needs a stop word list, English only for now";
+function percentOf(part, whole) {
+  return whole ? round(part * 100 / whole) : 0;
+}
+function phraseRows(phrases) {
+  return phrases.map((p) => [p.phrase, p.count, p.percent]);
+}
+function fleschStatus(ease) {
+  if (ease >= 60)
+    return "ok";
+  return ease >= 30 ? "warn" : "bad";
+}
+function yesNo(present) {
+  return present ? "yes" : "no";
+}
+function headingTexts(page) {
+  const out = [
+    { element: "Title", text: page.$("title").first().text() },
+    { element: "Description", text: page.$('meta[name="description"]').attr("content") || "" }
+  ];
+  page.$("h1,h2,h3,h4,h5,h6").each((_, el) => {
+    out.push({ element: el.tagName.toUpperCase(), text: page.$(el).text() });
+  });
+  return out.map((e) => ({ ...e, text: e.text.replace(/\s+/g, " ").trim() })).filter((e) => e.text);
+}
+var textCollectors = [
+  {
+    id: "content/text-statistics",
+    category: "content",
+    collect({ page }) {
+      const a = analyzeText(page);
+      const total = a.words.length;
+      const avgSentence = a.sentences.length ? round(total / a.sentences.length) : null;
+      return [
+        value("content/main-words", "Main content words", total, {
+          note: `Read from <${a.source}>, nav, footer and hidden elements excluded`
+        }),
+        value("content/unique-words", "Unique words", a.uniqueWords, {
+          note: `${percentOf(a.uniqueWords, total)}% of words`
+        }),
+        value("content/unique-words-percent", "Unique words share", percentOf(a.uniqueWords, total), {
+          unit: "%"
+        }),
+        value("content/stop-words", "Stop words", a.stopWords, {
+          note: a.stopWords === null ? ENGLISH_ONLY : `${percentOf(a.stopWords, total)}% of words`
+        }),
+        value("content/stop-words-percent", "Stop words share", a.stopWords === null ? null : percentOf(a.stopWords, total), { unit: "%" }),
+        value("content/water-percent", "Water", a.waterWords === null ? null : percentOf(a.waterWords, total), {
+          unit: "%",
+          status: a.waterWords === null ? void 0 : upTo(percentOf(a.waterWords, total), 60, 75),
+          note: "Stop words and filler, the share of words carrying no meaning"
+        }),
+        value("content/avg-sentence-length", "Average sentence length", avgSentence, {
+          unit: "words",
+          status: avgSentence === null ? "missing" : upTo(avgSentence, 20, 25),
+          note: "Up to 20 reads comfortably"
+        }),
+        value("content/chars-no-spaces", "Characters", a.chars, { note: "Main content, spaces excluded" })
+      ];
+    }
+  },
+  {
+    id: "content/readability",
+    category: "content",
+    collect({ page }) {
+      const r = readability(analyzeText(page));
+      const note = r ? void 0 : "English text only";
+      return [
+        value("content/flesch-reading-ease", "Flesch reading ease", r?.fleschEase ?? null, {
+          status: r ? fleschStatus(r.fleschEase) : void 0,
+          note: r ? r.fleschLabel : note
+        }),
+        value("content/flesch-kincaid-grade", "Flesch-Kincaid grade", r?.fleschKincaidGrade ?? null, {
+          status: r ? upTo(r.fleschKincaidGrade, 9, 12) : void 0,
+          note: r ? "US school grade, 9 or lower suits a general audience" : note
+        }),
+        value("content/gunning-fog", "Gunning Fog index", r?.gunningFog ?? null, {
+          status: r ? upTo(r.gunningFog, 12, 16) : void 0,
+          note: r ? "Years of schooling to read it first time, 12 or lower" : note
+        })
+      ];
+    }
+  },
+  {
+    id: "content/keywords",
+    category: "content",
+    collect({ page }) {
+      const a = analyzeText(page);
+      const out = [];
+      const columns = ["Phrase", "Count", "%"];
+      for (const n of [1, 2, 3]) {
+        if (a.ngrams[n].length)
+          out.push(table(`content/top-words-${n}`, `Top ${n}-word phrases`, columns, phraseRows(a.ngrams[n])));
+      }
+      if (a.stopWordTable.length)
+        out.push(table("content/stop-word-table", "Stop words", ["Word", "Count", "%"], phraseRows(a.stopWordTable)));
+      const keywords = a.ngrams[1].slice(0, TOP_KEYWORDS);
+      if (!keywords.length)
+        return out;
+      const title = keysIn(page.$("title").first().text(), a.lang);
+      const desc = keysIn(page.$('meta[name="description"]').attr("content") || "", a.lang);
+      const h1 = keysIn(page.$("h1").first().text(), a.lang);
+      out.push(table("content/keyword-relevance", "Keyword relevance", ["Keyword", "Count", "Title", "Description", "H1"], keywords.map((k) => [k.phrase, k.count, yesNo(title.has(k.key)), yesNo(desc.has(k.key)), yesNo(h1.has(k.key))]), { note: "Top keywords and whether each appears in the title, description, and H1" }));
+      const keys = keywords.map((k) => k.key);
+      const highlights = headingTexts(page).map(({ element: element2, text: text5 }) => {
+        const spans = keywordSpans(text5, keys, a.lang);
+        const matched = [...new Set(spans.map(([s, e]) => text5.slice(s, e).toLowerCase()))];
+        return [element2, clip(text5, 70), matched.join(", ") || "\u2014", spans.map(([s, e]) => `${s}-${e}`).join(" ")];
+      });
+      out.push(table("content/keyword-highlights", "Keywords in headings", ["Element", "Text", "Keywords", "Spans"], highlights, {
+        cap: 40,
+        note: "Spans are start-end character offsets into the full text, end exclusive"
+      }));
+      return out;
+    }
+  }
+];
+
 // node_modules/safi-studio-scanner/dist/metrics/index.js
 var allCollectors = [
   ...pageCollectors,
@@ -23626,7 +23911,8 @@ var allCollectors = [
   ...directiveCollectors,
   ...linkCollectors,
   ...headingCollectors,
-  ...metaCollectors
+  ...metaCollectors,
+  ...textCollectors
 ];
 
 // node_modules/safi-studio-scanner/dist/audit.js
@@ -23857,9 +24143,8 @@ var CAT_ORDER = [
   "performance"
 ];
 var STATUS_RANK = { fail: 0, warn: 1, info: 2, pass: 3 };
+var AUTHOR_URL = "https://abdulkadersafi.com";
 var FOOTER_LINKS = [
-  { label: "abdulkadersafi.com", href: "https://abdulkadersafi.com" },
-  { label: "safi-studio.com", href: "https://safi-studio.com" },
   { label: "GitHub", href: "https://github.com/Abdulkader-Safi/Safi-Studio-Scanner" },
   { label: "npm", href: "https://www.npmjs.com/package/safi-studio-scanner" }
 ];
@@ -23892,7 +24177,7 @@ function buildGroups(r) {
         if (STATUS_RANK[f.status] < STATUS_RANK[worst])
           worst = f.status;
     const affected = [...g.pages.entries()].map(([url, issues]) => ({ url, issues: issues.filter((i) => i.status !== "pass") })).filter((x) => x.issues.length > 0);
-    const group = {
+    const group2 = {
       ruleId,
       title: g.title,
       category: g.category,
@@ -23902,7 +24187,7 @@ function buildGroups(r) {
     };
     if (!byCat.has(g.category))
       byCat.set(g.category, []);
-    byCat.get(g.category).push(group);
+    byCat.get(g.category).push(group2);
   }
   for (const groups of byCat.values())
     groups.sort((a, b) => STATUS_RANK[a.status] - STATUS_RANK[b.status] || a.title.localeCompare(b.title));
@@ -24074,6 +24359,7 @@ footer .flead { font-size:13px; color:var(--muted-light); margin:0 0 26px; }
 footer .flinks { display:flex; flex-wrap:wrap; justify-content:center; gap:12px 32px; }
 footer a { font-size:13px; font-weight:500; color:var(--body-light); text-decoration:none; }
 footer a:hover { color:var(--ink-dark); }
+footer .colophon a { font-size:inherit; font-weight:inherit; color:inherit; text-decoration:underline; text-underline-offset:3px; }
 </style>
 </head>
 <body>
@@ -24090,7 +24376,7 @@ ${measurements}
 </div>
 <footer>
   <div class="finner">
-    <p class="colophon">MIT licensed. Built by Abdulkader Safi.</p>
+    <p class="colophon">MIT licensed. Built by <a href="${esc(tagged(AUTHOR_URL))}" rel="noopener">Abdulkader Safi</a>.</p>
     <p class="flead">Safi Studio Scanner, the website audit engine for Node.js.</p>
     <nav class="flinks">
 ${FOOTER_LINKS.map((l) => `      <a href="${esc(tagged(l.href))}" rel="noopener">${esc(l.label)}</a>`).join("\n")}
@@ -25025,7 +25311,7 @@ function MetricsPanel($$anchor, $$props) {
       reset(span);
       reset(div_1);
       var node_1 = sibling(div_1, 2);
-      each(node_1, 17, () => get2(groups), (group) => group.category, ($$anchor3, group) => {
+      each(node_1, 17, () => get2(groups), (group2) => group2.category, ($$anchor3, group2) => {
         var section = root_10();
         var h3 = child(section);
         var text_2 = child(h3, true);
@@ -25034,7 +25320,7 @@ function MetricsPanel($$anchor, $$props) {
         {
           var consequent_3 = ($$anchor4) => {
             var div_2 = root_43();
-            each(div_2, 21, () => get2(group).metrics, (m) => m.id, ($$anchor5, m) => {
+            each(div_2, 21, () => get2(group2).metrics, (m) => m.id, ($$anchor5, m) => {
               var fragment_1 = comment();
               var node_3 = first_child(fragment_1);
               {
@@ -25082,13 +25368,13 @@ function MetricsPanel($$anchor, $$props) {
             reset(div_2);
             append($$anchor4, div_2);
           };
-          var d = user_derived(() => get2(group).metrics.some((m) => m.kind === "value"));
+          var d = user_derived(() => get2(group2).metrics.some((m) => m.kind === "value"));
           if_block(node_2, ($$render) => {
             if (get2(d)) $$render(consequent_3);
           });
         }
         var node_5 = sibling(node_2, 2);
-        each(node_5, 17, () => get2(group).metrics, (m) => m.id, ($$anchor4, m) => {
+        each(node_5, 17, () => get2(group2).metrics, (m) => m.id, ($$anchor4, m) => {
           var fragment_2 = comment();
           var node_6 = first_child(fragment_2);
           {
@@ -25152,7 +25438,7 @@ function MetricsPanel($$anchor, $$props) {
           append($$anchor4, fragment_2);
         });
         reset(section);
-        template_effect(($0) => set_text(text_2, $0), [() => categoryLabel(get2(group).category)]);
+        template_effect(($0) => set_text(text_2, $0), [() => categoryLabel(get2(group2).category)]);
         append($$anchor3, section);
       });
       template_effect(() => set_text(text_1, `${get2(page)?.metrics?.length ?? 0 ?? ""} measurements on this page`));
@@ -25901,13 +26187,13 @@ function AuditList($$anchor, $$props) {
     var alternate = ($$anchor2) => {
       var fragment = comment();
       var node_2 = first_child(fragment);
-      each(node_2, 17, () => get2(groups), (group) => group.host, ($$anchor3, group) => {
+      each(node_2, 17, () => get2(groups), (group2) => group2.host, ($$anchor3, group2) => {
         var section = root_46();
         var h3 = child(section);
         var text_1 = child(h3, true);
         reset(h3);
         var node_3 = sibling(h3, 2);
-        each(node_3, 17, () => get2(group).runs, (item) => item.file.path, ($$anchor4, item) => {
+        each(node_3, 17, () => get2(group2).runs, (item) => item.file.path, ($$anchor4, item) => {
           var button_1 = root_36();
           let classes;
           var span_2 = child(button_1);
@@ -25938,8 +26224,8 @@ function AuditList($$anchor, $$props) {
         });
         reset(section);
         template_effect(() => {
-          set_attribute2(h3, "title", get2(group).host);
-          set_text(text_1, get2(group).host);
+          set_attribute2(h3, "title", get2(group2).host);
+          set_text(text_1, get2(group2).host);
         });
         append($$anchor3, section);
       });
