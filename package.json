@@ -11,7 +11,7 @@
 		"version": "node version-bump.mjs && git add manifest.json versions.json"
 	},
 	"dependencies": {
-		"safi-studio-scanner": "^1.0.2"
+		"safi-studio-scanner": "^1.1.0"
 	},
 	"devDependencies": {
 		"@types/node": "^22.0.0",
