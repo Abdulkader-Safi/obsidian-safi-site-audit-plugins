@@ -1,4 +1,4 @@
-import { App, TFile, normalizePath } from "obsidian";
+import { App, TFile, Vault, normalizePath } from "obsidian";
 import type { AuditReport } from "./scanner";
 import { buildHtml, buildJson, buildNote, parseNote, runBaseName, siteFolderName } from "./report-file";
 import type { SafiSiteAuditSettings } from "./settings";
@@ -33,13 +33,17 @@ async function ensureFolder(app: App, path: string): Promise<void> {
 }
 
 export function listAudits(app: App, settings: SafiSiteAuditSettings): AuditListItem[] {
-	const prefix = `${normalizePath(settings.auditFolder)}/`;
+	const root = app.vault.getFolderByPath(normalizePath(settings.auditFolder));
 	const items: AuditListItem[] = [];
+	if (!root) return items;
 
-	// Notes now live one level down, in a folder per site, so scan the subtree
-	// rather than one folder's direct children.
-	for (const file of app.vault.getMarkdownFiles()) {
-		if (!file.path.startsWith(prefix)) continue;
+	// Notes live one level down, in a folder per site, so walk the audit folder's
+	// subtree. Only this folder is read, never the rest of the vault.
+	const notes: TFile[] = [];
+	Vault.recurseChildren(root, (f) => {
+		if (f instanceof TFile && f.extension === "md") notes.push(f);
+	});
+	for (const file of notes) {
 		const fm = app.metadataCache.getFileCache(file)?.frontmatter as
 			| { ssa_audit?: boolean; url?: string; date?: string; score?: number; pages?: number }
 			| undefined;
