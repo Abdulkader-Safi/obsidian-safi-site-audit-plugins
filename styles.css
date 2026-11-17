@@ -6,9 +6,13 @@
  * variables, so the dashboard follows whatever theme, accent, font and light or
  * dark mode the user has installed. No colour literals and no bundled fonts.
  *
- * Layout follows the Figma design "Safi Site Audit" (sections Light and Dark):
- * bordered cards on the primary background, 24px card padding, 24px between
- * sections, content capped at 1600px and centred.
+ * Layout follows the Figma design "Safi Site Audit", sections "Monitor · Light"
+ * and "Monitor · Dark": bordered cards on the primary background, content capped
+ * at 1600px and centred. Colour is quiet by default: grey for healthy data, warm
+ * only where something needs attention.
+ *
+ * Soft tints are built from Obsidian's *-rgb variables, e.g.
+ * rgba(var(--color-red-rgb), 0.12), so they track the theme too.
  */
 
 .safi-site-audit,
@@ -16,7 +20,7 @@
 	height: 100%;
 	padding: 0;
 	color: var(--text-normal);
-	font-size: var(--font-ui-medium);
+	font-size: var(--font-ui-small);
 }
 
 .safi-site-audit *,
@@ -35,107 +39,1612 @@
 	border-radius: var(--radius-s);
 }
 
-/* ---------- tones ----------
-   One place decides what "good", "warning" and "failed" look like. */
-.safi-site-audit :is(.is-good, .is-pass),
-.safi-site-audit-list :is(.is-good, .is-pass) {
-	color: var(--color-green);
-}
-.safi-site-audit :is(.is-mid, .is-warn),
-.safi-site-audit-list :is(.is-mid, .is-warn) {
-	color: var(--color-yellow);
-}
-.safi-site-audit :is(.is-bad, .is-fail),
-.safi-site-audit-list :is(.is-bad, .is-fail) {
-	color: var(--color-red);
-}
-.safi-site-audit .is-info {
-	color: var(--text-normal);
-}
-.safi-site-audit .is-missing {
+/* ---------- text helpers ---------- */
+.ssa-faint {
 	color: var(--text-faint);
 }
-
-/* ---------- shared pieces ---------- */
-.ssa-card {
-	padding: var(--size-4-6);
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-m);
-	background: var(--background-primary);
+.ssa-muted {
+	color: var(--text-muted);
 }
-.ssa-block-title {
-	margin: 0;
-	font-size: var(--font-ui-medium);
-	font-weight: var(--font-semibold);
+.ssa-label {
+	font-size: var(--font-ui-smaller, 12px);
+	font-weight: var(--font-medium);
+	color: var(--text-faint);
 }
-
-/* Score chip: the number in the tone colour on a light tint of the same colour. */
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip-score {
-	flex-shrink: 0;
-	min-width: 2.25rem;
-	padding: 2px var(--size-4-2);
-	border-radius: var(--radius-s);
-	text-align: center;
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-semibold);
+.is-num {
+	text-align: right;
 	font-variant-numeric: tabular-nums;
-	line-height: 1.4;
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip-score.is-good {
-	background: rgba(var(--color-green-rgb), 0.14);
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip-score.is-mid {
-	background: rgba(var(--color-yellow-rgb), 0.16);
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip-score.is-bad {
-	background: rgba(var(--color-red-rgb), 0.14);
 }
 
-/* Status dot: Failed, Warning, Info, Passed. Always next to a word. */
+/* Text tones. Green only for a change that is good news; red for trouble. */
+:is(.safi-site-audit, .safi-site-audit-list) :is(.ssa-delta, .ssa-cat-delta, .ssa-status-word, .is-num).is-good {
+	color: var(--color-green);
+}
+:is(.safi-site-audit, .safi-site-audit-list) :is(.ssa-delta, .ssa-cat-delta, .ssa-status-word, .ssa-kpi-number, .ssa-field-desc, .ssa-value, .is-num).is-bad,
+.safi-site-audit .ssa-status-word.is-fail {
+	color: var(--color-red);
+}
+.safi-site-audit .ssa-status-word.is-warn {
+	color: var(--color-yellow);
+}
+:is(.safi-site-audit, .safi-site-audit-list) :is(.ssa-delta, .ssa-cat-delta).is-flat,
+.safi-site-audit .ssa-value.is-missing {
+	color: var(--text-faint);
+}
+.ssa-delta {
+	font-weight: var(--font-medium);
+	font-variant-numeric: tabular-nums;
+}
+
+/* ---------- marks, tags, chips, pills ---------- */
+
+/* Status dot. Always next to a word or carries an aria-label. */
 .ssa-mark {
 	flex-shrink: 0;
 	display: inline-block;
 	width: 8px;
 	height: 8px;
 	border-radius: 50%;
-	background: currentColor;
+	background: var(--text-faint);
+}
+.ssa-mark:is(.is-fail, .is-bad) {
+	background: var(--color-red);
+}
+.ssa-mark:is(.is-warn, .is-mid) {
+	background: var(--color-yellow);
+}
+.ssa-mark.is-pass {
+	background: var(--color-green);
+}
+.ssa-mark.is-info {
+	background: var(--text-muted);
+}
+.ssa-mark.is-none {
+	background: var(--background-modifier-border);
 }
 
-/* Search field with the magnifier inside it, on the right. */
-.ssa-search {
-	position: relative;
+.ssa-tag {
+	flex-shrink: 0;
+	display: inline-block;
+	padding: 1px 6px;
+	border-radius: var(--radius-s);
+	background: var(--background-modifier-hover);
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller, 12px);
+	font-weight: var(--font-medium);
+	font-variant-numeric: tabular-nums;
+	line-height: 1.4;
+	white-space: nowrap;
+}
+.ssa-tag.is-bad {
+	background: rgba(var(--color-red-rgb), 0.12);
+	color: var(--color-red);
+}
+.ssa-tag.is-mid {
+	background: rgba(var(--color-yellow-rgb), 0.16);
+	color: var(--text-normal);
+}
+
+/* Score chip in the sidebar: neutral when healthy, warm only below 80. */
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip-score {
+	flex-shrink: 0;
+	min-width: 2.25rem;
+	padding: 2px var(--size-4-2);
+	border-radius: var(--radius-s);
+	background: var(--background-modifier-hover);
+	color: var(--text-muted);
+	text-align: center;
+	font-size: var(--font-ui-smaller, 12px);
+	font-weight: var(--font-semibold);
+	font-variant-numeric: tabular-nums;
+	line-height: 1.4;
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip-score.is-mid {
+	background: rgba(var(--color-yellow-rgb), 0.16);
+	color: var(--text-normal);
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip-score.is-bad {
+	background: rgba(var(--color-red-rgb), 0.12);
+	color: var(--color-red);
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip-score.is-accent {
+	background: var(--background-primary);
+	color: var(--text-accent);
+}
+
+.ssa-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--size-4-2);
+	min-height: var(--input-height);
+	padding: 0 var(--size-4-3);
+	border-radius: var(--radius-m);
+	background: var(--background-secondary);
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-medium);
+	white-space: nowrap;
+}
+.ssa-pill.is-accent {
+	background: var(--background-modifier-active-hover, var(--background-modifier-hover));
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--interactive-accent) 35%, transparent);
+	color: var(--text-normal);
+}
+.ssa-pill .ssa-muted {
+	font-weight: var(--font-normal);
+}
+
+.ssa-badge {
 	display: flex;
 	align-items: center;
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-search .ssa-input {
-	padding-right: 2.1rem;
-	border-radius: var(--radius-xl, 999px);
-}
-.ssa-search-icon {
-	position: absolute;
-	right: var(--size-4-3);
-	display: flex;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	flex-shrink: 0;
+	border-radius: 50%;
+	background: var(--background-secondary);
 	color: var(--text-muted);
-	pointer-events: none;
 }
-.ssa-search-icon .svg-icon {
-	width: 16px;
-	height: 16px;
+.ssa-badge .svg-icon {
+	width: 22px;
+	height: 22px;
 }
-.ssa-search-inline {
-	width: 15rem;
+.ssa-badge.is-bad {
+	background: rgba(var(--color-red-rgb), 0.12);
+	color: var(--color-red);
+}
+
+.ssa-count {
+	display: inline-block;
+	margin-left: 4px;
+	padding: 0 6px;
+	border-radius: 999px;
+	background: var(--background-modifier-hover);
+	color: var(--text-muted);
+	font-size: 11px;
+	font-weight: var(--font-medium);
+	font-variant-numeric: tabular-nums;
+	line-height: 1.6;
+}
+
+/* ---------- bars ---------- */
+.ssa-bar {
+	display: block;
+	height: 6px;
+	overflow: hidden;
+	border-radius: 3px;
+	background: var(--background-modifier-border);
+}
+.ssa-bar.is-thin {
+	height: 3px;
+}
+.ssa-bar-fill,
+.ssa-cat-fill {
+	display: block;
+	height: 100%;
+	border-radius: inherit;
+	background: var(--text-faint);
+	transition: width 400ms ease-out;
+}
+:is(.ssa-bar-fill, .ssa-cat-fill, .ssa-status-seg).is-bad {
+	background: var(--color-red);
+}
+:is(.ssa-bar-fill, .ssa-cat-fill, .ssa-status-seg).is-mid {
+	background: var(--color-yellow);
+}
+:is(.ssa-bar-fill, .ssa-cat-fill, .ssa-status-seg).is-ok {
+	background: var(--text-faint);
+}
+.ssa-bar-fill.is-accent {
+	background: var(--interactive-accent);
+}
+
+/* Share of crawled pages a rule hits: a slim track along the row's bottom edge. */
+.ssa-share {
+	display: block;
+	height: 3px;
+	margin: var(--size-4-2) 0 0 20px;
+	overflow: hidden;
+	border-radius: 2px;
+	background: var(--background-modifier-border);
+}
+.ssa-share > span {
+	display: block;
+	height: 100%;
+	border-radius: inherit;
+	background: var(--text-faint);
+}
+
+.ssa-spinner {
+	flex-shrink: 0;
+	width: 12px;
+	height: 12px;
+	border: 1.5px solid var(--interactive-accent);
+	border-right-color: transparent;
+	border-radius: 50%;
+	animation: ssa-spin 0.7s linear infinite;
+}
+@keyframes ssa-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.ssa-skel {
+	display: block;
+	height: 12px;
+	border-radius: var(--radius-s);
+	background: var(--background-modifier-hover);
+	animation: ssa-pulse 1.4s ease-in-out infinite;
+}
+.ssa-skel-lg {
+	height: 28px;
+}
+.ssa-skel-block {
+	min-height: 24rem;
+	animation: ssa-pulse 1.4s ease-in-out infinite;
+}
+@keyframes ssa-pulse {
+	50% {
+		opacity: 0.55;
+	}
+}
+
+/* ---------- cards ---------- */
+.ssa-card {
+	min-width: 0;
+	padding: var(--size-4-4) var(--size-4-5, 20px);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-m);
+	background: var(--background-primary);
+}
+.ssa-card.is-flush {
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	overflow: hidden;
+}
+.ssa-card-head {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-2);
+	padding: 14px var(--size-4-4) 12px;
+}
+.ssa-card-head.has-rule {
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+.ssa-card-title {
+	flex: 1;
+	min-width: 0;
+	margin: 0;
+	font-size: var(--font-ui-medium);
+	font-weight: var(--font-semibold);
+}
+.ssa-card-foot {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--size-4-3);
+	padding: 12px var(--size-4-4) 14px;
+}
+.ssa-card-note {
+	margin: 0;
+	padding: 0 var(--size-4-4) var(--size-4-4);
+	color: var(--text-faint);
+}
+.ssa-card-note.is-inline {
+	padding: 0;
+}
+.ssa-card-empty,
+.ssa-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--size-4-2);
+	padding: var(--size-4-12, 48px) var(--size-4-4);
+	text-align: center;
+	color: var(--text-muted);
+}
+.ssa-empty p {
+	margin: 0;
+}
+.ssa-empty .ssa-btn {
+	margin-top: var(--size-4-2);
+}
+.ssa-group-label {
+	display: block;
+	padding: 10px var(--size-4-4) 2px;
+	font-size: var(--font-ui-smaller, 12px);
+	font-weight: var(--font-medium);
+	color: var(--text-faint);
 }
 
 /* ---------- the report tab ---------- */
 .ssa-view {
 	height: 100%;
 	overflow-y: auto;
-	padding: var(--size-4-8);
+	padding: 28px var(--size-4-8) var(--size-4-8);
 	container-type: inline-size;
 }
 .ssa-container {
 	max-width: 1600px;
 	margin: 0 auto;
+}
+
+/* ---------- controls ----------
+ *
+ * Obsidian styles bare <button> and <select> through selectors like
+ * `button:not(.clickable-icon)`, specificity (0,1,1). Real buttons keep that
+ * chrome and its `mod-cta` class so they match the installed theme; controls
+ * that must not look like a default button (tabs, chips, segments, rows) are
+ * written as `:is(root) .class`, (0,2,0), which wins without !important.
+ */
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	min-height: var(--input-height);
+	padding: var(--size-4-2) var(--size-4-3);
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-medium);
+	line-height: 1.2;
+	white-space: nowrap;
+	cursor: pointer;
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-btn:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-btn .svg-icon {
+	width: 16px;
+	height: 16px;
+	flex-shrink: 0;
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-btn-block {
+	width: 100%;
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-link-btn {
+	padding: 0;
+	height: auto;
+	border: none;
+	box-shadow: none;
+	background: transparent;
+	color: var(--text-normal);
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-medium);
+	cursor: pointer;
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-link-btn.is-accent {
+	color: var(--text-accent);
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-link-btn:hover {
+	background: transparent;
+	text-decoration: underline;
+}
+
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-input {
+	width: 100%;
+	min-height: var(--input-height);
+	padding: var(--size-4-2) var(--size-4-3);
+	font-size: var(--font-ui-small);
+	font-family: inherit;
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-input::placeholder {
+	color: var(--text-faint);
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-input.is-invalid {
+	border-color: var(--color-red);
+	box-shadow: 0 0 0 1px var(--color-red);
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-input-narrow {
+	width: 7.5rem;
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-select {
+	max-width: 100%;
+	min-width: 11rem;
+	cursor: pointer;
+}
+
+/* Search field with the magnifier inside it, on the left. */
+.ssa-search {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-search .ssa-input {
+	padding-left: 2rem;
+}
+.ssa-search-icon {
+	position: absolute;
+	left: 10px;
+	display: flex;
+	color: var(--text-faint);
+	pointer-events: none;
+}
+.ssa-search-icon .svg-icon {
+	width: 14px;
+	height: 14px;
+}
+.ssa-search-inline {
+	width: 15rem;
+}
+
+/* Native selects dressed as quiet pills: the compare picker and the page picker. */
+.ssa-compare,
+.ssa-picker {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	min-height: var(--input-height);
+	padding: 0 var(--size-4-2) 0 var(--size-4-3);
+	border: 1px solid var(--background-modifier-border);
+	background: var(--background-primary);
+	color: var(--text-faint);
+	cursor: pointer;
+}
+.ssa-compare {
+	border-radius: 999px;
+}
+.ssa-picker {
+	border-radius: var(--radius-m);
+}
+.ssa-picker .svg-icon,
+.ssa-compare-chevron .svg-icon,
+.ssa-picker-chevron .svg-icon {
+	width: 14px;
+	height: 14px;
+}
+.ssa-picker > span,
+.ssa-compare-chevron,
+.ssa-picker-chevron {
+	display: flex;
+	pointer-events: none;
+}
+:is(.safi-site-audit) :is(.ssa-compare, .ssa-picker) select {
+	appearance: none;
+	height: auto;
+	min-height: 0;
+	margin: 0;
+	padding: 4px 0;
+	border: none;
+	box-shadow: none;
+	background: transparent;
+	color: var(--text-normal);
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-medium);
+	cursor: pointer;
+}
+.safi-site-audit .ssa-picker select {
+	min-width: 14rem;
+}
+
+.ssa-field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+.ssa-field-label {
+	font-weight: var(--font-medium);
+}
+.ssa-field-desc {
+	font-size: var(--font-ui-smaller, 12px);
+	color: var(--text-faint);
+}
+
+/* Segmented control: one track, the chosen segment raised on the page surface. */
+.ssa-segmented {
+	display: inline-flex;
+	align-items: stretch;
+	gap: 2px;
+	padding: 2px;
+	border-radius: var(--radius-m);
+	background: var(--background-secondary);
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-seg {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	height: auto;
+	margin: 0;
+	padding: 3px 10px;
+	border: none;
+	border-radius: var(--radius-s);
+	box-shadow: none;
+	background: transparent;
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller, 12px);
+	font-weight: var(--font-medium);
+	line-height: 1.4;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: color 120ms ease, background-color 120ms ease;
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-seg:hover {
+	background: transparent;
+	color: var(--text-normal);
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-seg.is-on {
+	background: var(--background-primary);
+	box-shadow: var(--shadow-s);
+	color: var(--text-normal);
+}
+.ssa-seg-count {
+	font-variant-numeric: tabular-nums;
+	color: var(--text-faint);
+}
+
+/* Filter toggles are real theme buttons: selected ones carry mod-cta, exactly
+   like "New audit", so they follow whatever button style the theme ships. */
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-filter {
+	gap: 6px;
+}
+.ssa-chip-check {
+	display: flex;
+}
+.ssa-chip-check .svg-icon {
+	width: 14px;
+	height: 14px;
+}
+.ssa-chip-count {
+	font-weight: var(--font-normal);
+	font-variant-numeric: tabular-nums;
+	opacity: 0.7;
+}
+
+/* ---------- centred panels: empty, new audit, running, failed ---------- */
+.ssa-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 75vh;
+}
+.ssa-panel-card {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	width: min(100%, 33rem);
+	padding: 28px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-l, 10px);
+	background: var(--background-primary);
+}
+.ssa-running {
+	width: min(100%, 36rem);
+}
+.ssa-failed,
+.ssa-blank {
+	align-items: center;
+	gap: 10px;
+	text-align: center;
+}
+.ssa-blank {
+	display: flex;
+	flex-direction: column;
+}
+.ssa-panel-title {
+	margin: 0;
+	font-size: 1.3em;
+	font-weight: var(--font-semibold);
+	line-height: 1.25;
+}
+.ssa-with-spinner {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.ssa-panel-sub {
+	margin: 0;
+	color: var(--text-muted);
+}
+.ssa-blank .ssa-btn,
+.ssa-failed .ssa-panel-actions {
+	margin-top: var(--size-4-2);
+}
+.ssa-panel-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: var(--size-4-2);
+}
+.ssa-panel-actions.is-center {
+	justify-content: center;
+}
+.ssa-form-head {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.ssa-form-head .ssa-panel-sub {
+	color: var(--text-faint);
+}
+.ssa-error-code {
+	max-width: 100%;
+	padding: var(--size-4-2) var(--size-4-3);
+	border-radius: var(--radius-m);
+	background: var(--background-secondary);
+	color: var(--text-muted);
+	font-family: var(--font-monospace);
+	font-size: var(--font-ui-smaller, 12px);
+	overflow-wrap: anywhere;
+}
+.ssa-run-progress {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-2);
+}
+.ssa-run-progress-head {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--size-4-3);
+	font-weight: var(--font-medium);
+	font-variant-numeric: tabular-nums;
+}
+.ssa-tiles {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 12px;
+}
+.ssa-tile {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding: 10px 12px;
+	border-radius: var(--radius-m);
+	background: var(--background-secondary);
+}
+.ssa-tile-label {
+	font-size: var(--font-ui-smaller, 12px);
+	color: var(--text-muted);
+}
+.ssa-tile-value {
+	font-size: 1.3em;
+	font-weight: var(--font-semibold);
+	font-variant-numeric: tabular-nums;
+}
+.ssa-recent {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.ssa-recent-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.ssa-recent-list li {
+	padding: 7px 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+.ssa-recent-list li:last-child {
+	border-bottom: none;
+}
+
+/* ---------- report header ---------- */
+.ssa-report,
+.ssa-overview {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+.ssa-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: var(--size-4-4);
+}
+.ssa-head-id {
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.ssa-head-host {
+	margin: 0;
+	font-size: 1.6em;
+	line-height: 1.25;
+	font-weight: var(--font-semibold);
+	overflow-wrap: anywhere;
+}
+.ssa-head-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px var(--size-4-2);
+	margin: 0;
+	color: var(--text-faint);
+}
+.ssa-head-url {
+	color: var(--text-accent);
+	text-decoration: none;
+}
+.ssa-head-url:hover {
+	text-decoration: underline;
+}
+.ssa-sep {
+	padding: 0 6px;
+}
+.ssa-head-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--size-4-2);
+	margin-left: auto;
+}
+.ssa-head-divider {
+	width: 1px;
+	height: 20px;
+	background: var(--background-modifier-border);
+}
+.ssa-stale {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-top: -8px;
+	font-size: var(--font-ui-smaller, 12px);
+}
+
+/* ---------- tabs ---------- */
+.ssa-tabs {
+	position: sticky;
+	top: -28px;
+	z-index: 2;
+	display: flex;
+	gap: var(--size-4-6);
+	border-bottom: 1px solid var(--background-modifier-border);
+	background: var(--background-primary);
+}
+.safi-site-audit .ssa-tab {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	height: auto;
+	margin: 0;
+	padding: 8px 0 10px;
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	background: transparent;
+	color: var(--text-muted);
+	font-size: var(--font-ui-medium);
+	line-height: 1.4;
+	cursor: pointer;
+	transition: color 120ms ease;
+}
+.safi-site-audit .ssa-tab:hover {
+	background: transparent;
+	color: var(--text-normal);
+}
+.safi-site-audit .ssa-tab.is-on {
+	background: transparent;
+	color: var(--text-normal);
+	font-weight: var(--font-medium);
+}
+.safi-site-audit .ssa-tab.is-on::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -1px;
+	height: 2px;
+	background: var(--interactive-accent);
+}
+
+/* ---------- overview ---------- */
+.ssa-kpis {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: var(--size-4-4);
+}
+.ssa-kpi {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+.ssa-kpi-label {
+	color: var(--text-muted);
+}
+.ssa-kpi-value {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+	min-width: 0;
+}
+.ssa-kpi-number {
+	font-size: 2.3em;
+	font-weight: var(--font-semibold);
+	font-variant-numeric: tabular-nums;
+	line-height: 1.15;
+}
+.ssa-kpi-unit {
+	color: var(--text-faint);
+	white-space: nowrap;
+}
+.ssa-kpi-delta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+}
+.ssa-spark {
+	align-self: center;
+	width: 96px;
+	height: 30px;
+	margin-left: auto;
+	overflow: visible;
+}
+.ssa-spark polyline {
+	fill: none;
+	stroke: var(--interactive-accent);
+	stroke-width: 1.5;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.ssa-spark circle {
+	fill: var(--interactive-accent);
+}
+
+.ssa-overview-main {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 25rem;
+	gap: var(--size-4-4);
+	align-items: stretch;
+}
+.ssa-overview-bottom {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--size-4-4);
+}
+
+/* Rule rows, in Fix first (buttons) and in Issues (details summaries). */
+:is(.safi-site-audit) .ssa-rule-row {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin: 0;
+	padding: 12px var(--size-4-4) 10px;
+	border: none;
+	border-bottom: 1px solid var(--background-modifier-border);
+	border-radius: 0;
+	box-shadow: none;
+	background: transparent;
+	color: var(--text-normal);
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-normal);
+	text-align: left;
+	cursor: pointer;
+}
+:is(.safi-site-audit) .ssa-rule-row:hover {
+	background: var(--background-modifier-hover);
+}
+.ssa-rule-top {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-width: 0;
+}
+.ssa-rule-text {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+.ssa-rule-title,
+.ssa-rule-meta {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.ssa-rule-title {
+	font-size: var(--font-ui-medium);
+	font-weight: var(--font-medium);
+}
+.ssa-rule-meta {
+	font-size: var(--font-ui-smaller, 12px);
+	color: var(--text-faint);
+}
+.ssa-rule-pages {
+	flex-shrink: 0;
+	min-width: 5rem;
+	text-align: right;
+	font-weight: var(--font-medium);
+	font-variant-numeric: tabular-nums;
+	color: var(--text-muted);
+}
+.ssa-rule-chevron,
+.ssa-row-chevron {
+	display: flex;
+	flex-shrink: 0;
+	color: var(--text-faint);
+	transition: transform 160ms ease;
+}
+:is(.ssa-rule-chevron, .ssa-row-chevron) .svg-icon {
+	width: 16px;
+	height: 16px;
+}
+
+/* Categories: quiet grey above 80, warm below. The tick is the last run. */
+.ssa-cats-card {
+	min-height: 100%;
+}
+.ssa-legend {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: var(--font-ui-smaller, 12px);
+	color: var(--text-faint);
+}
+.ssa-legend-tick {
+	width: 2px;
+	height: 12px;
+	border-radius: 1px;
+	background: var(--text-normal);
+}
+.ssa-cat-list {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 0 var(--size-4-4) 12px;
+}
+.ssa-cat {
+	display: grid;
+	grid-template-columns: 7.5rem minmax(0, 1fr) 1.75rem 2rem;
+	align-items: center;
+	gap: 10px;
+	padding: 5px 0;
+}
+.ssa-cat-name {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--text-muted);
+}
+.ssa-cat-track {
+	position: relative;
+	height: 6px;
+	border-radius: 3px;
+	background: var(--background-modifier-border);
+}
+.ssa-cat-tick {
+	position: absolute;
+	top: -3px;
+	width: 2px;
+	height: 12px;
+	margin-left: -1px;
+	border-radius: 1px;
+	background: var(--text-normal);
+}
+.ssa-cat-score {
+	text-align: right;
+	font-weight: var(--font-semibold);
+	font-variant-numeric: tabular-nums;
+}
+.ssa-cat-delta {
+	text-align: right;
+	font-size: var(--font-ui-smaller, 12px);
+	font-variant-numeric: tabular-nums;
+}
+
+/* Score history */
+.ssa-chart-wrap {
+	margin: 0 var(--size-4-4) var(--size-4-4);
+}
+.ssa-chart {
+	display: block;
+	overflow: visible;
+}
+.ssa-chart-grid {
+	stroke: var(--background-modifier-border);
+	stroke-width: 1;
+}
+.ssa-chart-axis,
+.ssa-chart-value {
+	fill: var(--text-faint);
+	font-size: 11px;
+	font-family: var(--font-interface);
+}
+.ssa-chart-value {
+	fill: var(--text-muted);
+}
+:is(.ssa-chart-axis, .ssa-chart-value).is-last {
+	fill: var(--text-normal);
+	font-weight: var(--font-semibold);
+}
+.ssa-chart-line {
+	fill: none;
+	stroke: var(--interactive-accent);
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.ssa-chart-dot {
+	fill: var(--background-primary);
+	stroke: var(--interactive-accent);
+	stroke-width: 1.5;
+}
+.ssa-chart-dot.is-last {
+	fill: var(--interactive-accent);
+}
+
+/* Pages by status */
+.ssa-pages-body {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 0 var(--size-4-4) var(--size-4-4);
+}
+.ssa-status-bar {
+	display: flex;
+	gap: 2px;
+	height: 8px;
+	overflow: hidden;
+	border-radius: 3px;
+}
+.ssa-status-seg {
+	display: block;
+	min-width: 4px;
+	height: 100%;
+}
+.ssa-status-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px var(--size-4-4);
+	font-size: var(--font-ui-smaller, 12px);
+}
+.ssa-status-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-variant-numeric: tabular-nums;
+}
+.ssa-status-item .ssa-mark {
+	width: 7px;
+	height: 7px;
+}
+.ssa-pages-body .ssa-label {
+	margin-top: 6px;
+}
+.ssa-broken-list {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.ssa-broken-list li {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-width: 0;
+	padding: 5px 0;
+}
+.ssa-broken-path {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--text-normal);
+	text-decoration: none;
+}
+.ssa-broken-path:hover {
+	color: var(--text-accent);
+	text-decoration: underline;
+}
+.ssa-pages-body > .ssa-link-btn {
+	align-self: flex-start;
+}
+
+/* ---------- panels: Issues, Pages, Measurements ---------- */
+.ssa-panel {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-4);
+}
+.ssa-filters {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--size-4-2);
+}
+.ssa-filters-spacer {
+	flex: 1;
+}
+
+.ssa-list-head {
+	display: flex;
+	justify-content: space-between;
+	padding: 10px 44px 10px 36px;
+	border-bottom: 1px solid var(--background-modifier-border);
+	background: var(--background-secondary);
+	font-size: var(--font-ui-smaller, 12px);
+	font-weight: var(--font-medium);
+	color: var(--text-faint);
+}
+
+/* Expandable rule rows */
+.ssa-row {
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+.ssa-row[open] {
+	background: var(--background-secondary);
+}
+.ssa-row-head {
+	display: block;
+	padding: 12px var(--size-4-4) 10px;
+	cursor: pointer;
+	list-style: none;
+}
+.ssa-row-head::-webkit-details-marker {
+	display: none;
+}
+.ssa-row:not([open]) > .ssa-row-head:hover {
+	background: var(--background-modifier-hover);
+}
+:is(.ssa-row, .ssa-prow-wrap)[open] > summary .ssa-row-chevron {
+	transform: rotate(180deg);
+}
+.ssa-row-body {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	padding: 4px var(--size-4-4) var(--size-4-4) 36px;
+}
+.ssa-row-msg {
+	margin: 0;
+	line-height: 1.5;
+	color: var(--text-muted);
+}
+.ssa-status-word {
+	margin-right: var(--size-4-2);
+	font-weight: var(--font-semibold);
+}
+.ssa-fix {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 12px 14px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-m);
+	background: var(--background-primary);
+}
+.ssa-fix-label {
+	font-weight: var(--font-semibold);
+}
+.ssa-fix-text {
+	margin: 0;
+	line-height: 1.5;
+	color: var(--text-muted);
+}
+.ssa-affected {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--size-4-2);
+}
+.ssa-affected-list {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 6px var(--size-4-6);
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.ssa-affected-list li {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.ssa-affected-list a {
+	color: var(--text-normal);
+	text-decoration: none;
+}
+.ssa-affected-list a:hover {
+	color: var(--text-accent);
+	text-decoration: underline;
+}
+
+/* Pages table: CSS grid rows so each row can expand into its findings. */
+.ssa-ptable {
+	min-width: 48rem;
+}
+.ssa-prow {
+	display: grid;
+	grid-template-columns: minmax(10rem, 1fr) 4.5rem 10rem 4.5rem 5rem 6rem 16px;
+	align-items: center;
+	gap: var(--size-4-4);
+	padding: 10px var(--size-4-4);
+	border-bottom: 1px solid var(--background-modifier-border);
+	font-variant-numeric: tabular-nums;
+}
+.ssa-prow.is-head {
+	background: var(--background-secondary);
+	font-size: var(--font-ui-smaller, 12px);
+	font-weight: var(--font-medium);
+	color: var(--text-faint);
+}
+summary.ssa-prow {
+	cursor: pointer;
+	list-style: none;
+}
+summary.ssa-prow::-webkit-details-marker {
+	display: none;
+}
+.ssa-prow-wrap:not([open]) > summary.ssa-prow:hover {
+	background: var(--background-modifier-hover);
+}
+.ssa-prow-wrap[open] {
+	background: var(--background-secondary);
+}
+.ssa-ppath {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.ssa-pscore {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.ssa-pscore .ssa-bar {
+	flex: 1;
+	min-width: 2rem;
+}
+.ssa-pscore-num {
+	width: 1.75rem;
+	text-align: right;
+	font-weight: var(--font-semibold);
+}
+.ssa-prow-body {
+	padding: 4px var(--size-4-4) var(--size-4-4);
+}
+.ssa-prow-body .ssa-table {
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-m);
+	background: var(--background-primary);
+}
+
+/* Measurements: site-wide out-of-range rows, then page list beside page detail. */
+.ssa-oor-head,
+.ssa-oor-row {
+	display: grid;
+	grid-template-columns: minmax(12rem, 1fr) minmax(10rem, 1fr) 9rem;
+	align-items: center;
+	gap: var(--size-4-4);
+}
+.ssa-oor-head {
+	padding: 8px var(--size-4-4);
+	border-bottom: 1px solid var(--background-modifier-border);
+	background: var(--background-secondary);
+	font-size: var(--font-ui-smaller, 12px);
+	font-weight: var(--font-medium);
+	color: var(--text-faint);
+}
+:is(.safi-site-audit) .ssa-oor-row {
+	width: 100%;
+	height: auto;
+	margin: 0;
+	padding: 10px var(--size-4-4) 8px;
+	border: none;
+	border-bottom: 1px solid var(--background-modifier-border);
+	border-radius: 0;
+	box-shadow: none;
+	background: transparent;
+	color: var(--text-normal);
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-normal);
+	text-align: left;
+	cursor: pointer;
+}
+:is(.safi-site-audit) .ssa-oor-row:last-child {
+	border-bottom: none;
+}
+:is(.safi-site-audit) .ssa-oor-row:hover {
+	background: var(--background-modifier-hover);
+}
+:is(.safi-site-audit) .ssa-oor-row.is-on {
+	background: var(--background-modifier-active-hover, var(--background-modifier-hover));
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--interactive-accent) 35%, transparent);
+}
+.ssa-oor-main {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-width: 0;
+}
+.ssa-oor-cell {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+}
+.ssa-oor-pages {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 6px;
+	font-weight: var(--font-medium);
+}
+.ssa-oor-share {
+	grid-column: 1 / -1;
+	margin-top: 2px;
+}
+.ssa-share > span.is-bad {
+	background: var(--color-red);
+}
+.ssa-oor-clear {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-2);
+	padding: 14px var(--size-4-4);
+	color: var(--text-muted);
+}
+
+.ssa-measure {
+	display: grid;
+	grid-template-columns: 18rem minmax(0, 1fr);
+	gap: var(--size-4-4);
+	align-items: start;
+}
+.ssa-measure-list {
+	position: sticky;
+	top: 24px;
+	max-height: calc(100vh - 12rem);
+}
+.ssa-measure-search {
+	padding: 0 var(--size-4-3) var(--size-4-2);
+}
+.ssa-measure-pages {
+	flex: 1;
+	min-height: 0;
+	overflow-y: auto;
+	padding: 0 6px 6px;
+}
+:is(.safi-site-audit) .ssa-measure-page {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-2);
+	width: 100%;
+	height: auto;
+	margin: 0;
+	padding: 7px 10px;
+	border: none;
+	border-radius: var(--radius-m);
+	box-shadow: none;
+	background: transparent;
+	color: var(--text-normal);
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-normal);
+	text-align: left;
+	cursor: pointer;
+}
+:is(.safi-site-audit) .ssa-measure-page:hover {
+	background: var(--background-modifier-hover);
+}
+:is(.safi-site-audit) .ssa-measure-page.is-on {
+	background: var(--background-modifier-active-hover, var(--background-modifier-hover));
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--interactive-accent) 35%, transparent);
+}
+.ssa-measure-page .ssa-ppath {
+	flex: 1;
+	min-width: 0;
+}
+.ssa-measure-detail {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-4);
+	min-width: 0;
+}
+.ssa-measure-title {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--size-4-2);
+	min-height: var(--input-height);
+}
+.ssa-measure-path {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--text-normal);
+	font-size: var(--font-ui-medium);
+	font-weight: var(--font-semibold);
+	text-decoration: none;
+}
+.ssa-measure-path:hover {
+	color: var(--text-accent);
+}
+.ssa-flag-tiles {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+	gap: var(--size-4-3);
+}
+.ssa-flag-tile {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 12px 14px;
+}
+.ssa-flag-label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--text-muted);
+}
+.ssa-flag-value {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+}
+.ssa-flag-value .ssa-value {
+	font-size: 1.6em;
+	line-height: 1.15;
+	text-align: left;
+}
+.ssa-flag-tile .ssa-range {
+	width: 100%;
+}
+.ssa-flag-tile > .ssa-faint {
+	font-size: var(--font-ui-smaller, 12px);
+}
+/* Value on its target band. The band is the recommended range; the dot is the value. */
+.ssa-range {
+	position: relative;
+	flex-shrink: 0;
+	display: inline-block;
+	width: 64px;
+	height: 6px;
+	border-radius: 3px;
+	background: var(--background-modifier-border);
+}
+.ssa-range-band {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	border-radius: 3px;
+	background: var(--text-faint);
+	opacity: 0.55;
+}
+.ssa-range-dot {
+	position: absolute;
+	top: 50%;
+	width: 8px;
+	height: 8px;
+	margin: -4px 0 0 -4px;
+	border: 1.5px solid var(--background-primary);
+	border-radius: 50%;
+	background: var(--text-normal);
+}
+.ssa-range-dot.is-mid {
+	background: var(--color-yellow);
+}
+.ssa-range-dot.is-bad {
+	background: var(--color-red);
+}
+.ssa-was {
+	margin-left: 6px;
+	font-size: var(--font-ui-smaller, 12px);
+	color: var(--text-faint);
+}
+
+/* Measurements: category cards */
+.ssa-metric-groups {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+	gap: var(--size-4-4);
+}
+.ssa-metric-tables {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--size-4-4);
+}
+/* Cards in a row share one height; a table's footer sits on the card's bottom edge. */
+.ssa-metric-tables > .ssa-card > .ssa-card-foot {
+	margin-top: auto;
+}
+.ssa-metric-tables > .is-wide {
+	grid-column: span 2;
+}
+/* Mosaic: long cards span two rows, dense flow packs short cards into the gaps. */
+.ssa-metric-groups,
+.ssa-metric-tables {
+	grid-auto-flow: dense;
+}
+:is(.ssa-metric-groups, .ssa-metric-tables) > .is-tall {
+	grid-row: span 2;
+}
+.ssa-values {
+	margin: 0;
+	padding: 0 var(--size-4-4) var(--size-4-2);
+}
+.ssa-value-row {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-3);
+	padding: 8px 0;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+.ssa-value-row:last-child {
+	border-bottom: none;
+}
+.ssa-value-row dt {
+	flex: 1 1 auto;
+	min-width: 40%;
+	color: var(--text-muted);
+}
+.ssa-value-row dd {
+	display: flex;
+	flex: 0 1 auto;
+	max-width: 60%;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 6px;
+	min-width: 0;
+	margin: 0 0 0 auto;
+}
+.ssa-value {
+	min-width: 0;
+	font-weight: var(--font-semibold);
+	font-variant-numeric: tabular-nums;
+	overflow-wrap: anywhere;
+	text-align: right;
+}
+.ssa-unit {
+	flex-shrink: 0;
+	white-space: nowrap;
+	font-size: var(--font-ui-smaller, 12px);
+	color: var(--text-faint);
+}
+
+/* ---------- tables ---------- */
+.ssa-scroll-x {
+	max-width: 100%;
+	overflow-x: auto;
+}
+.ssa-table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	overflow: hidden;
+}
+.ssa-table th,
+.ssa-table td {
+	padding: 8px var(--size-4-4);
+	text-align: left;
+	vertical-align: top;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+.ssa-table :is(th, td).is-num {
+	text-align: right;
+}
+.ssa-table th {
+	background: var(--background-secondary);
+	font-size: var(--font-ui-smaller, 12px);
+	font-weight: var(--font-medium);
+	color: var(--text-faint);
+}
+.ssa-table tr:last-child td {
+	border-bottom: none;
+}
+.ssa-col-status {
+	width: 6.5rem;
+}
+.ssa-cell-strong {
+	display: block;
+	font-weight: var(--font-medium);
+}
+.ssa-cell-faint {
+	display: block;
+	color: var(--text-faint);
+}
+.ssa-cell-muted {
+	color: var(--text-muted);
 }
 
 /* ---------- the sidebar list ---------- */
@@ -156,19 +1665,18 @@
 	color: var(--text-muted);
 }
 .ssa-rail-mark .svg-icon {
-	width: 16px;
-	height: 16px;
+	width: 14px;
+	height: 14px;
 }
 .ssa-rail-name {
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-semibold);
+	font-weight: var(--font-medium);
 	color: var(--text-muted);
 }
 .ssa-rail-actions {
-	padding: 0 var(--size-4-1) var(--size-4-3);
-}
-.ssa-rail-filter {
-	padding: 0 var(--size-4-1) var(--size-4-4);
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 0 var(--size-4-1) var(--size-4-2);
 }
 .ssa-rail-list {
 	flex: 1;
@@ -178,28 +1686,23 @@
 }
 .ssa-rail-note {
 	margin: 0;
-	padding: var(--size-4-2) var(--size-4-3);
-	font-size: var(--font-ui-small);
-	color: var(--text-muted);
+	padding: var(--size-4-3) var(--size-4-3);
+	color: var(--text-faint);
 }
-
-/* a site and its runs */
 .ssa-site {
 	display: flex;
 	flex-direction: column;
-	gap: var(--size-4-1);
-}
-.ssa-site + .ssa-site {
-	margin-top: var(--size-4-6);
+	gap: 2px;
+	padding-top: 14px;
 }
 .ssa-site-host {
 	margin: 0;
-	padding: var(--size-4-1) var(--size-4-3);
+	padding: 0 10px 4px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-semibold);
+	font-size: var(--font-ui-smaller, 12px);
+	font-weight: var(--font-medium);
 	color: var(--text-faint);
 }
 /* Date over page count, score chip centred on the right. */
@@ -210,24 +1713,31 @@
 		"date  score"
 		"pages score";
 	align-items: center;
-	gap: 2px var(--size-4-3);
+	gap: 1px var(--size-4-2);
 	width: 100%;
 	height: auto;
 	margin: 0;
-	padding: var(--size-4-2) var(--size-4-3);
+	padding: 7px 10px;
 	border: none;
 	border-radius: var(--radius-m);
 	box-shadow: none;
 	background: transparent;
 	color: var(--text-normal);
+	font-size: var(--font-ui-small);
 	text-align: left;
 	cursor: pointer;
 }
 .safi-site-audit-list .ssa-run-row:hover {
 	background: var(--background-modifier-hover);
 }
-.safi-site-audit-list .ssa-run-row.is-on {
+.safi-site-audit-list .ssa-run-row:is(.is-on, .is-running) {
 	background: var(--background-modifier-active-hover, var(--background-modifier-hover));
+}
+.safi-site-audit-list .ssa-run-row.is-on {
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--interactive-accent) 35%, transparent);
+}
+.safi-site-audit-list .ssa-run-row.is-running {
+	cursor: default;
 }
 .ssa-run-date,
 .ssa-run-pages {
@@ -238,903 +1748,39 @@
 }
 .ssa-run-date {
 	grid-area: date;
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-semibold);
+	font-weight: var(--font-medium);
 }
 .ssa-run-pages {
 	grid-area: pages;
-	font-size: var(--font-ui-small);
+	font-size: var(--font-ui-smaller, 12px);
 	color: var(--text-faint);
 }
 .safi-site-audit-list .ssa-run-score {
 	grid-area: score;
 }
 
-/* ---------- blank state ---------- */
-.ssa-blank {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: var(--size-4-4);
-	max-width: 26rem;
-	min-height: 70vh;
-	margin: 0 auto;
-	justify-content: center;
-	text-align: center;
-}
-.ssa-blank-badge {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 56px;
-	height: 56px;
-	border-radius: 50%;
-	background: var(--background-secondary);
-	color: var(--text-muted);
-}
-.ssa-blank-badge .svg-icon {
-	width: 24px;
-	height: 24px;
-}
-.ssa-blank-title {
-	margin: 0;
-	font-size: 1.5em;
-	font-weight: var(--font-semibold);
-	line-height: 1.2;
-}
-.ssa-blank-text {
-	margin: calc(var(--size-4-2) * -1) 0 0;
-	font-size: var(--font-ui-small);
-	line-height: 1.5;
-	color: var(--text-muted);
-}
-
-/* ---------- controls ----------
- *
- * Obsidian styles bare <button> and <select> through selectors like
- * `button:not(.clickable-icon)`, specificity (0,1,1). Real buttons keep that
- * chrome and its `mod-cta` class so they match the installed theme; controls
- * that must not look like a default button (tabs, chips, segments, rows) are
- * written as `:is(root) .class`, (0,2,0), which wins without !important.
- */
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-btn {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: var(--size-4-2);
-	min-height: var(--input-height);
-	padding: var(--size-4-2) var(--size-4-3);
-	font-size: var(--font-ui-small);
-	line-height: 1.2;
-	white-space: nowrap;
-	cursor: pointer;
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-btn:disabled {
-	opacity: 0.5;
-	cursor: not-allowed;
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-btn .svg-icon {
-	width: 16px;
-	height: 16px;
-	flex-shrink: 0;
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-btn-block {
-	width: 100%;
-	min-height: calc(var(--input-height) + 4px);
-	font-weight: var(--font-medium);
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-link-btn {
-	padding: 0;
-	height: auto;
-	border: none;
-	box-shadow: none;
-	background: transparent;
-	color: var(--text-normal);
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-semibold);
-	cursor: pointer;
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-link-btn:hover {
-	background: transparent;
-	text-decoration: underline;
-}
-
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-input {
-	width: 100%;
-	min-height: var(--input-height);
-	padding: var(--size-4-2) var(--size-4-3);
-	font-size: var(--font-ui-small);
-	font-family: inherit;
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-input::placeholder {
-	color: var(--text-faint);
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-input-lg {
-	min-height: calc(var(--input-height) + 8px);
-	font-size: var(--font-ui-medium);
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-select {
-	max-width: 100%;
-	min-width: 12.5rem;
-	cursor: pointer;
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-select-wide {
-	min-width: 22.5rem;
-}
-
-.ssa-field {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-2);
-}
-.ssa-field-narrow {
-	max-width: 20rem;
-}
-.ssa-field-label {
-	font-size: var(--font-ui-medium);
-}
-.ssa-field-desc {
-	font-size: var(--font-ui-small);
-	line-height: 1.45;
-	color: var(--text-muted);
-}
-
-/* Segmented control: one track, the chosen segment raised on the page surface. */
-.ssa-segmented {
-	display: inline-flex;
-	align-items: stretch;
-	gap: 2px;
-	padding: 2px;
-	border-radius: var(--radius-m);
-	background: var(--background-secondary);
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-seg {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: var(--size-4-1);
-	height: auto;
-	margin: 0;
-	padding: var(--size-4-1) var(--size-4-3);
-	border: none;
-	border-radius: var(--radius-s);
-	box-shadow: none;
-	background: transparent;
-	color: var(--text-muted);
-	font-size: var(--font-ui-small);
-	line-height: 1.4;
-	white-space: nowrap;
-	cursor: pointer;
-	transition: color 120ms ease, background-color 120ms ease;
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-seg:hover {
-	background: transparent;
-	color: var(--text-normal);
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-seg.is-on {
-	background: var(--background-primary);
-	box-shadow: var(--shadow-s);
-	color: var(--text-normal);
-	font-weight: var(--font-semibold);
-}
-.ssa-seg-count {
-	font-variant-numeric: tabular-nums;
-}
-
-/* Filter chip: on reads as a filled tag with a check, off as a quiet tag. */
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--size-4-1);
-	height: auto;
-	margin: 0;
-	padding: var(--size-4-1) var(--size-4-2);
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-s);
-	box-shadow: none;
-	background: var(--background-secondary);
-	color: var(--text-muted);
-	font-size: var(--font-ui-small);
-	line-height: 1.4;
-	white-space: nowrap;
-	cursor: pointer;
-	transition: color 120ms ease, background-color 120ms ease;
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip:hover {
-	background: var(--background-modifier-hover);
-	color: var(--text-normal);
-}
-/* Selected filters use the theme's accent, the same pairing as mod-cta buttons. */
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip.is-on {
-	border-color: var(--interactive-accent);
-	background: var(--interactive-accent);
-	color: var(--text-on-accent);
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip.is-on:hover {
-	background: var(--interactive-accent-hover);
-	color: var(--text-on-accent);
-}
-.ssa-chip-check {
-	display: flex;
-}
-.ssa-chip-check .svg-icon {
-	width: 14px;
-	height: 14px;
-}
-
-/* ---------- new run ---------- */
-.ssa-newrun {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-6);
-	max-width: 35rem;
-	margin: 0 auto;
-}
-.ssa-newrun-intro {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-2);
-}
-.ssa-newrun-title {
-	margin: 0;
-	font-size: 1.5em;
-	line-height: 1.2;
-	font-weight: var(--font-semibold);
-}
-.ssa-newrun-lede {
-	margin: 0;
-	font-size: var(--font-ui-small);
-	line-height: 1.5;
-	color: var(--text-muted);
-}
-.ssa-newrun-folder {
-	color: var(--text-normal);
-	font-weight: var(--font-medium);
-}
-.ssa-form-card {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-6);
-}
-.ssa-newrun-actions {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--size-4-3);
-}
-.ssa-newrun-hint {
-	font-size: var(--font-ui-small);
-	color: var(--text-faint);
-}
-
-.ssa-progress {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-3);
-	padding: var(--size-4-6);
-	border-radius: var(--radius-m);
-	background: var(--background-secondary);
-}
-.ssa-progress-head {
-	display: flex;
-	align-items: baseline;
-	justify-content: space-between;
-	gap: var(--size-4-3);
-}
-.ssa-progress-phase,
-.ssa-progress-pct {
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-semibold);
-	font-variant-numeric: tabular-nums;
-}
-.ssa-progress-track {
-	height: 8px;
-	overflow: hidden;
-	border-radius: 999px;
-	background: var(--background-modifier-border);
-}
-.ssa-progress-fill {
-	display: block;
-	height: 100%;
-	border-radius: 999px;
-	background: var(--interactive-accent);
-	transition: width 240ms ease-out;
-}
-.ssa-progress-meta {
-	display: flex;
-	gap: var(--size-4-3);
-	min-width: 0;
-}
-.ssa-progress-sub {
-	flex-shrink: 0;
-	font-size: var(--font-ui-small);
-	font-variant-numeric: tabular-nums;
-	color: var(--text-muted);
-}
-.ssa-progress-url {
-	flex: 1;
-	min-width: 0;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	text-align: right;
-	font-size: var(--font-ui-small);
-	color: var(--text-faint);
-}
-
-.ssa-spinner {
-	width: 1em;
-	height: 1em;
-	border: 2px solid currentColor;
-	border-right-color: transparent;
-	border-radius: 50%;
-	animation: ssa-spin 0.6s linear infinite;
-}
-@keyframes ssa-spin {
-	to {
-		transform: rotate(360deg);
+/* ---------- narrower panes: more rows, never a squeezed column ---------- */
+@container (max-width: 72rem) {
+	.ssa-overview-main {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.ssa-oor-head,
+	.ssa-oor-row {
+		grid-template-columns: minmax(10rem, 1fr) minmax(8rem, 1fr) 8rem;
 	}
 }
-
-/* ---------- report header ---------- */
-.ssa-report {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-6);
-}
-.ssa-head {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: flex-start;
-	gap: var(--size-4-4);
-}
-.ssa-head-id {
-	min-width: 0;
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-1);
-}
-.ssa-head-host {
-	margin: 0;
-	font-size: 1.5em;
-	line-height: 1.2;
-	font-weight: var(--font-semibold);
-	overflow-wrap: anywhere;
-}
-.ssa-head-url {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	font-size: var(--font-ui-small);
-	color: var(--text-normal);
-	text-decoration: underline;
-	text-underline-offset: 2px;
-}
-.ssa-head-url:hover {
-	color: var(--text-accent);
-}
-.ssa-head-meta {
-	margin: 0;
-	font-size: var(--font-ui-small);
-	color: var(--text-faint);
-}
-.ssa-sep {
-	padding: 0 var(--size-4-1);
-}
-.ssa-head-actions {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--size-4-2);
-	margin-left: auto;
-}
-
-/* ---------- site health ---------- */
-.ssa-health {
-	display: flex;
-	align-items: center;
-	gap: var(--size-4-8);
-}
-.ssa-health-body {
-	flex: 1;
-	min-width: 0;
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-4);
-}
-.ssa-health-head {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	justify-content: space-between;
-	gap: var(--size-4-2);
-}
-.ssa-health-note {
-	font-size: var(--font-ui-small);
-	color: var(--text-faint);
-}
-.ssa-split {
-	display: flex;
-	gap: 2px;
-	height: 8px;
-}
-.ssa-split-seg {
-	display: block;
-	height: 100%;
-	min-width: 4px;
-	border-radius: 999px;
-	transition: flex-grow 400ms ease-out;
-}
-.ssa-split-seg.is-pass {
-	background: var(--color-green);
-}
-.ssa-split-seg.is-warn {
-	background: var(--color-yellow);
-}
-.ssa-split-seg.is-fail {
-	background: var(--color-red);
-}
-.ssa-split-seg.is-info {
-	background: var(--text-normal);
-}
-.ssa-tallies {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--size-4-2) var(--size-4-8);
-	margin: 0;
-}
-.ssa-tally {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-1);
-	min-width: 0;
-}
-.ssa-tally dt {
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	font-size: var(--font-ui-small);
-	color: var(--text-muted);
-}
-.ssa-tally dd {
-	margin: 0;
-	font-size: 1.5em;
-	font-weight: var(--font-semibold);
-	font-variant-numeric: tabular-nums;
-	line-height: 1.2;
-}
-
-.ssa-gauge {
-	position: relative;
-	flex-shrink: 0;
-}
-.ssa-gauge svg {
-	display: block;
-	transform: rotate(-90deg);
-}
-.ssa-gauge-track {
-	stroke: var(--background-modifier-border);
-}
-.ssa-gauge-arc {
-	transition: stroke-dashoffset 600ms ease-out;
-	stroke: var(--color-green);
-}
-.ssa-gauge-arc.is-mid {
-	stroke: var(--color-yellow);
-}
-.ssa-gauge-arc.is-bad {
-	stroke: var(--color-red);
-}
-.ssa-gauge-center {
-	position: absolute;
-	inset: 0;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	pointer-events: none;
-}
-.ssa-gauge-value {
-	font-size: 3em;
-	font-weight: var(--font-bold);
-	font-variant-numeric: tabular-nums;
-	line-height: 1;
-}
-.ssa-gauge-grade {
-	font-size: var(--font-ui-small);
-	color: var(--text-faint);
-	line-height: 1.4;
-}
-
-/* ---------- category scores ---------- */
-.ssa-cats-block {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-4);
-}
-.ssa-block-head {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--size-4-3);
-}
-.ssa-block-head .ssa-segmented {
-	margin-left: auto;
-}
-/* Two columns that fill top to bottom, so "worst first" reads down the left. */
-.ssa-cats {
-	columns: 2;
-	column-gap: var(--size-4-8);
-}
-.ssa-cat {
-	display: grid;
-	grid-template-columns: 8rem 1fr 1.75rem;
-	align-items: center;
-	gap: var(--size-4-3);
-	padding: 4px 0;
-	break-inside: avoid;
-}
-.ssa-cat-name {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	font-size: var(--font-ui-small);
-	color: var(--text-muted);
-}
-.ssa-cat-track {
-	height: 6px;
-	overflow: hidden;
-	border-radius: 999px;
-	background: var(--background-modifier-border);
-}
-.ssa-cat-fill {
-	display: block;
-	height: 100%;
-	border-radius: 999px;
-	background: var(--color-green);
-	transition: width 400ms ease-out;
-}
-.ssa-cat-fill.is-mid {
-	background: var(--color-yellow);
-}
-.ssa-cat-fill.is-bad {
-	background: var(--color-red);
-}
-.ssa-cat-score {
-	text-align: right;
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-semibold);
-	font-variant-numeric: tabular-nums;
-}
-
-/* ---------- tabs ---------- */
-.ssa-tabs {
-	position: sticky;
-	top: 0;
-	z-index: 1;
-	display: flex;
-	gap: var(--size-4-1);
-	margin-bottom: calc(var(--size-4-2) * -1);
-	border-bottom: 1px solid var(--background-modifier-border);
-	background: var(--background-primary);
-}
-.safi-site-audit .ssa-tab {
-	position: relative;
-	height: auto;
-	margin: 0;
-	padding: var(--size-4-1) var(--size-4-3) var(--size-4-2);
-	border: none;
-	border-radius: 0;
-	box-shadow: none;
-	background: transparent;
-	color: var(--text-muted);
-	font-size: var(--font-ui-medium);
-	line-height: 1.4;
-	cursor: pointer;
-	transition: color 120ms ease;
-}
-.safi-site-audit .ssa-tab:hover {
-	background: transparent;
-	color: var(--text-normal);
-}
-.safi-site-audit .ssa-tab.is-on {
-	background: transparent;
-	color: var(--text-normal);
-}
-.safi-site-audit .ssa-tab.is-on::after {
-	content: "";
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: -1px;
-	height: 2px;
-	background: var(--text-normal);
-}
-
-/* ---------- panels ---------- */
-.ssa-panel {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-4);
-}
-.ssa-filters {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--size-4-2);
-}
-.ssa-filters-spacer {
-	flex: 1;
-}
-.ssa-filters-note {
-	font-size: var(--font-ui-small);
-	color: var(--text-faint);
-}
-.ssa-empty-line {
-	margin: 0;
-	padding: var(--size-4-8) 0;
-	border: 1px dashed var(--background-modifier-border);
-	border-radius: var(--radius-m);
-	text-align: center;
-	font-size: var(--font-ui-small);
-	color: var(--text-muted);
-}
-
-/* ---------- expandable rows, inside one bordered list ---------- */
-.ssa-list {
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-m);
-}
-.ssa-row + .ssa-row {
-	border-top: 1px solid var(--background-modifier-border);
-}
-.ssa-row[open] {
-	background: var(--background-secondary);
-}
-.ssa-row-head {
-	display: flex;
-	align-items: center;
-	gap: var(--size-4-3);
-	padding: var(--size-4-3) var(--size-4-4);
-	cursor: pointer;
-	list-style: none;
-}
-.ssa-row-head::-webkit-details-marker {
-	display: none;
-}
-.ssa-row:not([open]) > .ssa-row-head:hover {
-	background: var(--background-modifier-hover);
-}
-.ssa-row-chevron {
-	display: flex;
-	flex-shrink: 0;
-	color: var(--text-faint);
-	transition: transform 160ms ease;
-}
-.ssa-row-chevron .svg-icon {
-	width: 16px;
-	height: 16px;
-}
-.ssa-row[open] > .ssa-row-head .ssa-row-chevron {
-	transform: rotate(180deg);
-}
-.ssa-row-main {
-	display: flex;
-	flex-direction: column;
-	gap: 2px;
-	min-width: 0;
-	flex: 1;
-}
-.ssa-row-title {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-semibold);
-}
-.ssa-row-sub {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	font-size: var(--font-ui-small);
-	color: var(--text-faint);
-}
-.ssa-row-count {
-	flex-shrink: 0;
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-semibold);
-	font-variant-numeric: tabular-nums;
-}
-.ssa-row-count-unit {
-	font-weight: var(--font-normal);
-	color: var(--text-faint);
-}
-.ssa-status-word {
-	margin-right: var(--size-4-2);
-	font-weight: var(--font-semibold);
-}
-.ssa-row-body {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-4);
-	padding: var(--size-4-1) var(--size-4-6) var(--size-4-4) 44px;
-}
-.ssa-row-msg {
-	margin: 0;
-	font-size: var(--font-ui-small);
-	line-height: 1.5;
-	color: var(--text-muted);
-}
-.ssa-fix {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-1);
-	padding: var(--size-4-4);
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-m);
-	background: var(--background-primary);
-}
-.ssa-fix-label {
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-semibold);
-}
-.ssa-fix-text {
-	margin: 0;
-	font-size: var(--font-ui-small);
-	line-height: 1.5;
-	color: var(--text-muted);
-}
-.ssa-affected {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-2);
-	align-items: flex-start;
-}
-.ssa-affected-label {
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-semibold);
-	color: var(--text-faint);
-}
-.ssa-affected-list {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	grid-auto-flow: row;
-	gap: var(--size-4-1) var(--size-4-8);
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	list-style: none;
-}
-.ssa-affected-list li {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	font-size: var(--font-ui-small);
-	color: var(--text-muted);
-}
-
-/* ---------- tables ---------- */
-.ssa-table-head {
-	display: flex;
-	align-items: baseline;
-	gap: var(--size-4-2);
-}
-.ssa-table-title {
-	flex: 1;
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-semibold);
-}
-.ssa-table-note {
-	font-size: var(--font-ui-small);
-	color: var(--text-faint);
-}
-.ssa-table-card {
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-m);
-	background: var(--background-primary);
-}
-.ssa-scroll-x {
-	max-width: 100%;
-	overflow-x: auto;
-}
-.ssa-table {
-	width: 100%;
-	border-collapse: collapse;
-	font-size: var(--font-ui-small);
-}
-.ssa-table th,
-.ssa-table td {
-	padding: var(--size-4-2) var(--size-4-4);
-	text-align: left;
-	vertical-align: top;
-	border-bottom: 1px solid var(--background-modifier-border);
-}
-.ssa-table th {
-	background: var(--background-secondary);
-	font-weight: var(--font-semibold);
-	color: var(--text-faint);
-}
-.ssa-table tr:last-child td {
-	border-bottom: none;
-}
-.ssa-col-status {
-	width: 6.5rem;
-}
-.ssa-cell-strong {
-	display: block;
-	font-weight: var(--font-semibold);
-}
-.ssa-cell-faint {
-	display: block;
-	color: var(--text-faint);
-}
-.ssa-cell-muted {
-	color: var(--text-muted);
-}
-
-/* ---------- measurements ---------- */
-.ssa-metric-group {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-4);
-}
-.ssa-metric-cat {
-	margin: 0;
-	font-size: var(--font-ui-medium);
-	font-weight: var(--font-semibold);
-}
-.ssa-metric-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
-	gap: var(--size-4-3);
-}
-.ssa-metric {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-1);
-	min-width: 0;
-	padding: var(--size-4-4);
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-m);
-}
-.ssa-metric-label {
-	font-size: var(--font-ui-small);
-	color: var(--text-muted);
-}
-.ssa-metric-value {
-	font-size: 1.5em;
-	font-weight: var(--font-semibold);
-	font-variant-numeric: tabular-nums;
-	line-height: 1.2;
-	overflow-wrap: anywhere;
-}
-.ssa-metric-note {
-	font-size: var(--font-ui-small);
-	color: var(--text-faint);
-}
-.ssa-metric-table {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-4-2);
-}
-
-/* ---------- narrow panes ---------- */
 @container (max-width: 52rem) {
 	.ssa-view {
 		padding: var(--size-4-4);
 	}
-	.ssa-health {
-		flex-direction: column;
-		align-items: stretch;
-		gap: var(--size-4-6);
+	.ssa-kpis {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
-	.ssa-gauge {
-		align-self: center;
+	.ssa-overview-bottom {
+		grid-template-columns: minmax(0, 1fr);
 	}
-	.ssa-cats {
-		columns: 1;
+	.ssa-head-actions {
+		margin-left: 0;
 	}
 	.ssa-filters-spacer {
 		display: none;
@@ -1148,6 +1794,35 @@
 	.ssa-row-body {
 		padding-left: var(--size-4-4);
 	}
+	.ssa-list-head {
+		padding-left: var(--size-4-4);
+	}
+	.ssa-tabs {
+		top: calc(var(--size-4-4) * -1);
+		overflow-x: auto;
+	}
+	.ssa-measure {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.ssa-measure-list {
+		position: static;
+		max-height: 16rem;
+	}
+}
+@container (max-width: 32rem) {
+	.ssa-kpis,
+	.ssa-tiles {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.ssa-metric-tables {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.ssa-metric-tables > .is-wide {
+		grid-column: auto;
+	}
+	:is(.ssa-metric-groups, .ssa-metric-tables) > .is-tall {
+		grid-row: auto;
+	}
 }
 
 /* Everything in this file that moves, listed so the reduced-motion override can
@@ -1157,13 +1832,13 @@
 		:is(
 			.ssa-btn,
 			.ssa-seg,
-			.ssa-chip,
 			.ssa-tab,
 			.ssa-spinner,
-			.ssa-progress-fill,
-			.ssa-split-seg,
-			.ssa-gauge-arc,
+			.ssa-skel,
+			.ssa-skel-block,
+			.ssa-bar-fill,
 			.ssa-cat-fill,
+			.ssa-rule-chevron,
 			.ssa-row-chevron
 		) {
 		transition-duration: 0.01ms;

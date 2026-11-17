@@ -4267,6 +4267,38 @@ var RUNES = (
 var event_symbol = Symbol("events");
 var all_registered_events = /* @__PURE__ */ new Set();
 var root_event_handles = /* @__PURE__ */ new Set();
+function create_event(event_name, dom, handler, options = {}) {
+  function target_handler(event2) {
+    if (!options.capture) {
+      handle_event_propagation.call(dom, event2);
+    }
+    if (!event2.cancelBubble) {
+      return without_reactive_context(() => {
+        return handler?.call(this, event2);
+      });
+    }
+  }
+  if (event_name.startsWith("pointer") || event_name.startsWith("touch") || event_name === "wheel") {
+    queue_micro_task(() => {
+      dom.addEventListener(event_name, target_handler, options);
+    });
+  } else {
+    dom.addEventListener(event_name, target_handler, options);
+  }
+  return target_handler;
+}
+function event(event_name, dom, handler, capture2, passive2) {
+  var options = { capture: capture2, passive: passive2 };
+  var target_handler = create_event(event_name, dom, handler, options);
+  if (dom === document.body || // @ts-ignore
+  dom === window || // @ts-ignore
+  dom === document || // Firefox has quirky behavior, it can happen that we still get "canplay" events when the element is already removed
+  dom instanceof HTMLMediaElement) {
+    teardown(() => {
+      dom.removeEventListener(event_name, target_handler, options);
+    });
+  }
+}
 function delegated(event_name, element2, handler) {
   (element2[event_symbol] ??= {})[event_name] = handler;
 }
@@ -4433,24 +4465,62 @@ function from_html(content, flags2) {
     return clone2;
   };
 }
-function text(value2 = "") {
-  if (!hydrating) {
-    var t = create_text(value2 + "");
-    assign_nodes(t, t);
-    return t;
-  }
-  var node = hydrate_node;
-  if (node.nodeType !== TEXT_NODE) {
-    node.before(node = create_text());
-    set_hydrate_node(node);
-  } else {
-    merge_text_nodes(
-      /** @type {Text} */
-      node
+// @__NO_SIDE_EFFECTS__
+function from_namespace(content, flags2, ns = "svg") {
+  var has_start = !content.startsWith("<!>");
+  var is_fragment = (flags2 & TEMPLATE_FRAGMENT) !== 0;
+  var wrapped = `<${ns}>${has_start ? content : "<!>" + content}</${ns}>`;
+  var node;
+  return () => {
+    if (hydrating) {
+      assign_nodes(hydrate_node, null);
+      return hydrate_node;
+    }
+    if (!node) {
+      var fragment = (
+        /** @type {DocumentFragment} */
+        create_fragment_from_html(wrapped)
+      );
+      var root10 = (
+        /** @type {Element} */
+        get_first_child(fragment)
+      );
+      if (is_fragment) {
+        node = document.createDocumentFragment();
+        while (get_first_child(root10)) {
+          node.appendChild(
+            /** @type {TemplateNode} */
+            get_first_child(root10)
+          );
+        }
+      } else {
+        node = /** @type {Element} */
+        get_first_child(root10);
+      }
+    }
+    var clone2 = (
+      /** @type {TemplateNode} */
+      node.cloneNode(true)
     );
-  }
-  assign_nodes(node, node);
-  return node;
+    if (is_fragment) {
+      var start = (
+        /** @type {TemplateNode} */
+        get_first_child(clone2)
+      );
+      var end2 = (
+        /** @type {TemplateNode} */
+        clone2.lastChild
+      );
+      assign_nodes(start, end2);
+    } else {
+      assign_nodes(clone2, clone2);
+    }
+    return clone2;
+  };
+}
+// @__NO_SIDE_EFFECTS__
+function from_svg(content, flags2) {
+  return /* @__PURE__ */ from_namespace(content, flags2, "svg");
 }
 function comment() {
   if (hydrating) {
@@ -4875,6 +4945,25 @@ function if_block(node, fn, elseif = false) {
 
 // node_modules/svelte/src/internal/client/dom/blocks/key.js
 var NAN = Symbol("NaN");
+function key(node, get_key, render_fn) {
+  if (hydrating) {
+    hydrate_next();
+  }
+  var branches = new BranchManager(node);
+  var legacy = !is_runes();
+  block(() => {
+    var key2 = get_key();
+    if (key2 !== key2) {
+      key2 = /** @type {any} */
+      NAN;
+    }
+    if (legacy && key2 !== null && typeof key2 === "object") {
+      key2 = /** @type {V} */
+      {};
+    }
+    branches.ensure(key2, render_fn);
+  });
+}
 
 // node_modules/svelte/src/internal/client/dom/blocks/each.js
 function index(_, i) {
@@ -5853,6 +5942,63 @@ function to_number(value2) {
   return value2 === "" ? null : +value2;
 }
 
+// node_modules/svelte/src/internal/client/dom/elements/bindings/size.js
+var ResizeObserverSingleton = class _ResizeObserverSingleton {
+  /** */
+  #listeners = /* @__PURE__ */ new WeakMap();
+  /** @type {ResizeObserver | undefined} */
+  #observer;
+  /** @type {ResizeObserverOptions} */
+  #options;
+  /** @static */
+  static entries = /* @__PURE__ */ new WeakMap();
+  /** @param {ResizeObserverOptions} options */
+  constructor(options) {
+    this.#options = options;
+  }
+  /**
+   * @param {Element} element
+   * @param {(entry: ResizeObserverEntry) => any} listener
+   */
+  observe(element2, listener) {
+    var listeners2 = this.#listeners.get(element2) || /* @__PURE__ */ new Set();
+    listeners2.add(listener);
+    this.#listeners.set(element2, listeners2);
+    this.#getObserver().observe(element2, this.#options);
+    return () => {
+      var listeners3 = this.#listeners.get(element2);
+      listeners3.delete(listener);
+      if (listeners3.size === 0) {
+        this.#listeners.delete(element2);
+        this.#observer.unobserve(element2);
+      }
+    };
+  }
+  #getObserver() {
+    return this.#observer ?? (this.#observer = new ResizeObserver(
+      /** @param {any} entries */
+      (entries) => {
+        for (var entry of entries) {
+          _ResizeObserverSingleton.entries.set(entry.target, entry);
+          for (var listener of this.#listeners.get(entry.target) || []) {
+            listener(entry);
+          }
+        }
+      }
+    ));
+  }
+};
+var resize_observer_border_box = /* @__PURE__ */ new ResizeObserverSingleton({
+  box: "border-box"
+});
+function bind_element_size(element2, type, set2) {
+  var unsub = resize_observer_border_box.observe(element2, () => set2(element2[type]));
+  effect(() => {
+    untrack(() => set2(element2[type]));
+    return unsub;
+  });
+}
+
 // node_modules/svelte/src/internal/client/reactivity/props.js
 function prop(props, key2, flags2, fallback2) {
   var runes = !legacy_mode_flag || (flags2 & PROPS_IS_RUNES) !== 0;
@@ -6361,12 +6507,6 @@ var PUBLIC_VERSION = "5";
 if (typeof window !== "undefined") {
   ((window.__svelte ??= {}).v ??= /* @__PURE__ */ new Set()).add(PUBLIC_VERSION);
 }
-
-// src/ui/ReportView.svelte
-var import_obsidian4 = require("obsidian");
-
-// src/audit-store.ts
-var import_obsidian2 = require("obsidian");
 
 // node_modules/safi-studio-scanner/dist/http.js
 function createPool(limit) {
@@ -24616,1263 +24756,8 @@ function auditStream(url, options = {}) {
 var auditStream2 = auditStream;
 var render4 = render3;
 
-// src/report-file.ts
-var FENCE = "ssa-report-json";
-function buildNote(report) {
-  const frontmatter = [
-    "---",
-    "ssa_audit: true",
-    `url: ${JSON.stringify(report.startUrl)}`,
-    `date: ${JSON.stringify(report.generatedAt)}`,
-    `score: ${report.score}`,
-    `pages: ${report.pagesScanned}`,
-    "---",
-    ""
-  ].join("\n");
-  return frontmatter + render4(report, "md");
-}
-function buildJson(report) {
-  return JSON.stringify(report);
-}
-function buildHtml(report) {
-  return render4(report, "html");
-}
-function parseNote(content) {
-  const re = new RegExp("```" + FENCE + "\\n([\\s\\S]*?)\\n```");
-  const m = content.match(re);
-  if (!m) return null;
-  try {
-    return JSON.parse(m[1]);
-  } catch {
-    return null;
-  }
-}
-function siteFolderName(report) {
-  let host = report.startUrl;
-  try {
-    host = new URL(report.startUrl).hostname || report.startUrl;
-  } catch {
-  }
-  return host.replace(/[^a-z0-9.-]/gi, "-").replace(/^-+|-+$/g, "") || "site";
-}
-function runBaseName(report) {
-  const d = new Date(report.generatedAt);
-  if (isNaN(d.getTime())) return "audit";
-  return d.toISOString().slice(0, 16).replace(/[T:]/g, "-");
-}
-
-// src/audit-store.ts
-function siblingPath(notePath, ext) {
-  return notePath.replace(/\.md$/, `.${ext}`);
-}
-async function ensureFolder(app, path) {
-  const p = (0, import_obsidian2.normalizePath)(path);
-  if (!app.vault.getAbstractFileByPath(p)) {
-    await app.vault.createFolder(p).catch(() => {
-    });
-  }
-}
-function listAudits(app, settings) {
-  const root10 = app.vault.getFolderByPath((0, import_obsidian2.normalizePath)(settings.auditFolder));
-  const items = [];
-  if (!root10) return items;
-  const notes = [];
-  import_obsidian2.Vault.recurseChildren(root10, (f) => {
-    if (f instanceof import_obsidian2.TFile && f.extension === "md") notes.push(f);
-  });
-  for (const file of notes) {
-    const fm = app.metadataCache.getFileCache(file)?.frontmatter;
-    if (!fm?.ssa_audit) continue;
-    items.push({
-      file,
-      url: fm.url ?? "",
-      date: fm.date ?? "",
-      score: typeof fm.score === "number" ? fm.score : 0,
-      pages: typeof fm.pages === "number" ? fm.pages : 0
-    });
-  }
-  items.sort((a, b) => a.date < b.date ? 1 : -1);
-  return items;
-}
-async function readAudit(app, note) {
-  const json = app.vault.getAbstractFileByPath(siblingPath(note.path, "json"));
-  if (json instanceof import_obsidian2.TFile) {
-    try {
-      return JSON.parse(await app.vault.cachedRead(json));
-    } catch {
-      return null;
-    }
-  }
-  return parseNote(await app.vault.cachedRead(note));
-}
-async function saveAudit(app, settings, report) {
-  const folder = `${settings.auditFolder}/${siteFolderName(report)}`;
-  await ensureFolder(app, settings.auditFolder);
-  await ensureFolder(app, folder);
-  const stamp = runBaseName(report);
-  let base = stamp;
-  let i = 2;
-  while (app.vault.getAbstractFileByPath((0, import_obsidian2.normalizePath)(`${folder}/${base}.md`))) {
-    base = `${stamp}-${i}`;
-    i++;
-  }
-  const path = (ext) => (0, import_obsidian2.normalizePath)(`${folder}/${base}.${ext}`);
-  const note = await app.vault.create(path("md"), buildNote(report));
-  const json = await app.vault.create(path("json"), buildJson(report));
-  const html4 = await app.vault.create(path("html"), buildHtml(report));
-  return { note, json, html: html4 };
-}
-async function openInObsidian(app, file) {
-  await app.workspace.getLeaf("tab").openFile(file);
-}
-function openExternally(app, path) {
-  const open = app.openWithDefaultApp;
-  if (typeof open !== "function") return false;
-  void open.call(app, (0, import_obsidian2.normalizePath)(path));
-  return true;
-}
-
-// src/ui/helpers.ts
-function hostOf(url) {
-  try {
-    return new URL(url).hostname || url;
-  } catch {
-    return url;
-  }
-}
-function pathOf(url) {
-  try {
-    const u = new URL(url);
-    return (u.pathname === "/" ? "/" : u.pathname.replace(/\/$/, "")) + u.search;
-  } catch {
-    return url;
-  }
-}
-function formatDate(iso) {
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return iso;
-  return d.toLocaleString(void 0, {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-}
-function formatDateShort(iso) {
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return iso;
-  return d.toLocaleString(void 0, {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-}
-function grade(score) {
-  if (score >= 90) return "A";
-  if (score >= 80) return "B";
-  if (score >= 70) return "C";
-  if (score >= 60) return "D";
-  return "F";
-}
-function scoreTone(score) {
-  if (score >= 80) return "is-good";
-  if (score >= 50) return "is-mid";
-  return "is-bad";
-}
-function statusTone(status) {
-  if (status === "fail") return "is-fail";
-  if (status === "warn") return "is-warn";
-  if (status === "info") return "is-info";
-  return "is-pass";
-}
-function statusLabel(status) {
-  if (status === "fail") return "Failed";
-  if (status === "warn") return "Warning";
-  if (status === "info") return "Info";
-  return "Passed";
-}
-function categoryLabel(category) {
-  const special = {
-    "core-seo": "Core SEO",
-    eeat: "E-E-A-T",
-    "url-structure": "URL structure",
-    psi: "PageSpeed"
-  };
-  if (special[category]) return special[category];
-  const words = category.replace(/-/g, " ");
-  return words.charAt(0).toUpperCase() + words.slice(1);
-}
-function statusTotals(report) {
-  const t = { pass: 0, warn: 0, fail: 0, info: 0, total: 0 };
-  for (const page of report.pages) {
-    for (const f of page.findings) {
-      t[f.status]++;
-      t.total++;
-    }
-  }
-  return t;
-}
-var RANK = { fail: 3, warn: 2, info: 1, pass: 0 };
-function buildIssues(report) {
-  const map2 = /* @__PURE__ */ new Map();
-  for (const page of report.pages) {
-    for (const f of page.findings) {
-      if (f.status === "pass") continue;
-      let issue = map2.get(f.ruleId);
-      if (!issue) {
-        issue = {
-          ruleId: f.ruleId,
-          title: f.title,
-          category: f.category,
-          severity: f.severity,
-          status: f.status,
-          message: f.message,
-          fix: f.fix,
-          pages: []
-        };
-        map2.set(f.ruleId, issue);
-      }
-      if (RANK[f.status] > RANK[issue.status]) {
-        issue.status = f.status;
-        issue.message = f.message;
-      }
-      if (!issue.pages.includes(page.url)) issue.pages.push(page.url);
-    }
-  }
-  return [...map2.values()].sort(
-    (a, b) => RANK[b.status] - RANK[a.status] || b.pages.length - a.pages.length
-  );
-}
-function countFindings(report) {
-  let n = 0;
-  for (const page of report.pages) n += page.findings.length;
-  return n;
-}
-function pageIssueCount(page) {
-  let n = 0;
-  for (const f of page.findings) if (f.status !== "pass") n++;
-  return n;
-}
-function groupBySite(items) {
-  const map2 = /* @__PURE__ */ new Map();
-  for (const item of items) {
-    const host = hostOf(item.url);
-    const runs = map2.get(host);
-    if (runs) runs.push(item);
-    else map2.set(host, [item]);
-  }
-  return [...map2.entries()].map(([host, runs]) => ({ host, runs, latest: runs[0]?.score ?? 0 })).sort((a, b) => a.host.localeCompare(b.host));
-}
-function metricTone(status) {
-  if (status === "bad") return "is-bad";
-  if (status === "warn") return "is-mid";
-  if (status === "missing") return "is-missing";
-  return "";
-}
-function formatMetricValue(value2, unit) {
-  if (value2 === null || value2 === "") return "None";
-  const text5 = typeof value2 === "number" ? value2.toLocaleString() : value2;
-  return unit ? `${text5} ${unit}` : text5;
-}
-function groupMetrics2(metrics) {
-  const map2 = /* @__PURE__ */ new Map();
-  for (const m of metrics) {
-    const list = map2.get(m.category);
-    if (list) list.push(m);
-    else map2.set(m.category, [m]);
-  }
-  return [...map2.entries()].map(([category, list]) => ({ category, metrics: list })).sort((a, b) => a.category.localeCompare(b.category));
-}
-
-// src/ui/icon.ts
-var import_obsidian3 = require("obsidian");
-function icon(node, name) {
-  (0, import_obsidian3.setIcon)(node, name);
-  return {
-    update(next3) {
-      node.empty();
-      (0, import_obsidian3.setIcon)(node, next3);
-    }
-  };
-}
-
-// src/ui/ScoreGauge.svelte
-var root2 = from_html(`<div class="ssa-gauge" role="img"><svg aria-hidden="true"><circle fill="none" class="ssa-gauge-track"></circle><circle fill="none" stroke-linecap="round"></circle></svg> <div class="ssa-gauge-center"><span class="ssa-gauge-value"> </span> <span class="ssa-gauge-grade"> </span></div></div>`);
-function ScoreGauge($$anchor, $$props) {
-  push($$props, true);
-  let size = prop($$props, "size", 3, 120);
-  const stroke = 8;
-  const clamped = user_derived(() => Math.max(0, Math.min(100, $$props.value)));
-  const r = user_derived(() => (size() - stroke) / 2);
-  const c = user_derived(() => 2 * Math.PI * get2(r));
-  const offset = user_derived(() => get2(c) * (1 - get2(clamped) / 100));
-  const tone = user_derived(() => scoreTone(get2(clamped)));
-  var div = root2();
-  var svg = child(div);
-  var circle = child(svg);
-  set_attribute2(circle, "stroke-width", stroke);
-  var circle_1 = sibling(circle);
-  set_attribute2(circle_1, "stroke-width", stroke);
-  reset(svg);
-  var div_1 = sibling(svg, 2);
-  var span = child(div_1);
-  var text5 = child(span, true);
-  reset(span);
-  var span_1 = sibling(span, 2);
-  var text_1 = child(span_1);
-  reset(span_1);
-  reset(div_1);
-  reset(div);
-  template_effect(
-    ($0, $1, $2, $3) => {
-      set_style(div, `width:${size() ?? ""}px;height:${size() ?? ""}px`);
-      set_attribute2(div, "aria-label", `Health score ${$0 ?? ""} out of 100, grade ${$1 ?? ""}`);
-      set_attribute2(svg, "width", size());
-      set_attribute2(svg, "height", size());
-      set_attribute2(svg, "viewBox", `0 0 ${size() ?? ""} ${size() ?? ""}`);
-      set_attribute2(circle, "cx", size() / 2);
-      set_attribute2(circle, "cy", size() / 2);
-      set_attribute2(circle, "r", get2(r));
-      set_attribute2(circle_1, "cx", size() / 2);
-      set_attribute2(circle_1, "cy", size() / 2);
-      set_attribute2(circle_1, "r", get2(r));
-      set_attribute2(circle_1, "stroke-dasharray", get2(c));
-      set_attribute2(circle_1, "stroke-dashoffset", get2(offset));
-      set_class(circle_1, 0, `ssa-gauge-arc ${get2(tone) ?? ""}`);
-      set_text(text5, $2);
-      set_text(text_1, `Grade ${$3 ?? ""}`);
-    },
-    [
-      () => Math.round(get2(clamped)),
-      () => grade(get2(clamped)),
-      () => Math.round(get2(clamped)),
-      () => grade(get2(clamped))
-    ]
-  );
-  append($$anchor, div);
-  pop();
-}
-
-// src/ui/IssuesPanel.svelte
-var root3 = from_html(`<span class="ssa-chip-check"></span>`);
-var root_1 = from_html(`<button><!> <span class="ssa-seg-count"> </span> </button>`);
-var root_2 = from_html(`<option> </option>`);
-var root_3 = from_html(`<p class="ssa-empty-line">Nothing matches these filters.</p>`);
-var root_4 = from_html(`<div class="ssa-fix"><span class="ssa-fix-label">How to fix</span> <p class="ssa-fix-text"> </p></div>`);
-var root_5 = from_html(`<li> </li>`);
-var root_6 = from_html(`<button class="ssa-link-btn"> </button>`);
-var root_7 = from_html(`<details class="ssa-row"><summary class="ssa-row-head"><span aria-hidden="true"></span> <span class="ssa-row-main"><span class="ssa-row-title"> </span> <span class="ssa-row-sub"> </span></span> <span class="ssa-row-count"> <span class="ssa-row-count-unit"> </span></span> <span class="ssa-row-chevron"></span></summary> <div class="ssa-row-body"><p class="ssa-row-msg"><span> </span> </p> <!> <div class="ssa-affected"><span class="ssa-affected-label">Affected pages</span> <ul class="ssa-affected-list"></ul> <!></div></div></details>`);
-var root_8 = from_html(`<div class="ssa-list"></div>`);
-var root_9 = from_html(`<div class="ssa-panel"><div class="ssa-filters"><!> <span class="ssa-filters-spacer"></span> <select class="ssa-select dropdown" aria-label="Filter by category"><option>Every category</option><!></select> <div class="ssa-search ssa-search-inline"><input class="ssa-input" type="search" placeholder="Search rules" aria-label="Search rules"/> <span class="ssa-search-icon"></span></div></div> <!></div>`);
-function IssuesPanel($$anchor, $$props) {
-  push($$props, true);
-  const issues = user_derived(() => buildIssues($$props.report));
-  const totals = user_derived(() => statusTotals($$props.report));
-  const categories = user_derived(() => $$props.report.categories.map((c) => c.category));
-  let statusFilter = state(proxy(["fail", "warn", "info"]));
-  let catFilter = state("all");
-  let query = state("");
-  const filtered = user_derived(() => get2(issues).filter((i) => {
-    if (!get2(statusFilter).includes(i.status)) return false;
-    if (get2(catFilter) !== "all" && i.category !== get2(catFilter)) return false;
-    const q = get2(query).trim().toLowerCase();
-    if (q && !`${i.title} ${i.message} ${i.ruleId}`.toLowerCase().includes(q)) return false;
-    return true;
-  }));
-  function toggle(status) {
-    set(
-      statusFilter,
-      get2(statusFilter).includes(status) ? get2(statusFilter).filter((s) => s !== status) : [...get2(statusFilter), status],
-      true
-    );
-  }
-  const PAGE_PREVIEW = 12;
-  let expanded = state(proxy({}));
-  function shown(issue) {
-    return get2(expanded)[issue.ruleId] ? issue.pages : issue.pages.slice(0, PAGE_PREVIEW);
-  }
-  var div = root_9();
-  var div_1 = child(div);
-  var node = child(div_1);
-  each(
-    node,
-    17,
-    () => [
-      ["fail", "failed", get2(totals).fail],
-      ["warn", "warnings", get2(totals).warn],
-      ["info", "info", get2(totals).info]
-    ],
-    ([key2, word, n]) => key2,
-    ($$anchor2, $$item) => {
-      var $$array = user_derived(() => to_array(get2($$item), 3));
-      let key2 = () => get2($$array)[0];
-      let word = () => get2($$array)[1];
-      let n = () => get2($$array)[2];
-      var button = root_1();
-      let classes;
-      var node_1 = child(button);
-      {
-        var consequent = ($$anchor3) => {
-          var span = root3();
-          action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "check");
-          append($$anchor3, span);
-        };
-        var d = user_derived(() => get2(statusFilter).includes(String(key2())));
-        if_block(node_1, ($$render) => {
-          if (get2(d)) $$render(consequent);
-        });
-      }
-      var span_1 = sibling(node_1, 2);
-      var text5 = child(span_1, true);
-      reset(span_1);
-      var text_1 = sibling(span_1);
-      reset(button);
-      template_effect(
-        ($0, $1) => {
-          classes = set_class(button, 1, "ssa-chip", null, classes, $0);
-          set_attribute2(button, "aria-pressed", $1);
-          set_text(text5, n());
-          set_text(text_1, ` ${word() ?? ""}`);
-        },
-        [
-          () => ({ "is-on": get2(statusFilter).includes(String(key2())) }),
-          () => get2(statusFilter).includes(String(key2()))
-        ]
-      );
-      delegated("click", button, () => toggle(String(key2())));
-      append($$anchor2, button);
-    }
-  );
-  var select2 = sibling(node, 4);
-  var option = child(select2);
-  option.value = option.__value = "all";
-  var node_2 = sibling(option);
-  each(node_2, 16, () => get2(categories), (c) => c, ($$anchor2, c) => {
-    var option_1 = root_2();
-    var text_2 = child(option_1, true);
-    reset(option_1);
-    var option_1_value = {};
-    template_effect(
-      ($0) => {
-        set_text(text_2, $0);
-        if (option_1_value !== (option_1_value = c)) {
-          option_1.value = (option_1.__value = c) ?? "";
-        }
-      },
-      [() => categoryLabel(c)]
-    );
-    append($$anchor2, option_1);
-  });
-  reset(select2);
-  var div_2 = sibling(select2, 2);
-  var input = child(div_2);
-  remove_input_defaults(input);
-  var span_2 = sibling(input, 2);
-  action(span_2, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "search");
-  reset(div_2);
-  reset(div_1);
-  var node_3 = sibling(div_1, 2);
-  {
-    var consequent_1 = ($$anchor2) => {
-      var p = root_3();
-      append($$anchor2, p);
-    };
-    var alternate = ($$anchor2) => {
-      var div_3 = root_8();
-      each(div_3, 21, () => get2(filtered), (issue) => issue.ruleId, ($$anchor3, issue) => {
-        var details = root_7();
-        var summary = child(details);
-        var span_3 = child(summary);
-        var span_4 = sibling(span_3, 2);
-        var span_5 = child(span_4);
-        var text_3 = child(span_5, true);
-        reset(span_5);
-        var span_6 = sibling(span_5, 2);
-        var text_4 = child(span_6);
-        reset(span_6);
-        reset(span_4);
-        var span_7 = sibling(span_4, 2);
-        var text_5 = child(span_7);
-        var span_8 = sibling(text_5);
-        var text_6 = child(span_8, true);
-        reset(span_8);
-        reset(span_7);
-        var span_9 = sibling(span_7, 2);
-        action(span_9, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "chevron-down");
-        reset(summary);
-        var div_4 = sibling(summary, 2);
-        var p_1 = child(div_4);
-        var span_10 = child(p_1);
-        var text_7 = child(span_10, true);
-        reset(span_10);
-        var text_8 = sibling(span_10);
-        reset(p_1);
-        var node_4 = sibling(p_1, 2);
-        {
-          var consequent_2 = ($$anchor4) => {
-            var div_5 = root_4();
-            var p_2 = sibling(child(div_5), 2);
-            var text_9 = child(p_2, true);
-            reset(p_2);
-            reset(div_5);
-            template_effect(() => set_text(text_9, get2(issue).fix));
-            append($$anchor4, div_5);
-          };
-          if_block(node_4, ($$render) => {
-            if (get2(issue).fix) $$render(consequent_2);
-          });
-        }
-        var div_6 = sibling(node_4, 2);
-        var ul = sibling(child(div_6), 2);
-        each(ul, 20, () => shown(get2(issue)), (page) => page, ($$anchor4, page) => {
-          var li = root_5();
-          var text_10 = child(li, true);
-          reset(li);
-          template_effect(
-            ($0) => {
-              set_attribute2(li, "title", page);
-              set_text(text_10, $0);
-            },
-            [() => pathOf(page)]
-          );
-          append($$anchor4, li);
-        });
-        reset(ul);
-        var node_5 = sibling(ul, 2);
-        {
-          var consequent_3 = ($$anchor4) => {
-            var button_1 = root_6();
-            var text_11 = child(button_1, true);
-            reset(button_1);
-            template_effect(() => set_text(text_11, get2(expanded)[get2(issue).ruleId] ? "Show fewer" : `Show all ${get2(issue).pages.length} pages`));
-            delegated("click", button_1, () => set(
-              expanded,
-              {
-                ...get2(expanded),
-                [get2(issue).ruleId]: !get2(expanded)[get2(issue).ruleId]
-              },
-              true
-            ));
-            append($$anchor4, button_1);
-          };
-          if_block(node_5, ($$render) => {
-            if (get2(issue).pages.length > PAGE_PREVIEW) $$render(consequent_3);
-          });
-        }
-        reset(div_6);
-        reset(div_4);
-        reset(details);
-        template_effect(
-          ($0, $1, $2, $3) => {
-            set_class(span_3, 1, `ssa-mark ${$0 ?? ""}`);
-            set_attribute2(span_5, "title", get2(issue).title);
-            set_text(text_3, get2(issue).title);
-            set_attribute2(span_6, "title", get2(issue).ruleId);
-            set_text(text_4, `${$1 ?? ""} \xB7 ${get2(issue).ruleId ?? ""}`);
-            set_text(text_5, `${get2(issue).pages.length ?? ""} `);
-            set_text(text_6, get2(issue).pages.length === 1 ? "page" : "pages");
-            set_class(span_10, 1, `ssa-status-word ${$2 ?? ""}`);
-            set_text(text_7, $3);
-            set_text(text_8, ` ${get2(issue).message ?? ""}`);
-          },
-          [
-            () => statusTone(get2(issue).status),
-            () => categoryLabel(get2(issue).category),
-            () => statusTone(get2(issue).status),
-            () => statusLabel(get2(issue).status)
-          ]
-        );
-        append($$anchor3, details);
-      });
-      reset(div_3);
-      append($$anchor2, div_3);
-    };
-    if_block(node_3, ($$render) => {
-      if (get2(filtered).length === 0) $$render(consequent_1);
-      else $$render(alternate, -1);
-    });
-  }
-  reset(div);
-  bind_select_value(select2, () => get2(catFilter), ($$value) => set(catFilter, $$value));
-  bind_value(input, () => get2(query), ($$value) => set(query, $$value));
-  append($$anchor, div);
-  pop();
-}
-delegate(["click"]);
-
-// src/ui/PagesPanel.svelte
-var root4 = from_html(`<p class="ssa-empty-line">No page matches that search.</p>`);
-var root_12 = from_html(`<p class="ssa-row-msg">Every check passed on this page.</p>`);
-var root_22 = from_html(`<tr><td><span> </span></td><td><span class="ssa-cell-strong"> </span> <span class="ssa-cell-faint"> </span></td><td class="ssa-cell-muted"> </td></tr>`);
-var root_32 = from_html(`<div class="ssa-table-head"><span class="ssa-table-title">Findings on this page</span> <span class="ssa-table-note"> </span></div> <div class="ssa-table-card ssa-scroll-x"><table class="ssa-table"><thead><tr><th class="ssa-col-status">Status</th><th>Check</th><th>Result</th></tr></thead><tbody></tbody></table></div>`, 1);
-var root_42 = from_html(`<details class="ssa-row"><summary class="ssa-row-head"><span> </span> <span class="ssa-row-main"><span class="ssa-row-title"> </span> <span class="ssa-row-sub"> </span></span> <span class="ssa-row-count"> <span class="ssa-row-count-unit"> </span></span> <span class="ssa-row-chevron"></span></summary> <div class="ssa-row-body"><!></div></details>`);
-var root_52 = from_html(`<div class="ssa-list"></div>`);
-var root_62 = from_html(`<div class="ssa-panel"><div class="ssa-filters"><div class="ssa-segmented"><button>Lowest score</button> <button>Crawl order</button></div> <span class="ssa-filters-spacer"></span> <div class="ssa-search ssa-search-inline"><input class="ssa-input" type="search" placeholder="Search pages" aria-label="Search pages"/> <span class="ssa-search-icon"></span></div></div> <!></div>`);
-function PagesPanel($$anchor, $$props) {
-  push($$props, true);
-  let query = state("");
-  let order = state("worst");
-  const pages = user_derived(() => {
-    const q = get2(query).trim().toLowerCase();
-    const list = q ? $$props.report.pages.filter((p) => p.url.toLowerCase().includes(q)) : $$props.report.pages;
-    return get2(order) === "worst" ? [...list].sort((a, b) => a.score - b.score) : list;
-  });
-  function problems(page) {
-    return page.findings.filter((f) => f.status !== "pass");
-  }
-  var div = root_62();
-  var div_1 = child(div);
-  var div_2 = child(div_1);
-  var button = child(div_2);
-  let classes;
-  var button_1 = sibling(button, 2);
-  let classes_1;
-  reset(div_2);
-  var div_3 = sibling(div_2, 4);
-  var input = child(div_3);
-  remove_input_defaults(input);
-  var span = sibling(input, 2);
-  action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "search");
-  reset(div_3);
-  reset(div_1);
-  var node = sibling(div_1, 2);
-  {
-    var consequent = ($$anchor2) => {
-      var p_1 = root4();
-      append($$anchor2, p_1);
-    };
-    var alternate_1 = ($$anchor2) => {
-      var div_4 = root_52();
-      each(div_4, 21, () => get2(pages), (page) => page.url, ($$anchor3, page) => {
-        const found = user_derived(() => problems(get2(page)));
-        var details = root_42();
-        var summary = child(details);
-        var span_1 = child(summary);
-        var text5 = child(span_1, true);
-        reset(span_1);
-        var span_2 = sibling(span_1, 2);
-        var span_3 = child(span_2);
-        var text_1 = child(span_3, true);
-        reset(span_3);
-        var span_4 = sibling(span_3, 2);
-        var text_2 = child(span_4);
-        reset(span_4);
-        reset(span_2);
-        var span_5 = sibling(span_2, 2);
-        var text_3 = child(span_5);
-        var span_6 = sibling(text_3);
-        var text_4 = child(span_6, true);
-        reset(span_6);
-        reset(span_5);
-        var span_7 = sibling(span_5, 2);
-        action(span_7, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "chevron-down");
-        reset(summary);
-        var div_5 = sibling(summary, 2);
-        var node_1 = child(div_5);
-        {
-          var consequent_1 = ($$anchor4) => {
-            var p_2 = root_12();
-            append($$anchor4, p_2);
-          };
-          var alternate = ($$anchor4) => {
-            var fragment = root_32();
-            var div_6 = first_child(fragment);
-            var span_8 = sibling(child(div_6), 2);
-            var text_5 = child(span_8);
-            reset(span_8);
-            reset(div_6);
-            var div_7 = sibling(div_6, 2);
-            var table2 = child(div_7);
-            var tbody = sibling(child(table2));
-            each(tbody, 23, () => get2(found), (f, i) => `${f.ruleId}-${i}`, ($$anchor5, f) => {
-              var tr = root_22();
-              var td = child(tr);
-              var span_9 = child(td);
-              var text_6 = child(span_9, true);
-              reset(span_9);
-              reset(td);
-              var td_1 = sibling(td);
-              var span_10 = child(td_1);
-              var text_7 = child(span_10, true);
-              reset(span_10);
-              var span_11 = sibling(span_10, 2);
-              var text_8 = child(span_11, true);
-              reset(span_11);
-              reset(td_1);
-              var td_2 = sibling(td_1);
-              var text_9 = child(td_2, true);
-              reset(td_2);
-              reset(tr);
-              template_effect(
-                ($0, $1, $2) => {
-                  set_class(span_9, 1, `ssa-status-word ${$0 ?? ""}`);
-                  set_text(text_6, $1);
-                  set_text(text_7, get2(f).title);
-                  set_text(text_8, $2);
-                  set_text(text_9, get2(f).message);
-                },
-                [
-                  () => statusTone(get2(f).status),
-                  () => statusLabel(get2(f).status),
-                  () => categoryLabel(get2(f).category)
-                ]
-              );
-              append($$anchor5, tr);
-            });
-            reset(tbody);
-            reset(table2);
-            reset(div_7);
-            template_effect(() => set_text(text_5, `${get2(found).length ?? ""} ${get2(found).length === 1 ? "issue" : "issues"}`));
-            append($$anchor4, fragment);
-          };
-          if_block(node_1, ($$render) => {
-            if (get2(found).length === 0) $$render(consequent_1);
-            else $$render(alternate, -1);
-          });
-        }
-        reset(div_5);
-        reset(details);
-        template_effect(
-          ($0, $1, $2) => {
-            set_class(span_1, 1, `ssa-chip-score ${$0 ?? ""}`);
-            set_text(text5, get2(page).score);
-            set_attribute2(span_3, "title", get2(page).url);
-            set_text(text_1, $1);
-            set_text(text_2, `HTTP ${get2(page).status ?? ""}`);
-            set_text(text_3, `${$2 ?? ""} `);
-            set_text(text_4, get2(found).length === 1 ? "issue" : "issues");
-          },
-          [
-            () => scoreTone(get2(page).score),
-            () => pathOf(get2(page).url),
-            () => pageIssueCount(get2(page))
-          ]
-        );
-        append($$anchor3, details);
-      });
-      reset(div_4);
-      append($$anchor2, div_4);
-    };
-    if_block(node, ($$render) => {
-      if (get2(pages).length === 0) $$render(consequent);
-      else $$render(alternate_1, -1);
-    });
-  }
-  reset(div);
-  template_effect(() => {
-    classes = set_class(button, 1, "ssa-seg", null, classes, { "is-on": get2(order) === "worst" });
-    classes_1 = set_class(button_1, 1, "ssa-seg", null, classes_1, { "is-on": get2(order) === "crawl" });
-  });
-  delegated("click", button, () => set(order, "worst"));
-  delegated("click", button_1, () => set(order, "crawl"));
-  bind_value(input, () => get2(query), ($$value) => set(query, $$value));
-  append($$anchor, div);
-  pop();
-}
-delegate(["click"]);
-
-// src/ui/MetricsPanel.svelte
-var root5 = from_html(`<p class="ssa-empty-line">This audit has no measurements. Re-run it to collect them.</p>`);
-var root_13 = from_html(`<option> </option>`);
-var root_23 = from_html(`<span class="ssa-metric-note"> </span>`);
-var root_33 = from_html(`<div class="ssa-metric"><span class="ssa-metric-label"> </span> <span> </span> <!></div>`);
-var root_43 = from_html(`<div class="ssa-metric-grid"></div>`);
-var root_53 = from_html(`<span class="ssa-table-note"> </span>`);
-var root_63 = from_html(`<th> </th>`);
-var root_72 = from_html(`<td class="ssa-cell-muted"> </td>`);
-var root_82 = from_html(`<tr></tr>`);
-var root_92 = from_html(`<div class="ssa-metric-table"><div class="ssa-table-head"><span class="ssa-table-title"> </span> <!></div> <div class="ssa-table-card ssa-scroll-x"><table class="ssa-table"><thead><tr></tr></thead><tbody></tbody></table></div></div>`);
-var root_10 = from_html(`<section class="ssa-card ssa-metric-group"><h3 class="ssa-metric-cat"> </h3> <!> <!></section>`);
-var root_11 = from_html(`<div class="ssa-filters"><select class="ssa-select ssa-select-wide dropdown" aria-label="Page to measure"></select> <span class="ssa-filters-note"> </span></div> <!>`, 1);
-var root_122 = from_html(`<div class="ssa-panel"><!></div>`);
-function MetricsPanel($$anchor, $$props) {
-  push($$props, true);
-  const withMetrics2 = user_derived(() => $$props.report.pages.filter((p) => (p.metrics?.length ?? 0) > 0));
-  let selectedUrl = state("");
-  const page = user_derived(() => get2(withMetrics2).find((p) => p.url === get2(selectedUrl)) ?? get2(withMetrics2)[0] ?? null);
-  const groups = user_derived(() => get2(page) ? groupMetrics2(get2(page).metrics ?? []) : []);
-  var div = root_122();
-  var node = child(div);
-  {
-    var consequent = ($$anchor2) => {
-      var p_1 = root5();
-      append($$anchor2, p_1);
-    };
-    var alternate = ($$anchor2) => {
-      var fragment = root_11();
-      var div_1 = first_child(fragment);
-      var select2 = child(div_1);
-      each(select2, 21, () => get2(withMetrics2), (p) => p.url, ($$anchor3, p) => {
-        var option = root_13();
-        var text5 = child(option, true);
-        reset(option);
-        var option_value = {};
-        template_effect(
-          ($0) => {
-            set_text(text5, $0);
-            if (option_value !== (option_value = get2(p).url)) {
-              option.value = (option.__value = get2(p).url) ?? "";
-            }
-          },
-          [() => pathOf(get2(p).url)]
-        );
-        append($$anchor3, option);
-      });
-      reset(select2);
-      var span = sibling(select2, 2);
-      var text_1 = child(span);
-      reset(span);
-      reset(div_1);
-      var node_1 = sibling(div_1, 2);
-      each(node_1, 17, () => get2(groups), (group2) => group2.category, ($$anchor3, group2) => {
-        var section = root_10();
-        var h3 = child(section);
-        var text_2 = child(h3, true);
-        reset(h3);
-        var node_2 = sibling(h3, 2);
-        {
-          var consequent_3 = ($$anchor4) => {
-            var div_2 = root_43();
-            each(div_2, 21, () => get2(group2).metrics, (m) => m.id, ($$anchor5, m) => {
-              var fragment_1 = comment();
-              var node_3 = first_child(fragment_1);
-              {
-                var consequent_2 = ($$anchor6) => {
-                  var div_3 = root_33();
-                  var span_1 = child(div_3);
-                  var text_3 = child(span_1, true);
-                  reset(span_1);
-                  var span_2 = sibling(span_1, 2);
-                  var text_4 = child(span_2, true);
-                  reset(span_2);
-                  var node_4 = sibling(span_2, 2);
-                  {
-                    var consequent_1 = ($$anchor7) => {
-                      var span_3 = root_23();
-                      var text_5 = child(span_3, true);
-                      reset(span_3);
-                      template_effect(() => set_text(text_5, get2(m).note));
-                      append($$anchor7, span_3);
-                    };
-                    if_block(node_4, ($$render) => {
-                      if (get2(m).note) $$render(consequent_1);
-                    });
-                  }
-                  reset(div_3);
-                  template_effect(
-                    ($0, $1) => {
-                      set_text(text_3, get2(m).label);
-                      set_class(span_2, 1, `ssa-metric-value ${$0 ?? ""}`);
-                      set_text(text_4, $1);
-                    },
-                    [
-                      () => metricTone(get2(m).status),
-                      () => formatMetricValue(get2(m).value, get2(m).unit)
-                    ]
-                  );
-                  append($$anchor6, div_3);
-                };
-                if_block(node_3, ($$render) => {
-                  if (get2(m).kind === "value") $$render(consequent_2);
-                });
-              }
-              append($$anchor5, fragment_1);
-            });
-            reset(div_2);
-            append($$anchor4, div_2);
-          };
-          var d = user_derived(() => get2(group2).metrics.some((m) => m.kind === "value"));
-          if_block(node_2, ($$render) => {
-            if (get2(d)) $$render(consequent_3);
-          });
-        }
-        var node_5 = sibling(node_2, 2);
-        each(node_5, 17, () => get2(group2).metrics, (m) => m.id, ($$anchor4, m) => {
-          var fragment_2 = comment();
-          var node_6 = first_child(fragment_2);
-          {
-            var consequent_5 = ($$anchor5) => {
-              var div_4 = root_92();
-              var div_5 = child(div_4);
-              var span_4 = child(div_5);
-              var text_6 = child(span_4, true);
-              reset(span_4);
-              var node_7 = sibling(span_4, 2);
-              {
-                var consequent_4 = ($$anchor6) => {
-                  var span_5 = root_53();
-                  var text_7 = child(span_5);
-                  reset(span_5);
-                  template_effect(($0) => set_text(text_7, `showing ${get2(m).rows.length ?? ""} of ${$0 ?? ""}`), [() => get2(m).total.toLocaleString()]);
-                  append($$anchor6, span_5);
-                };
-                if_block(node_7, ($$render) => {
-                  if (get2(m).total > get2(m).rows.length) $$render(consequent_4);
-                });
-              }
-              reset(div_5);
-              var div_6 = sibling(div_5, 2);
-              var table2 = child(div_6);
-              var thead = child(table2);
-              var tr = child(thead);
-              each(tr, 20, () => get2(m).columns, (col) => col, ($$anchor6, col) => {
-                var th = root_63();
-                var text_8 = child(th, true);
-                reset(th);
-                template_effect(() => set_text(text_8, col));
-                append($$anchor6, th);
-              });
-              reset(tr);
-              reset(thead);
-              var tbody = sibling(thead);
-              each(tbody, 21, () => get2(m).rows, index, ($$anchor6, row) => {
-                var tr_1 = root_82();
-                each(tr_1, 21, () => get2(row), index, ($$anchor7, cell) => {
-                  var td = root_72();
-                  var text_9 = child(td, true);
-                  reset(td);
-                  template_effect(() => set_text(text_9, get2(cell)));
-                  append($$anchor7, td);
-                });
-                reset(tr_1);
-                append($$anchor6, tr_1);
-              });
-              reset(tbody);
-              reset(table2);
-              reset(div_6);
-              reset(div_4);
-              template_effect(() => set_text(text_6, get2(m).label));
-              append($$anchor5, div_4);
-            };
-            if_block(node_6, ($$render) => {
-              if (get2(m).kind === "table") $$render(consequent_5);
-            });
-          }
-          append($$anchor4, fragment_2);
-        });
-        reset(section);
-        template_effect(($0) => set_text(text_2, $0), [() => categoryLabel(get2(group2).category)]);
-        append($$anchor3, section);
-      });
-      template_effect(() => set_text(text_1, `${get2(page)?.metrics?.length ?? 0 ?? ""} measurements on this page`));
-      bind_select_value(select2, () => get2(selectedUrl), ($$value) => set(selectedUrl, $$value));
-      append($$anchor2, fragment);
-    };
-    if_block(node, ($$render) => {
-      if (get2(withMetrics2).length === 0) $$render(consequent);
-      else $$render(alternate, -1);
-    });
-  }
-  reset(div);
-  append($$anchor, div);
-  pop();
-}
-
-// src/ui/ReportView.svelte
-var root6 = from_html(`<button class="ssa-btn"><span></span> Open note</button> <button class="ssa-btn"><span></span> HTML report</button>`, 1);
-var root_14 = from_html(`<span class="ssa-split-seg is-pass"></span>`);
-var root_24 = from_html(`<span class="ssa-split-seg is-warn"></span>`);
-var root_34 = from_html(`<span class="ssa-split-seg is-fail"></span>`);
-var root_44 = from_html(`<span class="ssa-split-seg is-info"></span>`);
-var root_54 = from_html(`<div class="ssa-tally"><dt><span aria-hidden="true"></span> </dt> <dd> </dd></div>`);
-var root_64 = from_html(`<div class="ssa-cat"><span class="ssa-cat-name"> </span> <span class="ssa-cat-track"><span></span></span> <span class="ssa-cat-score"> </span></div>`);
-var root_73 = from_html(`<div class="ssa-report"><header class="ssa-head"><div class="ssa-head-id"><h2 class="ssa-head-host"> </h2> <a class="ssa-head-url" rel="noopener"> </a> <p class="ssa-head-meta"> <span class="ssa-sep">\xB7</span> <span class="ssa-sep">\xB7</span> </p></div> <div class="ssa-head-actions"><!> <button class="ssa-btn"><span></span> Run again</button></div></header> <section class="ssa-card ssa-health" aria-label="Site health"><!> <div class="ssa-health-body"><div class="ssa-health-head"><h3 class="ssa-block-title">Site health</h3> <span class="ssa-health-note"> </span></div> <div class="ssa-split" role="img"><!> <!> <!> <!></div> <dl class="ssa-tallies"></dl></div></section> <section class="ssa-card ssa-cats-block"><div class="ssa-block-head"><h3 class="ssa-block-title">Category scores</h3> <div class="ssa-segmented" role="group" aria-label="Sort categories"><button>Worst</button> <button>Best</button> <button>A\u2013Z</button></div></div> <div class="ssa-cats"></div></section> <div class="ssa-tabs" role="tablist" aria-label="Report sections"><button role="tab">Issues</button> <button role="tab">Pages</button> <button role="tab">Measurements</button></div> <!></div>`);
-function ReportView($$anchor, $$props) {
-  push($$props, true);
-  const totals = user_derived(() => statusTotals($$props.report));
-  const checks = user_derived(() => countFindings($$props.report));
-  let tab = state("issues");
-  let sort = state("worst");
-  const sortedCategories = user_derived(() => [...$$props.report.categories].sort((a, b) => {
-    if (get2(sort) === "az") return categoryLabel(a.category).localeCompare(categoryLabel(b.category));
-    return get2(sort) === "worst" ? a.score - b.score : b.score - a.score;
-  }));
-  function openNote() {
-    if (!$$props.path) return;
-    const file = $$props.plugin.app.vault.getAbstractFileByPath($$props.path);
-    if (file instanceof import_obsidian4.TFile) void openInObsidian($$props.plugin.app, file);
-  }
-  function openHtml() {
-    if (!$$props.path) return;
-    const html4 = siblingPath($$props.path, "html");
-    if (!$$props.plugin.app.vault.getAbstractFileByPath(html4)) {
-      new import_obsidian4.Notice("This audit has no HTML export. Run it again to create one.");
-      return;
-    }
-    if (!openExternally($$props.plugin.app, html4)) new import_obsidian4.Notice(`HTML export saved at ${html4}`);
-  }
-  var div = root_73();
-  var header = child(div);
-  var div_1 = child(header);
-  var h2 = child(div_1);
-  var text5 = child(h2, true);
-  reset(h2);
-  var a_1 = sibling(h2, 2);
-  var text_1 = child(a_1, true);
-  reset(a_1);
-  var p = sibling(a_1, 2);
-  var text_2 = child(p);
-  var text_3 = sibling(text_2, 2);
-  var text_4 = sibling(text_3, 2);
-  reset(p);
-  reset(div_1);
-  var div_2 = sibling(div_1, 2);
-  var node = child(div_2);
-  {
-    var consequent = ($$anchor2) => {
-      var fragment = root6();
-      var button = first_child(fragment);
-      var span = child(button);
-      action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "file-text");
-      next();
-      reset(button);
-      var button_1 = sibling(button, 2);
-      var span_1 = child(button_1);
-      action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "external-link");
-      next();
-      reset(button_1);
-      delegated("click", button, openNote);
-      delegated("click", button_1, openHtml);
-      append($$anchor2, fragment);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.path) $$render(consequent);
-    });
-  }
-  var button_2 = sibling(node, 2);
-  var span_2 = child(button_2);
-  action(span_2, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "refresh-cw");
-  next();
-  reset(button_2);
-  reset(div_2);
-  reset(header);
-  var section = sibling(header, 2);
-  var node_1 = child(section);
-  ScoreGauge(node_1, {
-    get value() {
-      return $$props.report.score;
-    }
-  });
-  var div_3 = sibling(node_1, 2);
-  var div_4 = child(div_3);
-  var span_3 = sibling(child(div_4), 2);
-  var text_5 = child(span_3);
-  reset(span_3);
-  reset(div_4);
-  var div_5 = sibling(div_4, 2);
-  var node_2 = child(div_5);
-  {
-    var consequent_1 = ($$anchor2) => {
-      var span_4 = root_14();
-      template_effect(() => set_style(span_4, `flex-grow:${get2(totals).pass ?? ""}`));
-      append($$anchor2, span_4);
-    };
-    if_block(node_2, ($$render) => {
-      if (get2(totals).pass) $$render(consequent_1);
-    });
-  }
-  var node_3 = sibling(node_2, 2);
-  {
-    var consequent_2 = ($$anchor2) => {
-      var span_5 = root_24();
-      template_effect(() => set_style(span_5, `flex-grow:${get2(totals).warn ?? ""}`));
-      append($$anchor2, span_5);
-    };
-    if_block(node_3, ($$render) => {
-      if (get2(totals).warn) $$render(consequent_2);
-    });
-  }
-  var node_4 = sibling(node_3, 2);
-  {
-    var consequent_3 = ($$anchor2) => {
-      var span_6 = root_34();
-      template_effect(() => set_style(span_6, `flex-grow:${get2(totals).fail ?? ""}`));
-      append($$anchor2, span_6);
-    };
-    if_block(node_4, ($$render) => {
-      if (get2(totals).fail) $$render(consequent_3);
-    });
-  }
-  var node_5 = sibling(node_4, 2);
-  {
-    var consequent_4 = ($$anchor2) => {
-      var span_7 = root_44();
-      template_effect(() => set_style(span_7, `flex-grow:${get2(totals).info ?? ""}`));
-      append($$anchor2, span_7);
-    };
-    if_block(node_5, ($$render) => {
-      if (get2(totals).info) $$render(consequent_4);
-    });
-  }
-  reset(div_5);
-  var dl = sibling(div_5, 2);
-  each(
-    dl,
-    21,
-    () => [
-      ["pass", "Passed", get2(totals).pass],
-      ["warn", "Warnings", get2(totals).warn],
-      ["fail", "Failed", get2(totals).fail],
-      ["info", "Info", get2(totals).info]
-    ],
-    ([key2, label, n]) => key2,
-    ($$anchor2, $$item) => {
-      var $$array = user_derived(() => to_array(get2($$item), 3));
-      let key2 = () => get2($$array)[0];
-      let label = () => get2($$array)[1];
-      let n = () => get2($$array)[2];
-      var div_6 = root_54();
-      var dt = child(div_6);
-      var span_8 = child(dt);
-      var text_6 = sibling(span_8, 1, true);
-      reset(dt);
-      var dd = sibling(dt, 2);
-      var text_7 = child(dd, true);
-      reset(dd);
-      reset(div_6);
-      template_effect(
-        ($0) => {
-          set_class(span_8, 1, `ssa-mark is-${key2() ?? ""}`);
-          set_text(text_6, label());
-          set_text(text_7, $0);
-        },
-        [() => Number(n()).toLocaleString()]
-      );
-      append($$anchor2, div_6);
-    }
-  );
-  reset(dl);
-  reset(div_3);
-  reset(section);
-  var section_1 = sibling(section, 2);
-  var div_7 = child(section_1);
-  var div_8 = sibling(child(div_7), 2);
-  var button_3 = child(div_8);
-  let classes;
-  var button_4 = sibling(button_3, 2);
-  let classes_1;
-  var button_5 = sibling(button_4, 2);
-  let classes_2;
-  reset(div_8);
-  reset(div_7);
-  var div_9 = sibling(div_7, 2);
-  each(div_9, 21, () => get2(sortedCategories), (cat) => cat.category, ($$anchor2, cat) => {
-    var div_10 = root_64();
-    var span_9 = child(div_10);
-    var text_8 = child(span_9, true);
-    reset(span_9);
-    var span_10 = sibling(span_9, 2);
-    var span_11 = child(span_10);
-    reset(span_10);
-    var span_12 = sibling(span_10, 2);
-    var text_9 = child(span_12, true);
-    reset(span_12);
-    reset(div_10);
-    template_effect(
-      ($0, $1, $2) => {
-        set_attribute2(span_9, "title", $0);
-        set_text(text_8, $1);
-        set_class(span_11, 1, `ssa-cat-fill ${$2 ?? ""}`);
-        set_style(span_11, `width:${get2(cat).score ?? ""}%`);
-        set_text(text_9, get2(cat).score);
-      },
-      [
-        () => categoryLabel(get2(cat).category),
-        () => categoryLabel(get2(cat).category),
-        () => scoreTone(get2(cat).score)
-      ]
-    );
-    append($$anchor2, div_10);
-  });
-  reset(div_9);
-  reset(section_1);
-  var div_11 = sibling(section_1, 2);
-  var button_6 = child(div_11);
-  let classes_3;
-  var button_7 = sibling(button_6, 2);
-  let classes_4;
-  var button_8 = sibling(button_7, 2);
-  let classes_5;
-  reset(div_11);
-  var node_6 = sibling(div_11, 2);
-  {
-    var consequent_5 = ($$anchor2) => {
-      IssuesPanel($$anchor2, {
-        get report() {
-          return $$props.report;
-        }
-      });
-    };
-    var consequent_6 = ($$anchor2) => {
-      PagesPanel($$anchor2, {
-        get report() {
-          return $$props.report;
-        }
-      });
-    };
-    var alternate = ($$anchor2) => {
-      MetricsPanel($$anchor2, {
-        get report() {
-          return $$props.report;
-        }
-      });
-    };
-    if_block(node_6, ($$render) => {
-      if (get2(tab) === "issues") $$render(consequent_5);
-      else if (get2(tab) === "pages") $$render(consequent_6, 1);
-      else $$render(alternate, -1);
-    });
-  }
-  reset(div);
-  template_effect(
-    ($0, $1, $2, $3, $4, $5) => {
-      set_text(text5, $0);
-      set_attribute2(a_1, "href", $$props.report.startUrl);
-      set_text(text_1, $$props.report.startUrl);
-      set_text(text_2, `${$1 ?? ""} `);
-      set_text(text_3, ` ${$2 ?? ""} pages `);
-      set_text(text_4, ` ${$3 ?? ""} checks`);
-      set_text(text_5, `${$4 ?? ""} checks on ${$5 ?? ""} pages`);
-      set_attribute2(div_5, "aria-label", `${get2(totals).pass ?? ""} passed, ${get2(totals).warn ?? ""} warnings, ${get2(totals).fail ?? ""} failed, ${get2(totals).info ?? ""} informational`);
-      classes = set_class(button_3, 1, "ssa-seg", null, classes, { "is-on": get2(sort) === "worst" });
-      set_attribute2(button_3, "aria-pressed", get2(sort) === "worst");
-      classes_1 = set_class(button_4, 1, "ssa-seg", null, classes_1, { "is-on": get2(sort) === "best" });
-      set_attribute2(button_4, "aria-pressed", get2(sort) === "best");
-      classes_2 = set_class(button_5, 1, "ssa-seg", null, classes_2, { "is-on": get2(sort) === "az" });
-      set_attribute2(button_5, "aria-pressed", get2(sort) === "az");
-      classes_3 = set_class(button_6, 1, "ssa-tab", null, classes_3, { "is-on": get2(tab) === "issues" });
-      set_attribute2(button_6, "aria-selected", get2(tab) === "issues");
-      classes_4 = set_class(button_7, 1, "ssa-tab", null, classes_4, { "is-on": get2(tab) === "pages" });
-      set_attribute2(button_7, "aria-selected", get2(tab) === "pages");
-      classes_5 = set_class(button_8, 1, "ssa-tab", null, classes_5, { "is-on": get2(tab) === "metrics" });
-      set_attribute2(button_8, "aria-selected", get2(tab) === "metrics");
-    },
-    [
-      () => hostOf($$props.report.startUrl),
-      () => formatDate($$props.report.generatedAt),
-      () => $$props.report.pagesScanned.toLocaleString(),
-      () => get2(checks).toLocaleString(),
-      () => get2(checks).toLocaleString(),
-      () => $$props.report.pagesScanned.toLocaleString()
-    ]
-  );
-  delegated("click", button_2, () => $$props.onRerun($$props.report.startUrl));
-  delegated("click", button_3, () => set(sort, "worst"));
-  delegated("click", button_4, () => set(sort, "best"));
-  delegated("click", button_5, () => set(sort, "az"));
-  delegated("click", button_6, () => set(tab, "issues"));
-  delegated("click", button_7, () => set(tab, "pages"));
-  delegated("click", button_8, () => set(tab, "metrics"));
-  append($$anchor, div);
-  pop();
-}
-delegate(["click"]);
-
 // src/fetch-shim.ts
-var import_obsidian5 = require("obsidian");
+var import_obsidian2 = require("obsidian");
 var ShimHeaders = class {
   map = {};
   constructor(h) {
@@ -25921,7 +24806,7 @@ async function shimFetch(input, init2 = {}) {
     throw: false
   };
   if (init2.body != null) param.body = init2.body;
-  const request = (0, import_obsidian5.requestUrl)(param).then((resp) => new ShimResponse(resp));
+  const request = (0, import_obsidian2.requestUrl)(param).then((resp) => new ShimResponse(resp));
   const signal = init2.signal;
   if (!signal) return request;
   const reason = () => signal.reason ?? new DOMException("Aborted", "AbortError");
@@ -26008,178 +24893,2690 @@ async function runAudit(opts, settings, onProgress) {
   });
 }
 
-// src/ui/RunAuditForm.svelte
-var root7 = from_html(`<span class="ssa-spinner"></span> Auditing`, 1);
-var root_15 = from_html(`<span></span> Run audit`, 1);
-var root_25 = from_html(`<span class="ssa-progress-url"> </span>`);
-var root_35 = from_html(`<div class="ssa-progress" role="status" aria-live="polite"><div class="ssa-progress-head"><span class="ssa-progress-phase"> </span> <span class="ssa-progress-pct"> </span></div> <div class="ssa-progress-track"><span class="ssa-progress-fill"></span></div> <div class="ssa-progress-meta"><span class="ssa-progress-sub"><!></span> <!></div></div>`);
-var root_45 = from_html(`<div class="ssa-newrun"><div class="ssa-newrun-intro"><h2 class="ssa-newrun-title">Audit a site</h2> <p class="ssa-newrun-lede">Crawls the site, checks every page against 94 rules, and saves the report to <span class="ssa-newrun-folder"> </span> as Markdown, JSON and HTML.</p></div> <div class="ssa-card ssa-form-card"><div class="ssa-field"><label class="ssa-field-label" for="ssa-url">Website URL</label> <input class="ssa-input ssa-input-lg" id="ssa-url" type="url" placeholder="https://example.com"/></div> <div class="ssa-field ssa-field-narrow"><label class="ssa-field-label" for="ssa-pages">Pages to crawl</label> <div class="ssa-field-desc" id="ssa-pages-desc"> </div> <input class="ssa-input ssa-input-lg" id="ssa-pages" type="number" min="1" aria-describedby="ssa-pages-desc"/></div> <div class="ssa-newrun-actions"><button class="ssa-btn mod-cta"><!></button> <span class="ssa-newrun-hint"> </span></div></div> <!></div>`);
-function RunAuditForm($$anchor, $$props) {
-  push($$props, true);
-  let url = prop($$props, "url", 15, "");
-  let pages = state("");
-  const percent = user_derived(() => $$props.progress ? progressPercent($$props.progress) : 0);
-  const phaseText = user_derived(() => {
-    if (!$$props.progress) return "";
-    if ($$props.progress.phase === "crawling") {
-      return `Crawling \xB7 ${$$props.progress.pagesFound} of up to ${$$props.progress.pagesTotal} pages found`;
-    }
-    if ($$props.progress.phase === "checking") {
-      return `Checking \xB7 ${$$props.progress.pagesDone} of ${$$props.progress.pagesTotal} pages audited`;
-    }
-    return "Writing the report";
-  });
-  function submit() {
-    $$props.onSubmit(url().trim(), get2(pages) ? Number(get2(pages)) : void 0);
+// src/audit-store.ts
+var import_obsidian3 = require("obsidian");
+
+// src/report-file.ts
+var FENCE = "ssa-report-json";
+function buildNote(report) {
+  const frontmatter = [
+    "---",
+    "ssa_audit: true",
+    `url: ${JSON.stringify(report.startUrl)}`,
+    `date: ${JSON.stringify(report.generatedAt)}`,
+    `score: ${report.score}`,
+    `pages: ${report.pagesScanned}`,
+    "---",
+    ""
+  ].join("\n");
+  return frontmatter + render4(report, "md");
+}
+function buildJson(report) {
+  return JSON.stringify(report);
+}
+function buildHtml(report) {
+  return render4(report, "html");
+}
+function parseNote(content) {
+  const re = new RegExp("```" + FENCE + "\\n([\\s\\S]*?)\\n```");
+  const m = content.match(re);
+  if (!m) return null;
+  try {
+    return JSON.parse(m[1]);
+  } catch {
+    return null;
   }
-  var div = root_45();
-  var div_1 = child(div);
-  var p = sibling(child(div_1), 2);
-  var span = sibling(child(p));
-  var text5 = child(span, true);
-  reset(span);
-  next();
-  reset(p);
-  reset(div_1);
-  var div_2 = sibling(div_1, 2);
-  var div_3 = child(div_2);
-  var input = sibling(child(div_3), 2);
-  remove_input_defaults(input);
-  reset(div_3);
-  var div_4 = sibling(div_3, 2);
-  var div_5 = sibling(child(div_4), 2);
-  var text_1 = child(div_5);
-  reset(div_5);
-  var input_1 = sibling(div_5, 2);
-  remove_input_defaults(input_1);
-  reset(div_4);
-  var div_6 = sibling(div_4, 2);
-  var button = child(div_6);
-  var node = child(button);
+}
+function siteFolderName(report) {
+  let host = report.startUrl;
+  try {
+    host = new URL(report.startUrl).hostname || report.startUrl;
+  } catch {
+  }
+  return host.replace(/[^a-z0-9.-]/gi, "-").replace(/^-+|-+$/g, "") || "site";
+}
+function runBaseName(report) {
+  const d = new Date(report.generatedAt);
+  if (isNaN(d.getTime())) return "audit";
+  return d.toISOString().slice(0, 16).replace(/[T:]/g, "-");
+}
+
+// src/audit-store.ts
+function siblingPath(notePath, ext) {
+  return notePath.replace(/\.md$/, `.${ext}`);
+}
+async function ensureFolder(app, path) {
+  const p = (0, import_obsidian3.normalizePath)(path);
+  if (!app.vault.getAbstractFileByPath(p)) {
+    await app.vault.createFolder(p).catch(() => {
+    });
+  }
+}
+function listAudits(app, settings) {
+  const root10 = app.vault.getFolderByPath((0, import_obsidian3.normalizePath)(settings.auditFolder));
+  const items = [];
+  if (!root10) return items;
+  const notes = [];
+  import_obsidian3.Vault.recurseChildren(root10, (f) => {
+    if (f instanceof import_obsidian3.TFile && f.extension === "md") notes.push(f);
+  });
+  for (const file of notes) {
+    const fm = app.metadataCache.getFileCache(file)?.frontmatter;
+    if (!fm?.ssa_audit) continue;
+    items.push({
+      file,
+      url: fm.url ?? "",
+      date: fm.date ?? "",
+      score: typeof fm.score === "number" ? fm.score : 0,
+      pages: typeof fm.pages === "number" ? fm.pages : 0
+    });
+  }
+  items.sort((a, b) => a.date < b.date ? 1 : -1);
+  return items;
+}
+async function readAudit(app, note) {
+  const json = app.vault.getAbstractFileByPath(siblingPath(note.path, "json"));
+  if (json instanceof import_obsidian3.TFile) {
+    try {
+      return JSON.parse(await app.vault.cachedRead(json));
+    } catch {
+      return null;
+    }
+  }
+  return parseNote(await app.vault.cachedRead(note));
+}
+async function saveAudit(app, settings, report) {
+  const folder = `${settings.auditFolder}/${siteFolderName(report)}`;
+  await ensureFolder(app, settings.auditFolder);
+  await ensureFolder(app, folder);
+  const stamp = runBaseName(report);
+  let base = stamp;
+  let i = 2;
+  while (app.vault.getAbstractFileByPath((0, import_obsidian3.normalizePath)(`${folder}/${base}.md`))) {
+    base = `${stamp}-${i}`;
+    i++;
+  }
+  const path = (ext) => (0, import_obsidian3.normalizePath)(`${folder}/${base}.${ext}`);
+  const note = await app.vault.create(path("md"), buildNote(report));
+  const json = await app.vault.create(path("json"), buildJson(report));
+  const html4 = await app.vault.create(path("html"), buildHtml(report));
+  return { note, json, html: html4 };
+}
+async function openInObsidian(app, file) {
+  await app.workspace.getLeaf("tab").openFile(file);
+}
+function openExternally(app, path) {
+  const open = app.openWithDefaultApp;
+  if (typeof open !== "function") return false;
+  void open.call(app, (0, import_obsidian3.normalizePath)(path));
+  return true;
+}
+
+// src/ui/ReportView.svelte
+var import_obsidian5 = require("obsidian");
+
+// src/ui/helpers.ts
+function hostOf(url) {
+  try {
+    return new URL(url).hostname || url;
+  } catch {
+    return url;
+  }
+}
+function pathOf(url) {
+  try {
+    const u = new URL(url);
+    return (u.pathname === "/" ? "/" : u.pathname.replace(/\/$/, "")) + u.search;
+  } catch {
+    return url;
+  }
+}
+function formatDate(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  return d.toLocaleString(void 0, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+function formatDateShort(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  return d.toLocaleString(void 0, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+function formatDay(iso, withYear = true) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString(void 0, {
+    day: "numeric",
+    month: "short",
+    ...withYear ? { year: "numeric" } : {}
+  });
+}
+function scoreBand(score) {
+  if (score < 50) return "is-bad";
+  if (score < 80) return "is-mid";
+  return "is-ok";
+}
+function signed(n) {
+  if (n === 0) return "0";
+  return n > 0 ? `+${n}` : `\u2212${Math.abs(n)}`;
+}
+function trendClass(delta2, lowerIsBetter = false, min = 1) {
+  if (Math.abs(delta2) < min) return "is-flat";
+  const better = lowerIsBetter ? delta2 < 0 : delta2 > 0;
+  return better ? "is-good" : "is-bad";
+}
+function normalizeAuditUrl(input) {
+  const raw = input.trim();
+  if (!raw) return null;
+  const withScheme = /^[a-z][a-z\d+.-]*:\/\//i.test(raw) ? raw : `https://${raw}`;
+  try {
+    const u = new URL(withScheme);
+    if (u.protocol !== "http:" && u.protocol !== "https:") return null;
+    if (!u.hostname.includes(".") && u.hostname !== "localhost") return null;
+    return u.toString();
+  } catch {
+    return null;
+  }
+}
+function statusTone(status) {
+  if (status === "fail") return "is-fail";
+  if (status === "warn") return "is-warn";
+  if (status === "info") return "is-info";
+  return "is-pass";
+}
+function statusLabel(status) {
+  if (status === "fail") return "Failed";
+  if (status === "warn") return "Warning";
+  if (status === "info") return "Info";
+  return "Passed";
+}
+function categoryLabel(category) {
+  const special = {
+    "core-seo": "Core SEO",
+    eeat: "E-E-A-T",
+    "url-structure": "URL structure",
+    psi: "PageSpeed"
+  };
+  if (special[category]) return special[category];
+  const words = category.replace(/-/g, " ");
+  return words.charAt(0).toUpperCase() + words.slice(1);
+}
+function statusTotals(report) {
+  const t = { pass: 0, warn: 0, fail: 0, info: 0, total: 0 };
+  for (const page of report.pages) {
+    for (const f of page.findings) {
+      t[f.status]++;
+      t.total++;
+    }
+  }
+  return t;
+}
+var RANK = { fail: 3, warn: 2, info: 1, pass: 0 };
+function buildIssues(report) {
+  const map2 = /* @__PURE__ */ new Map();
+  for (const page of report.pages) {
+    for (const f of page.findings) {
+      if (f.status === "pass") continue;
+      let issue = map2.get(f.ruleId);
+      if (!issue) {
+        issue = {
+          ruleId: f.ruleId,
+          title: f.title,
+          category: f.category,
+          severity: f.severity,
+          status: f.status,
+          message: f.message,
+          fix: f.fix,
+          pages: []
+        };
+        map2.set(f.ruleId, issue);
+      }
+      if (RANK[f.status] > RANK[issue.status]) {
+        issue.status = f.status;
+        issue.message = f.message;
+      }
+      if (!issue.pages.includes(page.url)) issue.pages.push(page.url);
+    }
+  }
+  return [...map2.values()].sort(
+    (a, b) => RANK[b.status] - RANK[a.status] || b.pages.length - a.pages.length
+  );
+}
+function pct(part, whole) {
+  return whole === 0 ? 0 : Math.round(part / whole * 100);
+}
+function countFindings(report) {
+  let n = 0;
+  for (const page of report.pages) n += page.findings.length;
+  return n;
+}
+function pageCounts(page) {
+  let fail = 0;
+  let warn = 0;
+  for (const f of page.findings) {
+    if (f.status === "fail") fail++;
+    else if (f.status === "warn") warn++;
+  }
+  return { fail, warn };
+}
+function isBroken(page) {
+  return page.status >= 400 || page.status < 100;
+}
+function isRedirect(page) {
+  return page.status >= 300 && page.status < 400;
+}
+function brokenPages(report) {
+  return report.pages.filter(isBroken);
+}
+function statusBuckets(report) {
+  const b = { "2xx": 0, "3xx": 0, "4xx": 0, "5xx": 0 };
+  for (const p of report.pages) {
+    if (p.status >= 200 && p.status < 300) b["2xx"]++;
+    else if (isRedirect(p)) b["3xx"]++;
+    else if (p.status >= 400 && p.status < 500) b["4xx"]++;
+    else b["5xx"]++;
+  }
+  return b;
+}
+function newRuleIds(report, previous) {
+  const ids = /* @__PURE__ */ new Set();
+  if (!previous) return ids;
+  const before2 = /* @__PURE__ */ new Set();
+  for (const page of previous.pages)
+    for (const f of page.findings) if (f.status === "fail" || f.status === "warn") before2.add(f.ruleId);
+  for (const page of report.pages)
+    for (const f of page.findings)
+      if ((f.status === "fail" || f.status === "warn") && !before2.has(f.ruleId)) ids.add(f.ruleId);
+  return ids;
+}
+function groupBySite(items) {
+  const map2 = /* @__PURE__ */ new Map();
+  for (const item of items) {
+    const host = hostOf(item.url);
+    const runs = map2.get(host);
+    if (runs) runs.push(item);
+    else map2.set(host, [item]);
+  }
+  return [...map2.entries()].map(([host, runs]) => ({ host, runs, latest: runs[0]?.score ?? 0 })).sort((a, b) => a.host.localeCompare(b.host));
+}
+function formatMetricValue(value2) {
+  if (value2 === null || value2 === "") return "None";
+  if (typeof value2 === "number") return value2.toLocaleString();
+  return /^\d{4}-\d{2}-\d{2}T/.test(value2) ? formatDay(value2) : value2;
+}
+function parseRange(note) {
+  const m = note?.match(/recommended\s+(-?\d+(?:\.\d+)?)\s+to\s+(-?\d+(?:\.\d+)?)/i);
+  if (!m) return null;
+  const min = Number(m[1]);
+  const max = Number(m[2]);
+  return min <= max ? { min, max } : null;
+}
+function isFlagged(status) {
+  return status === "bad" || status === "warn";
+}
+function flaggedCount(page) {
+  let n = 0;
+  for (const m of page.metrics ?? []) if (isFlagged(m.status)) n++;
+  return n;
+}
+function outOfRange(report) {
+  const map2 = /* @__PURE__ */ new Map();
+  for (const page of report.pages) {
+    for (const m of page.metrics ?? []) {
+      if (m.kind !== "value" || !isFlagged(m.status)) continue;
+      let row = map2.get(m.id);
+      if (!row) {
+        row = {
+          id: m.id,
+          label: m.label,
+          category: m.category,
+          unit: m.unit,
+          status: m.status,
+          pages: [],
+          bad: 0,
+          low: null,
+          high: null,
+          range: parseRange(m.note)
+        };
+        map2.set(m.id, row);
+      }
+      if (m.status === "bad") {
+        row.status = "bad";
+        row.bad++;
+        row.pages.unshift(page.url);
+      } else row.pages.push(page.url);
+      if (typeof m.value === "number") {
+        row.low = row.low === null ? m.value : Math.min(row.low, m.value);
+        row.high = row.high === null ? m.value : Math.max(row.high, m.value);
+      }
+    }
+  }
+  return [...map2.values()].sort(
+    (a, b) => Number(b.status === "bad") - Number(a.status === "bad") || b.pages.length - a.pages.length
+  );
+}
+function groupMetrics2(metrics) {
+  const map2 = /* @__PURE__ */ new Map();
+  for (const m of metrics) {
+    const list = map2.get(m.category);
+    if (list) list.push(m);
+    else map2.set(m.category, [m]);
+  }
+  return [...map2.entries()].map(([category, list]) => ({ category, metrics: list })).sort((a, b) => a.category.localeCompare(b.category));
+}
+
+// src/ui/icon.ts
+var import_obsidian4 = require("obsidian");
+function icon(node, name) {
+  (0, import_obsidian4.setIcon)(node, name);
+  return {
+    update(next3) {
+      node.empty();
+      (0, import_obsidian4.setIcon)(node, next3);
+    }
+  };
+}
+
+// src/ui/OverviewPanel.svelte
+var delta = ($$anchor, now = noop, before2 = noop, lowerIsBetter = noop) => {
+  var fragment = comment();
+  var node = first_child(fragment);
   {
     var consequent = ($$anchor2) => {
-      var fragment = root7();
-      next();
-      append($$anchor2, fragment);
+      var span = root2();
+      append($$anchor2, span);
+    };
+    var consequent_1 = ($$anchor2) => {
+      var span_1 = root_1();
+      var text5 = child(span_1);
+      reset(span_1);
+      template_effect(($0) => set_text(text5, `was ${$0 ?? ""}`), [() => before2().toLocaleString()]);
+      append($$anchor2, span_1);
     };
     var alternate = ($$anchor2) => {
-      var fragment_1 = root_15();
-      var span_1 = first_child(fragment_1);
-      action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "play");
-      next();
+      var fragment_1 = root_2();
+      var span_2 = first_child(fragment_1);
+      var text_1 = child(span_2, true);
+      reset(span_2);
+      var span_3 = sibling(span_2, 2);
+      var text_2 = child(span_3);
+      reset(span_3);
+      template_effect(
+        ($0, $1, $2) => {
+          set_class(span_2, 1, `ssa-delta ${$0 ?? ""}`);
+          set_text(text_1, $1);
+          set_text(text_2, `vs ${$2 ?? ""}`);
+        },
+        [
+          () => trendClass(now() - before2(), lowerIsBetter()),
+          () => signed(now() - before2()),
+          () => before2().toLocaleString()
+        ]
+      );
       append($$anchor2, fragment_1);
     };
     if_block(node, ($$render) => {
-      if ($$props.running) $$render(consequent);
+      if (before2() == null) $$render(consequent);
+      else if (before2() < 5 && lowerIsBetter()) $$render(consequent_1, 1);
       else $$render(alternate, -1);
     });
   }
-  reset(button);
-  var span_2 = sibling(button, 2);
-  var text_2 = child(span_2, true);
-  reset(span_2);
-  reset(div_6);
-  reset(div_2);
-  var node_1 = sibling(div_2, 2);
+  append($$anchor, fragment);
+};
+var root2 = from_html(`<span class="ssa-faint">first run</span>`);
+var root_1 = from_html(`<span class="ssa-faint"> </span>`);
+var root_2 = from_html(`<span> </span> <span class="ssa-faint"> </span>`, 1);
+var root_3 = from_svg(`<svg class="ssa-spark" viewBox="0 0 96 30" aria-hidden="true"><polyline></polyline><circle r="2.5"></circle></svg>`);
+var root_4 = from_html(`<span class="ssa-tag is-bad"> </span>`);
+var root_5 = from_html(`<div class="ssa-card-empty"><span class="ssa-badge"></span> <span>Nothing to fix here</span></div>`);
+var root_6 = from_html(`<span class="ssa-tag is-bad">New</span>`);
+var root_7 = from_html(`<button class="ssa-rule-row"><span class="ssa-rule-top"><span></span> <span class="ssa-rule-text"><span class="ssa-rule-title"> </span> <span class="ssa-rule-meta"> </span></span> <!> <span class="ssa-rule-pages"> </span> <span class="ssa-rule-chevron"></span></span> <span class="ssa-share" aria-hidden="true"><span></span></span></button>`);
+var root_8 = from_html(`<span class="ssa-group-label"> </span> <!>`, 1);
+var root_9 = from_html(`<!> <div class="ssa-card-foot"><button class="ssa-link-btn is-accent"> </button></div>`, 1);
+var root_10 = from_html(`<span class="ssa-legend"><span class="ssa-legend-tick"></span>last run</span>`);
+var root_11 = from_html(`<span class="ssa-cat-tick"></span>`);
+var root_12 = from_html(`<div class="ssa-cat"><span class="ssa-cat-name"> </span> <span class="ssa-cat-track"><span></span> <!></span> <span class="ssa-cat-score"> </span> <span> </span></div>`);
+var root_13 = from_html(`<p class="ssa-card-note">History shows from the second run of this site.</p>`);
+var root_14 = from_svg(`<line class="ssa-chart-grid"></line><text class="ssa-chart-axis" text-anchor="end"> </text>`, 1);
+var root_15 = from_svg(`<circle></circle><text text-anchor="middle"> </text><text text-anchor="middle"> </text>`, 1);
+var root_16 = from_html(`<div class="ssa-chart-wrap"><svg class="ssa-chart" role="img"><!><polyline class="ssa-chart-line"></polyline><!></svg></div>`);
+var root_17 = from_html(`<span></span>`);
+var root_18 = from_html(`<span class="ssa-status-item"><span></span> <span class="ssa-muted"> </span> <strong> </strong></span>`);
+var root_19 = from_html(`<p class="ssa-card-note is-inline">No broken pages</p>`);
+var root_20 = from_html(`<li><span class="ssa-tag is-bad"> </span> <a class="ssa-broken-path" rel="noopener"> </a></li>`);
+var root_21 = from_html(`<button class="ssa-link-btn is-accent"> </button>`);
+var root_22 = from_html(`<span class="ssa-label">Broken</span> <ul class="ssa-broken-list"></ul> <!>`, 1);
+var root_23 = from_html(`<div class="ssa-overview"><div class="ssa-kpis"><section class="ssa-card ssa-kpi"><span class="ssa-kpi-label">Health score</span> <div class="ssa-kpi-value"><span class="ssa-kpi-number"> </span> <span class="ssa-kpi-unit">/ 100</span> <!></div> <div class="ssa-kpi-delta"><!></div></section> <section class="ssa-card ssa-kpi"><span class="ssa-kpi-label">Failed checks</span> <div class="ssa-kpi-value"><span class="ssa-kpi-number"> </span> <span class="ssa-kpi-unit"> </span></div> <div class="ssa-kpi-delta"><!></div></section> <section class="ssa-card ssa-kpi"><span class="ssa-kpi-label">Warnings</span> <div class="ssa-kpi-value"><span class="ssa-kpi-number"> </span> <span class="ssa-kpi-unit"> </span></div> <div class="ssa-kpi-delta"><!></div></section> <section class="ssa-card ssa-kpi"><span class="ssa-kpi-label">Broken pages</span> <div class="ssa-kpi-value"><span> </span> <span class="ssa-kpi-unit"> </span></div> <div class="ssa-kpi-delta"><!> <!></div></section></div> <div class="ssa-overview-main"><section class="ssa-card is-flush ssa-fix-card"><div class="ssa-card-head has-rule"><h3 class="ssa-card-title">Fix first</h3> <div class="ssa-segmented" role="group" aria-label="Show"><button>All</button> <button>Failed <span class="ssa-seg-count"> </span></button> <button>Warnings <span class="ssa-seg-count"> </span></button></div></div> <!></section> <section class="ssa-card is-flush ssa-cats-card"><div class="ssa-card-head"><h3 class="ssa-card-title">Categories</h3> <!></div> <div class="ssa-cat-list"></div></section></div> <div class="ssa-overview-bottom"><section class="ssa-card is-flush"><div class="ssa-card-head"><h3 class="ssa-card-title">Score history</h3> <span class="ssa-faint"> </span></div> <!></section> <section class="ssa-card is-flush"><div class="ssa-card-head"><h3 class="ssa-card-title">Pages</h3> <span class="ssa-faint"> </span></div> <div class="ssa-pages-body"><div class="ssa-status-bar" role="img"></div> <div class="ssa-status-legend"></div> <!></div></section></div></div>`);
+function OverviewPanel($$anchor, $$props) {
+  push($$props, true);
+  const FIX_ROWS = 8;
+  const BROKEN_ROWS = 5;
+  const totals = user_derived(() => statusTotals($$props.report));
+  const prevTotals = user_derived(() => $$props.previous ? statusTotals($$props.previous) : null);
+  const broken = user_derived(() => brokenPages($$props.report));
+  const prevBroken = user_derived(() => $$props.previous ? brokenPages($$props.previous) : null);
+  const newBroken = user_derived(() => get2(prevBroken) ? get2(broken).filter((p) => !get2(prevBroken).some((q) => q.url === p.url)).length : 0);
+  const issues = user_derived(() => buildIssues($$props.report).filter((i) => i.status === "fail" || i.status === "warn"));
+  const newIds = user_derived(() => newRuleIds($$props.report, $$props.previous));
+  let fixFilter = state("all");
+  const fixRows = user_derived(() => get2(issues).filter((i) => get2(fixFilter) === "all" || i.status === get2(fixFilter)).slice(0, FIX_ROWS));
+  const fixGroups = user_derived(() => ["fail", "warn"].map((s) => ({
+    status: s,
+    label: s === "fail" ? "Failed" : "Warnings",
+    rows: get2(fixRows).filter((i) => i.status === s)
+  })).filter((g) => g.rows.length > 0));
+  const prevCats = user_derived(() => new Map(($$props.previous?.categories ?? []).map((c) => [c.category, c.score])));
+  const categories = user_derived(() => [...$$props.report.categories].sort((a, b) => a.score - b.score));
+  const buckets = user_derived(() => statusBuckets($$props.report));
+  const bucketList = user_derived(() => [
+    { key: "2xx", n: get2(buckets)["2xx"], tone: "is-ok" },
+    { key: "3xx", n: get2(buckets)["3xx"], tone: "is-mid" },
+    { key: "4xx", n: get2(buckets)["4xx"], tone: "is-bad" },
+    { key: "5xx", n: get2(buckets)["5xx"], tone: "is-bad" }
+  ]);
+  let chartWidth = state(520);
+  const W = user_derived(() => Math.max(280, get2(chartWidth)));
+  const H = 170;
+  const X0 = 34;
+  const X1 = user_derived(() => get2(W) - 12);
+  const Y0 = 22;
+  const Y1 = 136;
+  const scores = user_derived(() => $$props.history.map((h) => h.score));
+  const yMin = user_derived(() => Math.min(50, Math.floor(Math.min(...get2(scores), 100) / 10) * 10));
+  const yOf = (v) => Y1 - (v - get2(yMin)) / (100 - get2(yMin)) * (Y1 - Y0);
+  const xOf = (i, n) => n === 1 ? (X0 + get2(X1)) / 2 : X0 + 16 + i * (get2(X1) - X0 - 32) / (n - 1);
+  const points = user_derived(() => $$props.history.map((h, i) => ({ ...h, x: xOf(i, $$props.history.length), y: yOf(h.score) })));
+  const gridLines = user_derived(() => [get2(yMin), Math.round((get2(yMin) + 100) / 2), 100]);
+  const spark = user_derived(() => {
+    if (get2(scores).length < 2) return "";
+    const lo = Math.min(...get2(scores)) - 2;
+    const hi = Math.max(...get2(scores)) + 2;
+    return get2(scores).map((s, i) => `${(3 + i * 90 / (get2(scores).length - 1)).toFixed(1)},${(27 - (s - lo) / (hi - lo || 1) * 24).toFixed(1)}`).join(" ");
+  });
+  const sparkEnd = user_derived(() => get2(spark) ? get2(spark).split(" ").at(-1).split(",").map(Number) : null);
+  var div = root_23();
+  var div_1 = child(div);
+  var section = child(div_1);
+  var div_2 = sibling(child(section), 2);
+  var span_4 = child(div_2);
+  var text_3 = child(span_4, true);
+  reset(span_4);
+  var node_1 = sibling(span_4, 4);
   {
-    var consequent_3 = ($$anchor2) => {
-      var div_7 = root_35();
-      var div_8 = child(div_7);
-      var span_3 = child(div_8);
-      var text_3 = child(span_3, true);
-      reset(span_3);
-      var span_4 = sibling(span_3, 2);
-      var text_4 = child(span_4);
-      reset(span_4);
-      reset(div_8);
-      var div_9 = sibling(div_8, 2);
-      var span_5 = child(div_9);
-      reset(div_9);
-      var div_10 = sibling(div_9, 2);
-      var span_6 = child(div_10);
-      var node_2 = child(span_6);
-      {
-        var consequent_1 = ($$anchor3) => {
-          var text_5 = text();
-          template_effect(($0, $1) => set_text(text_5, `${$0 ?? ""} of ${$1 ?? ""} checks`), [
-            () => $$props.progress.checksDone.toLocaleString(),
-            () => $$props.progress.checksTotal.toLocaleString()
-          ]);
-          append($$anchor3, text_5);
-        };
-        if_block(node_2, ($$render) => {
-          if ($$props.progress.checksTotal > 0) $$render(consequent_1);
-        });
-      }
-      reset(span_6);
-      var node_3 = sibling(span_6, 2);
-      {
-        var consequent_2 = ($$anchor3) => {
-          var span_7 = root_25();
-          var text_6 = child(span_7, true);
-          reset(span_7);
-          template_effect(() => set_text(text_6, $$props.progress.url));
-          append($$anchor3, span_7);
-        };
-        if_block(node_3, ($$render) => {
-          if ($$props.progress.url) $$render(consequent_2);
-        });
-      }
-      reset(div_10);
-      reset(div_7);
+    var consequent_2 = ($$anchor2) => {
+      var svg = root_3();
+      var polyline = child(svg);
+      var circle = sibling(polyline);
+      reset(svg);
       template_effect(() => {
-        set_text(text_3, get2(phaseText));
-        set_text(text_4, `${get2(percent) ?? ""}%`);
-        set_style(span_5, `width:${get2(percent) ?? ""}%`);
+        set_attribute2(polyline, "points", get2(spark));
+        set_attribute2(circle, "cx", get2(sparkEnd)[0]);
+        set_attribute2(circle, "cy", get2(sparkEnd)[1]);
       });
-      append($$anchor2, div_7);
+      append($$anchor2, svg);
     };
     if_block(node_1, ($$render) => {
-      if ($$props.running && $$props.progress) $$render(consequent_3);
+      if (get2(spark) && get2(sparkEnd)) $$render(consequent_2);
+    });
+  }
+  reset(div_2);
+  var div_3 = sibling(div_2, 2);
+  var node_2 = child(div_3);
+  delta(node_2, () => $$props.report.score, () => $$props.previous?.score, () => false);
+  reset(div_3);
+  reset(section);
+  var section_1 = sibling(section, 2);
+  var div_4 = sibling(child(section_1), 2);
+  var span_5 = child(div_4);
+  var text_4 = child(span_5, true);
+  reset(span_5);
+  var span_6 = sibling(span_5, 2);
+  var text_5 = child(span_6);
+  reset(span_6);
+  reset(div_4);
+  var div_5 = sibling(div_4, 2);
+  var node_3 = child(div_5);
+  delta(node_3, () => get2(totals).fail, () => get2(prevTotals)?.fail, () => true);
+  reset(div_5);
+  reset(section_1);
+  var section_2 = sibling(section_1, 2);
+  var div_6 = sibling(child(section_2), 2);
+  var span_7 = child(div_6);
+  var text_6 = child(span_7, true);
+  reset(span_7);
+  var span_8 = sibling(span_7, 2);
+  var text_7 = child(span_8);
+  reset(span_8);
+  reset(div_6);
+  var div_7 = sibling(div_6, 2);
+  var node_4 = child(div_7);
+  delta(node_4, () => get2(totals).warn, () => get2(prevTotals)?.warn, () => true);
+  reset(div_7);
+  reset(section_2);
+  var section_3 = sibling(section_2, 2);
+  var div_8 = sibling(child(section_3), 2);
+  var span_9 = child(div_8);
+  let classes;
+  var text_8 = child(span_9, true);
+  reset(span_9);
+  var span_10 = sibling(span_9, 2);
+  var text_9 = child(span_10);
+  reset(span_10);
+  reset(div_8);
+  var div_9 = sibling(div_8, 2);
+  var node_5 = child(div_9);
+  {
+    var consequent_3 = ($$anchor2) => {
+      var span_11 = root_4();
+      var text_10 = child(span_11);
+      reset(span_11);
+      template_effect(() => set_text(text_10, `${get2(newBroken) ?? ""} new`));
+      append($$anchor2, span_11);
+    };
+    if_block(node_5, ($$render) => {
+      if (get2(newBroken) > 0) $$render(consequent_3);
+    });
+  }
+  var node_6 = sibling(node_5, 2);
+  delta(node_6, () => get2(broken).length, () => get2(prevBroken)?.length, () => true);
+  reset(div_9);
+  reset(section_3);
+  reset(div_1);
+  var div_10 = sibling(div_1, 2);
+  var section_4 = child(div_10);
+  var div_11 = child(section_4);
+  var div_12 = sibling(child(div_11), 2);
+  var button = child(div_12);
+  let classes_1;
+  var button_1 = sibling(button, 2);
+  let classes_2;
+  var span_12 = sibling(child(button_1));
+  var text_11 = child(span_12, true);
+  reset(span_12);
+  reset(button_1);
+  var button_2 = sibling(button_1, 2);
+  let classes_3;
+  var span_13 = sibling(child(button_2));
+  var text_12 = child(span_13, true);
+  reset(span_13);
+  reset(button_2);
+  reset(div_12);
+  reset(div_11);
+  var node_7 = sibling(div_11, 2);
+  {
+    var consequent_4 = ($$anchor2) => {
+      var div_13 = root_5();
+      var span_14 = child(div_13);
+      action(span_14, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "check");
+      next(2);
+      reset(div_13);
+      append($$anchor2, div_13);
+    };
+    var alternate_1 = ($$anchor2) => {
+      var fragment_2 = root_9();
+      var node_8 = first_child(fragment_2);
+      each(node_8, 17, () => get2(fixGroups), (group2) => group2.status, ($$anchor3, group2) => {
+        var fragment_3 = root_8();
+        var span_15 = first_child(fragment_3);
+        var text_13 = child(span_15, true);
+        reset(span_15);
+        var node_9 = sibling(span_15, 2);
+        each(node_9, 17, () => get2(group2).rows, (issue) => issue.ruleId, ($$anchor4, issue) => {
+          var button_3 = root_7();
+          var span_16 = child(button_3);
+          var span_17 = child(span_16);
+          var span_18 = sibling(span_17, 2);
+          var span_19 = child(span_18);
+          var text_14 = child(span_19, true);
+          reset(span_19);
+          var span_20 = sibling(span_19, 2);
+          var text_15 = child(span_20);
+          reset(span_20);
+          reset(span_18);
+          var node_10 = sibling(span_18, 2);
+          {
+            var consequent_5 = ($$anchor5) => {
+              var span_21 = root_6();
+              append($$anchor5, span_21);
+            };
+            var d = user_derived(() => get2(newIds).has(get2(issue).ruleId));
+            if_block(node_10, ($$render) => {
+              if (get2(d)) $$render(consequent_5);
+            });
+          }
+          var span_22 = sibling(node_10, 2);
+          var text_16 = child(span_22);
+          reset(span_22);
+          var span_23 = sibling(span_22, 2);
+          action(span_23, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "chevron-right");
+          reset(span_16);
+          var span_24 = sibling(span_16, 2);
+          var span_25 = child(span_24);
+          reset(span_24);
+          reset(button_3);
+          template_effect(
+            ($0, $1) => {
+              set_class(span_17, 1, `ssa-mark ${get2(issue).status === "fail" ? "is-fail" : "is-warn"}`);
+              set_attribute2(span_17, "aria-label", get2(issue).status === "fail" ? "Failed" : "Warning");
+              set_text(text_14, get2(issue).title);
+              set_text(text_15, `${$0 ?? ""} \xB7 ${get2(issue).ruleId ?? ""}`);
+              set_text(text_16, `${get2(issue).pages.length ?? ""} ${get2(issue).pages.length === 1 ? "page" : "pages"}`);
+              set_style(span_25, `width:${$1 ?? ""}%`);
+            },
+            [
+              () => categoryLabel(get2(issue).category),
+              () => pct(get2(issue).pages.length, $$props.report.pagesScanned)
+            ]
+          );
+          delegated("click", button_3, () => $$props.onOpenRule(get2(issue).ruleId));
+          append($$anchor4, button_3);
+        });
+        template_effect(() => set_text(text_13, get2(group2).label));
+        append($$anchor3, fragment_3);
+      });
+      var div_14 = sibling(node_8, 2);
+      var button_4 = child(div_14);
+      var text_17 = child(button_4);
+      reset(button_4);
+      reset(div_14);
+      template_effect(() => set_text(text_17, `Show all ${get2(issues).length ?? ""} rules`));
+      delegated("click", button_4, function(...$$args) {
+        $$props.onShowRules?.apply(this, $$args);
+      });
+      append($$anchor2, fragment_2);
+    };
+    if_block(node_7, ($$render) => {
+      if (get2(fixRows).length === 0) $$render(consequent_4);
+      else $$render(alternate_1, -1);
+    });
+  }
+  reset(section_4);
+  var section_5 = sibling(section_4, 2);
+  var div_15 = child(section_5);
+  var node_11 = sibling(child(div_15), 2);
+  {
+    var consequent_6 = ($$anchor2) => {
+      var span_26 = root_10();
+      append($$anchor2, span_26);
+    };
+    if_block(node_11, ($$render) => {
+      if ($$props.previous) $$render(consequent_6);
+    });
+  }
+  reset(div_15);
+  var div_16 = sibling(div_15, 2);
+  each(div_16, 21, () => get2(categories), (cat) => cat.category, ($$anchor2, cat) => {
+    const before2 = user_derived(() => get2(prevCats).get(get2(cat).category));
+    var div_17 = root_12();
+    var span_27 = child(div_17);
+    var text_18 = child(span_27, true);
+    reset(span_27);
+    var span_28 = sibling(span_27, 2);
+    var span_29 = child(span_28);
+    var node_12 = sibling(span_29, 2);
+    {
+      var consequent_7 = ($$anchor3) => {
+        var span_30 = root_11();
+        template_effect(() => {
+          set_style(span_30, `left:${get2(before2) ?? ""}%`);
+          set_attribute2(span_30, "title", `Last run: ${get2(before2) ?? ""}`);
+        });
+        append($$anchor3, span_30);
+      };
+      if_block(node_12, ($$render) => {
+        if (get2(before2) != null) $$render(consequent_7);
+      });
+    }
+    reset(span_28);
+    var span_31 = sibling(span_28, 2);
+    var text_19 = child(span_31, true);
+    reset(span_31);
+    var span_32 = sibling(span_31, 2);
+    var text_20 = child(span_32, true);
+    reset(span_32);
+    reset(div_17);
+    template_effect(
+      ($0, $1, $2, $3, $4) => {
+        set_attribute2(span_27, "title", $0);
+        set_text(text_18, $1);
+        set_class(span_29, 1, `ssa-cat-fill ${$2 ?? ""}`);
+        set_style(span_29, `width:${get2(cat).score ?? ""}%`);
+        set_text(text_19, get2(cat).score);
+        set_class(span_32, 1, `ssa-cat-delta ${$3 ?? ""}`);
+        set_text(text_20, $4);
+      },
+      [
+        () => categoryLabel(get2(cat).category),
+        () => categoryLabel(get2(cat).category),
+        () => scoreBand(get2(cat).score),
+        () => get2(before2) != null ? trendClass(get2(cat).score - get2(before2), false, 3) : "is-flat",
+        () => get2(before2) != null ? signed(get2(cat).score - get2(before2)) : ""
+      ]
+    );
+    append($$anchor2, div_17);
+  });
+  reset(div_16);
+  reset(section_5);
+  reset(div_10);
+  var div_18 = sibling(div_10, 2);
+  var section_6 = child(div_18);
+  var div_19 = child(section_6);
+  var span_33 = sibling(child(div_19), 2);
+  var text_21 = child(span_33);
+  reset(span_33);
+  reset(div_19);
+  var node_13 = sibling(div_19, 2);
+  {
+    var consequent_8 = ($$anchor2) => {
+      var p_1 = root_13();
+      append($$anchor2, p_1);
+    };
+    var alternate_2 = ($$anchor2) => {
+      var div_20 = root_16();
+      var svg_1 = child(div_20);
+      set_attribute2(svg_1, "height", H);
+      var node_14 = child(svg_1);
+      each(node_14, 16, () => get2(gridLines), (g) => g, ($$anchor3, g) => {
+        var fragment_4 = root_14();
+        var line = first_child(fragment_4);
+        set_attribute2(line, "x1", X0);
+        var text_22 = sibling(line);
+        set_attribute2(text_22, "x", X0 - 8);
+        var text_23 = child(text_22, true);
+        reset(text_22);
+        template_effect(
+          ($0, $1, $2) => {
+            set_attribute2(line, "x2", get2(X1));
+            set_attribute2(line, "y1", $0);
+            set_attribute2(line, "y2", $1);
+            set_attribute2(text_22, "y", $2);
+            set_text(text_23, g);
+          },
+          [() => yOf(g), () => yOf(g), () => yOf(g) + 4]
+        );
+        append($$anchor3, fragment_4);
+      });
+      var polyline_1 = sibling(node_14);
+      var node_15 = sibling(polyline_1);
+      each(node_15, 19, () => get2(points), (p) => p.date, ($$anchor3, p, i) => {
+        const last2 = user_derived(() => get2(i) === get2(points).length - 1);
+        var fragment_5 = root_15();
+        var circle_1 = first_child(fragment_5);
+        let classes_4;
+        var text_24 = sibling(circle_1);
+        let classes_5;
+        var text_25 = child(text_24, true);
+        reset(text_24);
+        var text_26 = sibling(text_24);
+        let classes_6;
+        set_attribute2(text_26, "y", H - 10);
+        var text_27 = child(text_26, true);
+        reset(text_26);
+        template_effect(
+          ($0) => {
+            classes_4 = set_class(circle_1, 0, "ssa-chart-dot", null, classes_4, { "is-last": get2(last2) });
+            set_attribute2(circle_1, "cx", get2(p).x);
+            set_attribute2(circle_1, "cy", get2(p).y);
+            set_attribute2(circle_1, "r", get2(last2) ? 4 : 3);
+            classes_5 = set_class(text_24, 0, "ssa-chart-value", null, classes_5, { "is-last": get2(last2) });
+            set_attribute2(text_24, "x", get2(p).x);
+            set_attribute2(text_24, "y", get2(p).y - 10);
+            set_text(text_25, get2(p).score);
+            classes_6 = set_class(text_26, 0, "ssa-chart-axis", null, classes_6, { "is-last": get2(last2) });
+            set_attribute2(text_26, "x", get2(p).x);
+            set_text(text_27, $0);
+          },
+          [() => formatDay(get2(p).date, false)]
+        );
+        append($$anchor3, fragment_5);
+      });
+      reset(svg_1);
+      reset(div_20);
+      template_effect(
+        ($0) => {
+          set_attribute2(svg_1, "width", get2(W));
+          set_attribute2(svg_1, "viewBox", `0 0 ${get2(W) ?? ""} 170`);
+          set_attribute2(svg_1, "aria-label", `Health score over ${$$props.history.length ?? ""} runs, from ${$$props.history[0].score ?? ""} to ${$$props.report.score ?? ""}`);
+          set_attribute2(polyline_1, "points", $0);
+        },
+        [() => get2(points).map((p) => `${p.x},${p.y}`).join(" ")]
+      );
+      bind_element_size(div_20, "clientWidth", ($$value) => set(chartWidth, $$value));
+      append($$anchor2, div_20);
+    };
+    if_block(node_13, ($$render) => {
+      if ($$props.history.length < 2) $$render(consequent_8);
+      else $$render(alternate_2, -1);
+    });
+  }
+  reset(section_6);
+  var section_7 = sibling(section_6, 2);
+  var div_21 = child(section_7);
+  var span_34 = sibling(child(div_21), 2);
+  var text_28 = child(span_34);
+  reset(span_34);
+  reset(div_21);
+  var div_22 = sibling(div_21, 2);
+  var div_23 = child(div_22);
+  each(div_23, 21, () => get2(bucketList), (b) => b.key, ($$anchor2, b) => {
+    var fragment_6 = comment();
+    var node_16 = first_child(fragment_6);
+    {
+      var consequent_9 = ($$anchor3) => {
+        var span_35 = root_17();
+        template_effect(() => {
+          set_class(span_35, 1, `ssa-status-seg ${get2(b).tone ?? ""}`);
+          set_style(span_35, `flex-grow:${get2(b).n ?? ""}`);
+        });
+        append($$anchor3, span_35);
+      };
+      if_block(node_16, ($$render) => {
+        if (get2(b).n > 0) $$render(consequent_9);
+      });
+    }
+    append($$anchor2, fragment_6);
+  });
+  reset(div_23);
+  var div_24 = sibling(div_23, 2);
+  each(div_24, 21, () => get2(bucketList), (b) => b.key, ($$anchor2, b) => {
+    var span_36 = root_18();
+    var span_37 = child(span_36);
+    var span_38 = sibling(span_37, 2);
+    var text_29 = child(span_38, true);
+    reset(span_38);
+    var strong = sibling(span_38, 2);
+    let classes_7;
+    var text_30 = child(strong, true);
+    reset(strong);
+    reset(span_36);
+    template_effect(() => {
+      set_class(span_37, 1, `ssa-mark ${(get2(b).n ? get2(b).tone : "is-none") ?? ""}`);
+      set_text(text_29, get2(b).key);
+      classes_7 = set_class(strong, 1, "", null, classes_7, { "ssa-faint": !get2(b).n });
+      set_text(text_30, get2(b).n || "\u2014");
+    });
+    append($$anchor2, span_36);
+  });
+  reset(div_24);
+  var node_17 = sibling(div_24, 2);
+  {
+    var consequent_10 = ($$anchor2) => {
+      var p_2 = root_19();
+      append($$anchor2, p_2);
+    };
+    var alternate_3 = ($$anchor2) => {
+      var fragment_7 = root_22();
+      var ul = sibling(first_child(fragment_7), 2);
+      each(ul, 21, () => get2(broken).slice(0, BROKEN_ROWS), (page) => page.url, ($$anchor3, page) => {
+        var li = root_20();
+        var span_39 = child(li);
+        var text_31 = child(span_39, true);
+        reset(span_39);
+        var a_1 = sibling(span_39, 2);
+        var text_32 = child(a_1, true);
+        reset(a_1);
+        reset(li);
+        template_effect(
+          ($0) => {
+            set_text(text_31, get2(page).status || "ERR");
+            set_attribute2(a_1, "href", get2(page).url);
+            set_attribute2(a_1, "title", get2(page).url);
+            set_text(text_32, $0);
+          },
+          [() => pathOf(get2(page).url)]
+        );
+        append($$anchor3, li);
+      });
+      reset(ul);
+      var node_18 = sibling(ul, 2);
+      {
+        var consequent_11 = ($$anchor3) => {
+          var button_5 = root_21();
+          var text_33 = child(button_5);
+          reset(button_5);
+          template_effect(() => set_text(text_33, `Show all ${get2(broken).length ?? ""}`));
+          delegated("click", button_5, function(...$$args) {
+            $$props.onShowBroken?.apply(this, $$args);
+          });
+          append($$anchor3, button_5);
+        };
+        if_block(node_18, ($$render) => {
+          if (get2(broken).length > BROKEN_ROWS) $$render(consequent_11);
+        });
+      }
+      append($$anchor2, fragment_7);
+    };
+    if_block(node_17, ($$render) => {
+      if (get2(broken).length === 0) $$render(consequent_10);
+      else $$render(alternate_3, -1);
+    });
+  }
+  reset(div_22);
+  reset(section_7);
+  reset(div_18);
+  reset(div);
+  template_effect(
+    ($0, $1, $2, $3, $4, $5, $6) => {
+      set_text(text_3, $$props.report.score);
+      set_text(text_4, $0);
+      set_text(text_5, `of ${$1 ?? ""}`);
+      set_text(text_6, $2);
+      set_text(text_7, `of ${$3 ?? ""}`);
+      classes = set_class(span_9, 1, "ssa-kpi-number", null, classes, { "is-bad": get2(broken).length > 0 });
+      set_text(text_8, get2(broken).length);
+      set_text(text_9, `of ${$$props.report.pagesScanned ?? ""}`);
+      classes_1 = set_class(button, 1, "ssa-seg", null, classes_1, { "is-on": get2(fixFilter) === "all" });
+      set_attribute2(button, "aria-pressed", get2(fixFilter) === "all");
+      classes_2 = set_class(button_1, 1, "ssa-seg", null, classes_2, { "is-on": get2(fixFilter) === "fail" });
+      set_attribute2(button_1, "aria-pressed", get2(fixFilter) === "fail");
+      set_text(text_11, $4);
+      classes_3 = set_class(button_2, 1, "ssa-seg", null, classes_3, { "is-on": get2(fixFilter) === "warn" });
+      set_attribute2(button_2, "aria-pressed", get2(fixFilter) === "warn");
+      set_text(text_12, $5);
+      set_text(text_21, `${$$props.history.length ?? ""} ${$$props.history.length === 1 ? "run" : "runs"}`);
+      set_text(text_28, `${$$props.report.pagesScanned ?? ""} crawled`);
+      set_attribute2(div_23, "aria-label", $6);
+    },
+    [
+      () => get2(totals).fail.toLocaleString(),
+      () => get2(totals).total.toLocaleString(),
+      () => get2(totals).warn.toLocaleString(),
+      () => get2(totals).total.toLocaleString(),
+      () => get2(totals).fail.toLocaleString(),
+      () => get2(totals).warn.toLocaleString(),
+      () => get2(bucketList).map((b) => `${b.key}: ${b.n}`).join(", ")
+    ]
+  );
+  delegated("click", button, () => set(fixFilter, "all"));
+  delegated("click", button_1, () => set(fixFilter, "fail"));
+  delegated("click", button_2, () => set(fixFilter, "warn"));
+  append($$anchor, div);
+  pop();
+}
+delegate(["click"]);
+
+// src/ui/IssuesPanel.svelte
+var root3 = from_html(`<span class="ssa-chip-check"></span>`);
+var root_110 = from_html(`<button><!> <span class="ssa-chip-count"> </span></button>`);
+var root_24 = from_html(`<option> </option>`);
+var root_32 = from_html(`<div class="ssa-card ssa-empty"><span class="ssa-badge"></span> <h3 class="ssa-card-title">No rules match</h3> <p class="ssa-faint"> </p> <button class="ssa-btn">Clear filters</button></div>`);
+var root_42 = from_html(`<span class="ssa-tag is-bad">New</span>`);
+var root_52 = from_html(`<div class="ssa-fix"><span class="ssa-fix-label">How to fix</span> <p class="ssa-fix-text"> </p></div>`);
+var root_62 = from_html(`<li><a rel="noopener"> </a></li>`);
+var root_72 = from_html(`<button class="ssa-link-btn is-accent"> </button>`);
+var root_82 = from_html(`<details class="ssa-row"><summary class="ssa-row-head"><span class="ssa-rule-top"><span></span> <span class="ssa-rule-text"><span class="ssa-rule-title"> </span> <span class="ssa-rule-meta"> </span></span> <!> <span class="ssa-rule-pages"> </span> <span class="ssa-row-chevron"></span></span> <span class="ssa-share" aria-hidden="true"><span></span></span></summary> <div class="ssa-row-body"><p class="ssa-row-msg"><span> </span> </p> <!> <div class="ssa-affected"><span class="ssa-label"> </span> <ul class="ssa-affected-list"></ul> <!></div></div></details>`);
+var root_92 = from_html(`<span class="ssa-group-label"> </span> <!>`, 1);
+var root_102 = from_html(`<button class="ssa-link-btn is-accent">Show more</button>`);
+var root_112 = from_html(`<div class="ssa-card is-flush"><div class="ssa-list-head"><span>Rule</span> <span>Pages affected</span></div> <!> <div class="ssa-card-foot"><span class="ssa-faint"> </span> <!></div></div>`);
+var root_122 = from_html(`<div class="ssa-panel"><div class="ssa-filters"><!> <span class="ssa-filters-spacer"></span> <select class="ssa-select dropdown" aria-label="Filter by category"><option>All categories</option><!></select> <div class="ssa-search ssa-search-inline"><span class="ssa-search-icon"></span> <input class="ssa-input" type="search" placeholder="Search rules" aria-label="Search rules"/></div></div> <!></div>`);
+function IssuesPanel($$anchor, $$props) {
+  push($$props, true);
+  let focusRule = prop($$props, "focusRule", 3, null);
+  const issues = user_derived(() => buildIssues($$props.report));
+  const totals = user_derived(() => statusTotals($$props.report));
+  const newIds = user_derived(() => newRuleIds($$props.report, $$props.previous));
+  const categories = user_derived(() => $$props.report.categories.map((c) => c.category));
+  const STATUSES = [
+    { key: "fail", word: "Failed" },
+    { key: "warn", word: "Warnings" },
+    { key: "info", word: "Info" }
+  ];
+  function initialFilter() {
+    const base = ["fail", "warn"];
+    const s = focusRule() ? buildIssues($$props.report).find((i) => i.ruleId === focusRule())?.status : void 0;
+    return s && !base.includes(s) ? [...base, s] : base;
+  }
+  let statusFilter = state(proxy(initialFilter()));
+  let catFilter = state("all");
+  let query = state("");
+  const filtered = user_derived(() => get2(issues).filter((i) => {
+    if (!get2(statusFilter).includes(i.status)) return false;
+    if (get2(catFilter) !== "all" && i.category !== get2(catFilter)) return false;
+    const q = get2(query).trim().toLowerCase();
+    if (q && !`${i.title} ${i.message} ${i.ruleId}`.toLowerCase().includes(q)) return false;
+    return true;
+  }));
+  const STEP = 25;
+  let limit = state(STEP);
+  const groups = user_derived(() => {
+    const shown2 = get2(filtered).slice(0, get2(limit));
+    return STATUSES.map((s) => ({
+      ...s,
+      total: get2(filtered).filter((i) => i.status === s.key).length,
+      rows: shown2.filter((i) => i.status === s.key)
+    })).filter((g) => g.rows.length > 0);
+  });
+  function toggle(status) {
+    set(
+      statusFilter,
+      get2(statusFilter).includes(status) ? get2(statusFilter).filter((s) => s !== status) : [...get2(statusFilter), status],
+      true
+    );
+    set(limit, STEP);
+  }
+  function clearFilters() {
+    set(statusFilter, ["fail", "warn", "info"], true);
+    set(catFilter, "all");
+    set(query, "");
+  }
+  const PAGE_PREVIEW = 12;
+  let expanded = state(proxy({}));
+  function shown(issue) {
+    return get2(expanded)[issue.ruleId] ? issue.pages : issue.pages.slice(0, PAGE_PREVIEW);
+  }
+  function focusOnMount(node, active) {
+    if (active) requestAnimationFrame(() => node.scrollIntoView({ block: "nearest" }));
+  }
+  var div = root_122();
+  var div_1 = child(div);
+  var node_1 = child(div_1);
+  each(node_1, 17, () => STATUSES, (s) => s.key, ($$anchor2, s) => {
+    const on2 = user_derived(() => get2(statusFilter).includes(get2(s).key));
+    var button = root_110();
+    let classes;
+    var node_2 = child(button);
+    {
+      var consequent = ($$anchor3) => {
+        var span = root3();
+        action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "check");
+        append($$anchor3, span);
+      };
+      if_block(node_2, ($$render) => {
+        if (get2(on2)) $$render(consequent);
+      });
+    }
+    var text5 = sibling(node_2);
+    var span_1 = sibling(text5);
+    var text_1 = child(span_1, true);
+    reset(span_1);
+    reset(button);
+    template_effect(
+      ($0) => {
+        classes = set_class(button, 1, "ssa-btn ssa-filter", null, classes, { "mod-cta": get2(on2) });
+        set_attribute2(button, "aria-pressed", get2(on2));
+        set_text(text5, ` ${get2(s).word ?? ""} `);
+        set_text(text_1, $0);
+      },
+      [() => get2(totals)[get2(s).key].toLocaleString()]
+    );
+    delegated("click", button, () => toggle(get2(s).key));
+    append($$anchor2, button);
+  });
+  var select2 = sibling(node_1, 4);
+  var option = child(select2);
+  option.value = option.__value = "all";
+  var node_3 = sibling(option);
+  each(node_3, 16, () => get2(categories), (c) => c, ($$anchor2, c) => {
+    var option_1 = root_24();
+    var text_2 = child(option_1, true);
+    reset(option_1);
+    var option_1_value = {};
+    template_effect(
+      ($0) => {
+        set_text(text_2, $0);
+        if (option_1_value !== (option_1_value = c)) {
+          option_1.value = (option_1.__value = c) ?? "";
+        }
+      },
+      [() => categoryLabel(c)]
+    );
+    append($$anchor2, option_1);
+  });
+  reset(select2);
+  var div_2 = sibling(select2, 2);
+  var span_2 = child(div_2);
+  action(span_2, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "search");
+  var input = sibling(span_2, 2);
+  remove_input_defaults(input);
+  reset(div_2);
+  reset(div_1);
+  var node_4 = sibling(div_1, 2);
+  {
+    var consequent_1 = ($$anchor2) => {
+      var div_3 = root_32();
+      var span_3 = child(div_3);
+      action(span_3, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "search");
+      var p = sibling(span_3, 4);
+      var text_3 = child(p, true);
+      reset(p);
+      var button_1 = sibling(p, 2);
+      reset(div_3);
+      template_effect(($0) => set_text(text_3, $0), [
+        () => [
+          get2(catFilter) !== "all" ? categoryLabel(get2(catFilter)) : "",
+          get2(query).trim() ? `"${get2(query).trim()}"` : "",
+          STATUSES.filter((s) => get2(statusFilter).includes(s.key)).map((s) => s.word).join(", ") || "No status"
+        ].filter(Boolean).join(" \xB7 ")
+      ]);
+      delegated("click", button_1, clearFilters);
+      append($$anchor2, div_3);
+    };
+    var alternate = ($$anchor2) => {
+      var div_4 = root_112();
+      var node_5 = sibling(child(div_4), 2);
+      each(node_5, 17, () => get2(groups), (group2) => group2.key, ($$anchor3, group2) => {
+        var fragment = root_92();
+        var span_4 = first_child(fragment);
+        var text_4 = child(span_4);
+        reset(span_4);
+        var node_6 = sibling(span_4, 2);
+        each(node_6, 17, () => get2(group2).rows, (issue) => issue.ruleId, ($$anchor4, issue) => {
+          var details = root_82();
+          var summary = child(details);
+          var span_5 = child(summary);
+          var span_6 = child(span_5);
+          var span_7 = sibling(span_6, 2);
+          var span_8 = child(span_7);
+          var text_5 = child(span_8, true);
+          reset(span_8);
+          var span_9 = sibling(span_8, 2);
+          var text_6 = child(span_9);
+          reset(span_9);
+          reset(span_7);
+          var node_7 = sibling(span_7, 2);
+          {
+            var consequent_2 = ($$anchor5) => {
+              var span_10 = root_42();
+              append($$anchor5, span_10);
+            };
+            var d = user_derived(() => get2(newIds).has(get2(issue).ruleId));
+            if_block(node_7, ($$render) => {
+              if (get2(d)) $$render(consequent_2);
+            });
+          }
+          var span_11 = sibling(node_7, 2);
+          var text_7 = child(span_11);
+          reset(span_11);
+          var span_12 = sibling(span_11, 2);
+          action(span_12, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "chevron-down");
+          reset(span_5);
+          var span_13 = sibling(span_5, 2);
+          var span_14 = child(span_13);
+          reset(span_13);
+          reset(summary);
+          var div_5 = sibling(summary, 2);
+          var p_1 = child(div_5);
+          var span_15 = child(p_1);
+          var text_8 = child(span_15, true);
+          reset(span_15);
+          var text_9 = sibling(span_15);
+          reset(p_1);
+          var node_8 = sibling(p_1, 2);
+          {
+            var consequent_3 = ($$anchor5) => {
+              var div_6 = root_52();
+              var p_2 = sibling(child(div_6), 2);
+              var text_10 = child(p_2, true);
+              reset(p_2);
+              reset(div_6);
+              template_effect(() => set_text(text_10, get2(issue).fix));
+              append($$anchor5, div_6);
+            };
+            if_block(node_8, ($$render) => {
+              if (get2(issue).fix) $$render(consequent_3);
+            });
+          }
+          var div_7 = sibling(node_8, 2);
+          var span_16 = child(div_7);
+          var text_11 = child(span_16);
+          reset(span_16);
+          var ul = sibling(span_16, 2);
+          each(ul, 20, () => shown(get2(issue)), (page) => page, ($$anchor5, page) => {
+            var li = root_62();
+            var a = child(li);
+            var text_12 = child(a, true);
+            reset(a);
+            reset(li);
+            template_effect(
+              ($0) => {
+                set_attribute2(a, "href", page);
+                set_attribute2(a, "title", page);
+                set_text(text_12, $0);
+              },
+              [() => pathOf(page)]
+            );
+            append($$anchor5, li);
+          });
+          reset(ul);
+          var node_9 = sibling(ul, 2);
+          {
+            var consequent_4 = ($$anchor5) => {
+              var button_2 = root_72();
+              var text_13 = child(button_2, true);
+              reset(button_2);
+              template_effect(() => set_text(text_13, get2(expanded)[get2(issue).ruleId] ? "Show fewer" : `Show all ${get2(issue).pages.length} pages`));
+              delegated("click", button_2, () => set(
+                expanded,
+                {
+                  ...get2(expanded),
+                  [get2(issue).ruleId]: !get2(expanded)[get2(issue).ruleId]
+                },
+                true
+              ));
+              append($$anchor5, button_2);
+            };
+            if_block(node_9, ($$render) => {
+              if (get2(issue).pages.length > PAGE_PREVIEW) $$render(consequent_4);
+            });
+          }
+          reset(div_7);
+          reset(div_5);
+          reset(details);
+          action(details, ($$node, $$action_arg) => focusOnMount?.($$node, $$action_arg), () => get2(issue).ruleId === focusRule());
+          template_effect(
+            ($0, $1, $2, $3, $4, $5) => {
+              details.open = get2(issue).ruleId === focusRule();
+              set_class(span_6, 1, `ssa-mark ${$0 ?? ""}`);
+              set_attribute2(span_6, "aria-label", $1);
+              set_attribute2(span_8, "title", get2(issue).title);
+              set_text(text_5, get2(issue).title);
+              set_attribute2(span_9, "title", get2(issue).ruleId);
+              set_text(text_6, `${$2 ?? ""} \xB7 ${get2(issue).ruleId ?? ""}`);
+              set_text(text_7, `${get2(issue).pages.length ?? ""} ${get2(issue).pages.length === 1 ? "page" : "pages"}`);
+              set_style(span_14, `width:${$3 ?? ""}%`);
+              set_class(span_15, 1, `ssa-status-word ${$4 ?? ""}`);
+              set_text(text_8, $5);
+              set_text(text_9, ` ${get2(issue).message ?? ""}`);
+              set_text(text_11, `Affected pages \xB7 ${get2(issue).pages.length ?? ""}`);
+            },
+            [
+              () => statusTone(get2(issue).status),
+              () => statusLabel(get2(issue).status),
+              () => categoryLabel(get2(issue).category),
+              () => pct(get2(issue).pages.length, $$props.report.pagesScanned),
+              () => statusTone(get2(issue).status),
+              () => statusLabel(get2(issue).status)
+            ]
+          );
+          append($$anchor4, details);
+        });
+        template_effect(() => set_text(text_4, `${get2(group2).word ?? ""} \xB7 ${get2(group2).total ?? ""} ${get2(group2).total === 1 ? "rule" : "rules"}`));
+        append($$anchor3, fragment);
+      });
+      var div_8 = sibling(node_5, 2);
+      var span_17 = child(div_8);
+      var text_14 = child(span_17);
+      reset(span_17);
+      var node_10 = sibling(span_17, 2);
+      {
+        var consequent_5 = ($$anchor3) => {
+          var button_3 = root_102();
+          delegated("click", button_3, () => set(limit, get2(limit) + STEP));
+          append($$anchor3, button_3);
+        };
+        if_block(node_10, ($$render) => {
+          if (get2(filtered).length > get2(limit)) $$render(consequent_5);
+        });
+      }
+      reset(div_8);
+      reset(div_4);
+      template_effect(($0) => set_text(text_14, `${$0 ?? ""} of ${get2(filtered).length ?? ""} rules`), [() => Math.min(get2(limit), get2(filtered).length)]);
+      append($$anchor2, div_4);
+    };
+    if_block(node_4, ($$render) => {
+      if (get2(filtered).length === 0) $$render(consequent_1);
+      else $$render(alternate, -1);
+    });
+  }
+  reset(div);
+  bind_select_value(select2, () => get2(catFilter), ($$value) => set(catFilter, $$value));
+  bind_value(input, () => get2(query), ($$value) => set(query, $$value));
+  append($$anchor, div);
+  pop();
+}
+delegate(["click"]);
+
+// src/ui/PagesPanel.svelte
+var root4 = from_html(`<button> <span class="ssa-seg-count"> </span></button>`);
+var root_111 = from_html(`<button class="ssa-btn">Show all pages</button>`);
+var root_25 = from_html(`<div class="ssa-card ssa-empty"><span class="ssa-badge"></span> <h3 class="ssa-card-title"> </h3> <!></div>`);
+var root_33 = from_html(`<span class="ssa-pscore-num"> </span> <span class="ssa-bar"><span></span></span>`, 1);
+var root_43 = from_html(`<span class="ssa-faint">\u2014</span>`);
+var root_53 = from_html(`<p class="ssa-row-msg">Every check passed on this page.</p>`);
+var root_63 = from_html(`<tr><td><span> </span></td><td><span class="ssa-cell-strong"> </span> <span class="ssa-cell-faint"> </span></td><td class="ssa-cell-muted"> </td></tr>`);
+var root_73 = from_html(`<table class="ssa-table"><thead><tr><th class="ssa-col-status">Status</th><th>Check</th><th>Result</th></tr></thead><tbody></tbody></table>`);
+var root_83 = from_html(`<details class="ssa-prow-wrap"><summary class="ssa-prow"><span class="ssa-ppath"> </span> <span><span> </span></span> <span class="ssa-pscore"><!></span> <span> </span> <span class="is-num"> </span> <span> </span> <span class="ssa-row-chevron"></span></summary> <div class="ssa-prow-body"><!></div></details>`);
+var root_93 = from_html(`<button class="ssa-link-btn is-accent">Show all</button>`);
+var root_103 = from_html(`<div class="ssa-card is-flush ssa-scroll-x"><div class="ssa-ptable"><div class="ssa-prow is-head"><span>Page</span> <span>Status</span> <span>Score</span> <span class="is-num">Failed</span> <span class="is-num">Warnings</span> <span class="is-num">vs last run</span> <span></span></div> <!></div> <div class="ssa-card-foot"><span class="ssa-faint"> </span> <!></div></div>`);
+var root_113 = from_html(`<div class="ssa-panel"><div class="ssa-filters"><div class="ssa-segmented" role="group" aria-label="Show pages"></div> <span class="ssa-filters-spacer"></span> <div class="ssa-search ssa-search-inline"><span class="ssa-search-icon"></span> <input class="ssa-input" type="search" placeholder="Filter by path" aria-label="Filter by path"/></div></div> <!></div>`);
+function PagesPanel($$anchor, $$props) {
+  push($$props, true);
+  let filter4 = prop($$props, "filter", 15, "all");
+  let query = state("");
+  const STEP = 50;
+  let limit = state(STEP);
+  const LOW = 70;
+  const scored = (p) => !isBroken(p) && !isRedirect(p);
+  const tests = {
+    all: () => true,
+    broken: isBroken,
+    redirects: isRedirect,
+    low: (p) => scored(p) && p.score < LOW
+  };
+  const counts = user_derived(() => Object.fromEntries(Object.keys(tests).map((k) => [k, $$props.report.pages.filter(tests[k]).length])));
+  const rank = (p) => isBroken(p) ? 0 : isRedirect(p) ? 1 : 2;
+  const pages = user_derived(() => {
+    const q = get2(query).trim().toLowerCase();
+    return $$props.report.pages.filter((p) => tests[filter4()](p) && (!q || p.url.toLowerCase().includes(q))).sort((a, b) => rank(a) - rank(b) || a.score - b.score);
+  });
+  const prevByUrl = user_derived(() => new Map(($$props.previous?.pages ?? []).map((p) => [p.url, p])));
+  function change(page) {
+    if (!$$props.previous) return { text: "\u2014", tone: "is-flat" };
+    const before2 = get2(prevByUrl).get(page.url);
+    if (!before2) return { text: "new", tone: isBroken(page) ? "is-bad" : "is-flat" };
+    if (!scored(page) || !scored(before2)) {
+      return before2.status !== page.status ? { text: `was ${before2.status || "ERR"}`, tone: "is-flat" } : { text: "\u2014", tone: "is-flat" };
+    }
+    const d = page.score - before2.score;
+    return { text: signed(d), tone: trendClass(d, false, 3) };
+  }
+  function statusChip(page) {
+    if (isBroken(page)) return "is-bad";
+    if (isRedirect(page)) return "is-mid";
+    return "";
+  }
+  var div = root_113();
+  var div_1 = child(div);
+  var div_2 = child(div_1);
+  each(
+    div_2,
+    21,
+    () => [
+      ["all", "All"],
+      ["broken", "Broken"],
+      ["redirects", "Redirects"],
+      ["low", `Below ${LOW}`]
+    ],
+    ([key2, label]) => key2,
+    ($$anchor2, $$item) => {
+      var $$array = user_derived(() => to_array(get2($$item), 2));
+      let key2 = () => get2($$array)[0];
+      let label = () => get2($$array)[1];
+      var button = root4();
+      let classes;
+      var text5 = child(button);
+      var span = sibling(text5);
+      var text_1 = child(span, true);
+      reset(span);
+      reset(button);
+      template_effect(() => {
+        classes = set_class(button, 1, "ssa-seg", null, classes, { "is-on": filter4() === key2() });
+        set_attribute2(button, "aria-pressed", filter4() === key2());
+        set_text(text5, `${label() ?? ""} `);
+        set_text(text_1, get2(counts)[key2()]);
+      });
+      delegated("click", button, () => {
+        filter4(key2());
+        set(limit, STEP);
+      });
+      append($$anchor2, button);
+    }
+  );
+  reset(div_2);
+  var div_3 = sibling(div_2, 4);
+  var span_1 = child(div_3);
+  action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "search");
+  var input = sibling(span_1, 2);
+  remove_input_defaults(input);
+  reset(div_3);
+  reset(div_1);
+  var node = sibling(div_1, 2);
+  {
+    var consequent_1 = ($$anchor2) => {
+      var div_4 = root_25();
+      var span_2 = child(div_4);
+      action(span_2, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => filter4() === "broken" ? "check" : "search");
+      var h3 = sibling(span_2, 2);
+      var text_2 = child(h3, true);
+      reset(h3);
+      var node_1 = sibling(h3, 2);
+      {
+        var consequent = ($$anchor3) => {
+          var button_1 = root_111();
+          delegated("click", button_1, () => {
+            set(query, "");
+            filter4("all");
+          });
+          append($$anchor3, button_1);
+        };
+        if_block(node_1, ($$render) => {
+          if (get2(query) || filter4() !== "all") $$render(consequent);
+        });
+      }
+      reset(div_4);
+      template_effect(() => set_text(text_2, filter4() === "broken" && !get2(query) ? "No broken pages" : "No pages match"));
+      append($$anchor2, div_4);
+    };
+    var alternate_2 = ($$anchor2) => {
+      var div_5 = root_103();
+      var div_6 = child(div_5);
+      var node_2 = sibling(child(div_6), 2);
+      each(node_2, 17, () => get2(pages).slice(0, get2(limit)), (page) => page.url, ($$anchor3, page) => {
+        const c = user_derived(() => pageCounts(get2(page)));
+        const ch = user_derived(() => change(get2(page)));
+        const problems = user_derived(() => get2(page).findings.filter((f) => f.status !== "pass"));
+        var details = root_83();
+        var summary = child(details);
+        var span_3 = child(summary);
+        var text_3 = child(span_3, true);
+        reset(span_3);
+        var span_4 = sibling(span_3, 2);
+        var span_5 = child(span_4);
+        var text_4 = child(span_5, true);
+        reset(span_5);
+        reset(span_4);
+        var span_6 = sibling(span_4, 2);
+        var node_3 = child(span_6);
+        {
+          var consequent_2 = ($$anchor4) => {
+            var fragment = root_33();
+            var span_7 = first_child(fragment);
+            var text_5 = child(span_7, true);
+            reset(span_7);
+            var span_8 = sibling(span_7, 2);
+            var span_9 = child(span_8);
+            reset(span_8);
+            template_effect(
+              ($0) => {
+                set_text(text_5, get2(page).score);
+                set_class(span_9, 1, `ssa-bar-fill ${$0 ?? ""}`);
+                set_style(span_9, `width:${get2(page).score ?? ""}%`);
+              },
+              [() => scoreBand(get2(page).score)]
+            );
+            append($$anchor4, fragment);
+          };
+          var d_1 = user_derived(() => scored(get2(page)));
+          var alternate = ($$anchor4) => {
+            var span_10 = root_43();
+            append($$anchor4, span_10);
+          };
+          if_block(node_3, ($$render) => {
+            if (get2(d_1)) $$render(consequent_2);
+            else $$render(alternate, -1);
+          });
+        }
+        reset(span_6);
+        var span_11 = sibling(span_6, 2);
+        let classes_1;
+        var text_6 = child(span_11, true);
+        reset(span_11);
+        var span_12 = sibling(span_11, 2);
+        var text_7 = child(span_12, true);
+        reset(span_12);
+        var span_13 = sibling(span_12, 2);
+        var text_8 = child(span_13, true);
+        reset(span_13);
+        var span_14 = sibling(span_13, 2);
+        action(span_14, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "chevron-down");
+        reset(summary);
+        var div_7 = sibling(summary, 2);
+        var node_4 = child(div_7);
+        {
+          var consequent_3 = ($$anchor4) => {
+            var p_1 = root_53();
+            append($$anchor4, p_1);
+          };
+          var alternate_1 = ($$anchor4) => {
+            var table2 = root_73();
+            var tbody = sibling(child(table2));
+            each(tbody, 23, () => get2(problems), (f, i) => `${f.ruleId}-${i}`, ($$anchor5, f) => {
+              var tr = root_63();
+              var td = child(tr);
+              var span_15 = child(td);
+              var text_9 = child(span_15, true);
+              reset(span_15);
+              reset(td);
+              var td_1 = sibling(td);
+              var span_16 = child(td_1);
+              var text_10 = child(span_16, true);
+              reset(span_16);
+              var span_17 = sibling(span_16, 2);
+              var text_11 = child(span_17, true);
+              reset(span_17);
+              reset(td_1);
+              var td_2 = sibling(td_1);
+              var text_12 = child(td_2, true);
+              reset(td_2);
+              reset(tr);
+              template_effect(
+                ($0, $1, $2) => {
+                  set_class(span_15, 1, `ssa-status-word ${$0 ?? ""}`);
+                  set_text(text_9, $1);
+                  set_text(text_10, get2(f).title);
+                  set_text(text_11, $2);
+                  set_text(text_12, get2(f).message);
+                },
+                [
+                  () => statusTone(get2(f).status),
+                  () => statusLabel(get2(f).status),
+                  () => categoryLabel(get2(f).category)
+                ]
+              );
+              append($$anchor5, tr);
+            });
+            reset(tbody);
+            reset(table2);
+            append($$anchor4, table2);
+          };
+          if_block(node_4, ($$render) => {
+            if (get2(problems).length === 0) $$render(consequent_3);
+            else $$render(alternate_1, -1);
+          });
+        }
+        reset(div_7);
+        reset(details);
+        template_effect(
+          ($0, $1, $2, $3) => {
+            set_attribute2(span_3, "title", get2(page).url);
+            set_text(text_3, $0);
+            set_class(span_5, 1, `ssa-tag ${$1 ?? ""}`);
+            set_text(text_4, get2(page).status || "ERR");
+            classes_1 = set_class(span_11, 1, "is-num", null, classes_1, { "is-bad": get2(c).fail >= 5 });
+            set_text(text_6, $2);
+            set_text(text_7, $3);
+            set_class(span_13, 1, `is-num ssa-delta ${get2(ch).tone ?? ""}`);
+            set_text(text_8, get2(ch).text);
+          },
+          [
+            () => pathOf(get2(page).url),
+            () => statusChip(get2(page)),
+            () => scored(get2(page)) ? get2(c).fail : "\u2014",
+            () => scored(get2(page)) ? get2(c).warn : "\u2014"
+          ]
+        );
+        append($$anchor3, details);
+      });
+      reset(div_6);
+      var div_8 = sibling(div_6, 2);
+      var span_18 = child(div_8);
+      var text_13 = child(span_18);
+      reset(span_18);
+      var node_5 = sibling(span_18, 2);
+      {
+        var consequent_4 = ($$anchor3) => {
+          var button_2 = root_93();
+          delegated("click", button_2, () => set(limit, get2(pages).length, true));
+          append($$anchor3, button_2);
+        };
+        if_block(node_5, ($$render) => {
+          if (get2(pages).length > get2(limit)) $$render(consequent_4);
+        });
+      }
+      reset(div_8);
+      reset(div_5);
+      template_effect(($0) => set_text(text_13, `${$0 ?? ""} of ${get2(pages).length ?? ""} pages`), [() => Math.min(get2(limit), get2(pages).length)]);
+      append($$anchor2, div_5);
+    };
+    if_block(node, ($$render) => {
+      if (get2(pages).length === 0) $$render(consequent_1);
+      else $$render(alternate_2, -1);
+    });
+  }
+  reset(div);
+  bind_value(input, () => get2(query), ($$value) => set(query, $$value));
+  append($$anchor, div);
+  pop();
+}
+delegate(["click"]);
+
+// src/ui/MetricsPanel.svelte
+var rangeBar = ($$anchor, value2 = noop, range = noop, status = noop) => {
+  var fragment = comment();
+  var node = first_child(fragment);
+  {
+    var consequent = ($$anchor2) => {
+      const hi = user_derived(() => Math.max(range().max * 1.5, value2() * 1.08, 1));
+      var span = root5();
+      var span_1 = child(span);
+      var span_2 = sibling(span_1, 2);
+      reset(span);
+      template_effect(
+        ($0) => {
+          set_attribute2(span, "title", `Target ${range().min ?? ""}\u2013${range().max ?? ""}`);
+          set_style(span_1, `left:${range().min / get2(hi) * 100}%;width:${(range().max - range().min) / get2(hi) * 100}%`);
+          set_class(span_2, 1, `ssa-range-dot ${status() === "bad" ? "is-bad" : status() === "warn" ? "is-mid" : ""}`);
+          set_style(span_2, `left:${$0 ?? ""}%`);
+        },
+        [() => Math.min(100, value2() / get2(hi) * 100)]
+      );
+      append($$anchor2, span);
+    };
+    if_block(node, ($$render) => {
+      if (typeof value2() === "number") $$render(consequent);
+    });
+  }
+  append($$anchor, fragment);
+};
+var valueText = ($$anchor, m = noop) => {
+  var fragment_1 = root_26();
+  var span_3 = first_child(fragment_1);
+  let classes;
+  var text5 = child(span_3, true);
+  reset(span_3);
+  var node_1 = sibling(span_3, 2);
+  {
+    var consequent_1 = ($$anchor2) => {
+      var span_4 = root_114();
+      var text_1 = child(span_4, true);
+      reset(span_4);
+      template_effect(() => set_text(text_1, m().unit));
+      append($$anchor2, span_4);
+    };
+    if_block(node_1, ($$render) => {
+      if (m().unit && m().value !== null && m().value !== "") $$render(consequent_1);
+    });
+  }
+  template_effect(
+    ($0) => {
+      classes = set_class(span_3, 1, "ssa-value", null, classes, {
+        "is-bad": m().status === "bad",
+        "is-missing": m().value === null || m().value === ""
+      });
+      set_text(text5, $0);
+    },
+    [() => formatMetricValue(m().value)]
+  );
+  append($$anchor, fragment_1);
+};
+var root5 = from_html(`<span class="ssa-range"><span class="ssa-range-band"></span> <span></span></span>`);
+var root_114 = from_html(`<span class="ssa-unit"> </span>`);
+var root_26 = from_html(`<span> </span> <!>`, 1);
+var root_34 = from_html(`<div class="ssa-card ssa-flag-tile"><span class="ssa-flag-label"><span></span> </span> <span class="ssa-flag-value"><!></span> <!> <span class="ssa-faint"> </span></div>`);
+var root_44 = from_html(`<div class="ssa-flag-tiles"></div>`);
+var root_54 = from_html(`<span class="ssa-was"> </span>`);
+var root_64 = from_html(`<span></span>`);
+var root_74 = from_html(`<div class="ssa-value-row"><dt> <!></dt> <dd><!> <!> <!></dd></div>`);
+var root_84 = from_html(`<section><div class="ssa-card-head"><h3 class="ssa-card-title"> </h3></div> <dl class="ssa-values"></dl></section>`);
+var root_94 = from_html(`<th> </th>`);
+var root_104 = from_html(`<td> </td>`);
+var root_115 = from_html(`<tr></tr>`);
+var root_123 = from_html(`<button class="ssa-link-btn is-accent"> </button>`);
+var root_132 = from_html(`<div class="ssa-card-foot"><span class="ssa-faint"> </span> <!></div>`);
+var root_142 = from_html(`<section><div class="ssa-card-head"><h3 class="ssa-card-title"> </h3> <span class="ssa-faint"> </span></div> <div class="ssa-scroll-x"><table class="ssa-table"><thead><tr></tr></thead><tbody></tbody></table></div> <!></section>`);
+var root_152 = from_html(`<div class="ssa-metric-tables"></div>`);
+var root_162 = from_html(`<div class="ssa-measure-detail"><div class="ssa-measure-title"><a class="ssa-measure-path" rel="noopener"> </a> <span class="ssa-tag"> </span> <span class="ssa-faint"> </span></div> <!> <div class="ssa-metric-groups"></div> <!></div>`);
+var root_172 = from_html(`<div class="ssa-card ssa-empty"><span class="ssa-badge"></span> <h3 class="ssa-card-title">No measurements</h3> <p class="ssa-faint">Run this site again to collect them.</p></div>`);
+var root_182 = from_html(`<div class="ssa-oor-clear"><span class="ssa-mark is-pass" aria-hidden="true"></span> Every measurement in range</div>`);
+var root_192 = from_html(`<span class="ssa-faint"> </span>`);
+var root_202 = from_html(`<span class="ssa-tag is-bad"> </span>`);
+var root_212 = from_html(`<button><span class="ssa-oor-main"><span></span> <span class="ssa-rule-text"><span class="ssa-rule-title"> </span> <span class="ssa-rule-meta"> </span></span></span> <span class="ssa-oor-cell"> <!></span> <span class="is-num ssa-oor-pages"><!> <span class="ssa-faint"> </span></span> <span class="ssa-share ssa-oor-share" aria-hidden="true"><span></span></span></button>`);
+var root_222 = from_html(`<div class="ssa-oor-head"><span>Measurement</span> <span>Flagged values</span> <span class="is-num">Pages</span></div> <!>`, 1);
+var root_232 = from_html(`<button class="ssa-btn ssa-filter mod-cta" title="Show all pages"> <span class="ssa-chip-check"></span></button>`);
+var root_242 = from_html(`<span class="ssa-tag is-mid"> </span>`);
+var root_252 = from_html(`<span class="ssa-faint">0</span>`);
+var root_262 = from_html(`<button role="option"><span class="ssa-ppath"> </span> <!></button>`);
+var root_27 = from_html(`<p class="ssa-card-note">No pages match</p>`);
+var root_28 = from_html(`<section class="ssa-card is-flush"><div class="ssa-card-head has-rule"><h3 class="ssa-card-title">Out of range</h3> <span class="ssa-faint"> </span></div> <!></section> <div class="ssa-measure"><section class="ssa-card is-flush ssa-measure-list"><div class="ssa-card-head"><h3 class="ssa-card-title">Pages</h3> <!></div> <div class="ssa-measure-search"><div class="ssa-search"><span class="ssa-search-icon"></span> <input class="ssa-input" type="search" placeholder="Filter by path" aria-label="Filter pages"/></div></div> <div class="ssa-measure-pages" role="listbox" aria-label="Pages"></div></section> <!></div>`, 1);
+var root_29 = from_html(`<div class="ssa-panel"><!></div>`);
+function MetricsPanel($$anchor, $$props) {
+  push($$props, true);
+  const pageDetail = ($$anchor2, p = noop) => {
+    var div = root_162();
+    var div_1 = child(div);
+    var a_1 = child(div_1);
+    var text_2 = child(a_1, true);
+    reset(a_1);
+    var span_5 = sibling(a_1, 2);
+    var text_3 = child(span_5, true);
+    reset(span_5);
+    var span_6 = sibling(span_5, 2);
+    var text_4 = child(span_6);
+    reset(span_6);
+    reset(div_1);
+    var node_2 = sibling(div_1, 2);
+    {
+      var consequent_3 = ($$anchor3) => {
+        var div_2 = root_44();
+        each(div_2, 21, () => get2(flagged), (m) => m.id, ($$anchor4, m) => {
+          const range = user_derived(() => parseRange(get2(m).note));
+          const before2 = user_derived(() => was(get2(m)));
+          var div_3 = root_34();
+          var span_7 = child(div_3);
+          var span_8 = child(span_7);
+          var text_5 = sibling(span_8);
+          reset(span_7);
+          var span_9 = sibling(span_7, 2);
+          var node_3 = child(span_9);
+          valueText(node_3, () => get2(m));
+          reset(span_9);
+          var node_4 = sibling(span_9, 2);
+          {
+            var consequent_2 = ($$anchor5) => {
+              rangeBar($$anchor5, () => get2(m).value, () => get2(range), () => get2(m).status);
+            };
+            if_block(node_4, ($$render) => {
+              if (get2(range)) $$render(consequent_2);
+            });
+          }
+          var span_10 = sibling(node_4, 2);
+          var text_6 = child(span_10);
+          reset(span_10);
+          reset(div_3);
+          template_effect(
+            ($0) => {
+              set_attribute2(div_3, "title", get2(m).note ?? "");
+              set_class(span_8, 1, `ssa-mark ${get2(m).status === "bad" ? "is-bad" : "is-mid"}`);
+              set_attribute2(span_8, "aria-label", get2(m).status === "bad" ? "Problem" : "Warning");
+              set_text(text_5, ` ${get2(m).label ?? ""}`);
+              set_text(text_6, `${$0 ?? ""}${get2(before2) !== null ? ` \xB7 was ${get2(before2)}` : ""}`);
+            },
+            [
+              () => get2(range) ? `Target ${get2(range).min}\u2013${get2(range).max}` : categoryLabel(get2(m).category)
+            ]
+          );
+          append($$anchor4, div_3);
+        });
+        reset(div_2);
+        append($$anchor3, div_2);
+      };
+      if_block(node_2, ($$render) => {
+        if (get2(flagged).length) $$render(consequent_3);
+      });
+    }
+    var div_4 = sibling(node_2, 2);
+    each(div_4, 21, () => get2(valueGroups), (g) => g.category, ($$anchor3, g) => {
+      var section = root_84();
+      let classes_1;
+      var div_5 = child(section);
+      var h3 = child(div_5);
+      var text_7 = child(h3, true);
+      reset(h3);
+      reset(div_5);
+      var dl = sibling(div_5, 2);
+      each(dl, 21, () => get2(g).values, (m) => m.id, ($$anchor4, m) => {
+        const range = user_derived(() => parseRange(get2(m).note));
+        const before2 = user_derived(() => was(get2(m)));
+        var div_6 = root_74();
+        var dt = child(div_6);
+        var text_8 = child(dt);
+        var node_5 = sibling(text_8);
+        {
+          var consequent_4 = ($$anchor5) => {
+            var span_11 = root_54();
+            var text_9 = child(span_11);
+            reset(span_11);
+            template_effect(() => set_text(text_9, `was ${get2(before2) ?? ""}`));
+            append($$anchor5, span_11);
+          };
+          if_block(node_5, ($$render) => {
+            if (get2(before2) !== null) $$render(consequent_4);
+          });
+        }
+        reset(dt);
+        var dd = sibling(dt, 2);
+        var node_6 = child(dd);
+        {
+          var consequent_5 = ($$anchor5) => {
+            rangeBar($$anchor5, () => get2(m).value, () => get2(range), () => get2(m).status);
+          };
+          if_block(node_6, ($$render) => {
+            if (get2(range)) $$render(consequent_5);
+          });
+        }
+        var node_7 = sibling(node_6, 2);
+        {
+          var consequent_6 = ($$anchor5) => {
+            var span_12 = root_64();
+            template_effect(() => {
+              set_class(span_12, 1, `ssa-mark ${get2(m).status === "bad" ? "is-bad" : "is-mid"}`);
+              set_attribute2(span_12, "aria-label", get2(m).status === "bad" ? "Problem" : "Warning");
+            });
+            append($$anchor5, span_12);
+          };
+          var d = user_derived(() => isFlagged(get2(m).status));
+          if_block(node_7, ($$render) => {
+            if (get2(d)) $$render(consequent_6);
+          });
+        }
+        var node_8 = sibling(node_7, 2);
+        valueText(node_8, () => get2(m));
+        reset(dd);
+        reset(div_6);
+        template_effect(() => {
+          set_attribute2(div_6, "title", get2(m).note ?? "");
+          set_text(text_8, `${get2(m).label ?? ""} `);
+        });
+        append($$anchor4, div_6);
+      });
+      reset(dl);
+      reset(section);
+      template_effect(
+        ($0) => {
+          classes_1 = set_class(section, 1, "ssa-card is-flush", null, classes_1, { "is-tall": get2(g).values.length >= TALL_VALUES });
+          set_text(text_7, $0);
+        },
+        [() => categoryLabel(get2(g).category)]
+      );
+      append($$anchor3, section);
+    });
+    reset(div_4);
+    var node_9 = sibling(div_4, 2);
+    {
+      var consequent_9 = ($$anchor3) => {
+        var div_7 = root_152();
+        each(div_7, 21, () => get2(tables), (m) => m.id, ($$anchor4, m) => {
+          const num = user_derived(() => numericCols(get2(m)));
+          const open = user_derived(() => get2(openTables)[get2(m).id]);
+          var section_1 = root_142();
+          let classes_2;
+          var div_8 = child(section_1);
+          var h3_1 = child(div_8);
+          var text_10 = child(h3_1, true);
+          reset(h3_1);
+          var span_13 = sibling(h3_1, 2);
+          var text_11 = child(span_13, true);
+          reset(span_13);
+          reset(div_8);
+          var div_9 = sibling(div_8, 2);
+          var table2 = child(div_9);
+          var thead = child(table2);
+          var tr = child(thead);
+          each(tr, 21, () => get2(m).columns, index, ($$anchor5, col, ci) => {
+            var th = root_94();
+            let classes_3;
+            var text_12 = child(th, true);
+            reset(th);
+            template_effect(() => {
+              classes_3 = set_class(th, 1, "", null, classes_3, { "is-num": get2(num)[ci] });
+              set_text(text_12, get2(col));
+            });
+            append($$anchor5, th);
+          });
+          reset(tr);
+          reset(thead);
+          var tbody = sibling(thead);
+          each(tbody, 21, () => get2(open) ? get2(m).rows : get2(m).rows.slice(0, TABLE_ROWS), index, ($$anchor5, row) => {
+            var tr_1 = root_115();
+            each(tr_1, 21, () => get2(row), index, ($$anchor6, cell, ci) => {
+              var td = root_104();
+              let classes_4;
+              var text_13 = child(td, true);
+              reset(td);
+              template_effect(() => {
+                classes_4 = set_class(td, 1, "", null, classes_4, { "is-num": get2(num)[ci], "ssa-cell-muted": ci > 0 });
+                set_text(text_13, get2(cell));
+              });
+              append($$anchor6, td);
+            });
+            reset(tr_1);
+            append($$anchor5, tr_1);
+          });
+          reset(tbody);
+          reset(table2);
+          reset(div_9);
+          var node_10 = sibling(div_9, 2);
+          {
+            var consequent_8 = ($$anchor5) => {
+              var div_10 = root_132();
+              var span_14 = child(div_10);
+              var text_14 = child(span_14);
+              reset(span_14);
+              var node_11 = sibling(span_14, 2);
+              {
+                var consequent_7 = ($$anchor6) => {
+                  var button = root_123();
+                  var text_15 = child(button, true);
+                  reset(button);
+                  template_effect(() => set_text(text_15, get2(open) ? "Show fewer" : "Show all"));
+                  delegated("click", button, () => set(openTables, { ...get2(openTables), [get2(m).id]: !get2(open) }, true));
+                  append($$anchor6, button);
+                };
+                if_block(node_11, ($$render) => {
+                  if (get2(m).rows.length > TABLE_ROWS) $$render(consequent_7);
+                });
+              }
+              reset(div_10);
+              template_effect(($0, $1) => set_text(text_14, `${$0 ?? ""} of ${$1 ?? ""}`), [
+                () => (get2(open) ? get2(m).rows.length : Math.min(TABLE_ROWS, get2(m).rows.length)).toLocaleString(),
+                () => get2(m).total.toLocaleString()
+              ]);
+              append($$anchor5, div_10);
+            };
+            if_block(node_10, ($$render) => {
+              if (get2(m).rows.length > TABLE_ROWS || get2(m).total > get2(m).rows.length) $$render(consequent_8);
+            });
+          }
+          reset(section_1);
+          template_effect(
+            ($0, $1) => {
+              classes_2 = set_class(section_1, 1, "ssa-card is-flush", null, classes_2, $0);
+              set_text(text_10, get2(m).label);
+              set_text(text_11, $1);
+            },
+            [
+              () => ({
+                "is-wide": get2(m).columns.length >= 3,
+                "is-tall": (get2(open) ? get2(m).rows.length : Math.min(TABLE_ROWS, get2(m).rows.length)) >= TABLE_ROWS
+              }),
+              () => get2(m).total.toLocaleString()
+            ]
+          );
+          append($$anchor4, section_1);
+        });
+        reset(div_7);
+        append($$anchor3, div_7);
+      };
+      if_block(node_9, ($$render) => {
+        if (get2(tables).length) $$render(consequent_9);
+      });
+    }
+    reset(div);
+    template_effect(
+      ($0) => {
+        set_attribute2(a_1, "href", p().url);
+        set_attribute2(a_1, "title", p().url);
+        set_text(text_2, $0);
+        set_text(text_3, p().status || "ERR");
+        set_text(text_4, `Score ${p().score ?? ""} \xB7 ${get2(flagged).length ?? ""} flagged`);
+      },
+      [() => pathOf(p().url)]
+    );
+    append($$anchor2, div);
+  };
+  const TALL_VALUES = 6;
+  const withMetrics2 = user_derived(() => $$props.report.pages.filter((p) => (p.metrics?.length ?? 0) > 0));
+  const issues = user_derived(() => outOfRange($$props.report));
+  let focus = state(null);
+  let query = state("");
+  let selectedUrl = state("");
+  const focused = user_derived(() => get2(issues).find((i) => i.id === get2(focus)) ?? null);
+  const pageList = user_derived(() => {
+    const q = get2(query).trim().toLowerCase();
+    const only = get2(focused) ? new Set(get2(focused).pages) : null;
+    return get2(withMetrics2).filter((p) => (!only || only.has(p.url)) && (!q || p.url.toLowerCase().includes(q))).map((p) => ({ page: p, flagged: flaggedCount(p) })).sort((a, b) => b.flagged - a.flagged);
+  });
+  const page = user_derived(() => get2(pageList).find((p) => p.page.url === get2(selectedUrl))?.page ?? get2(pageList)[0]?.page ?? null);
+  const groups = user_derived(() => (get2(page) ? groupMetrics2(get2(page).metrics ?? []) : []).map((g) => ({
+    category: g.category,
+    values: g.metrics.filter((m) => m.kind === "value"),
+    tables: g.metrics.filter((m) => m.kind === "table")
+  })));
+  const flagged = user_derived(() => get2(groups).flatMap((g) => g.values).filter((m) => isFlagged(m.status)).sort((a, b) => Number(b.status === "bad") - Number(a.status === "bad")));
+  const tables = user_derived(() => get2(groups).flatMap((g) => g.tables));
+  const valueGroups = user_derived(() => get2(groups).filter((g) => g.values.length).sort((a, b) => Number(b.values.length >= TALL_VALUES) - Number(a.values.length >= TALL_VALUES)));
+  const prevMetrics = user_derived(() => {
+    const prevPage = $$props.previous?.pages.find((p) => p.url === get2(page)?.url);
+    return new Map((prevPage?.metrics ?? []).flatMap((m) => m.kind === "value" ? [[m.id, m.value]] : []));
+  });
+  function was(m) {
+    if (!get2(prevMetrics).has(m.id)) return null;
+    const before2 = get2(prevMetrics).get(m.id) ?? null;
+    return before2 === m.value ? null : formatMetricValue(before2);
+  }
+  function pick(id) {
+    set(focus, get2(focus) === id ? null : id, true);
+    set(selectedUrl, "");
+  }
+  const TABLE_ROWS = 8;
+  let openTables = state(proxy({}));
+  function numericCols(m) {
+    return m.columns.map((_, ci) => m.rows.length > 0 && m.rows.every((r) => typeof r[ci] === "number" || /^[\d.,%\s-]+$/.test(String(r[ci]))));
+  }
+  function spread(low, high, unit) {
+    if (low === null || high === null) return "";
+    const u = unit ? ` ${unit}` : "";
+    return low === high ? `${low.toLocaleString()}${u}` : `${low.toLocaleString()}\u2013${high.toLocaleString()}${u}`;
+  }
+  var div_11 = root_29();
+  var node_12 = child(div_11);
+  {
+    var consequent_10 = ($$anchor2) => {
+      var div_12 = root_172();
+      var span_15 = child(div_12);
+      action(span_15, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "ruler");
+      next(4);
+      reset(div_12);
+      append($$anchor2, div_12);
+    };
+    var alternate_3 = ($$anchor2) => {
+      var fragment_4 = root_28();
+      var section_2 = first_child(fragment_4);
+      var div_13 = child(section_2);
+      var span_16 = sibling(child(div_13), 2);
+      var text_16 = child(span_16);
+      reset(span_16);
+      reset(div_13);
+      var node_13 = sibling(div_13, 2);
+      {
+        var consequent_11 = ($$anchor3) => {
+          var div_14 = root_182();
+          append($$anchor3, div_14);
+        };
+        var alternate = ($$anchor3) => {
+          var fragment_5 = root_222();
+          var node_14 = sibling(first_child(fragment_5), 2);
+          each(node_14, 17, () => get2(issues), (row) => row.id, ($$anchor4, row) => {
+            var button_1 = root_212();
+            let classes_5;
+            var span_17 = child(button_1);
+            var span_18 = child(span_17);
+            var span_19 = sibling(span_18, 2);
+            var span_20 = child(span_19);
+            var text_17 = child(span_20, true);
+            reset(span_20);
+            var span_21 = sibling(span_20, 2);
+            var text_18 = child(span_21, true);
+            reset(span_21);
+            reset(span_19);
+            reset(span_17);
+            var span_22 = sibling(span_17, 2);
+            var text_19 = child(span_22);
+            var node_15 = sibling(text_19);
+            {
+              var consequent_12 = ($$anchor5) => {
+                var span_23 = root_192();
+                var text_20 = child(span_23);
+                reset(span_23);
+                template_effect(() => set_text(text_20, `\xB7 target ${get2(row).range.min ?? ""}\u2013${get2(row).range.max ?? ""}`));
+                append($$anchor5, span_23);
+              };
+              if_block(node_15, ($$render) => {
+                if (get2(row).range) $$render(consequent_12);
+              });
+            }
+            reset(span_22);
+            var span_24 = sibling(span_22, 2);
+            var node_16 = child(span_24);
+            {
+              var consequent_13 = ($$anchor5) => {
+                var span_25 = root_202();
+                var text_21 = child(span_25);
+                reset(span_25);
+                template_effect(() => set_text(text_21, `${get2(row).bad ?? ""} bad`));
+                append($$anchor5, span_25);
+              };
+              if_block(node_16, ($$render) => {
+                if (get2(row).bad) $$render(consequent_13);
+              });
+            }
+            var text_22 = sibling(node_16);
+            var span_26 = sibling(text_22);
+            var text_23 = child(span_26);
+            reset(span_26);
+            reset(span_24);
+            var span_27 = sibling(span_24, 2);
+            var span_28 = child(span_27);
+            let classes_6;
+            reset(span_27);
+            reset(button_1);
+            template_effect(
+              ($0, $1, $2) => {
+                classes_5 = set_class(button_1, 1, "ssa-oor-row", null, classes_5, { "is-on": get2(focus) === get2(row).id });
+                set_attribute2(button_1, "aria-pressed", get2(focus) === get2(row).id);
+                set_class(span_18, 1, `ssa-mark ${get2(row).status === "bad" ? "is-bad" : "is-mid"}`);
+                set_attribute2(span_18, "aria-label", get2(row).status === "bad" ? "Problem" : "Warning");
+                set_text(text_17, get2(row).label);
+                set_text(text_18, $0);
+                set_text(text_19, `${$1 ?? ""} `);
+                set_text(text_22, ` ${get2(row).pages.length ?? ""}`);
+                set_text(text_23, `/ ${get2(withMetrics2).length ?? ""}`);
+                set_style(span_28, `width:${$2 ?? ""}%`);
+                classes_6 = set_class(span_28, 1, "", null, classes_6, { "is-bad": get2(row).status === "bad" });
+              },
+              [
+                () => categoryLabel(get2(row).category),
+                () => spread(get2(row).low, get2(row).high, get2(row).unit) || "\u2014",
+                () => pct(get2(row).pages.length, get2(withMetrics2).length)
+              ]
+            );
+            delegated("click", button_1, () => pick(get2(row).id));
+            append($$anchor4, button_1);
+          });
+          append($$anchor3, fragment_5);
+        };
+        if_block(node_13, ($$render) => {
+          if (get2(issues).length === 0) $$render(consequent_11);
+          else $$render(alternate, -1);
+        });
+      }
+      reset(section_2);
+      var div_15 = sibling(section_2, 2);
+      var section_3 = child(div_15);
+      var div_16 = child(section_3);
+      var node_17 = sibling(child(div_16), 2);
+      {
+        var consequent_14 = ($$anchor3) => {
+          var button_2 = root_232();
+          var text_24 = child(button_2);
+          var span_29 = sibling(text_24);
+          action(span_29, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "x");
+          reset(button_2);
+          template_effect(() => set_text(text_24, `${get2(focused).label ?? ""} `));
+          delegated("click", button_2, () => set(focus, null));
+          append($$anchor3, button_2);
+        };
+        var alternate_1 = ($$anchor3) => {
+          var span_30 = root_192();
+          var text_25 = child(span_30, true);
+          reset(span_30);
+          template_effect(() => set_text(text_25, get2(withMetrics2).length));
+          append($$anchor3, span_30);
+        };
+        if_block(node_17, ($$render) => {
+          if (get2(focused)) $$render(consequent_14);
+          else $$render(alternate_1, -1);
+        });
+      }
+      reset(div_16);
+      var div_17 = sibling(div_16, 2);
+      var div_18 = child(div_17);
+      var span_31 = child(div_18);
+      action(span_31, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "search");
+      var input = sibling(span_31, 2);
+      remove_input_defaults(input);
+      reset(div_18);
+      reset(div_17);
+      var div_19 = sibling(div_17, 2);
+      each(
+        div_19,
+        21,
+        () => get2(pageList),
+        (item) => item.page.url,
+        ($$anchor3, item) => {
+          var button_3 = root_262();
+          let classes_7;
+          var span_32 = child(button_3);
+          var text_26 = child(span_32, true);
+          reset(span_32);
+          var node_18 = sibling(span_32, 2);
+          {
+            var consequent_15 = ($$anchor4) => {
+              var span_33 = root_242();
+              var text_27 = child(span_33, true);
+              reset(span_33);
+              template_effect(() => set_text(text_27, get2(item).flagged));
+              append($$anchor4, span_33);
+            };
+            var alternate_2 = ($$anchor4) => {
+              var span_34 = root_252();
+              append($$anchor4, span_34);
+            };
+            if_block(node_18, ($$render) => {
+              if (get2(item).flagged) $$render(consequent_15);
+              else $$render(alternate_2, -1);
+            });
+          }
+          reset(button_3);
+          template_effect(
+            ($0) => {
+              classes_7 = set_class(button_3, 1, "ssa-measure-page", null, classes_7, { "is-on": get2(page)?.url === get2(item).page.url });
+              set_attribute2(button_3, "aria-selected", get2(page)?.url === get2(item).page.url);
+              set_attribute2(button_3, "title", get2(item).page.url);
+              set_text(text_26, $0);
+            },
+            [() => pathOf(get2(item).page.url)]
+          );
+          delegated("click", button_3, () => set(selectedUrl, get2(item).page.url, true));
+          append($$anchor3, button_3);
+        },
+        ($$anchor3) => {
+          var p_1 = root_27();
+          append($$anchor3, p_1);
+        }
+      );
+      reset(div_19);
+      reset(section_3);
+      var node_19 = sibling(section_3, 2);
+      {
+        var consequent_16 = ($$anchor3) => {
+          pageDetail($$anchor3, () => get2(page));
+        };
+        if_block(node_19, ($$render) => {
+          if (get2(page)) $$render(consequent_16);
+        });
+      }
+      reset(div_15);
+      template_effect(() => set_text(text_16, `${get2(issues).length ?? ""} ${get2(issues).length === 1 ? "measurement" : "measurements"} \xB7 ${get2(withMetrics2).length ?? ""} pages`));
+      bind_value(input, () => get2(query), ($$value) => set(query, $$value));
+      append($$anchor2, fragment_4);
+    };
+    if_block(node_12, ($$render) => {
+      if (get2(withMetrics2).length === 0) $$render(consequent_10);
+      else $$render(alternate_3, -1);
+    });
+  }
+  reset(div_11);
+  append($$anchor, div_11);
+  pop();
+}
+delegate(["click"]);
+
+// src/ui/ReportView.svelte
+var root6 = from_html(`<option> </option>`);
+var root_116 = from_html(`<label class="ssa-compare"><span class="ssa-faint">vs</span> <select aria-label="Compare with an earlier run"></select> <span class="ssa-compare-chevron"></span></label> <span class="ssa-head-divider" aria-hidden="true"></span>`, 1);
+var root_210 = from_html(`<button class="ssa-btn"><span></span> Open note</button> <button class="ssa-btn"><span></span> HTML report</button>`, 1);
+var root_35 = from_html(`<span class="ssa-pill is-accent" role="status"><span class="ssa-spinner"></span> Running <span class="ssa-muted"> </span></span>`);
+var root_45 = from_html(`<button class="ssa-btn mod-cta"><span></span> Run again</button>`);
+var root_55 = from_html(`<div class="ssa-stale"><div class="ssa-bar is-thin"><span class="ssa-bar-fill is-accent"></span></div> <span class="ssa-faint"> </span></div>`);
+var root_65 = from_html(`<div class="ssa-report"><header class="ssa-head"><div class="ssa-head-id"><h2 class="ssa-head-host"> </h2> <p class="ssa-head-meta"><a class="ssa-head-url" rel="noopener"> </a> <span> <span class="ssa-sep">\xB7</span> <span class="ssa-sep">\xB7</span> </span></p></div> <div class="ssa-head-actions"><!> <!> <!></div></header> <!> <div class="ssa-tabs" role="tablist" aria-label="Report sections"><button role="tab">Overview</button> <button role="tab">Issues <span class="ssa-count"> </span></button> <button role="tab">Pages <span class="ssa-count"> </span></button> <button role="tab">Measurements</button></div> <!></div>`);
+function ReportView($$anchor, $$props) {
+  push($$props, true);
+  let tab = state("overview");
+  let focusRule = state(null);
+  let pageFilter = state("all");
+  const checks = user_derived(() => countFindings($$props.report));
+  const ruleCount = user_derived(() => buildIssues($$props.report).length);
+  const previous = user_derived(() => $$props.context.previous?.report ?? null);
+  const percent = user_derived(() => $$props.progress ? progressPercent($$props.progress) : 0);
+  const runLine = user_derived(() => {
+    if (!$$props.progress || $$props.progress.phase === "starting") return "starting";
+    if ($$props.progress.phase === "crawling") return `${$$props.progress.pagesFound} pages found`;
+    if ($$props.progress.phase === "checking") return `${$$props.progress.pagesDone} of ${$$props.progress.pagesTotal} pages`;
+    return "saving";
+  });
+  function go(next3) {
+    if (next3 !== "issues") set(focusRule, null);
+    set(tab, next3, true);
+  }
+  function openNote() {
+    if (!$$props.path) return;
+    const file = $$props.plugin.app.vault.getAbstractFileByPath($$props.path);
+    if (file instanceof import_obsidian5.TFile) void openInObsidian($$props.plugin.app, file);
+  }
+  function openHtml() {
+    if (!$$props.path) return;
+    const html4 = siblingPath($$props.path, "html");
+    if (!$$props.plugin.app.vault.getAbstractFileByPath(html4)) {
+      new import_obsidian5.Notice("This audit has no HTML export. Run it again to create one.");
+      return;
+    }
+    if (!openExternally($$props.plugin.app, html4)) new import_obsidian5.Notice(`HTML export saved at ${html4}`);
+  }
+  var div = root_65();
+  var header = child(div);
+  var div_1 = child(header);
+  var h2 = child(div_1);
+  var text5 = child(h2, true);
+  reset(h2);
+  var p = sibling(h2, 2);
+  var a = child(p);
+  var text_1 = child(a, true);
+  reset(a);
+  var span = sibling(a, 2);
+  var text_2 = child(span);
+  var text_3 = sibling(text_2, 2);
+  var text_4 = sibling(text_3, 2);
+  reset(span);
+  reset(p);
+  reset(div_1);
+  var div_2 = sibling(div_1, 2);
+  var node = child(div_2);
+  {
+    var consequent = ($$anchor2) => {
+      var fragment = root_116();
+      var label = first_child(fragment);
+      var select2 = sibling(child(label), 2);
+      each(select2, 21, () => $$props.context.earlier, (run3) => run3.file.path, ($$anchor3, run3) => {
+        var option = root6();
+        var text_5 = child(option, true);
+        reset(option);
+        var option_value = {};
+        template_effect(
+          ($0) => {
+            set_text(text_5, $0);
+            if (option_value !== (option_value = get2(run3).file.path)) {
+              option.value = (option.__value = get2(run3).file.path) ?? "";
+            }
+          },
+          [() => formatDay(get2(run3).date)]
+        );
+        append($$anchor3, option);
+      });
+      reset(select2);
+      var select_value;
+      init_select(select2);
+      var span_1 = sibling(select2, 2);
+      action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "chevron-down");
+      reset(label);
+      next(2);
+      template_effect(() => {
+        if (select_value !== (select_value = $$props.context.previous?.path ?? "")) {
+          select2.value = (select2.__value = $$props.context.previous?.path ?? "") ?? "", select_option(select2, $$props.context.previous?.path ?? "");
+        }
+      });
+      delegated("change", select2, (e) => void $$props.plugin.compareWith(e.currentTarget.value));
+      append($$anchor2, fragment);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.context.earlier.length > 0) $$render(consequent);
+    });
+  }
+  var node_1 = sibling(node, 2);
+  {
+    var consequent_1 = ($$anchor2) => {
+      var fragment_1 = root_210();
+      var button = first_child(fragment_1);
+      var span_2 = child(button);
+      action(span_2, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "file-text");
+      next();
+      reset(button);
+      var button_1 = sibling(button, 2);
+      var span_3 = child(button_1);
+      action(span_3, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "external-link");
+      next();
+      reset(button_1);
+      delegated("click", button, openNote);
+      delegated("click", button_1, openHtml);
+      append($$anchor2, fragment_1);
+    };
+    if_block(node_1, ($$render) => {
+      if ($$props.path) $$render(consequent_1);
+    });
+  }
+  var node_2 = sibling(node_1, 2);
+  {
+    var consequent_2 = ($$anchor2) => {
+      var span_4 = root_35();
+      var span_5 = sibling(child(span_4), 2);
+      var text_6 = child(span_5, true);
+      reset(span_5);
+      reset(span_4);
+      template_effect(() => set_text(text_6, get2(runLine)));
+      append($$anchor2, span_4);
+    };
+    var alternate = ($$anchor2) => {
+      var button_2 = root_45();
+      var span_6 = child(button_2);
+      action(span_6, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "refresh-cw");
+      next();
+      reset(button_2);
+      delegated("click", button_2, () => $$props.onRerun($$props.report.startUrl));
+      append($$anchor2, button_2);
+    };
+    if_block(node_2, ($$render) => {
+      if ($$props.running) $$render(consequent_2);
+      else $$render(alternate, -1);
+    });
+  }
+  reset(div_2);
+  reset(header);
+  var node_3 = sibling(header, 2);
+  {
+    var consequent_3 = ($$anchor2) => {
+      var div_3 = root_55();
+      var div_4 = child(div_3);
+      var span_7 = child(div_4);
+      reset(div_4);
+      var span_8 = sibling(div_4, 2);
+      var text_7 = child(span_8);
+      reset(span_8);
+      reset(div_3);
+      template_effect(
+        ($0) => {
+          set_style(span_7, `width:${get2(percent) ?? ""}%`);
+          set_text(text_7, `Showing the ${$0 ?? ""} run until the new one finishes`);
+        },
+        [() => formatDay($$props.report.generatedAt)]
+      );
+      append($$anchor2, div_3);
+    };
+    if_block(node_3, ($$render) => {
+      if ($$props.running) $$render(consequent_3);
+    });
+  }
+  var div_5 = sibling(node_3, 2);
+  var button_3 = child(div_5);
+  let classes;
+  var button_4 = sibling(button_3, 2);
+  let classes_1;
+  var span_9 = sibling(child(button_4));
+  var text_8 = child(span_9, true);
+  reset(span_9);
+  reset(button_4);
+  var button_5 = sibling(button_4, 2);
+  let classes_2;
+  var span_10 = sibling(child(button_5));
+  var text_9 = child(span_10, true);
+  reset(span_10);
+  reset(button_5);
+  var button_6 = sibling(button_5, 2);
+  let classes_3;
+  reset(div_5);
+  var node_4 = sibling(div_5, 2);
+  {
+    var consequent_4 = ($$anchor2) => {
+      OverviewPanel($$anchor2, {
+        get report() {
+          return $$props.report;
+        },
+        get previous() {
+          return get2(previous);
+        },
+        get history() {
+          return $$props.context.history;
+        },
+        onOpenRule: (id) => {
+          set(focusRule, id, true);
+          set(tab, "issues");
+        },
+        onShowRules: () => go("issues"),
+        onShowBroken: () => {
+          set(pageFilter, "broken");
+          go("pages");
+        }
+      });
+    };
+    var consequent_5 = ($$anchor2) => {
+      var fragment_3 = comment();
+      var node_5 = first_child(fragment_3);
+      key(node_5, () => get2(focusRule), ($$anchor3) => {
+        IssuesPanel($$anchor3, {
+          get report() {
+            return $$props.report;
+          },
+          get previous() {
+            return get2(previous);
+          },
+          get focusRule() {
+            return get2(focusRule);
+          }
+        });
+      });
+      append($$anchor2, fragment_3);
+    };
+    var consequent_6 = ($$anchor2) => {
+      PagesPanel($$anchor2, {
+        get report() {
+          return $$props.report;
+        },
+        get previous() {
+          return get2(previous);
+        },
+        get filter() {
+          return get2(pageFilter);
+        },
+        set filter($$value) {
+          set(pageFilter, $$value, true);
+        }
+      });
+    };
+    var alternate_1 = ($$anchor2) => {
+      MetricsPanel($$anchor2, {
+        get report() {
+          return $$props.report;
+        },
+        get previous() {
+          return get2(previous);
+        }
+      });
+    };
+    if_block(node_4, ($$render) => {
+      if (get2(tab) === "overview") $$render(consequent_4);
+      else if (get2(tab) === "issues") $$render(consequent_5, 1);
+      else if (get2(tab) === "pages") $$render(consequent_6, 2);
+      else $$render(alternate_1, -1);
     });
   }
   reset(div);
   template_effect(
-    ($0) => {
-      set_text(text5, $$props.folder);
-      input.disabled = $$props.running;
-      set_text(text_1, `Leave empty to crawl up to ${$$props.defaultPages ?? ""} pages. Large crawls take a few minutes.`);
-      set_attribute2(input_1, "placeholder", $0);
-      input_1.disabled = $$props.running;
-      button.disabled = $$props.running;
-      set_text(text_2, $$props.running ? "You can keep working while this runs." : `Saved to ${$$props.folder}/<site>`);
+    ($0, $1, $2, $3, $4) => {
+      set_text(text5, $0);
+      set_attribute2(a, "href", $$props.report.startUrl);
+      set_text(text_1, $1);
+      set_text(text_2, `${$2 ?? ""} `);
+      set_text(text_3, `${$3 ?? ""} pages `);
+      set_text(text_4, `${$4 ?? ""} checks`);
+      classes = set_class(button_3, 1, "ssa-tab", null, classes, { "is-on": get2(tab) === "overview" });
+      set_attribute2(button_3, "aria-selected", get2(tab) === "overview");
+      classes_1 = set_class(button_4, 1, "ssa-tab", null, classes_1, { "is-on": get2(tab) === "issues" });
+      set_attribute2(button_4, "aria-selected", get2(tab) === "issues");
+      set_text(text_8, get2(ruleCount));
+      classes_2 = set_class(button_5, 1, "ssa-tab", null, classes_2, { "is-on": get2(tab) === "pages" });
+      set_attribute2(button_5, "aria-selected", get2(tab) === "pages");
+      set_text(text_9, $$props.report.pagesScanned);
+      classes_3 = set_class(button_6, 1, "ssa-tab", null, classes_3, { "is-on": get2(tab) === "metrics" });
+      set_attribute2(button_6, "aria-selected", get2(tab) === "metrics");
     },
-    [() => String($$props.defaultPages)]
+    [
+      () => hostOf($$props.report.startUrl),
+      () => $$props.report.startUrl.replace(/^https?:\/\//, "").replace(/\/$/, ""),
+      () => formatDate($$props.report.generatedAt),
+      () => $$props.report.pagesScanned.toLocaleString(),
+      () => get2(checks).toLocaleString()
+    ]
   );
-  delegated("keydown", input, (e) => e.key === "Enter" && submit());
-  bind_value(input, url);
-  bind_value(input_1, () => get2(pages), ($$value) => set(pages, $$value));
-  delegated("click", button, submit);
+  delegated("click", button_3, () => go("overview"));
+  delegated("click", button_4, () => go("issues"));
+  delegated("click", button_5, () => go("pages"));
+  delegated("click", button_6, () => go("metrics"));
   append($$anchor, div);
   pop();
 }
-delegate(["keydown", "click"]);
+delegate(["change", "click"]);
+
+// src/ui/RunAuditForm.svelte
+var root7 = from_html(`<button type="button" class="ssa-btn">Cancel</button>`);
+var root_117 = from_html(`<form class="ssa-panel-card ssa-form"><div class="ssa-form-head"><h2 class="ssa-panel-title">New audit</h2> <p class="ssa-panel-sub"> </p></div> <div class="ssa-field"><label class="ssa-field-label" for="ssa-url">Site URL</label> <input id="ssa-url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://example.com" aria-describedby="ssa-url-desc"/> <span id="ssa-url-desc"> </span></div> <div class="ssa-field"><label class="ssa-field-label" for="ssa-pages">Pages to crawl</label> <input class="ssa-input ssa-input-narrow" id="ssa-pages" type="number" min="1" max="500" aria-describedby="ssa-pages-desc"/> <span class="ssa-field-desc" id="ssa-pages-desc"> </span></div> <div class="ssa-panel-actions"><!> <button type="submit" class="ssa-btn mod-cta">Start audit</button></div></form>`);
+function RunAuditForm($$anchor, $$props) {
+  push($$props, true);
+  let url = prop($$props, "url", 15, "");
+  let pages = state("");
+  let touched = state(proxy(initiallyFilled()));
+  function initiallyFilled() {
+    return url().trim() !== "";
+  }
+  const normalized = user_derived(() => normalizeAuditUrl(url()));
+  const showError = user_derived(() => get2(touched) && url().trim() !== "" && !get2(normalized));
+  function submit() {
+    set(touched, true);
+    if (!get2(normalized)) return;
+    $$props.onSubmit(get2(normalized), get2(pages) ? Number(get2(pages)) : void 0);
+  }
+  var form = root_117();
+  var div = child(form);
+  var p = sibling(child(div), 2);
+  var text5 = child(p);
+  reset(p);
+  reset(div);
+  var div_1 = sibling(div, 2);
+  var input = sibling(child(div_1), 2);
+  remove_input_defaults(input);
+  let classes;
+  var span = sibling(input, 2);
+  let classes_1;
+  var text_1 = child(span, true);
+  reset(span);
+  reset(div_1);
+  var div_2 = sibling(div_1, 2);
+  var input_1 = sibling(child(div_2), 2);
+  remove_input_defaults(input_1);
+  var span_1 = sibling(input_1, 2);
+  var text_2 = child(span_1);
+  reset(span_1);
+  reset(div_2);
+  var div_3 = sibling(div_2, 2);
+  var node = child(div_3);
+  {
+    var consequent = ($$anchor2) => {
+      var button = root7();
+      delegated("click", button, function(...$$args) {
+        $$props.onCancel?.apply(this, $$args);
+      });
+      append($$anchor2, button);
+    };
+    if_block(node, ($$render) => {
+      if ($$props.canCancel) $$render(consequent);
+    });
+  }
+  var button_1 = sibling(node, 2);
+  reset(div_3);
+  reset(form);
+  template_effect(
+    ($0) => {
+      set_text(text5, `Saved to ${$$props.folder ?? ""}/<site> in your vault`);
+      classes = set_class(input, 1, "ssa-input", null, classes, { "is-invalid": get2(showError) });
+      set_attribute2(input, "aria-invalid", get2(showError));
+      classes_1 = set_class(span, 1, "ssa-field-desc", null, classes_1, { "is-bad": get2(showError) });
+      set_text(text_1, get2(showError) ? "Enter a full URL, like https://example.com" : "Crawling starts here and follows internal links");
+      set_attribute2(input_1, "placeholder", $0);
+      set_text(text_2, `Empty uses ${$$props.defaultPages ?? ""}`);
+      button_1.disabled = !get2(normalized);
+    },
+    [() => String($$props.defaultPages)]
+  );
+  event("submit", form, (e) => {
+    e.preventDefault();
+    submit();
+  });
+  event("blur", input, () => set(touched, true));
+  bind_value(input, url);
+  bind_value(input_1, () => get2(pages), ($$value) => set(pages, $$value));
+  append($$anchor, form);
+  pop();
+}
+delegate(["click"]);
 
 // src/ui/Dashboard.svelte
-var root8 = from_html(`<div class="ssa-blank"><span class="ssa-blank-badge"></span> <h2 class="ssa-blank-title">Nothing selected</h2> <p class="ssa-blank-text">Pick a run from the sidebar, or audit a site. Every run is saved as Markdown, JSON and
-				HTML in a folder named after the site.</p> <button class="ssa-btn mod-cta"><span></span> New audit</button></div>`);
-var root_16 = from_html(`<div class="ssa-view"><div class="ssa-container"><!></div></div>`);
+var root8 = from_html(`<div class="ssa-card ssa-kpi"><span class="ssa-skel" style="width:40%"></span> <span class="ssa-skel ssa-skel-lg" style="width:55%"></span> <span class="ssa-skel" style="width:35%"></span></div>`);
+var root_118 = from_html(`<div class="ssa-report" aria-busy="true"><header class="ssa-head"><div class="ssa-head-id"><h2 class="ssa-head-host"> </h2> <span class="ssa-skel" style="width:22rem"></span></div> <div class="ssa-head-actions"><span class="ssa-pill"><span class="ssa-spinner"></span>Loading report</span></div></header> <div class="ssa-tabs"><span class="ssa-skel" style="width:20rem;margin-bottom:10px"></span></div> <div class="ssa-kpis"></div> <div class="ssa-overview-main"><div class="ssa-card ssa-skel-block"></div> <div class="ssa-card ssa-skel-block"></div></div></div>`);
+var root_211 = from_html(`<div class="ssa-center"><div class="ssa-panel-card ssa-failed" role="alert"><span class="ssa-badge is-bad"></span> <h2 class="ssa-panel-title">Audit failed</h2> <p class="ssa-panel-sub"> </p> <code class="ssa-error-code"> </code> <div class="ssa-panel-actions is-center"><button class="ssa-btn">Edit URL</button> <button class="ssa-btn mod-cta">Try again</button></div></div></div>`);
+var root_36 = from_html(`<li> </li>`);
+var root_46 = from_html(`<div class="ssa-recent"><span class="ssa-label">Latest pages</span> <ul class="ssa-recent-list"></ul></div>`);
+var root_56 = from_html(`<div class="ssa-center"><div class="ssa-panel-card ssa-running" role="status" aria-live="polite"><h2 class="ssa-panel-title ssa-with-spinner"><span class="ssa-spinner"></span> </h2> <div class="ssa-run-progress"><div class="ssa-run-progress-head"><span> </span> <span class="ssa-faint"> </span></div> <div class="ssa-bar is-lg"><span class="ssa-bar-fill is-accent"></span></div></div> <div class="ssa-tiles"><div class="ssa-tile"><span class="ssa-tile-label">Pages found</span> <span class="ssa-tile-value"> </span></div> <div class="ssa-tile"><span class="ssa-tile-label">Pages checked</span> <span class="ssa-tile-value"> </span></div> <div class="ssa-tile"><span class="ssa-tile-label">Checks</span> <span class="ssa-tile-value"> </span></div></div> <!></div></div>`);
+var root_66 = from_html(`<div class="ssa-center"><!></div>`);
+var root_75 = from_html(`<div class="ssa-center"><div class="ssa-blank"><span class="ssa-badge"></span> <h2 class="ssa-panel-title"> </h2> <p class="ssa-panel-sub"> </p> <button class="ssa-btn mod-cta"><span></span> New audit</button></div></div>`);
+var root_85 = from_html(`<div class="ssa-view"><div class="ssa-container"><!></div></div>`);
 function Dashboard($$anchor, $$props) {
   push($$props, true);
   let plugin = prop($$props, "plugin", 7);
   let mode = state("empty");
   let report = state(null);
+  let context = state(proxy({ earlier: [], previous: null, history: [] }));
   let path = state(null);
+  let loadingUrl = state("");
   let running = state(false);
+  let runUrl = state("");
   let progress = state(null);
+  let recent = state(proxy([]));
+  let error = state(null);
   let draftUrl = state("");
+  let hasAudits = state(false);
   function sync() {
-    set(mode, plugin().state.mode, true);
-    set(report, plugin().state.report, true);
-    set(path, plugin().state.path, true);
-    set(running, plugin().state.running, true);
-    set(progress, plugin().state.progress, true);
-    set(draftUrl, plugin().state.draftUrl, true);
+    const s = plugin().state;
+    set(mode, s.mode, true);
+    set(report, s.report, true);
+    set(context, s.context, true);
+    set(path, s.path, true);
+    set(loadingUrl, s.loadingUrl, true);
+    set(running, s.running, true);
+    set(runUrl, s.runUrl, true);
+    set(progress, s.progress, true);
+    set(recent, s.recent, true);
+    set(error, s.error, true);
+    set(draftUrl, s.draftUrl, true);
+    set(hasAudits, listAudits(plugin().app, plugin().settings).length > 0);
   }
   onMount(() => {
     sync();
@@ -26189,11 +27586,40 @@ function Dashboard($$anchor, $$props) {
   user_effect(() => {
     plugin().state.draftUrl = get2(draftUrl);
   });
-  var div = root_16();
+  const percent = user_derived(() => get2(progress) ? progressPercent(get2(progress)) : 0);
+  const pagesLine = user_derived(() => {
+    if (!get2(progress) || get2(progress).phase === "starting") return "Starting";
+    if (get2(progress).phase === "crawling") return `${get2(progress).pagesFound} of up to ${get2(progress).pagesTotal} pages found`;
+    if (get2(progress).phase === "checking") return `${get2(progress).pagesDone} of ${get2(progress).pagesTotal} pages checked`;
+    return "Writing the report";
+  });
+  var div = root_85();
   var div_1 = child(div);
   var node = child(div_1);
   {
     var consequent = ($$anchor2) => {
+      var div_2 = root_118();
+      var header = child(div_2);
+      var div_3 = child(header);
+      var h2 = child(div_3);
+      var text5 = child(h2, true);
+      reset(h2);
+      next(2);
+      reset(div_3);
+      next(2);
+      reset(header);
+      var div_4 = sibling(header, 4);
+      each(div_4, 20, () => [0, 1, 2, 3], (i) => i, ($$anchor3, i) => {
+        var div_5 = root8();
+        append($$anchor3, div_5);
+      });
+      reset(div_4);
+      next(2);
+      reset(div_2);
+      template_effect(($0) => set_text(text5, $0), [() => hostOf(get2(loadingUrl))]);
+      append($$anchor2, div_2);
+    };
+    var consequent_1 = ($$anchor2) => {
       ReportView($$anchor2, {
         get report() {
           return get2(report);
@@ -26204,16 +27630,8 @@ function Dashboard($$anchor, $$props) {
         get plugin() {
           return plugin();
         },
-        onRerun: (url) => plugin().startNewAudit(url)
-      });
-    };
-    var consequent_1 = ($$anchor2) => {
-      RunAuditForm($$anchor2, {
-        get defaultPages() {
-          return plugin().settings.defaultMaxPages;
-        },
-        get folder() {
-          return plugin().settings.auditFolder;
+        get context() {
+          return get2(context);
         },
         get running() {
           return get2(running);
@@ -26221,6 +27639,134 @@ function Dashboard($$anchor, $$props) {
         get progress() {
           return get2(progress);
         },
+        onRerun: (url) => void plugin().runAndSave(url, void 0)
+      });
+    };
+    var consequent_2 = ($$anchor2) => {
+      var div_6 = root_211();
+      var div_7 = child(div_6);
+      var span = child(div_7);
+      action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "x");
+      var p = sibling(span, 4);
+      var text_1 = child(p);
+      reset(p);
+      var code = sibling(p, 2);
+      var text_2 = child(code, true);
+      reset(code);
+      var div_8 = sibling(code, 2);
+      var button = child(div_8);
+      var button_1 = sibling(button, 2);
+      reset(div_8);
+      reset(div_7);
+      reset(div_6);
+      template_effect(
+        ($0) => {
+          set_text(text_1, `Couldn't audit ${$0 ?? ""}`);
+          set_text(text_2, get2(error).message);
+        },
+        [() => hostOf(get2(error).url)]
+      );
+      delegated("click", button, () => plugin().startNewAudit(get2(error)?.url));
+      delegated("click", button_1, () => get2(error) && void plugin().runAndSave(get2(error).url, void 0));
+      append($$anchor2, div_6);
+    };
+    var consequent_4 = ($$anchor2) => {
+      var div_9 = root_56();
+      var div_10 = child(div_9);
+      var h2_1 = child(div_10);
+      var text_3 = sibling(child(h2_1));
+      reset(h2_1);
+      var div_11 = sibling(h2_1, 2);
+      var div_12 = child(div_11);
+      var span_1 = child(div_12);
+      var text_4 = child(span_1, true);
+      reset(span_1);
+      var span_2 = sibling(span_1, 2);
+      var text_5 = child(span_2);
+      reset(span_2);
+      reset(div_12);
+      var div_13 = sibling(div_12, 2);
+      var span_3 = child(div_13);
+      reset(div_13);
+      reset(div_11);
+      var div_14 = sibling(div_11, 2);
+      var div_15 = child(div_14);
+      var span_4 = sibling(child(div_15), 2);
+      var text_6 = child(span_4, true);
+      reset(span_4);
+      reset(div_15);
+      var div_16 = sibling(div_15, 2);
+      var span_5 = sibling(child(div_16), 2);
+      var text_7 = child(span_5, true);
+      reset(span_5);
+      reset(div_16);
+      var div_17 = sibling(div_16, 2);
+      var span_6 = sibling(child(div_17), 2);
+      var text_8 = child(span_6, true);
+      reset(span_6);
+      reset(div_17);
+      reset(div_14);
+      var node_1 = sibling(div_14, 2);
+      {
+        var consequent_3 = ($$anchor3) => {
+          var div_18 = root_46();
+          var ul = sibling(child(div_18), 2);
+          each(ul, 20, () => get2(recent), (url) => url, ($$anchor4, url) => {
+            var li = root_36();
+            var text_9 = child(li, true);
+            reset(li);
+            template_effect(
+              ($0) => {
+                set_attribute2(li, "title", url);
+                set_text(text_9, $0);
+              },
+              [() => pathOf(url)]
+            );
+            append($$anchor4, li);
+          });
+          reset(ul);
+          reset(div_18);
+          append($$anchor3, div_18);
+        };
+        if_block(node_1, ($$render) => {
+          if (get2(recent).length) $$render(consequent_3);
+        });
+      }
+      reset(div_10);
+      reset(div_9);
+      template_effect(
+        ($0, $1, $2, $3) => {
+          set_text(text_3, ` Auditing ${$0 ?? ""}`);
+          set_text(text_4, get2(pagesLine));
+          set_text(text_5, `${get2(percent) ?? ""}%`);
+          set_style(span_3, `width:${get2(percent) ?? ""}%`);
+          set_text(text_6, $1);
+          set_text(text_7, $2);
+          set_text(text_8, $3);
+        },
+        [
+          () => hostOf(get2(runUrl)),
+          () => (get2(progress)?.pagesFound ?? 0).toLocaleString(),
+          () => (get2(progress)?.pagesDone ?? 0).toLocaleString(),
+          () => (get2(progress)?.checksDone ?? 0).toLocaleString()
+        ]
+      );
+      append($$anchor2, div_9);
+    };
+    var consequent_5 = ($$anchor2) => {
+      var div_19 = root_66();
+      var node_2 = child(div_19);
+      RunAuditForm(node_2, {
+        get defaultPages() {
+          return plugin().settings.defaultMaxPages;
+        },
+        get folder() {
+          return plugin().settings.auditFolder;
+        },
+        get canCancel() {
+          return get2(hasAudits);
+        },
+        onCancel: () => plugin().state.showEmpty(),
         onSubmit: (url, pages) => void plugin().runAndSave(url, pages),
         get url() {
           return get2(draftUrl);
@@ -26229,23 +27775,40 @@ function Dashboard($$anchor, $$props) {
           set(draftUrl, $$value, true);
         }
       });
+      reset(div_19);
+      append($$anchor2, div_19);
     };
     var alternate = ($$anchor2) => {
-      var div_2 = root8();
-      var span = child(div_2);
-      action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "gauge");
-      var button = sibling(span, 6);
-      var span_1 = child(button);
-      action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "plus");
+      var div_20 = root_75();
+      var div_21 = child(div_20);
+      var span_7 = child(div_21);
+      action(span_7, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "activity");
+      var h2_2 = sibling(span_7, 2);
+      var text_10 = child(h2_2, true);
+      reset(h2_2);
+      var p_1 = sibling(h2_2, 2);
+      var text_11 = child(p_1, true);
+      reset(p_1);
+      var button_2 = sibling(p_1, 2);
+      var span_8 = child(button_2);
+      action(span_8, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "plus");
       next();
-      reset(button);
-      reset(div_2);
-      delegated("click", button, () => plugin().startNewAudit());
-      append($$anchor2, div_2);
+      reset(button_2);
+      reset(div_21);
+      reset(div_20);
+      template_effect(() => {
+        set_text(text_10, get2(hasAudits) ? "Nothing selected" : "No audits yet");
+        set_text(text_11, get2(hasAudits) ? "Pick a run from the sidebar." : "Crawl a site to see its health and SEO issues.");
+      });
+      delegated("click", button_2, () => plugin().startNewAudit());
+      append($$anchor2, div_20);
     };
     if_block(node, ($$render) => {
-      if (get2(mode) === "detail" && get2(report)) $$render(consequent);
-      else if (get2(mode) === "new") $$render(consequent_1, 1);
+      if (get2(mode) === "loading") $$render(consequent);
+      else if (get2(mode) === "detail" && get2(report)) $$render(consequent_1, 1);
+      else if (get2(mode) === "failed" && get2(error)) $$render(consequent_2, 2);
+      else if (get2(mode) === "new" && get2(running)) $$render(consequent_4, 3);
+      else if (get2(mode) === "new") $$render(consequent_5, 4);
       else $$render(alternate, -1);
     });
   }
@@ -26257,28 +27820,54 @@ function Dashboard($$anchor, $$props) {
 delegate(["click"]);
 
 // src/ui/AuditList.svelte
-var root9 = from_html(`<div class="ssa-rail-filter"><div class="ssa-search"><input class="ssa-input" type="search" placeholder="Find a site" aria-label="Find a site"/> <span class="ssa-search-icon"></span></div></div>`);
-var root_17 = from_html(`<p class="ssa-rail-note">Nothing audited yet.</p>`);
-var root_26 = from_html(`<p class="ssa-rail-note"> </p>`);
-var root_36 = from_html(`<button><span class="ssa-run-date"> </span> <span class="ssa-run-pages"> </span> <span> </span></button>`);
-var root_46 = from_html(`<section class="ssa-site"><h3 class="ssa-site-host"> </h3> <!></section>`);
-var root_55 = from_html(`<div class="ssa-rail"><div class="ssa-rail-head"><span class="ssa-rail-mark"></span> <span class="ssa-rail-name">Site audits</span></div> <div class="ssa-rail-actions"><button class="ssa-btn ssa-btn-block mod-cta"><span></span> New audit</button></div> <!> <div class="ssa-rail-list"><!></div></div>`);
+var root9 = from_html(`<div class="ssa-run-row is-running" role="status"><span class="ssa-run-date">Running now</span> <span class="ssa-run-pages"> </span> <span class="ssa-run-score ssa-chip-score is-accent"> </span></div>`);
+var root_119 = from_html(`<div class="ssa-search"><span class="ssa-search-icon"></span> <input class="ssa-input" type="search" placeholder="Find a site" aria-label="Find a site"/></div>`);
+var root_213 = from_html(`<section class="ssa-site"><h3 class="ssa-site-host"> </h3> <!></section>`);
+var root_37 = from_html(`<p class="ssa-rail-note">No audits yet</p>`);
+var root_47 = from_html(`<p class="ssa-rail-note"> </p>`);
+var root_57 = from_html(`<button><span class="ssa-run-date"> </span> <span class="ssa-run-pages"> </span> <span> </span></button>`);
+var root_67 = from_html(`<section class="ssa-site"><h3 class="ssa-site-host"> </h3> <!> <!></section>`);
+var root_76 = from_html(`<div class="ssa-rail"><div class="ssa-rail-head"><span class="ssa-rail-mark"></span> <span class="ssa-rail-name">Site audits</span></div> <div class="ssa-rail-actions"><button class="ssa-btn ssa-btn-block mod-cta"><span></span> New audit</button> <!></div> <div class="ssa-rail-list"><!> <!></div></div>`);
 function AuditList($$anchor, $$props) {
   push($$props, true);
+  const runningRow = ($$anchor2) => {
+    var div = root9();
+    var span = sibling(child(div), 2);
+    var text5 = child(span, true);
+    reset(span);
+    var span_1 = sibling(span, 2);
+    var text_1 = child(span_1);
+    reset(span_1);
+    reset(div);
+    template_effect(
+      ($0) => {
+        set_text(text5, get2(progress)?.phase === "checking" ? `${get2(progress).pagesDone} of ${get2(progress).pagesTotal} pages` : `${get2(progress)?.pagesFound ?? 0} pages found`);
+        set_text(text_1, `${$0 ?? ""}%`);
+      },
+      [() => get2(progress) ? progressPercent(get2(progress)) : 0]
+    );
+    append($$anchor2, div);
+  };
   let items = state(proxy([]));
   let activePath = state(null);
   let running = state(false);
+  let runUrl = state("");
+  let progress = state(null);
   let filter4 = state("");
   const groups = user_derived(() => {
     const q = get2(filter4).trim().toLowerCase();
     return groupBySite(q ? get2(items).filter((i) => i.url.toLowerCase().includes(q)) : get2(items));
   });
+  const runHost = user_derived(() => get2(running) ? hostOf(get2(runUrl)) : "");
+  const runIsNewSite = user_derived(() => get2(running) && !get2(groups).some((g) => g.host === get2(runHost)));
   function refresh() {
     set(items, listAudits($$props.plugin.app, $$props.plugin.settings), true);
   }
   function sync() {
     set(activePath, $$props.plugin.state.path, true);
     set(running, $$props.plugin.state.running, true);
+    set(runUrl, $$props.plugin.state.runUrl, true);
+    set(progress, $$props.plugin.state.progress, true);
     refresh();
   }
   onMount(() => {
@@ -26290,109 +27879,136 @@ function AuditList($$anchor, $$props) {
       $$props.plugin.state.offref(stateRef);
     };
   });
-  var div = root_55();
-  var div_1 = child(div);
-  var span = child(div_1);
-  action(span, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "gauge");
+  var div_1 = root_76();
+  var div_2 = child(div_1);
+  var span_2 = child(div_2);
+  action(span_2, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "activity");
   next(2);
-  reset(div_1);
-  var div_2 = sibling(div_1, 2);
-  var button = child(div_2);
-  var span_1 = child(button);
-  action(span_1, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "plus");
+  reset(div_2);
+  var div_3 = sibling(div_2, 2);
+  var button = child(div_3);
+  var span_3 = child(button);
+  action(span_3, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "plus");
   next();
   reset(button);
-  reset(div_2);
-  var node = sibling(div_2, 2);
+  var node = sibling(button, 2);
   {
     var consequent = ($$anchor2) => {
-      var div_3 = root9();
-      var div_4 = child(div_3);
-      var input = child(div_4);
+      var div_4 = root_119();
+      var span_4 = child(div_4);
+      action(span_4, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "search");
+      var input = sibling(span_4, 2);
       remove_input_defaults(input);
-      var span_2 = sibling(input, 2);
-      action(span_2, ($$node, $$action_arg) => icon?.($$node, $$action_arg), () => "search");
       reset(div_4);
-      reset(div_3);
       bind_value(input, () => get2(filter4), ($$value) => set(filter4, $$value));
-      append($$anchor2, div_3);
+      append($$anchor2, div_4);
     };
     if_block(node, ($$render) => {
       if (get2(items).length > 0) $$render(consequent);
     });
   }
-  var div_5 = sibling(node, 2);
+  reset(div_3);
+  var div_5 = sibling(div_3, 2);
   var node_1 = child(div_5);
   {
     var consequent_1 = ($$anchor2) => {
-      var p = root_17();
+      var section = root_213();
+      var h3 = child(section);
+      var text_2 = child(h3, true);
+      reset(h3);
+      var node_2 = sibling(h3, 2);
+      runningRow(node_2);
+      reset(section);
+      template_effect(() => {
+        set_attribute2(h3, "title", get2(runHost));
+        set_text(text_2, get2(runHost));
+      });
+      append($$anchor2, section);
+    };
+    if_block(node_1, ($$render) => {
+      if (get2(runIsNewSite)) $$render(consequent_1);
+    });
+  }
+  var node_3 = sibling(node_1, 2);
+  {
+    var consequent_2 = ($$anchor2) => {
+      var p = root_37();
       append($$anchor2, p);
     };
-    var consequent_2 = ($$anchor2) => {
-      var p_1 = root_26();
-      var text5 = child(p_1);
+    var consequent_3 = ($$anchor2) => {
+      var p_1 = root_47();
+      var text_3 = child(p_1);
       reset(p_1);
-      template_effect(() => set_text(text5, `No site matches \u201C${get2(filter4) ?? ""}\u201D.`));
+      template_effect(() => set_text(text_3, `No site matches "${get2(filter4) ?? ""}"`));
       append($$anchor2, p_1);
     };
     var alternate = ($$anchor2) => {
       var fragment = comment();
-      var node_2 = first_child(fragment);
-      each(node_2, 17, () => get2(groups), (group2) => group2.host, ($$anchor3, group2) => {
-        var section = root_46();
-        var h3 = child(section);
-        var text_1 = child(h3, true);
-        reset(h3);
-        var node_3 = sibling(h3, 2);
-        each(node_3, 17, () => get2(group2).runs, (item) => item.file.path, ($$anchor4, item) => {
-          var button_1 = root_36();
+      var node_4 = first_child(fragment);
+      each(node_4, 17, () => get2(groups), (group2) => group2.host, ($$anchor3, group2) => {
+        var section_1 = root_67();
+        var h3_1 = child(section_1);
+        var text_4 = child(h3_1, true);
+        reset(h3_1);
+        var node_5 = sibling(h3_1, 2);
+        {
+          var consequent_4 = ($$anchor4) => {
+            runningRow($$anchor4);
+          };
+          if_block(node_5, ($$render) => {
+            if (get2(running) && get2(group2).host === get2(runHost)) $$render(consequent_4);
+          });
+        }
+        var node_6 = sibling(node_5, 2);
+        each(node_6, 17, () => get2(group2).runs, (item) => item.file.path, ($$anchor4, item) => {
+          var button_1 = root_57();
           let classes;
-          var span_3 = child(button_1);
-          var text_2 = child(span_3, true);
-          reset(span_3);
-          var span_4 = sibling(span_3, 2);
-          var text_3 = child(span_4);
-          reset(span_4);
-          var span_5 = sibling(span_4, 2);
-          var text_4 = child(span_5, true);
+          var span_5 = child(button_1);
+          var text_5 = child(span_5, true);
           reset(span_5);
+          var span_6 = sibling(span_5, 2);
+          var text_6 = child(span_6);
+          reset(span_6);
+          var span_7 = sibling(span_6, 2);
+          var text_7 = child(span_7, true);
+          reset(span_7);
           reset(button_1);
           template_effect(
             ($0, $1) => {
               classes = set_class(button_1, 1, "ssa-run-row", null, classes, { "is-on": get2(activePath) === get2(item).file.path });
-              set_text(text_2, $0);
-              set_text(text_3, `${get2(item).pages ?? ""} pages`);
-              set_class(span_5, 1, `ssa-run-score ssa-chip-score ${$1 ?? ""}`);
-              set_text(text_4, get2(item).score);
+              set_text(text_5, $0);
+              set_text(text_6, `${get2(item).pages ?? ""} pages`);
+              set_class(span_7, 1, `ssa-run-score ssa-chip-score ${$1 ?? ""}`);
+              set_text(text_7, get2(item).score);
             },
             [
               () => formatDateShort(get2(item).date),
-              () => scoreTone(get2(item).score)
+              () => scoreBand(get2(item).score)
             ]
           );
           delegated("click", button_1, () => void $$props.plugin.openAudit(get2(item)));
           append($$anchor4, button_1);
         });
-        reset(section);
+        reset(section_1);
         template_effect(() => {
-          set_attribute2(h3, "title", get2(group2).host);
-          set_text(text_1, get2(group2).host);
+          set_attribute2(h3_1, "title", get2(group2).host);
+          set_text(text_4, get2(group2).host);
         });
-        append($$anchor3, section);
+        append($$anchor3, section_1);
       });
       append($$anchor2, fragment);
     };
-    if_block(node_1, ($$render) => {
-      if (get2(items).length === 0) $$render(consequent_1);
-      else if (get2(groups).length === 0) $$render(consequent_2, 1);
+    if_block(node_3, ($$render) => {
+      if (get2(items).length === 0 && !get2(running)) $$render(consequent_2);
+      else if (get2(groups).length === 0 && get2(filter4)) $$render(consequent_3, 1);
       else $$render(alternate, -1);
     });
   }
   reset(div_5);
-  reset(div);
+  reset(div_1);
   template_effect(() => button.disabled = get2(running));
   delegated("click", button, () => $$props.plugin.startNewAudit());
-  append($$anchor, div);
+  append($$anchor, div_1);
   pop();
 }
 delegate(["click"]);
@@ -26458,18 +28074,38 @@ var AuditListView = class extends SvelteView {
 
 // src/audit-state.ts
 var import_obsidian7 = require("obsidian");
+var RECENT_PAGES = 6;
 var AuditState = class extends import_obsidian7.Events {
   mode = "empty";
   path = null;
   report = null;
-  /** Kept across view switches so "Run again" can prefill the form. */
+  context = { earlier: [], previous: null, history: [] };
+  /** Site shown while a report loads, so the header is not blank. */
+  loadingUrl = "";
+  /** Kept across view switches so "Edit URL" can prefill the form. */
   draftUrl = "";
   running = false;
+  runUrl = "";
   progress = null;
-  showReport(path, report) {
+  /** URLs the crawler touched most recently, newest first. */
+  recent = [];
+  error = null;
+  showLoading(path, url) {
+    this.mode = "loading";
+    this.path = path;
+    this.loadingUrl = url;
+    this.changed();
+  }
+  showReport(path, report, context) {
     this.mode = "detail";
     this.path = path;
     this.report = report;
+    this.context = context;
+    this.error = null;
+    this.changed();
+  }
+  setComparison(previous) {
+    this.context = { ...this.context, previous };
     this.changed();
   }
   showRunForm(url = "") {
@@ -26479,9 +28115,37 @@ var AuditState = class extends import_obsidian7.Events {
     this.report = null;
     this.changed();
   }
-  setRunning(running, progress = null) {
-    this.running = running;
+  showEmpty() {
+    this.mode = "empty";
+    this.path = null;
+    this.report = null;
+    this.changed();
+  }
+  showFailed(url, message) {
+    this.mode = "failed";
+    this.path = null;
+    this.report = null;
+    this.error = { url, message };
+    this.changed();
+  }
+  startRun(url) {
+    this.running = true;
+    this.runUrl = url;
+    this.progress = null;
+    this.recent = [];
+    this.error = null;
+    this.changed();
+  }
+  setProgress(progress) {
     this.progress = progress;
+    if (progress.url && progress.url !== this.recent[0]) {
+      this.recent = [progress.url, ...this.recent.filter((u) => u !== progress.url)].slice(0, RECENT_PAGES);
+    }
+    this.changed();
+  }
+  endRun() {
+    this.running = false;
+    this.progress = null;
     this.changed();
   }
   /** Also what the list listens to when a finished run adds a note. */
@@ -26541,36 +28205,68 @@ var SafiSiteAuditPlugin = class extends import_obsidian8.Plugin {
   }
   /** Picked from the sidebar: load the report and show it in the dashboard tab. */
   async openAudit(item) {
+    this.state.showLoading(item.file.path, item.url);
+    await this.activateDashboard();
     const report = await readAudit(this.app, item.file);
+    if (this.state.path !== item.file.path) return;
     if (!report) {
       new import_obsidian8.Notice("Could not read this audit's report data.");
+      this.state.showEmpty();
       return;
     }
-    this.state.showReport(item.file.path, report);
-    await this.activateDashboard();
+    await this.showWithContext(item.file.path, report);
+  }
+  /** Show a report with its site's earlier runs, the run before it, and the score history. */
+  async showWithContext(path, report) {
+    const host = hostOf(report.startUrl);
+    const earlier = listAudits(this.app, this.settings).filter(
+      (i) => i.file.path !== path && hostOf(i.url) === host && i.date < report.generatedAt
+    );
+    const history = [
+      ...earlier.slice(0, 7).reverse().map((i) => ({ date: i.date, score: i.score })),
+      { date: report.generatedAt, score: report.score }
+    ];
+    const previous = earlier[0] ? await this.loadComparison(earlier[0]) : null;
+    this.state.showReport(path, report, { earlier, previous, history });
+  }
+  async loadComparison(item) {
+    const report = await readAudit(this.app, item.file);
+    return report ? { path: item.file.path, date: item.date, report } : null;
+  }
+  /** The "vs" picker in the report header. */
+  async compareWith(path) {
+    const item = this.state.context.earlier.find((i) => i.file.path === path);
+    if (!item) return;
+    this.state.setComparison(await this.loadComparison(item));
   }
   startNewAudit(url = "") {
     this.state.showRunForm(url);
     void this.activateDashboard();
   }
-  /** Runs the crawl, saves the three exports, and shows the result. */
+  /**
+   * Runs the crawl, saves the three exports, and shows the result. Started from a
+   * report ("Run again"), the old report stays on screen until the new one lands.
+   */
   async runAndSave(url, maxPages) {
     if (!url) {
       new import_obsidian8.Notice("Enter a URL to audit.");
       return;
     }
-    this.state.setRunning(true);
+    if (this.state.running) return;
+    if (this.state.mode !== "detail") this.state.showRunForm(url);
+    this.state.startRun(url);
     try {
       const report = await runAudit({ url, maxPages }, this.settings, (progress) => {
-        this.state.setRunning(true, progress);
+        this.state.setProgress(progress);
       });
       const { note } = await saveAudit(this.app, this.settings, report);
-      this.state.showReport(note.path, report);
+      await this.showWithContext(note.path, report);
       new import_obsidian8.Notice(`Audit saved to ${note.parent?.path ?? this.settings.auditFolder}`);
     } catch (e) {
-      new import_obsidian8.Notice(`Audit failed: ${e.message}`);
+      this.state.draftUrl = url;
+      this.state.showFailed(url, e.message || String(e));
     } finally {
-      this.state.setRunning(false);
+      this.state.endRun();
     }
   }
   async loadSettings() {

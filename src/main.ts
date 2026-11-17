@@ -6,9 +6,11 @@ import {
 	VIEW_TYPE_SITE_AUDIT,
 	VIEW_TYPE_SITE_AUDIT_LIST,
 } from "./view";
-import { AuditState } from "./audit-state";
-import { readAudit, saveAudit, type AuditListItem } from "./audit-store";
+import { AuditState, type Comparison } from "./audit-state";
+import { listAudits, readAudit, saveAudit, type AuditListItem } from "./audit-store";
 import { runAudit } from "./audit-runner";
+import type { AuditReport } from "./scanner";
+import { hostOf } from "./ui/helpers";
 
 export default class SafiSiteAuditPlugin extends Plugin {
 	settings: SafiSiteAuditSettings = DEFAULT_SETTINGS;
@@ -68,13 +70,47 @@ export default class SafiSiteAuditPlugin extends Plugin {
 
 	/** Picked from the sidebar: load the report and show it in the dashboard tab. */
 	async openAudit(item: AuditListItem): Promise<void> {
+		this.state.showLoading(item.file.path, item.url);
+		await this.activateDashboard();
 		const report = await readAudit(this.app, item.file);
+		// Another run was picked while this one loaded; let that one win.
+		if (this.state.path !== item.file.path) return;
 		if (!report) {
 			new Notice("Could not read this audit's report data.");
+			this.state.showEmpty();
 			return;
 		}
-		this.state.showReport(item.file.path, report);
-		await this.activateDashboard();
+		await this.showWithContext(item.file.path, report);
+	}
+
+	/** Show a report with its site's earlier runs, the run before it, and the score history. */
+	private async showWithContext(path: string, report: AuditReport): Promise<void> {
+		const host = hostOf(report.startUrl);
+		// Date filter as well as path: a run just saved may not be indexed yet.
+		const earlier = listAudits(this.app, this.settings).filter(
+			(i) => i.file.path !== path && hostOf(i.url) === host && i.date < report.generatedAt,
+		);
+		const history = [
+			...earlier
+				.slice(0, 7)
+				.reverse()
+				.map((i) => ({ date: i.date, score: i.score })),
+			{ date: report.generatedAt, score: report.score },
+		];
+		const previous = earlier[0] ? await this.loadComparison(earlier[0]) : null;
+		this.state.showReport(path, report, { earlier, previous, history });
+	}
+
+	private async loadComparison(item: AuditListItem): Promise<Comparison | null> {
+		const report = await readAudit(this.app, item.file);
+		return report ? { path: item.file.path, date: item.date, report } : null;
+	}
+
+	/** The "vs" picker in the report header. */
+	async compareWith(path: string): Promise<void> {
+		const item = this.state.context.earlier.find((i) => i.file.path === path);
+		if (!item) return;
+		this.state.setComparison(await this.loadComparison(item));
 	}
 
 	startNewAudit(url = ""): void {
@@ -82,25 +118,31 @@ export default class SafiSiteAuditPlugin extends Plugin {
 		void this.activateDashboard();
 	}
 
-	/** Runs the crawl, saves the three exports, and shows the result. */
+	/**
+	 * Runs the crawl, saves the three exports, and shows the result. Started from a
+	 * report ("Run again"), the old report stays on screen until the new one lands.
+	 */
 	async runAndSave(url: string, maxPages: number | undefined): Promise<void> {
 		if (!url) {
 			new Notice("Enter a URL to audit.");
 			return;
 		}
-		this.state.setRunning(true);
+		if (this.state.running) return;
+		if (this.state.mode !== "detail") this.state.showRunForm(url);
+		this.state.startRun(url);
 		try {
 			const report = await runAudit({ url, maxPages }, this.settings, (progress) => {
-				this.state.setRunning(true, progress);
+				this.state.setProgress(progress);
 			});
 			const { note } = await saveAudit(this.app, this.settings, report);
 			// Show it straight from the in-memory report; the metadata cache may lag.
-			this.state.showReport(note.path, report);
+			await this.showWithContext(note.path, report);
 			new Notice(`Audit saved to ${note.parent?.path ?? this.settings.auditFolder}`);
 		} catch (e) {
-			new Notice(`Audit failed: ${(e as Error).message}`);
+			this.state.draftUrl = url;
+			this.state.showFailed(url, (e as Error).message || String(e));
 		} finally {
-			this.state.setRunning(false);
+			this.state.endRun();
 		}
 	}
 

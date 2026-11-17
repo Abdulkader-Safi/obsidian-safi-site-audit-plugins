@@ -2,17 +2,12 @@
 	import { Notice, TFile } from "obsidian";
 	import type { AuditReport } from "../scanner";
 	import type SafiSiteAuditPlugin from "../main";
+	import type { ReportContext } from "../audit-state";
+	import { progressPercent, type AuditProgress } from "../audit-runner";
 	import { openExternally, openInObsidian, siblingPath } from "../audit-store";
-	import {
-		categoryLabel,
-		countFindings,
-		formatDate,
-		hostOf,
-		scoreTone,
-		statusTotals,
-	} from "./helpers";
+	import { buildIssues, countFindings, formatDate, formatDay, hostOf } from "./helpers";
 	import { icon } from "./icon";
-	import ScoreGauge from "./ScoreGauge.svelte";
+	import OverviewPanel from "./OverviewPanel.svelte";
 	import IssuesPanel from "./IssuesPanel.svelte";
 	import PagesPanel from "./PagesPanel.svelte";
 	import MetricsPanel from "./MetricsPanel.svelte";
@@ -21,26 +16,41 @@
 		report,
 		path,
 		plugin,
+		context,
+		running,
+		progress,
 		onRerun,
 	}: {
 		report: AuditReport;
 		path: string | null;
 		plugin: SafiSiteAuditPlugin;
+		context: ReportContext;
+		running: boolean;
+		progress: AuditProgress | null;
 		onRerun: (url: string) => void;
 	} = $props();
 
-	const totals = $derived(statusTotals(report));
+	type Tab = "overview" | "issues" | "pages" | "metrics";
+	let tab = $state<Tab>("overview");
+	/** Rule the Issues tab opens on, set when a Fix first row is clicked. */
+	let focusRule = $state<string | null>(null);
+	let pageFilter = $state<"all" | "broken" | "redirects" | "low">("all");
+
 	const checks = $derived(countFindings(report));
+	const ruleCount = $derived(buildIssues(report).length);
+	const previous = $derived(context.previous?.report ?? null);
+	const percent = $derived(progress ? progressPercent(progress) : 0);
+	const runLine = $derived.by(() => {
+		if (!progress || progress.phase === "starting") return "starting";
+		if (progress.phase === "crawling") return `${progress.pagesFound} pages found`;
+		if (progress.phase === "checking") return `${progress.pagesDone} of ${progress.pagesTotal} pages`;
+		return "saving";
+	});
 
-	let tab = $state<"issues" | "pages" | "metrics">("issues");
-	let sort = $state<"worst" | "best" | "az">("worst");
-
-	const sortedCategories = $derived(
-		[...report.categories].sort((a, b) => {
-			if (sort === "az") return categoryLabel(a.category).localeCompare(categoryLabel(b.category));
-			return sort === "worst" ? a.score - b.score : b.score - a.score;
-		}),
-	);
+	function go(next: Tab) {
+		if (next !== "issues") focusRule = null;
+		tab = next;
+	}
 
 	function openNote() {
 		if (!path) return;
@@ -63,16 +73,32 @@
 	<header class="ssa-head">
 		<div class="ssa-head-id">
 			<h2 class="ssa-head-host">{hostOf(report.startUrl)}</h2>
-			<a class="ssa-head-url" href={report.startUrl} rel="noopener">{report.startUrl}</a>
 			<p class="ssa-head-meta">
-				{formatDate(report.generatedAt)}
-				<span class="ssa-sep">·</span>
-				{report.pagesScanned.toLocaleString()} pages
-				<span class="ssa-sep">·</span>
-				{checks.toLocaleString()} checks
+				<a class="ssa-head-url" href={report.startUrl} rel="noopener">{report.startUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")}</a>
+				<span>
+					{formatDate(report.generatedAt)}
+					<span class="ssa-sep">·</span>{report.pagesScanned.toLocaleString()} pages
+					<span class="ssa-sep">·</span>{checks.toLocaleString()} checks
+				</span>
 			</p>
 		</div>
 		<div class="ssa-head-actions">
+			{#if context.earlier.length > 0}
+				<label class="ssa-compare">
+					<span class="ssa-faint">vs</span>
+					<select
+						aria-label="Compare with an earlier run"
+						value={context.previous?.path ?? ""}
+						onchange={(e) => void plugin.compareWith(e.currentTarget.value)}
+					>
+						{#each context.earlier as run (run.file.path)}
+							<option value={run.file.path}>{formatDay(run.date)}</option>
+						{/each}
+					</select>
+					<span class="ssa-compare-chevron" use:icon={"chevron-down"}></span>
+				</label>
+				<span class="ssa-head-divider" aria-hidden="true"></span>
+			{/if}
 			{#if path}
 				<button class="ssa-btn" onclick={openNote}>
 					<span use:icon={"file-text"}></span>
@@ -83,78 +109,64 @@
 					HTML report
 				</button>
 			{/if}
-			<button class="ssa-btn" onclick={() => onRerun(report.startUrl)}>
-				<span use:icon={"refresh-cw"}></span>
-				Run again
-			</button>
+			{#if running}
+				<span class="ssa-pill is-accent" role="status">
+					<span class="ssa-spinner"></span>
+					Running <span class="ssa-muted">{runLine}</span>
+				</span>
+			{:else}
+				<button class="ssa-btn mod-cta" onclick={() => onRerun(report.startUrl)}>
+					<span use:icon={"refresh-cw"}></span>
+					Run again
+				</button>
+			{/if}
 		</div>
 	</header>
 
-	<section class="ssa-card ssa-health" aria-label="Site health">
-		<ScoreGauge value={report.score} />
-		<div class="ssa-health-body">
-			<div class="ssa-health-head">
-				<h3 class="ssa-block-title">Site health</h3>
-				<span class="ssa-health-note">
-					{checks.toLocaleString()} checks on {report.pagesScanned.toLocaleString()} pages
-				</span>
-			</div>
-			<div
-				class="ssa-split"
-				role="img"
-				aria-label="{totals.pass} passed, {totals.warn} warnings, {totals.fail} failed, {totals.info} informational"
-			>
-				{#if totals.pass}<span class="ssa-split-seg is-pass" style="flex-grow:{totals.pass}"></span>{/if}
-				{#if totals.warn}<span class="ssa-split-seg is-warn" style="flex-grow:{totals.warn}"></span>{/if}
-				{#if totals.fail}<span class="ssa-split-seg is-fail" style="flex-grow:{totals.fail}"></span>{/if}
-				{#if totals.info}<span class="ssa-split-seg is-info" style="flex-grow:{totals.info}"></span>{/if}
-			</div>
-			<dl class="ssa-tallies">
-				{#each [["pass", "Passed", totals.pass], ["warn", "Warnings", totals.warn], ["fail", "Failed", totals.fail], ["info", "Info", totals.info]] as [key, label, n] (key)}
-					<div class="ssa-tally">
-						<dt><span class="ssa-mark is-{key}" aria-hidden="true"></span>{label}</dt>
-						<dd>{Number(n).toLocaleString()}</dd>
-					</div>
-				{/each}
-			</dl>
+	{#if running}
+		<div class="ssa-stale">
+			<div class="ssa-bar is-thin"><span class="ssa-bar-fill is-accent" style="width:{percent}%"></span></div>
+			<span class="ssa-faint">Showing the {formatDay(report.generatedAt)} run until the new one finishes</span>
 		</div>
-	</section>
-
-	<section class="ssa-card ssa-cats-block">
-		<div class="ssa-block-head">
-			<h3 class="ssa-block-title">Category scores</h3>
-			<div class="ssa-segmented" role="group" aria-label="Sort categories">
-				<button class="ssa-seg" class:is-on={sort === "worst"} aria-pressed={sort === "worst"} onclick={() => (sort = "worst")}>Worst</button>
-				<button class="ssa-seg" class:is-on={sort === "best"} aria-pressed={sort === "best"} onclick={() => (sort = "best")}>Best</button>
-				<button class="ssa-seg" class:is-on={sort === "az"} aria-pressed={sort === "az"} onclick={() => (sort = "az")}>A–Z</button>
-			</div>
-		</div>
-		<div class="ssa-cats">
-			{#each sortedCategories as cat (cat.category)}
-				<div class="ssa-cat">
-					<span class="ssa-cat-name" title={categoryLabel(cat.category)}>{categoryLabel(cat.category)}</span>
-					<span class="ssa-cat-track">
-						<span class="ssa-cat-fill {scoreTone(cat.score)}" style="width:{cat.score}%"></span>
-					</span>
-					<span class="ssa-cat-score">{cat.score}</span>
-				</div>
-			{/each}
-		</div>
-	</section>
+	{/if}
 
 	<div class="ssa-tabs" role="tablist" aria-label="Report sections">
-		<button class="ssa-tab" class:is-on={tab === "issues"} role="tab" aria-selected={tab === "issues"} onclick={() => (tab = "issues")}>Issues</button>
-		<button class="ssa-tab" class:is-on={tab === "pages"} role="tab" aria-selected={tab === "pages"} onclick={() => (tab = "pages")}>Pages</button>
-		<button class="ssa-tab" class:is-on={tab === "metrics"} role="tab" aria-selected={tab === "metrics"} onclick={() => (tab = "metrics")}>
+		<button class="ssa-tab" class:is-on={tab === "overview"} role="tab" aria-selected={tab === "overview"} onclick={() => go("overview")}>
+			Overview
+		</button>
+		<button class="ssa-tab" class:is-on={tab === "issues"} role="tab" aria-selected={tab === "issues"} onclick={() => go("issues")}>
+			Issues <span class="ssa-count">{ruleCount}</span>
+		</button>
+		<button class="ssa-tab" class:is-on={tab === "pages"} role="tab" aria-selected={tab === "pages"} onclick={() => go("pages")}>
+			Pages <span class="ssa-count">{report.pagesScanned}</span>
+		</button>
+		<button class="ssa-tab" class:is-on={tab === "metrics"} role="tab" aria-selected={tab === "metrics"} onclick={() => go("metrics")}>
 			Measurements
 		</button>
 	</div>
 
-	{#if tab === "issues"}
-		<IssuesPanel {report} />
+	{#if tab === "overview"}
+		<OverviewPanel
+			{report}
+			{previous}
+			history={context.history}
+			onOpenRule={(id) => {
+				focusRule = id;
+				tab = "issues";
+			}}
+			onShowRules={() => go("issues")}
+			onShowBroken={() => {
+				pageFilter = "broken";
+				go("pages");
+			}}
+		/>
+	{:else if tab === "issues"}
+		{#key focusRule}
+			<IssuesPanel {report} {previous} {focusRule} />
+		{/key}
 	{:else if tab === "pages"}
-		<PagesPanel {report} />
+		<PagesPanel {report} {previous} bind:filter={pageFilter} />
 	{:else}
-		<MetricsPanel {report} />
+		<MetricsPanel {report} {previous} />
 	{/if}
 </div>

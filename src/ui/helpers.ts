@@ -48,19 +48,59 @@ export function formatDateShort(iso: string): string {
 	});
 }
 
-export function grade(score: number): string {
-	if (score >= 90) return "A";
-	if (score >= 80) return "B";
-	if (score >= 70) return "C";
-	if (score >= 60) return "D";
-	return "F";
+/** Day only, for chart axes and the compare picker: "Nov 3, 2026". */
+export function formatDay(iso: string, withYear = true): string {
+	const d = new Date(iso);
+	if (isNaN(d.getTime())) return iso;
+	return d.toLocaleDateString(undefined, {
+		day: "numeric",
+		month: "short",
+		...(withYear ? { year: "numeric" } : {}),
+	});
 }
 
-/** Traffic-light class for a 0-100 score: green good, amber middling, red bad. */
-export function scoreTone(score: number): string {
-	if (score >= 80) return "is-good";
-	if (score >= 50) return "is-mid";
-	return "is-bad";
+/**
+ * Quiet band for a 0-100 score. Healthy scores get no colour at all; only scores
+ * that need attention turn warm, so the eye lands on the problem.
+ */
+export function scoreBand(score: number): "is-bad" | "is-mid" | "is-ok" {
+	if (score < 50) return "is-bad";
+	if (score < 80) return "is-mid";
+	return "is-ok";
+}
+
+/** "+7", "−12", "0". Uses a real minus sign so the column lines up. */
+export function signed(n: number): string {
+	if (n === 0) return "0";
+	return n > 0 ? `+${n}` : `−${Math.abs(n)}`;
+}
+
+/**
+ * Colour class for a change. Lower-is-better metrics (failures, warnings) flip.
+ * Changes smaller than `min` stay neutral so noise does not shout.
+ */
+export function trendClass(delta: number, lowerIsBetter = false, min = 1): string {
+	if (Math.abs(delta) < min) return "is-flat";
+	const better = lowerIsBetter ? delta < 0 : delta > 0;
+	return better ? "is-good" : "is-bad";
+}
+
+/**
+ * Accepts what people type ("example.com", "https://example.com/blog") and returns
+ * a crawlable URL, or null when it cannot be one.
+ */
+export function normalizeAuditUrl(input: string): string | null {
+	const raw = input.trim();
+	if (!raw) return null;
+	const withScheme = /^[a-z][a-z\d+.-]*:\/\//i.test(raw) ? raw : `https://${raw}`;
+	try {
+		const u = new URL(withScheme);
+		if (u.protocol !== "http:" && u.protocol !== "https:") return null;
+		if (!u.hostname.includes(".") && u.hostname !== "localhost") return null;
+		return u.toString();
+	} catch {
+		return null;
+	}
 }
 
 export function statusTone(status: Status): string {
@@ -170,11 +210,59 @@ export function countFindings(report: AuditReport): number {
 	return n;
 }
 
-/** Findings worth showing on a page row: everything that did not pass. */
-export function pageIssueCount(page: PageReport): number {
-	let n = 0;
-	for (const f of page.findings) if (f.status !== "pass") n++;
-	return n;
+export function pageCounts(page: PageReport): { fail: number; warn: number } {
+	let fail = 0;
+	let warn = 0;
+	for (const f of page.findings) {
+		if (f.status === "fail") fail++;
+		else if (f.status === "warn") warn++;
+	}
+	return { fail, warn };
+}
+
+/** A page that did not load: 4xx, 5xx, or no response at all (status 0). */
+export function isBroken(page: PageReport): boolean {
+	return page.status >= 400 || page.status < 100;
+}
+
+export function isRedirect(page: PageReport): boolean {
+	return page.status >= 300 && page.status < 400;
+}
+
+export function brokenPages(report: AuditReport): PageReport[] {
+	return report.pages.filter(isBroken);
+}
+
+export interface StatusBuckets {
+	"2xx": number;
+	"3xx": number;
+	"4xx": number;
+	"5xx": number;
+}
+
+/** Pages by HTTP status class. No response at all counts with 5xx, as a server error. */
+export function statusBuckets(report: AuditReport): StatusBuckets {
+	const b: StatusBuckets = { "2xx": 0, "3xx": 0, "4xx": 0, "5xx": 0 };
+	for (const p of report.pages) {
+		if (p.status >= 200 && p.status < 300) b["2xx"]++;
+		else if (isRedirect(p)) b["3xx"]++;
+		else if (p.status >= 400 && p.status < 500) b["4xx"]++;
+		else b["5xx"]++;
+	}
+	return b;
+}
+
+/** Rules failing or warning now that were clean (or absent) in the earlier run. */
+export function newRuleIds(report: AuditReport, previous: AuditReport | null): Set<string> {
+	const ids = new Set<string>();
+	if (!previous) return ids;
+	const before = new Set<string>();
+	for (const page of previous.pages)
+		for (const f of page.findings) if (f.status === "fail" || f.status === "warn") before.add(f.ruleId);
+	for (const page of report.pages)
+		for (const f of page.findings)
+			if ((f.status === "fail" || f.status === "warn") && !before.has(f.ruleId)) ids.add(f.ruleId);
+	return ids;
 }
 
 // ---- sidebar grouping ----
@@ -210,10 +298,94 @@ export function metricTone(status: ValueStatus | undefined): string {
 	return "";
 }
 
-export function formatMetricValue(value: string | number | null, unit?: string): string {
+/** The value alone; the unit is set in a smaller, fainter span beside it. */
+export function formatMetricValue(value: string | number | null): string {
 	if (value === null || value === "") return "None";
-	const text = typeof value === "number" ? value.toLocaleString() : value;
-	return unit ? `${text} ${unit}` : text;
+	if (typeof value === "number") return value.toLocaleString();
+	// Published / updated dates arrive as ISO timestamps; the day is what matters.
+	return /^\d{4}-\d{2}-\d{2}T/.test(value) ? formatDay(value) : value;
+}
+
+export interface MetricRange {
+	min: number;
+	max: number;
+}
+
+/** The scanner writes targets as "Recommended 30 to 60"; anything else is not a range. */
+export function parseRange(note: string | undefined): MetricRange | null {
+	const m = note?.match(/recommended\s+(-?\d+(?:\.\d+)?)\s+to\s+(-?\d+(?:\.\d+)?)/i);
+	if (!m) return null;
+	const min = Number(m[1]);
+	const max = Number(m[2]);
+	return min <= max ? { min, max } : null;
+}
+
+export function isFlagged(status: ValueStatus | undefined): status is "bad" | "warn" {
+	return status === "bad" || status === "warn";
+}
+
+/** Measurements out of range on this page. */
+export function flaggedCount(page: PageReport): number {
+	let n = 0;
+	for (const m of page.metrics ?? []) if (isFlagged(m.status)) n++;
+	return n;
+}
+
+export interface OutOfRange {
+	id: string;
+	label: string;
+	category: string;
+	unit?: string;
+	/** Worst status seen on any page. */
+	status: "bad" | "warn";
+	/** Pages where it is out of range, worst first. */
+	pages: string[];
+	bad: number;
+	/** Spread of the flagged numeric values, when they are numbers. */
+	low: number | null;
+	high: number | null;
+	range: MetricRange | null;
+}
+
+/**
+ * One row per measurement that is out of range anywhere on the site, with the
+ * pages it hits. Sorted: anything bad first, then by how many pages it reaches.
+ */
+export function outOfRange(report: AuditReport): OutOfRange[] {
+	const map = new Map<string, OutOfRange>();
+	for (const page of report.pages) {
+		for (const m of page.metrics ?? []) {
+			if (m.kind !== "value" || !isFlagged(m.status)) continue;
+			let row = map.get(m.id);
+			if (!row) {
+				row = {
+					id: m.id,
+					label: m.label,
+					category: m.category,
+					unit: m.unit,
+					status: m.status,
+					pages: [],
+					bad: 0,
+					low: null,
+					high: null,
+					range: parseRange(m.note),
+				};
+				map.set(m.id, row);
+			}
+			if (m.status === "bad") {
+				row.status = "bad";
+				row.bad++;
+				row.pages.unshift(page.url);
+			} else row.pages.push(page.url);
+			if (typeof m.value === "number") {
+				row.low = row.low === null ? m.value : Math.min(row.low, m.value);
+				row.high = row.high === null ? m.value : Math.max(row.high, m.value);
+			}
+		}
+	}
+	return [...map.values()].sort(
+		(a, b) => Number(b.status === "bad") - Number(a.status === "bad") || b.pages.length - a.pages.length,
+	);
 }
 
 export interface MetricGroup {
