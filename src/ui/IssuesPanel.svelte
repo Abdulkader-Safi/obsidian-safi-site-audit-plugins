@@ -9,6 +9,7 @@
 		statusTotals,
 		type Issue,
 	} from "./helpers";
+	import { icon } from "./icon";
 
 	let { report }: { report: AuditReport } = $props();
 
@@ -46,24 +47,28 @@
 
 <div class="ssa-panel">
 	<div class="ssa-filters">
-		<div class="ssa-segmented">
-			<button class="ssa-seg" class:is-on={statusFilter.includes("fail")} onclick={() => toggle("fail")}>
-				<span class="ssa-seg-count">{totals.fail}</span> failed
+		{#each [["fail", "failed", totals.fail], ["warn", "warnings", totals.warn], ["info", "info", totals.info]] as [key, word, n] (key)}
+			<button
+				class="ssa-chip"
+				class:is-on={statusFilter.includes(String(key))}
+				aria-pressed={statusFilter.includes(String(key))}
+				onclick={() => toggle(String(key))}
+			>
+				{#if statusFilter.includes(String(key))}<span class="ssa-chip-check" use:icon={"check"}></span>{/if}
+				<span class="ssa-seg-count">{n}</span> {word}
 			</button>
-			<button class="ssa-seg" class:is-on={statusFilter.includes("warn")} onclick={() => toggle("warn")}>
-				<span class="ssa-seg-count">{totals.warn}</span> warnings
-			</button>
-			<button class="ssa-seg" class:is-on={statusFilter.includes("info")} onclick={() => toggle("info")}>
-				<span class="ssa-seg-count">{totals.info}</span> info
-			</button>
-		</div>
+		{/each}
+		<span class="ssa-filters-spacer"></span>
 		<select class="ssa-select dropdown" bind:value={catFilter} aria-label="Filter by category">
 			<option value="all">Every category</option>
 			{#each categories as c (c)}
 				<option value={c}>{categoryLabel(c)}</option>
 			{/each}
 		</select>
-		<input class="ssa-input ssa-input-search" placeholder="Search rules" bind:value={query} />
+		<div class="ssa-search ssa-search-inline">
+			<input class="ssa-input" type="search" placeholder="Search rules" aria-label="Search rules" bind:value={query} />
+			<span class="ssa-search-icon" use:icon={"search"}></span>
+		</div>
 	</div>
 
 	{#if filtered.length === 0}
@@ -84,6 +89,7 @@
 							{issue.pages.length}
 							<span class="ssa-row-count-unit">{issue.pages.length === 1 ? "page" : "pages"}</span>
 						</span>
+						<span class="ssa-row-chevron" use:icon={"chevron-down"}></span>
 					</summary>
 					<div class="ssa-row-body">
 						<p class="ssa-row-msg">

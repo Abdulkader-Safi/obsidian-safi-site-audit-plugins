@@ -90,9 +90,15 @@
 		</div>
 	</header>
 
-	<section class="ssa-score">
+	<section class="ssa-card ssa-health" aria-label="Site health">
 		<ScoreGauge value={report.score} />
-		<div class="ssa-score-body">
+		<div class="ssa-health-body">
+			<div class="ssa-health-head">
+				<h3 class="ssa-block-title">Site health</h3>
+				<span class="ssa-health-note">
+					{checks.toLocaleString()} checks on {report.pagesScanned.toLocaleString()} pages
+				</span>
+			</div>
 			<div
 				class="ssa-split"
 				role="img"
@@ -104,33 +110,23 @@
 				{#if totals.info}<span class="ssa-split-seg is-info" style="flex-grow:{totals.info}"></span>{/if}
 			</div>
 			<dl class="ssa-tallies">
-				<div class="ssa-tally">
-					<dt>Passed</dt>
-					<dd class="is-pass">{totals.pass.toLocaleString()}</dd>
-				</div>
-				<div class="ssa-tally">
-					<dt>Warnings</dt>
-					<dd class="is-warn">{totals.warn.toLocaleString()}</dd>
-				</div>
-				<div class="ssa-tally">
-					<dt>Failed</dt>
-					<dd class="is-fail">{totals.fail.toLocaleString()}</dd>
-				</div>
-				<div class="ssa-tally">
-					<dt>Info</dt>
-					<dd class="is-info">{totals.info.toLocaleString()}</dd>
-				</div>
+				{#each [["pass", "Passed", totals.pass], ["warn", "Warnings", totals.warn], ["fail", "Failed", totals.fail], ["info", "Info", totals.info]] as [key, label, n] (key)}
+					<div class="ssa-tally">
+						<dt><span class="ssa-mark is-{key}" aria-hidden="true"></span>{label}</dt>
+						<dd>{Number(n).toLocaleString()}</dd>
+					</div>
+				{/each}
 			</dl>
 		</div>
 	</section>
 
-	<section class="ssa-cats-block">
+	<section class="ssa-card ssa-cats-block">
 		<div class="ssa-block-head">
 			<h3 class="ssa-block-title">Category scores</h3>
-			<div class="ssa-segmented">
-				<button class="ssa-seg" class:is-on={sort === "worst"} onclick={() => (sort = "worst")}>Worst</button>
-				<button class="ssa-seg" class:is-on={sort === "best"} onclick={() => (sort = "best")}>Best</button>
-				<button class="ssa-seg" class:is-on={sort === "az"} onclick={() => (sort = "az")}>A–Z</button>
+			<div class="ssa-segmented" role="group" aria-label="Sort categories">
+				<button class="ssa-seg" class:is-on={sort === "worst"} aria-pressed={sort === "worst"} onclick={() => (sort = "worst")}>Worst</button>
+				<button class="ssa-seg" class:is-on={sort === "best"} aria-pressed={sort === "best"} onclick={() => (sort = "best")}>Best</button>
+				<button class="ssa-seg" class:is-on={sort === "az"} aria-pressed={sort === "az"} onclick={() => (sort = "az")}>A–Z</button>
 			</div>
 		</div>
 		<div class="ssa-cats">
@@ -146,13 +142,13 @@
 		</div>
 	</section>
 
-	<nav class="ssa-tabs">
-		<button class="ssa-tab" class:is-on={tab === "issues"} onclick={() => (tab = "issues")}>Issues</button>
-		<button class="ssa-tab" class:is-on={tab === "pages"} onclick={() => (tab = "pages")}>Pages</button>
-		<button class="ssa-tab" class:is-on={tab === "metrics"} onclick={() => (tab = "metrics")}>
+	<div class="ssa-tabs" role="tablist" aria-label="Report sections">
+		<button class="ssa-tab" class:is-on={tab === "issues"} role="tab" aria-selected={tab === "issues"} onclick={() => (tab = "issues")}>Issues</button>
+		<button class="ssa-tab" class:is-on={tab === "pages"} role="tab" aria-selected={tab === "pages"} onclick={() => (tab = "pages")}>Pages</button>
+		<button class="ssa-tab" class:is-on={tab === "metrics"} role="tab" aria-selected={tab === "metrics"} onclick={() => (tab = "metrics")}>
 			Measurements
 		</button>
-	</nav>
+	</div>
 
 	{#if tab === "issues"}
 		<IssuesPanel {report} />

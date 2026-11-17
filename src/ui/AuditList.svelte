@@ -60,7 +60,10 @@
 
 	{#if items.length > 0}
 		<div class="ssa-rail-filter">
-			<input class="ssa-input" placeholder="Find a site" bind:value={filter} />
+			<div class="ssa-search">
+				<input class="ssa-input" type="search" placeholder="Find a site" aria-label="Find a site" bind:value={filter} />
+				<span class="ssa-search-icon" use:icon={"search"}></span>
+			</div>
 		</div>
 	{/if}
 
@@ -81,7 +84,7 @@
 						>
 							<span class="ssa-run-date">{formatDateShort(item.date)}</span>
 							<span class="ssa-run-pages">{item.pages} pages</span>
-							<span class="ssa-run-score {scoreTone(item.score)}">{item.score}</span>
+							<span class="ssa-run-score ssa-chip-score {scoreTone(item.score)}">{item.score}</span>
 						</button>
 					{/each}
 				</section>

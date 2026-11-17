@@ -31,7 +31,7 @@
 		</div>
 
 		{#each groups as group (group.category)}
-			<section class="ssa-metric-group">
+			<section class="ssa-card ssa-metric-group">
 				<h3 class="ssa-metric-cat">{categoryLabel(group.category)}</h3>
 
 				{#if group.metrics.some((m) => m.kind === "value")}
@@ -55,15 +55,15 @@
 				{#each group.metrics as m (m.id)}
 					{#if m.kind === "table"}
 						<div class="ssa-metric-table">
-							<div class="ssa-metric-table-head">
-								<span class="ssa-metric-table-label">{m.label}</span>
+							<div class="ssa-table-head">
+								<span class="ssa-table-title">{m.label}</span>
 								{#if m.total > m.rows.length}
-									<span class="ssa-metric-table-note">
+									<span class="ssa-table-note">
 										showing {m.rows.length} of {m.total.toLocaleString()}
 									</span>
 								{/if}
 							</div>
-							<div class="ssa-scroll-x">
+							<div class="ssa-table-card ssa-scroll-x">
 								<table class="ssa-table">
 									<thead>
 										<tr>

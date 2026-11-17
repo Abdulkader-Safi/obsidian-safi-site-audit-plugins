@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { AuditReport, Finding, PageReport } from "../scanner";
 	import { categoryLabel, pageIssueCount, pathOf, scoreTone, statusLabel, statusTone } from "./helpers";
+	import { icon } from "./icon";
 
 	let { report }: { report: AuditReport } = $props();
 
@@ -28,7 +29,11 @@
 				Crawl order
 			</button>
 		</div>
-		<input class="ssa-input ssa-input-search" placeholder="Search pages" bind:value={query} />
+		<span class="ssa-filters-spacer"></span>
+		<div class="ssa-search ssa-search-inline">
+			<input class="ssa-input" type="search" placeholder="Search pages" aria-label="Search pages" bind:value={query} />
+			<span class="ssa-search-icon" use:icon={"search"}></span>
+		</div>
 	</div>
 
 	{#if pages.length === 0}
@@ -39,7 +44,7 @@
 				{@const found = problems(page)}
 				<details class="ssa-row">
 					<summary class="ssa-row-head">
-						<span class="ssa-score-chip {scoreTone(page.score)}">{page.score}</span>
+						<span class="ssa-chip-score {scoreTone(page.score)}">{page.score}</span>
 						<span class="ssa-row-main">
 							<span class="ssa-row-title" title={page.url}>{pathOf(page.url)}</span>
 							<span class="ssa-row-sub">HTTP {page.status}</span>
@@ -48,11 +53,17 @@
 							{pageIssueCount(page)}
 							<span class="ssa-row-count-unit">{found.length === 1 ? "issue" : "issues"}</span>
 						</span>
+						<span class="ssa-row-chevron" use:icon={"chevron-down"}></span>
 					</summary>
 					<div class="ssa-row-body">
 						{#if found.length === 0}
 							<p class="ssa-row-msg">Every check passed on this page.</p>
 						{:else}
+							<div class="ssa-table-head">
+								<span class="ssa-table-title">Findings on this page</span>
+								<span class="ssa-table-note">{found.length} {found.length === 1 ? "issue" : "issues"}</span>
+							</div>
+							<div class="ssa-table-card ssa-scroll-x">
 							<table class="ssa-table">
 								<thead>
 									<tr>
@@ -76,6 +87,7 @@
 									{/each}
 								</tbody>
 							</table>
+							</div>
 						{/if}
 					</div>
 				</details>

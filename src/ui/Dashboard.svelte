@@ -41,6 +41,7 @@
 </script>
 
 <div class="ssa-view">
+	<div class="ssa-container">
 	{#if mode === "detail" && report}
 		<ReportView {report} {path} {plugin} onRerun={(url) => plugin.startNewAudit(url)} />
 	{:else if mode === "new"}
@@ -54,6 +55,7 @@
 		/>
 	{:else}
 		<div class="ssa-blank">
+			<span class="ssa-blank-badge" use:icon={"gauge"}></span>
 			<h2 class="ssa-blank-title">Nothing selected</h2>
 			<p class="ssa-blank-text">
 				Pick a run from the sidebar, or audit a site. Every run is saved as Markdown, JSON and
@@ -65,4 +67,5 @@
 			</button>
 		</div>
 	{/if}
+	</div>
 </div>

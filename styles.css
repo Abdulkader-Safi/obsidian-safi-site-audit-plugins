@@ -1,10 +1,14 @@
 /*
  * Safi Site Audit styles.
  *
- * Everything is scoped under .safi-site-audit and built from Obsidian's own theme
- * variables, so the dashboard inherits whatever theme, accent and font the user has
- * installed. No colour literals, no bundled fonts, no drop shadows: depth comes from
- * surface tone and hairline borders, the way Obsidian's own panes do it.
+ * Everything is scoped under .safi-site-audit (the report tab) and
+ * .safi-site-audit-list (the sidebar) and built only from Obsidian's theme
+ * variables, so the dashboard follows whatever theme, accent, font and light or
+ * dark mode the user has installed. No colour literals and no bundled fonts.
+ *
+ * Layout follows the Figma design "Safi Site Audit" (sections Light and Dark):
+ * bordered cards on the primary background, 24px card padding, 24px between
+ * sections, content capped at 1600px and centred.
  */
 
 .safi-site-audit,
@@ -32,8 +36,7 @@
 }
 
 /* ---------- tones ----------
-   One place decides what "good", "warning" and "failed" look like. Scoped to the
-   plugin's two view roots so the class names never leak into the rest of the app. */
+   One place decides what "good", "warning" and "failed" look like. */
 .safi-site-audit :is(.is-good, .is-pass),
 .safi-site-audit-list :is(.is-good, .is-pass) {
 	color: var(--color-green);
@@ -47,18 +50,92 @@
 	color: var(--color-red);
 }
 .safi-site-audit .is-info {
-	color: var(--color-blue);
+	color: var(--text-normal);
 }
 .safi-site-audit .is-missing {
 	color: var(--text-faint);
+}
+
+/* ---------- shared pieces ---------- */
+.ssa-card {
+	padding: var(--size-4-6);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-m);
+	background: var(--background-primary);
+}
+.ssa-block-title {
+	margin: 0;
+	font-size: var(--font-ui-medium);
+	font-weight: var(--font-semibold);
+}
+
+/* Score chip: the number in the tone colour on a light tint of the same colour. */
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip-score {
+	flex-shrink: 0;
+	min-width: 2.25rem;
+	padding: 2px var(--size-4-2);
+	border-radius: var(--radius-s);
+	text-align: center;
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-semibold);
+	font-variant-numeric: tabular-nums;
+	line-height: 1.4;
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip-score.is-good {
+	background: rgba(var(--color-green-rgb), 0.14);
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip-score.is-mid {
+	background: rgba(var(--color-yellow-rgb), 0.16);
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip-score.is-bad {
+	background: rgba(var(--color-red-rgb), 0.14);
+}
+
+/* Status dot: Failed, Warning, Info, Passed. Always next to a word. */
+.ssa-mark {
+	flex-shrink: 0;
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: currentColor;
+}
+
+/* Search field with the magnifier inside it, on the right. */
+.ssa-search {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-search .ssa-input {
+	padding-right: 2.1rem;
+	border-radius: var(--radius-xl, 999px);
+}
+.ssa-search-icon {
+	position: absolute;
+	right: var(--size-4-3);
+	display: flex;
+	color: var(--text-muted);
+	pointer-events: none;
+}
+.ssa-search-icon .svg-icon {
+	width: 16px;
+	height: 16px;
+}
+.ssa-search-inline {
+	width: 15rem;
 }
 
 /* ---------- the report tab ---------- */
 .ssa-view {
 	height: 100%;
 	overflow-y: auto;
-	padding: 1.5rem 1.75rem 3rem;
+	padding: var(--size-4-8);
 	container-type: inline-size;
+}
+.ssa-container {
+	max-width: 1600px;
+	margin: 0 auto;
 }
 
 /* ---------- the sidebar list ---------- */
@@ -71,57 +148,61 @@
 .ssa-rail-head {
 	display: flex;
 	align-items: center;
-	gap: 0.45rem;
-	padding: 0.5rem 0.25rem 0.6rem;
-}
-.ssa-rail-actions {
-	padding: 0 0.25rem 0.7rem;
+	gap: var(--size-4-2);
+	padding: var(--size-4-2) var(--size-4-1) var(--size-4-3);
 }
 .ssa-rail-mark {
 	display: flex;
 	color: var(--text-muted);
 }
 .ssa-rail-mark .svg-icon {
-	width: 1.05em;
-	height: 1.05em;
+	width: 16px;
+	height: 16px;
 }
 .ssa-rail-name {
 	font-size: var(--font-ui-small);
 	font-weight: var(--font-semibold);
-	letter-spacing: -0.005em;
+	color: var(--text-muted);
+}
+.ssa-rail-actions {
+	padding: 0 var(--size-4-1) var(--size-4-3);
 }
 .ssa-rail-filter {
-	padding: 0 0.25rem 0.6rem;
+	padding: 0 var(--size-4-1) var(--size-4-4);
 }
 .ssa-rail-list {
 	flex: 1;
 	min-height: 0;
 	overflow-y: auto;
-	padding: 0 0 0.75rem;
+	padding-bottom: var(--size-4-4);
 }
 .ssa-rail-note {
 	margin: 0;
-	padding: 0.5rem 0.25rem;
-	font-size: var(--font-ui-smaller);
+	padding: var(--size-4-2) var(--size-4-3);
+	font-size: var(--font-ui-small);
 	color: var(--text-muted);
 }
 
 /* a site and its runs */
+.ssa-site {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-1);
+}
 .ssa-site + .ssa-site {
-	margin-top: 1rem;
+	margin-top: var(--size-4-6);
 }
 .ssa-site-host {
-	margin: 0 0 0.25rem;
-	padding: 0 0.5rem;
+	margin: 0;
+	padding: var(--size-4-1) var(--size-4-3);
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	font-size: var(--font-ui-smaller);
+	font-size: var(--font-ui-small);
 	font-weight: var(--font-semibold);
-	color: var(--text-muted);
+	color: var(--text-faint);
 }
-/* Explicit areas: the date and the page count each own a row, the score spans
-   both and sits centred against them. Nothing is left to auto-placement. */
+/* Date over page count, score chip centred on the right. */
 .safi-site-audit-list .ssa-run-row {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
@@ -129,17 +210,16 @@
 		"date  score"
 		"pages score";
 	align-items: center;
-	gap: 0.1rem 0.6rem;
+	gap: 2px var(--size-4-3);
 	width: 100%;
 	height: auto;
 	margin: 0;
-	padding: 0.4rem 0.5rem;
+	padding: var(--size-4-2) var(--size-4-3);
 	border: none;
-	border-radius: var(--radius-s);
+	border-radius: var(--radius-m);
 	box-shadow: none;
 	background: transparent;
 	color: var(--text-normal);
-	font-size: var(--font-ui-small);
 	text-align: left;
 	cursor: pointer;
 }
@@ -149,75 +229,81 @@
 .safi-site-audit-list .ssa-run-row.is-on {
 	background: var(--background-modifier-active-hover, var(--background-modifier-hover));
 }
-.safi-site-audit-list .ssa-run-row.is-on .ssa-run-date {
-	font-weight: var(--font-semibold);
-}
 .ssa-run-date,
 .ssa-run-pages {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	line-height: 1.3;
+	line-height: 1.35;
 }
 .ssa-run-date {
 	grid-area: date;
 	font-size: var(--font-ui-small);
+	font-weight: var(--font-semibold);
 }
 .ssa-run-pages {
 	grid-area: pages;
-	font-size: var(--font-ui-smaller);
+	font-size: var(--font-ui-small);
 	color: var(--text-faint);
 }
-.ssa-run-score {
+.safi-site-audit-list .ssa-run-score {
 	grid-area: score;
-	align-self: center;
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-semibold);
-	font-variant-numeric: tabular-nums;
 }
 
 /* ---------- blank state ---------- */
 .ssa-blank {
 	display: flex;
 	flex-direction: column;
-	align-items: flex-start;
-	gap: 0.75rem;
+	align-items: center;
+	gap: var(--size-4-4);
 	max-width: 26rem;
-	margin: 4rem auto 0;
+	min-height: 70vh;
+	margin: 0 auto;
+	justify-content: center;
+	text-align: center;
+}
+.ssa-blank-badge {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	background: var(--background-secondary);
+	color: var(--text-muted);
+}
+.ssa-blank-badge .svg-icon {
+	width: 24px;
+	height: 24px;
 }
 .ssa-blank-title {
 	margin: 0;
-	font-size: 1.35rem;
-	font-weight: var(--font-bold);
-	letter-spacing: -0.01em;
+	font-size: 1.5em;
+	font-weight: var(--font-semibold);
+	line-height: 1.2;
 }
 .ssa-blank-text {
-	margin: 0;
+	margin: calc(var(--size-4-2) * -1) 0 0;
 	font-size: var(--font-ui-small);
-	line-height: 1.55;
+	line-height: 1.5;
 	color: var(--text-muted);
 }
 
 /* ---------- controls ----------
  *
- * Obsidian styles bare <button> and <select> elements through selectors like
- * `button:not(.clickable-icon)`, which is specificity (0,1,1) and therefore beats
- * any single class of ours. Two consequences shape this whole section:
- *
- *  1. Real buttons keep Obsidian's own chrome, and carry its own `mod-cta` /
- *     `mod-warning` classes, so they look exactly like every other button in the
- *     app under whatever theme is installed. We only add layout on top.
- *  2. Controls that must NOT look like a default button (tabs, filter segments,
- *     sidebar rows) are written as `:is(root) .class`, which is (0,2,0) and wins
- *     cleanly, rather than fighting the cascade with !important.
+ * Obsidian styles bare <button> and <select> through selectors like
+ * `button:not(.clickable-icon)`, specificity (0,1,1). Real buttons keep that
+ * chrome and its `mod-cta` class so they match the installed theme; controls
+ * that must not look like a default button (tabs, chips, segments, rows) are
+ * written as `:is(root) .class`, (0,2,0), which wins without !important.
  */
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	gap: 0.4rem;
+	gap: var(--size-4-2);
 	min-height: var(--input-height);
-	padding: 0.4rem 0.85rem;
+	padding: var(--size-4-2) var(--size-4-3);
 	font-size: var(--font-ui-small);
 	line-height: 1.2;
 	white-space: nowrap;
@@ -228,109 +314,95 @@
 	cursor: not-allowed;
 }
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-btn .svg-icon {
-	width: 1.05em;
-	height: 1.05em;
+	width: 16px;
+	height: 16px;
 	flex-shrink: 0;
 }
-/* Full-width, unmistakable primary action at the top of the sidebar. */
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-btn-block {
 	width: 100%;
 	min-height: calc(var(--input-height) + 4px);
-	font-size: var(--font-ui-small);
 	font-weight: var(--font-medium);
 }
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-link-btn {
 	padding: 0;
+	height: auto;
 	border: none;
 	box-shadow: none;
 	background: transparent;
-	color: var(--text-accent);
-	font-size: var(--font-ui-smaller);
+	color: var(--text-normal);
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-semibold);
 	cursor: pointer;
 }
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-link-btn:hover {
 	background: transparent;
-	color: var(--text-accent-hover);
 	text-decoration: underline;
 }
 
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-input {
 	width: 100%;
 	min-height: var(--input-height);
-	padding: 0.35rem 0.6rem;
+	padding: var(--size-4-2) var(--size-4-3);
 	font-size: var(--font-ui-small);
 	font-family: inherit;
 }
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-input::placeholder {
 	color: var(--text-faint);
 }
-/* These modifiers have to match the base rule's specificity to win. */
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-input-lg {
-	min-height: calc(var(--input-height) + 6px);
-	padding: 0.5rem 0.7rem;
+	min-height: calc(var(--input-height) + 8px);
 	font-size: var(--font-ui-medium);
 }
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-input-num {
-	width: 7rem;
-}
-:is(.safi-site-audit, .safi-site-audit-list) .ssa-input-search {
-	width: 12rem;
-	margin-left: auto;
-}
-/* Selects carry Obsidian's own `dropdown` class, which supplies the arrow, so a
-   dropdown always reads as a dropdown and not as a plain box. */
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-select {
 	max-width: 100%;
+	min-width: 12.5rem;
 	cursor: pointer;
 }
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-select-wide {
-	min-width: 16rem;
+	min-width: 22.5rem;
 }
 
-.ssa-field-group {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-}
 .ssa-field {
 	display: flex;
 	flex-direction: column;
-	gap: 0.35rem;
+	gap: var(--size-4-2);
+}
+.ssa-field-narrow {
+	max-width: 20rem;
 }
 .ssa-field-label {
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-medium);
+	font-size: var(--font-ui-medium);
 }
 .ssa-field-desc {
-	font-size: var(--font-ui-smaller);
+	font-size: var(--font-ui-small);
+	line-height: 1.45;
 	color: var(--text-muted);
 }
 
-/* Segmented control: one track holding flat segments, not a row of loose chips.
-   Every rule here has to outrank Obsidian's default button chrome. */
+/* Segmented control: one track, the chosen segment raised on the page surface. */
 .ssa-segmented {
 	display: inline-flex;
 	align-items: stretch;
+	gap: 2px;
 	padding: 2px;
 	border-radius: var(--radius-m);
-	background: var(--background-modifier-border);
+	background: var(--background-secondary);
 }
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-seg {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	gap: 0.35rem;
-	min-height: calc(var(--input-height) - 4px);
+	gap: var(--size-4-1);
+	height: auto;
 	margin: 0;
-	padding: 0 0.7rem;
+	padding: var(--size-4-1) var(--size-4-3);
 	border: none;
-	border-radius: calc(var(--radius-m) - 2px);
+	border-radius: var(--radius-s);
 	box-shadow: none;
 	background: transparent;
 	color: var(--text-muted);
-	font-size: var(--font-ui-smaller);
-	font-weight: var(--font-medium);
-	line-height: 1;
+	font-size: var(--font-ui-small);
+	line-height: 1.4;
 	white-space: nowrap;
 	cursor: pointer;
 	transition: color 120ms ease, background-color 120ms ease;
@@ -341,72 +413,122 @@
 }
 :is(.safi-site-audit, .safi-site-audit-list) .ssa-seg.is-on {
 	background: var(--background-primary);
+	box-shadow: var(--shadow-s);
 	color: var(--text-normal);
+	font-weight: var(--font-semibold);
 }
 .ssa-seg-count {
 	font-variant-numeric: tabular-nums;
-	font-weight: var(--font-semibold);
+}
+
+/* Filter chip: on reads as a filled tag with a check, off as a quiet tag. */
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--size-4-1);
+	height: auto;
+	margin: 0;
+	padding: var(--size-4-1) var(--size-4-2);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-s);
+	box-shadow: none;
+	background: var(--background-secondary);
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	line-height: 1.4;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: color 120ms ease, background-color 120ms ease;
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip:hover {
+	background: var(--background-modifier-hover);
+	color: var(--text-normal);
+}
+/* Selected filters use the theme's accent, the same pairing as mod-cta buttons. */
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip.is-on {
+	border-color: var(--interactive-accent);
+	background: var(--interactive-accent);
+	color: var(--text-on-accent);
+}
+:is(.safi-site-audit, .safi-site-audit-list) .ssa-chip.is-on:hover {
+	background: var(--interactive-accent-hover);
+	color: var(--text-on-accent);
+}
+.ssa-chip-check {
+	display: flex;
+}
+.ssa-chip-check .svg-icon {
+	width: 14px;
+	height: 14px;
 }
 
 /* ---------- new run ---------- */
 .ssa-newrun {
 	display: flex;
 	flex-direction: column;
-	gap: 1.5rem;
-	max-width: 32rem;
-	margin: 3rem auto 0;
+	gap: var(--size-4-6);
+	max-width: 35rem;
+	margin: 0 auto;
 }
 .ssa-newrun-intro {
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
+	gap: var(--size-4-2);
 }
 .ssa-newrun-title {
 	margin: 0;
-	font-size: 1.5rem;
-	line-height: 1.15;
-	font-weight: var(--font-bold);
-	letter-spacing: -0.015em;
+	font-size: 1.5em;
+	line-height: 1.2;
+	font-weight: var(--font-semibold);
 }
 .ssa-newrun-lede {
 	margin: 0;
 	font-size: var(--font-ui-small);
-	line-height: 1.55;
+	line-height: 1.5;
 	color: var(--text-muted);
 }
 .ssa-newrun-folder {
 	color: var(--text-normal);
 	font-weight: var(--font-medium);
 }
+.ssa-form-card {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-6);
+}
 .ssa-newrun-actions {
 	display: flex;
-	gap: 0.5rem;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--size-4-3);
+}
+.ssa-newrun-hint {
+	font-size: var(--font-ui-small);
+	color: var(--text-faint);
 }
 
 .ssa-progress {
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
-	padding-top: 1.25rem;
-	border-top: 1px solid var(--background-modifier-border);
+	gap: var(--size-4-3);
+	padding: var(--size-4-6);
+	border-radius: var(--radius-m);
+	background: var(--background-secondary);
 }
 .ssa-progress-head {
 	display: flex;
 	align-items: baseline;
 	justify-content: space-between;
-	gap: 1rem;
+	gap: var(--size-4-3);
 }
-.ssa-progress-phase {
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-medium);
-}
+.ssa-progress-phase,
 .ssa-progress-pct {
 	font-size: var(--font-ui-small);
-	color: var(--text-muted);
+	font-weight: var(--font-semibold);
 	font-variant-numeric: tabular-nums;
 }
 .ssa-progress-track {
-	height: 0.35rem;
+	height: 8px;
 	overflow: hidden;
 	border-radius: 999px;
 	background: var(--background-modifier-border);
@@ -418,16 +540,25 @@
 	background: var(--interactive-accent);
 	transition: width 240ms ease-out;
 }
-.ssa-progress-sub,
-.ssa-progress-url {
-	font-size: var(--font-ui-smaller);
+.ssa-progress-meta {
+	display: flex;
+	gap: var(--size-4-3);
+	min-width: 0;
+}
+.ssa-progress-sub {
+	flex-shrink: 0;
+	font-size: var(--font-ui-small);
 	font-variant-numeric: tabular-nums;
 	color: var(--text-muted);
 }
 .ssa-progress-url {
+	flex: 1;
+	min-width: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	text-align: right;
+	font-size: var(--font-ui-small);
 	color: var(--text-faint);
 }
 
@@ -449,27 +580,25 @@
 .ssa-report {
 	display: flex;
 	flex-direction: column;
-	gap: 1.75rem;
-	max-width: 90rem;
+	gap: var(--size-4-6);
 }
 .ssa-head {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-start;
-	gap: 1rem;
+	gap: var(--size-4-4);
 }
 .ssa-head-id {
 	min-width: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 0.15rem;
+	gap: var(--size-4-1);
 }
 .ssa-head-host {
 	margin: 0;
-	font-size: 1.5rem;
-	line-height: 1.15;
-	font-weight: var(--font-bold);
-	letter-spacing: -0.015em;
+	font-size: 1.5em;
+	line-height: 1.2;
+	font-weight: var(--font-semibold);
 	overflow-wrap: anywhere;
 }
 .ssa-head-url {
@@ -477,57 +606,62 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	font-size: var(--font-ui-small);
-	color: var(--text-muted);
-	text-decoration: none;
+	color: var(--text-normal);
+	text-decoration: underline;
+	text-underline-offset: 2px;
 }
 .ssa-head-url:hover {
 	color: var(--text-accent);
-	text-decoration: underline;
 }
 .ssa-head-meta {
-	margin: 0.15rem 0 0;
-	font-size: var(--font-ui-smaller);
+	margin: 0;
+	font-size: var(--font-ui-small);
 	color: var(--text-faint);
 }
 .ssa-sep {
-	padding: 0 0.15rem;
+	padding: 0 var(--size-4-1);
 }
 .ssa-head-actions {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 0.4rem;
+	gap: var(--size-4-2);
 	margin-left: auto;
-	padding-top: 0.35rem;
 }
 
-/* ---------- score ---------- */
-.ssa-score {
+/* ---------- site health ---------- */
+.ssa-health {
 	display: flex;
 	align-items: center;
-	gap: 1.75rem;
-	padding: 1.25rem;
-	border: 1px solid var(--background-modifier-border);
-	border-radius: var(--radius-l);
-	background: var(--background-secondary);
+	gap: var(--size-4-8);
 }
-.ssa-score-body {
+.ssa-health-body {
 	flex: 1;
 	min-width: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
+	gap: var(--size-4-4);
+}
+.ssa-health-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--size-4-2);
+}
+.ssa-health-note {
+	font-size: var(--font-ui-small);
+	color: var(--text-faint);
 }
 .ssa-split {
 	display: flex;
-	height: 0.5rem;
-	overflow: hidden;
-	border-radius: 999px;
-	background: var(--background-modifier-border);
+	gap: 2px;
+	height: 8px;
 }
 .ssa-split-seg {
 	display: block;
 	height: 100%;
-	min-width: 2px;
+	min-width: 4px;
+	border-radius: 999px;
 	transition: flex-grow 400ms ease-out;
 }
 .ssa-split-seg.is-pass {
@@ -540,30 +674,33 @@
 	background: var(--color-red);
 }
 .ssa-split-seg.is-info {
-	background: var(--color-blue);
+	background: var(--text-normal);
 }
 .ssa-tallies {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-	gap: 0.75rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--size-4-2) var(--size-4-8);
 	margin: 0;
 }
 .ssa-tally {
 	display: flex;
-	flex-direction: column-reverse;
-	gap: 0.1rem;
+	flex-direction: column;
+	gap: var(--size-4-1);
 	min-width: 0;
 }
 .ssa-tally dt {
-	font-size: var(--font-ui-smaller);
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: var(--font-ui-small);
 	color: var(--text-muted);
 }
 .ssa-tally dd {
 	margin: 0;
-	font-size: 1.25rem;
-	font-weight: var(--font-bold);
+	font-size: 1.5em;
+	font-weight: var(--font-semibold);
 	font-variant-numeric: tabular-nums;
-	line-height: 1.1;
+	line-height: 1.2;
 }
 
 .ssa-gauge {
@@ -594,58 +731,57 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 0.1rem;
 	pointer-events: none;
 }
 .ssa-gauge-value {
-	font-size: 1.6rem;
+	font-size: 3em;
 	font-weight: var(--font-bold);
 	font-variant-numeric: tabular-nums;
 	line-height: 1;
 }
 .ssa-gauge-grade {
-	font-size: var(--font-ui-smaller);
-	color: var(--text-muted);
-	line-height: 1;
+	font-size: var(--font-ui-small);
+	color: var(--text-faint);
+	line-height: 1.4;
 }
 
 /* ---------- category scores ---------- */
+.ssa-cats-block {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-4);
+}
 .ssa-block-head {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 0.75rem;
-	margin-bottom: 0.85rem;
-}
-.ssa-block-title {
-	margin: 0;
-	font-size: var(--font-ui-medium);
-	font-weight: var(--font-semibold);
+	gap: var(--size-4-3);
 }
 .ssa-block-head .ssa-segmented {
 	margin-left: auto;
 }
+/* Two columns that fill top to bottom, so "worst first" reads down the left. */
 .ssa-cats {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-	gap: 0.55rem 2rem;
+	columns: 2;
+	column-gap: var(--size-4-8);
 }
-/* Name, bar and score sit on the same three tracks in every row and every column,
-   so nothing goes ragged when a category name is longer than its neighbour's. */
 .ssa-cat {
 	display: grid;
-	grid-template-columns: minmax(0, 7.5rem) 1fr 2.25rem;
+	grid-template-columns: 8rem 1fr 1.75rem;
 	align-items: center;
-	gap: 0.75rem;
+	gap: var(--size-4-3);
+	padding: 4px 0;
+	break-inside: avoid;
 }
 .ssa-cat-name {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	font-size: var(--font-ui-small);
+	color: var(--text-muted);
 }
 .ssa-cat-track {
-	height: 0.35rem;
+	height: 6px;
 	overflow: hidden;
 	border-radius: 999px;
 	background: var(--background-modifier-border);
@@ -666,7 +802,7 @@
 .ssa-cat-score {
 	text-align: right;
 	font-size: var(--font-ui-small);
-	font-weight: var(--font-medium);
+	font-weight: var(--font-semibold);
 	font-variant-numeric: tabular-nums;
 }
 
@@ -676,26 +812,23 @@
 	top: 0;
 	z-index: 1;
 	display: flex;
-	gap: 1.25rem;
-	margin: 0 -1.75rem;
-	padding: 0.5rem 1.75rem 0;
+	gap: var(--size-4-1);
+	margin-bottom: calc(var(--size-4-2) * -1);
 	border-bottom: 1px solid var(--background-modifier-border);
 	background: var(--background-primary);
 }
-/* Tabs are type with an underline, never boxes. Obsidian's default button
-   background would otherwise make each one read as a separate button. */
 .safi-site-audit .ssa-tab {
 	position: relative;
+	height: auto;
 	margin: 0;
-	padding: 0.4rem 0 0.55rem;
+	padding: var(--size-4-1) var(--size-4-3) var(--size-4-2);
 	border: none;
 	border-radius: 0;
 	box-shadow: none;
 	background: transparent;
 	color: var(--text-muted);
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-medium);
-	line-height: 1.3;
+	font-size: var(--font-ui-medium);
+	line-height: 1.4;
 	cursor: pointer;
 	transition: color 120ms ease;
 }
@@ -706,7 +839,6 @@
 .safi-site-audit .ssa-tab.is-on {
 	background: transparent;
 	color: var(--text-normal);
-	font-weight: var(--font-semibold);
 }
 .safi-site-audit .ssa-tab.is-on::after {
 	content: "";
@@ -715,77 +847,83 @@
 	right: 0;
 	bottom: -1px;
 	height: 2px;
-	border-radius: 2px 2px 0 0;
-	background: var(--interactive-accent);
+	background: var(--text-normal);
 }
 
 /* ---------- panels ---------- */
 .ssa-panel {
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
+	gap: var(--size-4-4);
 }
 .ssa-filters {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 0.6rem;
+	gap: var(--size-4-2);
+}
+.ssa-filters-spacer {
+	flex: 1;
 }
 .ssa-filters-note {
-	font-size: var(--font-ui-smaller);
-	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	color: var(--text-faint);
 }
 .ssa-empty-line {
 	margin: 0;
-	padding: 2rem 0;
+	padding: var(--size-4-8) 0;
+	border: 1px dashed var(--background-modifier-border);
+	border-radius: var(--radius-m);
 	text-align: center;
 	font-size: var(--font-ui-small);
 	color: var(--text-muted);
 }
 
-/* ---------- expandable rows ---------- */
+/* ---------- expandable rows, inside one bordered list ---------- */
 .ssa-list {
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-m);
 }
-.ssa-row {
+.ssa-row + .ssa-row {
 	border-top: 1px solid var(--background-modifier-border);
 }
-.ssa-row:last-child {
-	border-bottom: 1px solid var(--background-modifier-border);
+.ssa-row[open] {
+	background: var(--background-secondary);
 }
 .ssa-row-head {
 	display: flex;
 	align-items: center;
-	gap: 0.65rem;
-	padding: 0.6rem 0.25rem;
+	gap: var(--size-4-3);
+	padding: var(--size-4-3) var(--size-4-4);
 	cursor: pointer;
 	list-style: none;
 }
 .ssa-row-head::-webkit-details-marker {
 	display: none;
 }
-.ssa-row-head:hover {
+.ssa-row:not([open]) > .ssa-row-head:hover {
 	background: var(--background-modifier-hover);
 }
-.ssa-row-head::after {
-	content: "";
+.ssa-row-chevron {
+	display: flex;
 	flex-shrink: 0;
-	width: 0.45rem;
-	height: 0.45rem;
-	margin-right: 0.15rem;
-	border-right: 1.5px solid var(--text-faint);
-	border-bottom: 1.5px solid var(--text-faint);
-	transform: rotate(-45deg);
+	color: var(--text-faint);
 	transition: transform 160ms ease;
 }
-.ssa-row[open] > .ssa-row-head::after {
-	transform: rotate(45deg);
+.ssa-row-chevron .svg-icon {
+	width: 16px;
+	height: 16px;
+}
+.ssa-row[open] > .ssa-row-head .ssa-row-chevron {
+	transform: rotate(180deg);
 }
 .ssa-row-main {
 	display: flex;
 	flex-direction: column;
-	gap: 0.1rem;
+	gap: 2px;
 	min-width: 0;
 	flex: 1;
 }
@@ -794,47 +932,34 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	font-size: var(--font-ui-small);
-	font-weight: var(--font-medium);
+	font-weight: var(--font-semibold);
 }
 .ssa-row-sub {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	font-size: var(--font-ui-smaller);
+	font-size: var(--font-ui-small);
 	color: var(--text-faint);
 }
 .ssa-row-count {
 	flex-shrink: 0;
 	font-size: var(--font-ui-small);
-	font-variant-numeric: tabular-nums;
-	color: var(--text-muted);
-}
-.ssa-row-count-unit {
-	color: var(--text-faint);
-}
-.ssa-mark {
-	flex-shrink: 0;
-	width: 0.45rem;
-	height: 0.45rem;
-	border-radius: 50%;
-	background: currentColor;
-}
-.ssa-score-chip {
-	flex-shrink: 0;
-	width: 2.1rem;
-	text-align: right;
-	font-size: var(--font-ui-small);
 	font-weight: var(--font-semibold);
 	font-variant-numeric: tabular-nums;
 }
+.ssa-row-count-unit {
+	font-weight: var(--font-normal);
+	color: var(--text-faint);
+}
 .ssa-status-word {
-	font-weight: var(--font-medium);
+	margin-right: var(--size-4-2);
+	font-weight: var(--font-semibold);
 }
 .ssa-row-body {
 	display: flex;
 	flex-direction: column;
-	gap: 0.85rem;
-	padding: 0.25rem 0 1rem 1.1rem;
+	gap: var(--size-4-4);
+	padding: var(--size-4-1) var(--size-4-6) var(--size-4-4) 44px;
 }
 .ssa-row-msg {
 	margin: 0;
@@ -845,36 +970,38 @@
 .ssa-fix {
 	display: flex;
 	flex-direction: column;
-	gap: 0.2rem;
-	padding: 0.6rem 0.75rem;
+	gap: var(--size-4-1);
+	padding: var(--size-4-4);
+	border: 1px solid var(--background-modifier-border);
 	border-radius: var(--radius-m);
-	background: var(--background-secondary);
+	background: var(--background-primary);
 }
 .ssa-fix-label {
-	font-size: var(--font-ui-smaller);
+	font-size: var(--font-ui-small);
 	font-weight: var(--font-semibold);
-	color: var(--text-muted);
 }
 .ssa-fix-text {
 	margin: 0;
 	font-size: var(--font-ui-small);
 	line-height: 1.5;
+	color: var(--text-muted);
 }
 .ssa-affected {
 	display: flex;
 	flex-direction: column;
-	gap: 0.3rem;
+	gap: var(--size-4-2);
 	align-items: flex-start;
 }
 .ssa-affected-label {
-	font-size: var(--font-ui-smaller);
+	font-size: var(--font-ui-small);
 	font-weight: var(--font-semibold);
-	color: var(--text-muted);
+	color: var(--text-faint);
 }
 .ssa-affected-list {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-	gap: 0.1rem 1rem;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	grid-auto-flow: row;
+	gap: var(--size-4-1) var(--size-4-8);
 	margin: 0;
 	padding: 0;
 	width: 100%;
@@ -884,11 +1011,30 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	font-size: var(--font-ui-smaller);
+	font-size: var(--font-ui-small);
 	color: var(--text-muted);
 }
 
 /* ---------- tables ---------- */
+.ssa-table-head {
+	display: flex;
+	align-items: baseline;
+	gap: var(--size-4-2);
+}
+.ssa-table-title {
+	flex: 1;
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-semibold);
+}
+.ssa-table-note {
+	font-size: var(--font-ui-small);
+	color: var(--text-faint);
+}
+.ssa-table-card {
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-m);
+	background: var(--background-primary);
+}
 .ssa-scroll-x {
 	max-width: 100%;
 	overflow-x: auto;
@@ -900,29 +1046,28 @@
 }
 .ssa-table th,
 .ssa-table td {
-	padding: 0.35rem 0.6rem 0.35rem 0;
+	padding: var(--size-4-2) var(--size-4-4);
 	text-align: left;
 	vertical-align: top;
 	border-bottom: 1px solid var(--background-modifier-border);
 }
 .ssa-table th {
-	font-size: var(--font-ui-smaller);
-	font-weight: var(--font-medium);
+	background: var(--background-secondary);
+	font-weight: var(--font-semibold);
 	color: var(--text-faint);
 }
 .ssa-table tr:last-child td {
 	border-bottom: none;
 }
 .ssa-col-status {
-	width: 5.5rem;
+	width: 6.5rem;
 }
 .ssa-cell-strong {
 	display: block;
-	font-weight: var(--font-medium);
+	font-weight: var(--font-semibold);
 }
 .ssa-cell-faint {
 	display: block;
-	font-size: var(--font-ui-smaller);
 	color: var(--text-faint);
 }
 .ssa-cell-muted {
@@ -933,82 +1078,75 @@
 .ssa-metric-group {
 	display: flex;
 	flex-direction: column;
-	gap: 0.75rem;
+	gap: var(--size-4-4);
 }
-/* Grouped by weight and space, not by a rule drawn under the label. */
 .ssa-metric-cat {
 	margin: 0;
-	font-size: var(--font-ui-small);
+	font-size: var(--font-ui-medium);
 	font-weight: var(--font-semibold);
-	color: var(--text-muted);
-}
-.ssa-metric-group + .ssa-metric-group {
-	margin-top: 0.75rem;
 }
 .ssa-metric-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
-	gap: 0.85rem 1.25rem;
+	grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+	gap: var(--size-4-3);
 }
 .ssa-metric {
 	display: flex;
 	flex-direction: column;
-	gap: 0.1rem;
+	gap: var(--size-4-1);
 	min-width: 0;
+	padding: var(--size-4-4);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-m);
 }
 .ssa-metric-label {
-	font-size: var(--font-ui-smaller);
+	font-size: var(--font-ui-small);
 	color: var(--text-muted);
 }
 .ssa-metric-value {
-	font-size: var(--font-ui-medium);
+	font-size: 1.5em;
 	font-weight: var(--font-semibold);
 	font-variant-numeric: tabular-nums;
+	line-height: 1.2;
 	overflow-wrap: anywhere;
 }
 .ssa-metric-note {
-	font-size: var(--font-ui-smaller);
+	font-size: var(--font-ui-small);
 	color: var(--text-faint);
 }
 .ssa-metric-table {
 	display: flex;
 	flex-direction: column;
-	gap: 0.35rem;
-}
-.ssa-metric-table-head {
-	display: flex;
-	align-items: baseline;
-	gap: 0.5rem;
-}
-.ssa-metric-table-label {
-	font-size: var(--font-ui-small);
-	font-weight: var(--font-medium);
-}
-.ssa-metric-table-note {
-	font-size: var(--font-ui-smaller);
-	color: var(--text-faint);
+	gap: var(--size-4-2);
 }
 
 /* ---------- narrow panes ---------- */
-@container (max-width: 46rem) {
+@container (max-width: 52rem) {
 	.ssa-view {
-		padding: 1rem 1rem 2.5rem;
+		padding: var(--size-4-4);
 	}
-	.ssa-tabs {
-		margin: 0 -1rem;
-		padding: 0.5rem 1rem 0;
-	}
-	.ssa-score {
+	.ssa-health {
 		flex-direction: column;
 		align-items: stretch;
-		gap: 1.25rem;
+		gap: var(--size-4-6);
 	}
 	.ssa-gauge {
 		align-self: center;
 	}
-	.ssa-input-search {
+	.ssa-cats {
+		columns: 1;
+	}
+	.ssa-filters-spacer {
+		display: none;
+	}
+	.ssa-search-inline {
 		width: 100%;
-		margin-left: 0;
+	}
+	.ssa-affected-list {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.ssa-row-body {
+		padding-left: var(--size-4-4);
 	}
 }
 
@@ -1019,14 +1157,15 @@
 		:is(
 			.ssa-btn,
 			.ssa-seg,
+			.ssa-chip,
 			.ssa-tab,
 			.ssa-spinner,
 			.ssa-progress-fill,
 			.ssa-split-seg,
 			.ssa-gauge-arc,
-			.ssa-cat-fill
-		),
-	:is(.safi-site-audit, .safi-site-audit-list) .ssa-row-head::after {
+			.ssa-cat-fill,
+			.ssa-row-chevron
+		) {
 		transition-duration: 0.01ms;
 		animation-duration: 0.01ms;
 	}

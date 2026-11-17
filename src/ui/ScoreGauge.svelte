@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { grade, scoreTone } from "./helpers";
 
-	let { value, size = 92 }: { value: number; size?: number } = $props();
+	let { value, size = 120 }: { value: number; size?: number } = $props();
 
-	const stroke = 6;
+	const stroke = 8;
 	const clamped = $derived(Math.max(0, Math.min(100, value)));
 	const r = $derived((size - stroke) / 2);
 	const c = $derived(2 * Math.PI * r);
